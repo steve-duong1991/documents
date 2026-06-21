@@ -89,7 +89,7 @@ Cross-service sagas → partition by `saga_id` — [ES §7 Sagas](../../event-so
 | Kafka for simple background emails | SQS/RabbitMQ |
 | Dual-write DB + publish without outbox | Outbox or CDC |
 | No DLQ | Failed messages retry forever or vanish |
-| Hot partition key | Shard keys (e.g. ) |
+| Hot partition key | Shard keys (e.g. `user_id % 32`) |
 | Infinite retention on Kafka | Tiered retention + compaction policy |
 
 ---

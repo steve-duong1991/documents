@@ -27,6 +27,8 @@ PROSE_PATTERNS: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"\bPair with\s+\."), "Pair with . (missing link)"),
     (re.compile(r"\bPair with\s{2,}for\b"), "Pair with  for (missing link)"),
     (re.compile(r"\(\s+\+"), "( + (missing word before +)"),
+    (re.compile(r"\(e\.g\.\s*\)"), "(e.g. ) (missing inline example)"),
+    (re.compile(r"\bAlert\s+:"), "Alert : (missing alert name)"),
     (re.compile(r"\|\s*,\s*\|"), "table cell with only comma (stripped inline code?)"),
 ]
 

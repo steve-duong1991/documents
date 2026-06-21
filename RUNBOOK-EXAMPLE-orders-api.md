@@ -11,7 +11,7 @@ Filled example for [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md). Copy structure, r
 | Field | Value |
 |-------|-------|
 | **Service** | orders-api |
-| **Owner** | platform-commerce /  |
+| **Owner** | platform-commerce / `#oncall-commerce` |
 | **Last tested** | 2026-05-15 (rollback drill) |
 | **Severity** | SEV1 if checkout p99 > 2s or 5xx > 1% for 5 min |
 
@@ -19,11 +19,11 @@ Filled example for [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md). Copy structure, r
 
 ## Symptoms
 
-- Alert : p99 > 2s on , 
-- Alert : 5xx > 1% on checkout routes
-- Alert : SQS  depth > 10k for 15 min
+- Alert `orders-api-p99-high`: p99 > 2s on `GET /v1/orders`, `POST /v1/orders`
+- Alert `orders-api-5xx-rate`: 5xx > 1% on checkout routes
+- Alert `orders-worker-lag`: SQS `orders-export` depth > 10k for 15 min
 
-**Dashboards:** Grafana  · Datadog 
+**Dashboards:** Grafana `commerce/orders-api` · Datadog `orders-api-production`
 
 ---
 
@@ -42,11 +42,11 @@ flowchart TD
 
 | Check | Command / dashboard |
 |-------|---------------------|
-| Last deploy | Argo CD  ·  metric |
-| Error by route | Grafana  by  |
-| DB pool wait |  · pool metric  |
-| Consumer lag | SQS  approximate age |
-| Replication lag |  · lag < 5s SLO(Service Level Objective) |
+| Last deploy | Argo CD `orders-api` · `build_id` metric |
+| Error by route | Grafana `orders-api` by `route` |
+| DB pool wait | `pg_stat_activity` · pool metric `wait_count` |
+| Consumer lag | SQS `orders-export` approximate age |
+| Replication lag | `pg_stat_replication` · lag < 5s SLO |
 
 ---
 
@@ -54,12 +54,12 @@ flowchart TD
 
 | Option | When | Steps |
 |--------|------|-------|
-| **Rollback deploy** | Error spike matches new  | Argo rollback to previous revision; verify p99 < 500ms |
-| **Disable flag** |  correlated | LaunchDarkly disable  |
-| **Scale workers** | Queue lag, low 5xx | HPA  max 20 → manual 30 if needed |
-| **Rate limit export** | Abuse or partner bulk export | Gateway tier cap; 429 on  |
+| **Rollback deploy** | Error spike matches new `build_id` | Argo rollback to previous revision; verify p99 < 500ms |
+| **Disable flag** | `new-checkout-flow` correlated | LaunchDarkly disable `checkout-v2` |
+| **Scale workers** | Queue lag, low 5xx | HPA `orders-worker` max 20 → manual 30 if needed |
+| **Rate limit export** | Abuse or partner bulk export | Gateway tier cap; 429 on `POST /v1/exports` |
 | **Failover read** | Primary DB CPU saturated | Route session reads to primary only; pause replica reads for dashboards |
-| **DB failover** | Primary unavailable | Runbook:  §12 + PG §16 PITR(Point-in-Time Recovery) |
+| **DB failover** | Primary unavailable | Runbook: `database-connection` §12 + PG §16 PITR(Point-in-Time Recovery) |
 
 ---
 
@@ -68,14 +68,14 @@ flowchart TD
 | Condition | Escalate to |
 |-----------|-------------|
 | Payment double-capture suspected | payments team + SEV1 incident commander |
-| Data corruption in  table | DBA + engineering lead |
+| Data corruption in `orders` table | DBA + engineering lead |
 | > 30 min SEV1 unresolved | commerce EM |
 
 ---
 
 ## Post-incident
 
-- [ ] Timeline in  doc
+- [ ] Timeline in `#incidents` doc
 - [ ] Root cause (5 whys)
 - [ ] Action items with owners
 - [ ] Update this runbook if steps were wrong
