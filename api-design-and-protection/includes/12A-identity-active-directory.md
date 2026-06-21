@@ -159,6 +159,37 @@ Aligns with the [layered auth flow](04-auth-model.md#layered-auth-flow): gateway
 | **Typical artifacts** | Policies, MFA, audit, provisioning | Roles, bindings, permissions | Users, groups, OUs, GPO, DCs |
 | **In API context** | Gateway auth, OAuth, lifecycle | JWT roles/scopes, usage plans | SSO source; groups → API roles |
 
+Hub comparison → [12 — IAM, RBAC, and AD](12-identity-rbac-iam-ad.md#iam-rbac-and-ad--comparison).
+
+---
+
+## IAM lifecycle (joiner-mover-leaver)
+
+Provisioning and offboarding must revoke API and app access when HR disables an account — not only when a JWT expires.
+
+```mermaid
+sequenceDiagram
+    participant HR as HR / JML process
+    participant IdP as Identity Provider (e.g. AD)
+    participant IAM as IAM / Provisioning
+    participant App as App / API / Cloud
+
+    HR->>IdP: New hire → create user
+    IdP->>IAM: User + group membership
+    IAM->>App: Provision account / assign roles
+    Note over App: User can authenticate
+
+    HR->>IdP: Role change / transfer
+    IdP->>IAM: Update groups
+    IAM->>App: Update roles / permissions
+
+    HR->>IdP: Termination
+    IdP->>IAM: Disable account
+    IAM->>App: Revoke access immediately
+```
+
+API access checklist and mistakes → [12B — API design takeaways](12B-identity-enterprise-api.md#api-design-takeaways).
+
 ---
 
 ## Common mistakes

@@ -2,6 +2,8 @@
 
 OpenAPI is not documentation only — it is the **contract** CI should enforce before deploy.
 
+> **Scope:** **CI enforcement** of the API(Application Programming Interface) contract — Spectral lint, breaking diff, consumer contracts (Pact), deploy coupling. How to **author** the spec, Swagger UI, and codegen → [§7 OpenAPI / Swagger](07-openapi-swagger.md).
+>
 > **Related:** OpenAPI tooling → [07-openapi-swagger.md](07-openapi-swagger.md) · Versioning → [14-api-versioning-and-deprecation.md](14-api-versioning-and-deprecation.md) · Deploy → [deployment-strategies](../../deployment-strategies/README.md)
 
 ---

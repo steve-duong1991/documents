@@ -24,6 +24,40 @@ Default stack for public SaaS APIs (extends [overview default](00-overview.md#de
 
 ---
 
+## RBAC at the API layer
+
+Map roles to **scopes** or **route policies** at the gateway and re-check in the app for object-level AuthZ ([Auth model — layered flow](04-auth-model.md#layered-auth-flow)).
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant GW as API Gateway
+    participant IdP as IdP / AD + OIDC
+    participant API as Backend API
+
+    Client->>GW: GET /orders + Bearer JWT
+    GW->>GW: Validate JWT signature & expiry
+    GW->>GW: Extract roles/scopes from token
+    alt role contains "order-reader"
+        GW->>API: Forward request
+        API-->>Client: 200 + data
+    else missing role
+        GW-->>Client: 403 Forbidden
+    end
+```
+
+| RBAC artifact | API example |
+|---------------|-------------|
+| **Role** | `order-reader`, `order-admin` |
+| **Permission** | `GET /orders`, `POST /orders`, `DELETE /orders/{id}` |
+| **Assignment** | Alice → `order-reader` (via AD group → app role mapping) |
+
+Gateway checks **coarse** role/scope; the app still enforces **object ownership** (BOLA) — see [Auth model](04-auth-model.md).
+
+Unified AuthN → AuthZ decision flow (MFA, policies, object check) → [12A — Decision flow](12A-identity-active-directory.md#decision-flow-can-this-user-access-this-api).
+
+---
+
 ## Common mistakes
 
 | Mistake | Fix |

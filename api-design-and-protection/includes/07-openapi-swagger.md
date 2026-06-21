@@ -1,5 +1,7 @@
 # OpenAPI / Swagger
 
+> **Scope:** **Author and publish** the API(Application Programming Interface) contract — OpenAPI format, Swagger UI, codegen, gateway import, terminology. **CI gates** (Spectral, breaking diff, contract tests, deploy coupling) → [§15 Contract and schema testing](15-contract-and-schema-testing.md).
+>
 > **Related:** Contract testing in CI → [§15 Contract and schema testing](15-contract-and-schema-testing.md) · Versioning → [§14 API versioning](14-api-versioning-and-deprecation.md) · Gateway import → [§3 Gateway](03-api-gateway.md)
 
 ## What it is
@@ -24,7 +26,7 @@ flowchart TB
         Gen["Code generation<br/>(stubs, client SDKs)"]
         Validate["Request/response validation"]
         Mock["Mock server for frontend/partners"]
-        Tests["Contract tests in CI"]
+        CI["Contract CI gates → §15"]
     end
 
     subgraph Deploy["3. Deploy — Integration only"]
@@ -33,7 +35,7 @@ flowchart TB
     end
 
     subgraph Operate["4. Operate — Consistency"]
-        Sync["Spec drift checks in CI"]
+        Sync["Spec drift checks → §15 CI"]
         Version["Version docs with /v1, /v2"]
     end
 
@@ -53,9 +55,9 @@ flowchart TB
 | Step | Swagger/OpenAPI role | What actually enforces security |
 |------|----------------------|----------------------------------|
 | **Design** | Define paths, schemas, errors, auth schemes | Threat modeling (separate) |
-| **Build** | Codegen, validation middleware, mocks, contract tests | App validation code |
+| **Build** | Codegen, validation middleware, mocks | App validation code; **contract CI** → [§15](15-contract-and-schema-testing.md) |
 | **Deploy** | Publish Swagger UI; optional gateway route import | Gateway policies, WAF, TLS(Transport Layer Security) |
-| **Operate** | Detect spec vs implementation drift | Monitoring, key rotation |
+| **Operate** | Version docs; drift detection via §15 pipeline | Monitoring, key rotation |
 
 ## Example spec fragment
 
@@ -115,30 +117,7 @@ Document rate-limit headers in response descriptions even though the gateway enf
 - Not a substitute for narrative guides and examples
 - Large specs are hard to navigate without grouping/tags
 
-## Contract testing in CI
-
-```mermaid
-sequenceDiagram
-    participant Spec as OpenAPI Spec
-    participant CI as CI Pipeline
-    participant API as Running API
-
-    CI->>Spec: Lint with Spectral rules
-    CI->>API: Run contract tests (Dredd, Schemathesis)
-    API-->>CI: Pass / fail per path
-    CI->>CI: Block merge on drift
-```
-
-### Pros
-
-- Catches breaking changes before release
-- Enforces design standards via Spectral (e.g. must document `401`, must use `/v1`)
-
-### Cons
-
-- Test maintenance cost
-- May not cover all edge cases or AuthZ logic
-- False confidence if only happy paths are tested
+Contract testing (Spectral, Dredd, Schemathesis, breaking diff) → [§15 Contract and schema testing](15-contract-and-schema-testing.md).
 
 ## Code generation
 
@@ -168,9 +147,9 @@ Some gateways auto-create routes from the spec.
 |----------|------|------|
 | **Contract-first** (spec → code) | Design reviewed before build | Slower start |
 | **Code-first** (code → spec) | Faster for small teams | Spec often neglected |
-| **Hybrid + CI drift check** | Balance speed and safety | Requires discipline |
+| **Hybrid + CI drift check** | Balance speed and safety | Requires discipline — see [§15 CI pipeline](15-contract-and-schema-testing.md#ci-pipeline-minimal) |
 
-**Recommendation:** Contract-first for public/partner APIs; CI contract tests for all.
+**Recommendation:** Contract-first for public/partner APIs; enforce drift with [§15](15-contract-and-schema-testing.md).
 
 ## Terminology
 
@@ -219,7 +198,7 @@ Your app         =  business rules and object permissions
 
 | Mistake | Fix |
 |---------|-----|
-| Spec drift from implementation | Contract tests fail CI on mismatch |
+| Spec drift from implementation | [§15](15-contract-and-schema-testing.md) CI pipeline blocks merge on drift |
 | Monolithic 5k-line spec | Modular `$ref` files per domain |
 | Document auth but not scopes | List OAuth(Open Authorization) scopes per operation |
 | Treat spec as rate-limit source of truth | Document tiers in portal; enforce in gateway |

@@ -6,6 +6,10 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-06-21
 
+### api-design §12 hub trim + §7/§15 dedupe
+- **§12:** trimmed identity hub to overview + comparison; moved IAM lifecycle (JML) to `12A`, RBAC at API layer to `12B`
+- **§7 / §15:** Scope blocks; removed duplicate contract-testing CI block from §7; §15 owns Spectral, diff, Pact pipeline
+
 ### api-design-and-protection reading paths
 - README: B2B/SaaS partner path (§4, §5, §16, §12, rate-limiting §6); GraphQL/gRPC path (§17)
 - Contract design path links to §17 for non-REST APIs
