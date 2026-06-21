@@ -45,14 +45,14 @@ Full outbox patterns → [ES §5](../../event-sourcing-and-cqrs/includes/05-asyn
 
 | Need | Queue (SQS, RabbitMQ) | Stream (Kafka, Kinesis) |
 |------|-------------------------|-------------------------|
-| **Job with result** ( + poll) | ✅ Natural fit | Awkward |
+| **Job with result** (`POST 202` + poll) | ✅ Natural fit | Awkward |
 | **Fan-out to 5+ consumers** | Duplicate publishes or bridge | ✅ Native |
 | **Replay last 7 days** | ❌ unless you store elsewhere | ✅ Retention |
 | **Strict global ordering** | Single consumer or FIFO shard | Partition key design |
 | **Ops complexity** | Lower | Higher (brokers, partitions, lag) |
 | **Throughput ceiling** | High with sharding | Very high |
 
-See  for worker scaling notes.
+See [06-async-queues-workers.md — Queue vs stream](06-async-queues-workers.md#queue-vs-stream--when-to-pick-which) for worker scaling notes.
 
 ---
 

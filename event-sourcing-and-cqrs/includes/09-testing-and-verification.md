@@ -32,7 +32,7 @@ flowchart LR
 
 | Check | Example |
 |-------|---------|
-| Replay from empty |  → status  |
+| Replay from empty | `OrderCreated` → status `open` |
 | Optimistic concurrency | Stale version → conflict |
 | Invalid command | No events appended |
 
@@ -59,7 +59,7 @@ Rebuild test: wipe read table → replay full stream → compare to snapshot CSV
 | **Outbox integration** | Real PG + test Kafka/SQS; assert message after TX commit |
 | **Failure injection** | Fail step 3 → assert compensate 2, 1 |
 
-Propagate  in test traces — same as production — .
+Propagate `saga_id` in test traces — same as production — [§7 Observability](07-sagas-and-distributed-workflows.md#observability-and-operations).
 
 ---
 
@@ -90,4 +90,4 @@ Propagate  in test traces — same as production — .
 
 **Pros:** Deterministic; catches regression in rules and projections.
 
-**Cons:** Fixture maintenance as schemas evolve — pair with .
+**Cons:** Fixture maintenance as schemas evolve — pair with [§8](08-event-schema-evolution.md).
