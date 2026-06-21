@@ -6,7 +6,7 @@ When query optimization and indexing aren't enough for read load, scale reads ho
 
 ## Read replicas
 
-Streaming replication sends WAL changes to one or more standby servers.
+Streaming replication sends WAL(Write-Ahead Log) changes to one or more standby servers.
 
 | Pros | Cons |
 |------|------|
@@ -31,8 +31,8 @@ Streaming replication sends WAL changes to one or more standby servers.
 | Layer | Tool | When to use |
 |-------|------|-------------|
 | **Application cache** | Redis, Memcached | Hot keys, session data, idempotent reads |
-| **Materialized view** | PostgreSQL native | Expensive SQL aggregations refreshed periodically |
-| **Query result cache** | ORM / CDN | Identical repeated API responses |
+| **Materialized view** | PostgreSQL native | Expensive SQL(Structured Query Language) aggregations refreshed periodically |
+| **Query result cache** | ORM / CDN(Content Delivery Network) | Identical repeated API(Application Programming Interface) responses |
 | **Unlogged tables** | PostgreSQL | Staging/bulk temp data (not crash-safe) |
 
 ### Materialized views
@@ -71,7 +71,7 @@ End-to-end flow (Redis → primary vs replica routing, plus CDN for public GETs)
 | Single slow report query | Materialized view or pre-aggregation table |
 | Hot product page | Redis cache with TTL |
 | 10× read vs write ratio | Read replica + app routing |
-| Search autocomplete | Dedicated index (GIN) + cache; not replica alone |
+| Search autocomplete | Dedicated index (GIN(Generalized Inverted Index)) + cache; not replica alone |
 | Global low-latency reads | Replicas per region + CDN for static API responses |
 
 ## Best practices

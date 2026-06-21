@@ -11,11 +11,11 @@ Coordinate multi-service business processes with local transactions, compensatin
 | Question | Answer |
 |----------|--------|
 | **What is it?** | A sequence of **local transactions** (one per service) coordinated so the process completes or is undone via **compensating actions** |
-| **When to use?** | Cross-service workflows (order → payment → inventory → shipping) where one ACID transaction across DBs is impossible |
-| **How are transactions handled?** | **Local ACID** per service — no 2PC across DBs; see [Transactions and distributed databases](#transactions-and-distributed-databases) |
+| **When to use?** | Cross-service workflows (order → payment → inventory → shipping) where one ACID(Atomicity, Consistency, Isolation, Durability) transaction across DBs is impossible |
+| **How are transactions handled?** | **Local ACID** per service — no 2PC(Two-Phase Commit) across DBs; see [Transactions and distributed databases](#transactions-and-distributed-databases) |
 | **When not to use?** | Single service + one DB → normal ACID; see [When not to use a saga](#when-not-to-use-a-saga) |
 | **Retry vs compensate?** | Transient → retry with cap; permanent → compensate; see [Retry vs compensate](#retry-vs-compensate) |
-| **How to operate?** | Stuck-saga metrics, DLQ, `saga_id` in traces — see [Observability and operations](#observability-and-operations) |
+| **How to operate?** | Stuck-saga metrics, DLQ(Dead Letter Queue), `saga_id` in traces — see [Observability and operations](#observability-and-operations) |
 | **Choreography vs orchestration?** | Events-only vs central **process manager** — see [Which one to choose?](#which-one-to-choose) |
 | **How to undo?** | Compensating transactions in **reverse order** (LIFO) — not a distributed `ROLLBACK` |
 | **Critical requirement?** | **Idempotent** steps + persisted saga state + correlation IDs |
@@ -41,7 +41,7 @@ flowchart LR
     end
 ```
 
-**Saga vs compensating event (ES):** In event sourcing, a compensating **event** (`PaymentRefunded`) corrects history within one aggregate stream — see [Immutability and corrections](01-core-concepts.md#immutability-and-corrections). In a saga, a compensating **action** is a new local transaction in another service (call refund API, publish `RefundPayment` command). They often combine: a saga orchestrator triggers compensating commands; each service appends domain events.
+**Saga vs compensating event (ES):** In event sourcing, a compensating **event** (`PaymentRefunded`) corrects history within one aggregate stream — see [Immutability and corrections](01-core-concepts.md#immutability-and-corrections). In a saga, a compensating **action** is a new local transaction in another service (call refund API(Application Programming Interface), publish `RefundPayment` command). They often combine: a saga orchestrator triggers compensating commands; each service appends domain events.
 
 ### Scope: one event store vs cross-service saga
 
@@ -134,7 +134,7 @@ Each compensate call is again **one local ACID transaction** in that service's d
 
 Strong consistency applies **inside one primary database**. Microservices are a layer where consistency breaks unless you design for it — see [Where consistency breaks](../../postgresql-performance/includes/14-consistency-promises-and-costs.md#where-consistency-breaks).
 
-### Microservices vs distributed SQL
+### Microservices vs distributed SQL(Structured Query Language)
 
 | Setup | Saga role |
 |-------|-----------|
@@ -440,7 +440,7 @@ After timeout compensation started, the original step may still complete:
 - **Reconcile:** Payment captured after refund initiated → alert + manual or auto second refund check.
 - **Version field:** Saga instance `version` incremented on each transition; stale replies ignored.
 
-General HTTP idempotency (`Idempotency-Key`, storage patterns) → [Idempotency](../../api-design-and-protection/includes/13-idempotency.md). Saga idempotency extends that to **async multi-step** flows.
+General HTTP(Hypertext Transfer Protocol) idempotency (`Idempotency-Key`, storage patterns) → [Idempotency](../../api-design-and-protection/includes/13-idempotency.md). Saga idempotency extends that to **async multi-step** flows.
 
 ---
 
@@ -559,7 +559,7 @@ Do **not** compensate on the first transient blip — you will undo work that wo
 |--------|------------|
 | **Stuck sagas** | Count where `step_deadline < now()` and status is `STEP_*_IN_PROGRESS` — growing |
 | **In-flight by type** | Sudden spike or plateau near capacity |
-| **Step latency p95** | Per `saga_type` / step — SLO breach |
+| **Step latency p95** | Per `saga_type` / step — SLO(Service Level Objective) breach |
 | **Compensation rate** | Failures vs successes — compensation errors trending up |
 | **DLQ depth** | Non-zero for saga-related consumers |
 
@@ -571,7 +571,7 @@ Side-effect steps (payment, refund) that fail after max retries must land in a *
 
 ### Security (orchestrator → participants)
 
-The saga orchestrator calls participant APIs with **service identity** — mTLS, service JWT, or workload IAM — not end-user tokens alone. See [Identity, RBAC, IAM](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
+The saga orchestrator calls participant APIs with **service identity** — mTLS(Mutual Transport Layer Security), service JWT(JSON Web Token), or workload IAM(Identity and Access Management) — not end-user tokens alone. See [Identity, RBAC, IAM](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
 
 ---
 
@@ -634,6 +634,8 @@ Same expand/contract mindset as schema migrations — see [deployment §12 Schem
 | **Idempotency** | Same `(saga_id, step)` twice → one side effect, identical response |
 | **Compensation order** | Assert LIFO matches forward step map |
 | **Workflow engines** | Optional: Temporal, Step Functions, Camunda — same saga rules; engine owns persistence and timers |
+
+Full ES test pyramid (aggregates, projectors, outbox) → [§9 Testing and verification](09-testing-and-verification.md).
 
 ---
 

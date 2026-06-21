@@ -1,6 +1,6 @@
 # PgBouncer + secret (proxy + password)
 
-> Connection pooling in front of the database using **PgBouncer** (or similar), with credentials from a secret manager — no IAM or Vault required.
+> Connection pooling in front of the database using **PgBouncer** (or similar), with credentials from a secret manager — no IAM(Identity and Access Management) or Vault required.
 
 > **Related:** Secret source → [§5 Secret manager + password](05-secret-manager-password.md) · AWS managed proxy → [§4 RDS Proxy](04-aws-iam-rds-proxy.md) · Pool modes and sizing → [postgresql-performance §7](../../postgresql-performance/includes/07-connection-management.md)
 
@@ -59,7 +59,7 @@ Private subnet → TLS → PgBouncer → Postgres
 
 ## Setup steps
 
-1. **Postgres** in private subnet; TLS; dedicated app users with least privilege.
+1. **Postgres** in private subnet; TLS(Transport Layer Security); dedicated app users with least privilege.
 2. **Store credentials** in secret manager — [05-secret-manager-password.md](05-secret-manager-password.md).
 3. **Deploy PgBouncer** in the same VPC (sidecar, dedicated VM, or K8s Deployment).
 4. **Configure** `pgbouncer.ini`:

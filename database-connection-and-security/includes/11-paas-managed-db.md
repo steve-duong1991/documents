@@ -7,14 +7,14 @@
 ## What it solves
 
 - Fastest path from dev to production — no RDS/Vault/proxy setup
-- Provider handles backups, patches, scaling, and often TLS
-- Connection strings rotatable from the provider UI or API
+- Provider handles backups, patches, scaling, and often TLS(Transport Layer Security)
+- Connection strings rotatable from the provider UI or API(Application Programming Interface)
 - Good for MVPs, side projects, and small teams
 
 ## What it does not solve
 
 - Less control over network isolation (often public endpoint + IP allowlist or SSL only)
-- Shared connection string per environment is common — not per-service IAM
+- Shared connection string per environment is common — not per-service IAM(Identity and Access Management)
 - Vendor lock-in and limited auth models vs self-managed Postgres
 - May not meet strict compliance (private subnet, customer-managed keys, etc.)
 
@@ -127,5 +127,5 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 | `DATABASE_URL` committed to git | Platform env / CI secrets only |
 | Same connection string for all services | Split users when moving to RDS/VPC |
 | Rely on IP allowlist only | TLS + least-privilege user still required |
-| No backup/restore test because PaaS "handles it" | Verify PITR and export on your tier |
+| No backup/restore test because PaaS "handles it" | Verify PITR(Point-in-Time Recovery) and export on your tier |
 | Stay on PaaS past compliance requirements | Migrate to [§5](05-secret-manager-password.md) + private network |

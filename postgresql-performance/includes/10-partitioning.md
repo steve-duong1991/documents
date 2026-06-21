@@ -80,7 +80,7 @@ CREATE INDEX ON events (org_id, created_at DESC);
 - Choose partition granularity so each partition is **manageable** (often monthly or weekly for events)
 - Automate partition creation and old partition drops
 - Include partition key in unique constraints and PKs
-- Combine with **BRIN** on time column inside very large partitions if appropriate
+- Combine with **BRIN(Block-Range Index)** on time column inside very large partitions if appropriate
 
 ## Common mistakes
 

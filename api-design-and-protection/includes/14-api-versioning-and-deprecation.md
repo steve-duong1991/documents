@@ -1,4 +1,4 @@
-# API Versioning and Deprecation
+# API(Application Programming Interface) Versioning and Deprecation
 
 Public APIs outlive clients. Versioning and deprecation policy is part of the contract — not an afterthought.
 
@@ -8,7 +8,7 @@ Public APIs outlive clients. Versioning and deprecation policy is part of the co
 
 ## At a glance
 
-| Approach | Visibility | Default for public REST |
+| Approach | Visibility | Default for public REST(Representational State Transfer) |
 |----------|------------|-------------------------|
 | **URL path** (`/v1/`, `/v2/`) | Obvious in logs and docs | ✅ Recommended |
 | **Header** (`Accept-Version`, `Api-Version`) | Cleaner URLs | Internal or partner APIs |
@@ -93,7 +93,7 @@ See [deployment-strategies §12](../../deployment-strategies/includes/12-schema-
 
 ### URL versioning
 
-**Pros:** Explicit in logs, WAF rules, rate limits, and docs.
+**Pros:** Explicit in logs, WAF(Web Application Firewall) rules, rate limits, and docs.
 
 **Cons:** URL proliferation; gateway routing required.
 

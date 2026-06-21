@@ -11,25 +11,25 @@
 | **Design** | Idempotency-Key on POST with side effects — [§13](13-idempotency.md) |
 | **Design** | Long work uses `202` + job resource, not held connections |
 | **Design** | Separate rate limits for expensive POST vs job status GET |
-| **Design** | Webhook `callback_url` SSRF-protected; outbound HMAC signed |
+| **Design** | Webhook `callback_url` SSRF(Server-Side Request Forgery)-protected; outbound HMAC(Hash-based Message Authentication Code) signed |
 | **OpenAPI** | Spec published; Swagger UI or portal live |
 | **OpenAPI** | CI contract tests pass; Spectral lint clean |
-| **Auth** | OAuth + PKCE for user apps; scoped API keys for partners |
-| **AuthZ** | Object ownership on every `{id}` route (BOLA) |
+| **Auth** | OAuth(Open Authorization) + PKCE(Proof Key for Code Exchange) for user apps; scoped API(Application Programming Interface) keys for partners |
+| **AuthZ** | Object ownership on every `{id}` route (BOLA(Broken Object-Level Authorization)) |
 | **AuthZ** | Writable field whitelist on PATCH/POST |
 | **Gateway** | Rate tiers configured; `429` + headers returned |
 | **Load balancer** | Health checks enabled; targets only healthy instances |
 | **Architecture** | App tier stateless — no sticky sessions; durable state in DB/Redis/S3 |
-| **Architecture** | Identity from validated JWT/API key, not server memory or request body alone |
-| **Edge** | HTTPS only; WAF enabled; DDoS protection on |
+| **Architecture** | Identity from validated JWT(JSON Web Token)/API key, not server memory or request body alone |
+| **Edge** | HTTPS only; WAF(Web Application Firewall) enabled; DDoS protection on |
 | **Protection** | Payload size capped; request timeouts set |
 | **Protection** | Secrets in vault; not in git or logs |
-| **Threats** | OWASP API Top 10 reviewed for new endpoints |
+| **Threats** | OWASP(Open Worldwide Application Security Project) API Top 10 reviewed for new endpoints |
 | **Ops** | Correlation IDs end-to-end |
 | **Ops** | Alerts on 401/403/429 spikes and 5xx error rate |
 | **Ops** | Runbook for key rotation and incident response |
 
-## HTTP status code quick reference
+## HTTP(Hypertext Transfer Protocol) status code quick reference
 
 | Code | Use | Do not use for |
 |------|-----|----------------|
@@ -50,7 +50,7 @@
 | Mistake | Why it hurts | Fix |
 |--------------|--------------|-----|
 | `200` + `{ success: false }` | Breaks HTTP semantics, caching, monitoring | Proper status codes |
-| AuthN only at gateway | BOLA vulnerabilities | Object checks in app |
+| AuthN only at gateway | BOLA(Broken Object-Level Authorization) vulnerabilities | Object checks in app |
 | IP-only rate limits | Bypassed via distributed IPs; unfair shared NAT | Identity-based tiers |
 | Logging Authorization header | Credential leak in logs | Redact sensitive headers |
 | Undocumented breaking changes | Broken clients, angry partners | Version bump + Sunset |
@@ -92,19 +92,19 @@
 | Guide | Topics |
 |-------|--------|
 | [api-rate-limiting](../../api-rate-limiting/README.md) | Algorithms, deployment layers, common mistakes |
-| [event-sourcing-and-cqrs](../../event-sourcing-and-cqrs/README.md) | Event store, CQRS, outbox, audit APIs |
-| [database-connection-and-security](../../database-connection-and-security/README.md) | DB credentials, IAM, vault patterns |
+| [event-sourcing-and-cqrs](../../event-sourcing-and-cqrs/README.md) | Event store, CQRS(Command Query Responsibility Segregation), outbox, audit APIs |
+| [database-connection-and-security](../../database-connection-and-security/README.md) | DB credentials, IAM(Identity and Access Management), vault patterns |
 | [deployment-strategies](../../deployment-strategies/README.md) | Safe rollout of API changes |
 | [high-throughput-systems](../../high-throughput-systems/README.md) | End-to-end throughput: measure, cache, async, streaming, backpressure |
-| [tree-and-index-structures](../../tree-and-index-structures/README.md) | B+ vs LSM storage engines for write-heavy workloads |
+| [tree-and-index-structures](../../tree-and-index-structures/README.md) | B+ vs LSM(Log-Structured Merge) storage engines for write-heavy workloads |
 
 ## Quick decision summary
 
 | Question | Default answer |
 |----------|----------------|
-| REST or GraphQL? | REST for public APIs unless strong client flexibility need |
+| REST(Representational State Transfer) or GraphQL? | REST for public APIs unless strong client flexibility need |
 | URL or header versioning? | URL `/v1` for simplicity |
-| Gateway required? | Yes for public; optional for internal mTLS mesh |
+| Gateway required? | Yes for public; optional for internal mTLS(Mutual Transport Layer Security) mesh |
 | User auth? | OAuth 2.0 + PKCE → JWT |
 | Partner auth? | Scoped API key + optional mTLS |
 | Rate limit algorithm? | Sliding window counter + token bucket for bursts |

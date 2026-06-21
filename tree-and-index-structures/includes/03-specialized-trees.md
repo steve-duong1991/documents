@@ -2,7 +2,7 @@
 
 Not every problem is “sorted key lookup.” These structures optimize for prefixes, priorities, ranges, space, or integrity proofs.
 
-> **Related:** B+ / LSM storage → [§1](01-b-trees-and-b-plus.md), [§4](04-lsm-trees.md) · Decision guide → [§5](05-decision-guides.md)
+> **Related:** B+ / LSM(Log-Structured Merge) storage → [§1](01-b-trees-and-b-plus.md), [§4](04-lsm-trees.md) · Decision guide → [§5](05-decision-guides.md)
 
 ---
 
@@ -93,7 +93,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 | Trie / Radix | IP routing tables, URL/path routers, autocomplete indexes | PostgreSQL default indexes |
 | Heap | Job schedulers, priority queues inside workers | General row lookup |
 | Segment / Fenwick | In-process range aggregates on bounded arrays | Disk-backed analytics at scale |
-| KD / Ball tree | ML nearest-neighbor (Faiss, scikit pipelines) | SQL `ORDER BY distance` on millions of rows |
+| KD / Ball tree | ML nearest-neighbor (Faiss, scikit pipelines) | SQL(Structured Query Language) `ORDER BY distance` on millions of rows |
 | R-tree | GIS (`PostGIS`), spatial indexes on maps | Plain B+ on scalar columns |
 | Merkle tree | Git, blockchains, content-addressed sync proofs | Application CRUD indexes |
 

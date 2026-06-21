@@ -10,15 +10,15 @@ Rate limiting controls **how many requests** a client can make in a given time w
 
 > **Related:** Product tiers → [api-design §5 Rate-limit tiers](../api-design-and-protection/includes/05-rate-limit-tiers.md) · Backpressure → [HTS §9](../high-throughput-systems/includes/09-backpressure-and-limits.md) · Decision guide → [§10](10-decision-guide.md)
 
-Use it together with auth, WAF rules, and abuse detection.
+Use it together with auth, WAF(Web Application Firewall) rules, and abuse detection.
 
 ## Types at a glance
 
 | Category | Examples |
 |----------|----------|
 | **Algorithms** | Fixed window, sliding window, token bucket, leaky bucket |
-| **Scope** | Global, per-IP, per API key, per user, per endpoint |
-| **Deployment** | CDN/edge, API gateway, reverse proxy, app middleware |
+| **Scope** | Global, per-IP, per API(Application Programming Interface) key, per user, per endpoint |
+| **Deployment** | CDN(Content Delivery Network)/edge, API gateway, reverse proxy, app middleware |
 | **Specialized** | Concurrent limits, quotas, cost-based, adaptive |
 
 ## Algorithm quick comparison
@@ -110,7 +110,7 @@ flowchart LR
 
 ## When to use
 
-- Daily or monthly API quotas
+- Daily or monthly API(Application Programming Interface) quotas
 - Coarse API tier limits (free vs paid)
 - Internal services where edge bursts are acceptable
 - Billing/usage metering where exact per-second fairness is not required
@@ -225,9 +225,9 @@ flowchart TD
 
 ## When to use
 
-- Public REST or GraphQL APIs
+- Public REST(Representational State Transfer) or GraphQL APIs
 - SaaS products with per-plan limits
-- API gateways (Kong, AWS API Gateway, Envoy)
+- API(Application Programming Interface) gateways (Kong, AWS API Gateway, Envoy)
 - Any production API where fairness matters but log-based storage is too costly
 
 ## Implementation note
@@ -351,7 +351,7 @@ flowchart TD
 
 - Protecting databases from write storms
 - Legacy systems with hard throughput caps
-- Third-party API integrations with strict rate contracts
+- Third-party API(Application Programming Interface) integrations with strict rate contracts
 - Message processors and async job ingestion
 - Any downstream that cannot handle burst traffic
 
@@ -381,10 +381,10 @@ Rate limits can be keyed by different dimensions. Layer them from cheapest to mo
 
 | Type | Key | Pros | Cons | When to use |
 |------|-----|------|------|-------------|
-| **Global** | Single counter for entire API | Simple DDoS brake | One noisy client affects everyone | Emergency circuit, small APIs |
+| **Global** | Single counter for entire API(Application Programming Interface) | Simple DDoS brake | One noisy client affects everyone | Emergency circuit, small APIs |
 | **Per IP** | Source IP / `X-Forwarded-For` | Easy, no auth needed | Shared NAT, VPN, mobile carriers; spoofable behind bad proxies | Public unauthenticated endpoints |
 | **Per API Key** | `Authorization` header | Ties to billing and plan | Key sharing, leaked keys | B2B APIs, developer portals |
-| **Per User / Account** | User ID from JWT/session | Fair per customer | Requires auth on every request | Logged-in SaaS APIs |
+| **Per User / Account** | User ID from JWT(JSON Web Token)/session | Fair per customer | Requires auth on every request | Logged-in SaaS APIs |
 | **Per Tenant / Org** | `org_id` | Multi-tenant fairness | Large tenants may need custom limits | B2B multi-tenant platforms |
 | **Per Endpoint** | `method + path` | Protects expensive ops only | Many rules to maintain | Search, export, ML inference |
 | **Per Resource** | `user:123:project:456` | Fine-grained abuse control | Key explosion, storage cost | File uploads, object CRUD |
@@ -429,11 +429,11 @@ Where you enforce rate limits matters as much as which algorithm you choose.
 
 | Layer | Examples | Pros | Cons | When to use |
 |-------|----------|------|------|-------------|
-| **CDN / Edge** | Cloudflare, Fastly, Akamai | Blocks abuse before origin; global PoPs | Limited custom logic | Public APIs, DDoS absorption |
-| **API Gateway** | Kong, AWS API Gateway, Apigee | Central policy, no app code changes | Extra hop, config sprawl | Microservices, multi-team APIs |
+| **CDN(Content Delivery Network) / Edge** | Cloudflare, Fastly, Akamai | Blocks abuse before origin; global PoPs | Limited custom logic | Public APIs, DDoS absorption |
+| **API(Application Programming Interface) Gateway** | Kong, AWS API Gateway, Apigee | Central policy, no app code changes | Extra hop, config sprawl | Microservices, multi-team APIs |
 | **Reverse Proxy** | Nginx `limit_req`, Envoy | High performance, close to app | Per-instance unless shared store | Single-region, moderate scale |
 | **App Middleware** | Express, Spring, Django | Business-aware limits (plan tier) | Duplicated across services | Plan-based quotas, cost-aware limits |
-| **Service Mesh** | Istio, Linkerd | Per-service, mTLS-aware | Operational complexity | Large Kubernetes estates |
+| **Service Mesh** | Istio, Linkerd | Per-service, mTLS(Mutual Transport Layer Security)-aware | Operational complexity | Large Kubernetes estates |
 
 ## Traffic flow
 
@@ -511,7 +511,7 @@ Time-based budgets: e.g. 10,000 calls/month. Endpoints can have different credit
 | Aligns with billing and plans | Needs persistence and reset logic |
 | Flexible per-plan pricing | Users hit walls at period boundaries |
 
-**When to use:** Paid API products, freemium tiers, marketplace APIs.
+**When to use:** Paid API(Application Programming Interface) products, freemium tiers, marketplace APIs.
 
 ---
 
@@ -569,7 +569,7 @@ flowchart TD
 
 Limits bytes per second, not request count.
 
-**When to use:** File upload/download APIs, streaming endpoints, CDN origin protection.
+**When to use:** File upload/download APIs, streaming endpoints, CDN(Content Delivery Network) origin protection.
 
 ## Common mistakes
 
@@ -605,7 +605,7 @@ Canonical `429` example and header names for product tiers → [api-design §5 R
 
 | Header | Purpose |
 |--------|---------|
-| `Retry-After` | Seconds (or HTTP-date) until client should retry |
+| `Retry-After` | Seconds (or HTTP(Hypertext Transfer Protocol)-date) until client should retry |
 | `X-RateLimit-Limit` | Max requests allowed in the window |
 | `X-RateLimit-Remaining` | Requests left in current window |
 | `X-RateLimit-Reset` | Unix timestamp when the window resets |
@@ -614,7 +614,7 @@ Canonical `429` example and header names for product tiers → [api-design §5 R
 
 Clients that retry aggressively on `429` amplify load. Mitigate with:
 
-1. Document exponential backoff in your API docs
+1. Document exponential backoff in your API(Application Programming Interface) docs
 2. Return accurate `Retry-After` values
 3. Use jitter in client SDKs
 4. Consider a separate, stricter limit for rapid retries from the same client
@@ -657,14 +657,14 @@ flowchart TD
 
 | Scenario | Recommended stack |
 |----------|-------------------|
-| Public REST API (SaaS) | Sliding window + per API key + per-endpoint on heavy routes |
+| Public REST(Representational State Transfer) API (SaaS) | Sliding window + per API key + per-endpoint on heavy routes |
 | Mobile app backend | Token bucket (burst-friendly) + per user |
 | Login / auth endpoints | Sliding window log, strict per-IP + per-username |
 | Internal microservices | Gateway global limit + per-service concurrency |
 | GraphQL | Cost-based limiting + query depth/complexity analysis |
 | File upload API | Per-user quota + concurrent upload limit + bandwidth cap |
 | LLM / inference API | Token bucket on tokens/min + per-user daily quota |
-| DDoS / volumetric attack | Edge/CDN rate limit + WAF before app logic |
+| DDoS / volumetric attack | Edge/CDN(Content Delivery Network) rate limit + WAF(Web Application Firewall) before app logic |
 | Paid API with tiers | Quota system + per API key + graduated response |
 
 ## Common stack combinations
@@ -707,7 +707,7 @@ CDN + WAF → API Gateway → Adaptive limits → Redis → App concurrency sema
 
 ### 1. Rate limiting is not security
 
-Attackers rotate IPs, API keys, and accounts. Rate limiting reduces abuse volume — it does not stop determined attackers.
+Attackers rotate IPs, API(Application Programming Interface) keys, and accounts. Rate limiting reduces abuse volume — it does not stop determined attackers.
 
 ### 2. Clock skew
 
@@ -794,7 +794,7 @@ flowchart TB
 | **Mitigation** | Redis Cluster with persistence; conservative local cap during failover; monitor `429` spike |
 | **Prevention** | Document fail-open policy; run failover game day |
 
-### OAuth token refresh burst
+### OAuth(Open Authorization) token refresh burst
 
 | Symptom | `/oauth/token` hammers rate limit; legitimate apps get `429` |
 |---------|----------------------------------------------------------------|

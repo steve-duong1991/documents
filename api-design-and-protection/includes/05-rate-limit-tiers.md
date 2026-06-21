@@ -6,7 +6,7 @@
 
 ## What it is
 
-**Rate-limit tiers** map product plans (Free, Standard, Professional, Enterprise) to request quotas. Limits should be keyed by **identity** (API key, user, subscription) — not IP alone.
+**Rate-limit tiers** map product plans (Free, Standard, Professional, Enterprise) to request quotas. Limits should be keyed by **identity** (API(Application Programming Interface) key, user, subscription) — not IP alone.
 
 For algorithm details (fixed window, token bucket, sliding window), see: [api-rate-limiting](../../api-rate-limiting/README.md).
 
@@ -61,7 +61,7 @@ Response strategies (hard reject vs throttle, retry-storm prevention) → [api-r
 
 ## Layered limits
 
-Enforce **global → per-IP → per-tier/API key → per-endpoint** (cheapest check first). This section defines **product tiers**; where each layer runs and how counters are shared is in the rate-limiting guide:
+Enforce **global → per-IP → per-tier/API(Application Programming Interface) key → per-endpoint** (cheapest check first). This section defines **product tiers**; where each layer runs and how counters are shared is in the rate-limiting guide:
 
 - Deployment layers (edge, gateway, app) → [api-rate-limiting §7](../../api-rate-limiting/includes/07-deployment-layers.md)
 - Production architecture diagram + fail-open policy → [api-rate-limiting §11](../../api-rate-limiting/includes/11-common-mistakes-and-architecture.md)
@@ -70,7 +70,7 @@ Enforce **global → per-IP → per-tier/API key → per-endpoint** (cheapest ch
 
 For heavy work, return `202 Accepted` instead of holding a request slot — tier limits still apply at enqueue time, but the client does not block on completion.
 
-Full design (job states, webhooks, SSE, OpenAPI) → [Async patterns](10-async-patterns.md).
+Full design (job states, webhooks, SSE(Server-Sent Events), OpenAPI) → [Async patterns](10-async-patterns.md).
 
 ## Mapping tiers to gateway products
 

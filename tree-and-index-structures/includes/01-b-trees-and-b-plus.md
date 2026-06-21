@@ -50,7 +50,7 @@ flowchart TB
 
 | Disadvantage | Why it matters |
 |--------------|----------------|
-| **Complex implementation** | Splits, merges, rebalancing, concurrency, WAL |
+| **Complex implementation** | Splits, merges, rebalancing, concurrency, WAL(Write-Ahead Log) |
 | **Poor for tiny datasets in RAM** | Pointer + page overhead |
 | **Not ideal for prefix search** | Use trie/radix for string prefixes |
 | **Point lookups are O(log n)** | Not O(1) like a hash table |

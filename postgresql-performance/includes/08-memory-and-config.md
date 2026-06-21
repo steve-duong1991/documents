@@ -45,7 +45,7 @@ max_connections = 200
 
 Adjust for your RAM and workload — these are starting points, not gospel.
 
-## WAL and checkpoint (write-heavy)
+## WAL(Write-Ahead Log) and checkpoint (write-heavy)
 
 | Parameter | Notes |
 |-----------|-------|
@@ -83,7 +83,7 @@ Spiky write latency during checkpoints? Increase `max_wal_size` and tune checkpo
 
 ## Managed databases
 
-RDS, Cloud SQL, Supabase, and Azure expose these via parameter groups. Some require reboot; others are dynamic. Check provider docs for limits.
+RDS, Cloud SQL(Structured Query Language), Supabase, and Azure expose these via parameter groups. Some require reboot; others are dynamic. Check provider docs for limits.
 
 ## Best practices
 

@@ -9,7 +9,7 @@
 Trees organize data hierarchically. The right structure depends on **access pattern**, **memory hierarchy**, **mutation rate**, and **query types** — not on which name sounds most impressive.
 
 > **Related:**
-> - PostgreSQL index types (B-tree, GIN, GiST, BRIN) → [postgresql-performance/includes/02-indexing.md](../postgresql-performance/includes/02-indexing.md)
+> - PostgreSQL index types (B-tree, GIN(Generalized Inverted Index), GiST, BRIN(Block-Range Index)) → [postgresql-performance/includes/02-indexing.md](../postgresql-performance/includes/02-indexing.md)
 > - Amplification, complexity, glossary → [06-amplification-and-related-topics.md](06-amplification-and-related-topics.md)
 
 ## Tree families at a glance
@@ -18,7 +18,7 @@ Trees organize data hierarchically. The right structure depends on **access patt
 |-------------|-----------|------------|
 | **BST variants** | In-memory, pointer-heavy, O(log n) search | RAM, moderate size |
 | **B-Tree / B+ Tree** | Wide nodes, few disk seeks | Databases, file systems, SSDs |
-| **LSM Tree** | Append + merge sorted files | Write-heavy KV, time-series, distributed DBs |
+| **LSM(Log-Structured Merge) Tree** | Append + merge sorted files | Write-heavy KV, time-series, distributed DBs |
 | **Trie / Radix** | Prefix on edges | Strings, IPs, routing |
 | **Heap** | Parent ≥/≤ children | Priority queues, top-K |
 | **Segment / Fenwick** | Range aggregates | Range sum/min on arrays |
@@ -30,7 +30,7 @@ Most production storage falls into one of two designs:
 
 | | **B+ Tree** | **LSM Tree** |
 |--|-------------|--------------|
-| **Write model** | Update pages in place | Append to WAL + memtable; merge later |
+| **Write model** | Update pages in place | Append to WAL(Write-Ahead Log) + memtable; merge later |
 | **Read model** | Few page lookups | Memtable + filters + possibly many files |
 | **Range scans** | Excellent (linked leaves) | Good with leveled compaction; weaker at L0 |
 | **Typical home** | PostgreSQL, InnoDB, SQLite | RocksDB, Cassandra, Scylla, HBase |
@@ -39,7 +39,7 @@ Most production storage falls into one of two designs:
 
 | Need | Start here |
 |------|------------|
-| SQL index, pagination, `BETWEEN` | **B+ Tree** |
+| SQL(Structured Query Language) index, pagination, `BETWEEN` | **B+ Tree** |
 | Only `WHERE id = ?`, no sort | **Hash index** (if engine supports it) |
 | In-app ordered map | **Red-Black Tree** (default) or **AVL** (lookup-critical) |
 | Autocomplete / IP longest prefix | **Trie** or **Radix tree** |
@@ -125,7 +125,7 @@ flowchart TB
 
 | Disadvantage | Why it matters |
 |--------------|----------------|
-| **Complex implementation** | Splits, merges, rebalancing, concurrency, WAL |
+| **Complex implementation** | Splits, merges, rebalancing, concurrency, WAL(Write-Ahead Log) |
 | **Poor for tiny datasets in RAM** | Pointer + page overhead |
 | **Not ideal for prefix search** | Use trie/radix for string prefixes |
 | **Point lookups are O(log n)** | Not O(1) like a hash table |
@@ -235,7 +235,7 @@ When data lives entirely in RAM and you need ordered maps or sets, binary tree v
 
 | | |
 |--|--|
-| **Pros** | O(log n) average search/insert; **easier concurrent updates** than rebalancing BSTs; used in LSM memtables |
+| **Pros** | O(log n) average search/insert; **easier concurrent updates** than rebalancing BSTs; used in LSM(Log-Structured Merge) memtables |
 | **Cons** | More memory than BST (forward pointers); randomness or deterministic levels add complexity |
 | **Use when** | Concurrent ordered maps, LevelDB/RocksDB memtables, Redis sorted sets (implementation detail) |
 
@@ -272,7 +272,7 @@ See complexity table → [06-amplification-and-related-topics.md](06-amplificati
 
 Not every problem is “sorted key lookup.” These structures optimize for prefixes, priorities, ranges, space, or integrity proofs.
 
-> **Related:** B+ / LSM storage → [§1](01-b-trees-and-b-plus.md), [§4](04-lsm-trees.md) · Decision guide → [§5](05-decision-guides.md)
+> **Related:** B+ / LSM(Log-Structured Merge) storage → [§1](01-b-trees-and-b-plus.md), [§4](04-lsm-trees.md) · Decision guide → [§5](05-decision-guides.md)
 
 ---
 
@@ -363,7 +363,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 | Trie / Radix | IP routing tables, URL/path routers, autocomplete indexes | PostgreSQL default indexes |
 | Heap | Job schedulers, priority queues inside workers | General row lookup |
 | Segment / Fenwick | In-process range aggregates on bounded arrays | Disk-backed analytics at scale |
-| KD / Ball tree | ML nearest-neighbor (Faiss, scikit pipelines) | SQL `ORDER BY distance` on millions of rows |
+| KD / Ball tree | ML nearest-neighbor (Faiss, scikit pipelines) | SQL(Structured Query Language) `ORDER BY distance` on millions of rows |
 | R-tree | GIS (`PostGIS`), spatial indexes on maps | Plain B+ on scalar columns |
 | Merkle tree | Git, blockchains, content-addressed sync proofs | Application CRUD indexes |
 
@@ -381,7 +381,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ---
 
-# LSM Trees (Log-Structured Merge Trees)
+# LSM(Log-Structured Merge) Trees (Log-Structured Merge Trees)
 
 LSM trees are the main alternative to **B+ trees** for **write-heavy, append-friendly** storage. They trade **write amplification and read complexity** for **fast sequential writes** and high **ingest throughput**.
 
@@ -393,7 +393,7 @@ LSM trees are the main alternative to **B+ trees** for **write-heavy, append-fri
 
 An LSM tree is not one tree in memory — it is a **tiered system**:
 
-1. **Write-ahead log (WAL)** — durability before the write is accepted
+1. **Write-ahead log (WAL(Write-Ahead Log))** — durability before the write is accepted
 2. **Memtable** — in-memory sorted structure (often a **skip list** or red-black tree)
 3. **Immutable SSTables** — sorted **S**orted **S**tring **Table** files on disk, organized in **levels**
 4. **Compaction** — background merge of SSTables to limit file count and reclaim space
@@ -420,7 +420,7 @@ Check memtable → older memtables → L0 SSTables → deeper levels. **Bloom fi
 | Component | Role |
 |-----------|------|
 | **Memtable** | Absorbs writes in RAM; sorted for flush |
-| **WAL** | Crash recovery if memtable not yet flushed |
+| **WAL(Write-Ahead Log)** | Crash recovery if memtable not yet flushed |
 | **SSTable** | Immutable on-disk sorted runs; no in-place updates |
 | **Bloom filter** | “Key probably not in this file” → skip I/O |
 | **Compaction** | Merge overlapping files; drop deleted/tombstoned keys |
@@ -455,7 +455,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 | **Fast writes** | Sequential WAL + memtable; flush is sequential I/O |
 | **High ingest** | Logs, metrics, time-series, event streams |
 | **SSD-friendly** | Large sequential writes; less random in-place mutation |
-| **Natural versioning** | Same key, multiple versions (MVCC-style stores) |
+| **Natural versioning** | Same key, multiple versions (MVCC(Multi-Version Concurrency Control)-style stores) |
 | **Horizontal scale** | Immutable SSTables replicate and ship cleanly |
 
 ## Cons
@@ -482,7 +482,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 | **Write throughput** | Moderate | Very high |
 | **Read latency (steady)** | Usually lower, stable | Can spike (compaction, L0 overlap) |
 | **Space after delete** | Faster reclaim (VACUUM, etc.) | Delayed until compaction |
-| **Transactions / SQL** | Native fit | Often KV or wide-column layer on top |
+| **Transactions / SQL(Structured Query Language)** | Native fit | Often KV or wide-column layer on top |
 | **Flash wear** | More random writes | More total bytes written (amplification) |
 
 ---
@@ -573,7 +573,7 @@ Practical flows for choosing tree and index structures by workload.
 
 | Scenario | Recommended structure |
 |----------|----------------------|
-| SQL index, pagination, `BETWEEN` | B+ Tree |
+| SQL(Structured Query Language) index, pagination, `BETWEEN` | B+ Tree |
 | Only `WHERE id = ?`, no sort | Hash index / hash table |
 | In-app ordered map | Red-Black Tree (default) or AVL (lookup-critical) |
 | Autocomplete / IP longest prefix | Trie or Radix tree |
@@ -583,7 +583,7 @@ Practical flows for choosing tree and index structures by workload.
 | Closest point in 2D/3D | KD-Tree |
 | Verify file/block without full download | Merkle tree |
 | Filesystem directory metadata | B-Tree variants (ext4, NTFS) |
-| Write-heavy logs, metrics, KV at scale | LSM Tree |
+| Write-heavy logs, metrics, KV at scale | LSM(Log-Structured Merge) Tree |
 | Read-heavy OLTP with complex queries | B+ Tree |
 
 ---
@@ -721,7 +721,7 @@ Storage engineers compare engines with three metrics. Lower is better for each �
 | Metric | What it means | B+ Tree | LSM Tree |
 |--------|---------------|---------|----------|
 | **Read amplification** | Bytes (or I/Os) read per logical read | Low — ~tree height page reads | Higher — memtable + multiple SSTables + Bloom false positives |
-| **Write amplification** | Bytes written to disk per logical write | Moderate — page splits, WAL | High — compaction rewrites data repeatedly |
+| **Write amplification** | Bytes written to disk per logical write | Moderate — page splits, WAL(Write-Ahead Log) | High — compaction rewrites data repeatedly |
 | **Space amplification** | Extra disk vs logical data size | Moderate — page fill, bloat until VACUUM | Higher until compaction — tombstones, L0 overlap, old versions |
 
 **Takeaway:** B+ trees optimize **steady reads and range scans**. LSM trees optimize **write ingest** and accept higher read/write/space amplification unless compaction is tuned.
@@ -732,7 +732,7 @@ See also → [04-lsm-trees.md](04-lsm-trees.md) (LSM pros/cons), [01-b-trees-and
 
 ## Clustered vs secondary index (B+ tree engines)
 
-In **InnoDB**, **SQL Server clustered index**, and similar engines:
+In **InnoDB**, **SQL(Structured Query Language) Server clustered index**, and similar engines:
 
 | Type | Leaf contains | Lookup cost |
 |------|---------------|-------------|
@@ -787,7 +787,7 @@ In **InnoDB**, **SQL Server clustered index**, and similar engines:
 | Too many secondary indexes on hot write path | Every INSERT/UPDATE touches each index | Index only proven query patterns; partial indexes — [PostgreSQL indexing](../postgresql-performance/includes/02-indexing.md) |
 | Choosing LSM for “fast deletes” | Space not reclaimed until compaction | Plan TTL + compaction; or B+ with routine maintenance |
 | Using heap for keyed lookup | Heaps are not search trees | Map/set or DB index |
-| GiST/R-Tree for non-spatial JSON | Wrong index family | GIN for JSONB — [PostgreSQL indexing](../postgresql-performance/includes/02-indexing.md) |
+| GiST/R-Tree for non-spatial JSON | Wrong index family | GIN(Generalized Inverted Index) for JSONB — [PostgreSQL indexing](../postgresql-performance/includes/02-indexing.md) |
 | Ignoring clustered vs secondary cost | Hidden double lookup on wide secondaries | Covering index, narrower secondary keys, or PK redesign |
 
 ---
@@ -802,7 +802,7 @@ PostgreSQL uses several index access methods. Not all are B-trees:
 | **Hash** | Hash table | Equality only; rare in practice |
 | **GIN** | Inverted index | JSONB `@>`, full-text, arrays |
 | **GiST / SP-GiST** | Generalized search trees | PostGIS, ranges, NN |
-| **BRIN** | Block range summaries | Very large, naturally ordered columns |
+| **BRIN(Block-Range Index)** | Block range summaries | Very large, naturally ordered columns |
 
 Full detail → [postgresql-performance/includes/02-indexing.md](../postgresql-performance/includes/02-indexing.md)
 
@@ -865,9 +865,9 @@ flowchart TD
 
 | Guide | Topics |
 |-------|--------|
-| [postgresql-performance](../postgresql-performance/README.md) | B-tree, GIN, partial, and covering indexes in practice |
+| [postgresql-performance](../postgresql-performance/README.md) | B-tree, GIN(Generalized Inverted Index), partial, and covering indexes in practice |
 | [high-throughput-systems](../high-throughput-systems/README.md) | Database throughput layer, when to consider LSM engines |
-| [api-design-and-protection](../api-design-and-protection/README.md) | API caching and read-path design |
+| [api-design-and-protection](../api-design-and-protection/README.md) | API(Application Programming Interface) caching and read-path design |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event store and append-heavy write paths |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Connection security is independent of index choice |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Overload protection when storage read path saturates |

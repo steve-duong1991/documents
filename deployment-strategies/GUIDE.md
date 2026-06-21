@@ -26,7 +26,7 @@
 - **Canary / progressive** — limit blast radius with real traffic
 - **Feature flags** — separate *deploying code* from *releasing features*
 - **Shadow** — validate rewrites safely before cutover
-- **GitOps** — declarative, auditable delivery (common on Kubernetes)
+- **GitOps(Git Operations)** — declarative, auditable delivery (common on Kubernetes)
 
 ## Common mistakes
 
@@ -93,7 +93,7 @@ flowchart LR
 
 | Mistake | Fix |
 |---------|-----|
-| Recreate on production user-facing API | Use rolling or canary ([§2](02-rolling.md), [§4](04-canary.md)) |
+| Recreate on production user-facing API(Application Programming Interface) | Use rolling or canary ([§2](02-rolling.md), [§4](04-canary.md)) |
 | Non-backward-compatible migration before deploy | Expand/contract → [§12](12-schema-migrations-and-deploy.md) |
 | No tagged previous artifact | Keep last-known-good image/build ID for fast redeploy |
 
@@ -101,7 +101,7 @@ flowchart LR
 
 # Rolling Deployment
 
-> **Related:** SLO rollback triggers → [§13](13-slo-rollback-triggers.md) · Schema coupling → [§12](12-schema-migrations-and-deploy.md) · Stateless prerequisite → [api-design §11](../api-design-and-protection/includes/11-stateless-architecture.md)
+> **Related:** SLO(Service Level Objective) rollback triggers → [§13](13-slo-rollback-triggers.md) · Schema coupling → [§12](12-schema-migrations-and-deploy.md) · Stateless prerequisite → [api-design §11](../api-design-and-protection/includes/11-stateless-architecture.md)
 
 ## What it is
 
@@ -136,7 +136,7 @@ flowchart TB
 
 ## Cons
 
-- Two versions run at once — schema and API compatibility required
+- Two versions run at once — schema and API(Application Programming Interface) compatibility required
 - Rollback is slower (roll back instance by instance)
 - A bad release can affect a subset of users before you stop
 
@@ -267,7 +267,7 @@ flowchart LR
 
 # Canary Deployment
 
-> **Related:** Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO rollback → [§13](13-slo-rollback-triggers.md) · Progressive delivery → [§10](10-progressive-delivery.md)
+> **Related:** Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO(Service Level Objective) rollback → [§13](13-slo-rollback-triggers.md) · Progressive delivery → [§10](10-progressive-delivery.md)
 
 ## What it is
 
@@ -294,7 +294,7 @@ flowchart TB
 
 ## Cons
 
-- Requires traffic splitting (service mesh, load balancer, CDN, API gateway)
+- Requires traffic splitting (service mesh, load balancer, CDN(Content Delivery Network), API(Application Programming Interface) gateway)
 - Two versions plus compatible schemas and APIs
 - Observability and SLOs must be solid
 
@@ -495,7 +495,7 @@ flowchart LR
 
 - Keep flags short-lived; delete after full rollout
 - Avoid flags deep in hot paths without performance testing
-- Protect flag changes with audit logs and RBAC
+- Protect flag changes with audit logs and RBAC(Role-Based Access Control)
 - Test with flag ON and OFF in CI
 
 ---
@@ -592,7 +592,7 @@ flowchart LR
 
 ---
 
-# GitOps
+# GitOps(Git Operations)
 
 > **Related:** Progressive delivery controllers → [§10 Progressive delivery](10-progressive-delivery.md) · Rollback triggers → [§13 SLO rollback](13-slo-rollback-triggers.md) · Scope note in [root README](../../README.md#scope)
 
@@ -646,7 +646,7 @@ flowchart LR
 
 # Progressive Delivery
 
-> **Related:** Canary basics → [§4 Canary](04-canary.md) · Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO gates → [§13 SLO rollback](13-slo-rollback-triggers.md) · Observability → [HTS §11](../high-throughput-systems/includes/11-observability.md)
+> **Related:** Canary basics → [§4 Canary](04-canary.md) · Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO(Service Level Objective) gates → [§13 SLO rollback](13-slo-rollback-triggers.md) · Observability → [HTS §11](../high-throughput-systems/includes/11-observability.md)
 
 ## What it is
 
@@ -695,7 +695,7 @@ flowchart TB
 
 # Choosing a Strategy & Best Practices
 
-> **Related:** Overview comparison → [§00 Overview](00-overview.md) · Schema migrations → [§12](12-schema-migrations-and-deploy.md) · SLO rollback → [§13](13-slo-rollback-triggers.md)
+> **Related:** Overview comparison → [§00 Overview](00-overview.md) · Schema migrations → [§12](12-schema-migrations-and-deploy.md) · SLO(Service Level Objective) rollback → [§13](13-slo-rollback-triggers.md)
 
 ## Decision flow
 
@@ -741,7 +741,7 @@ flowchart TD
 
 | Stack | Typical pattern |
 |-------|-----------------|
-| **Kubernetes** | Rolling default; Argo Rollouts/Flagger for canary; GitOps with Argo CD |
+| **Kubernetes** | Rolling default; Argo Rollouts/Flagger for canary; GitOps(Git Operations) with Argo CD |
 | **AWS ECS/Fargate** | Rolling update; CodeDeploy blue-green for Lambda/ECS |
 | **Serverless** | Alias weighted routing (canary); immutable versions |
 | **VMs + load balancer** | Rolling pool replace or blue-green ASG swap |
@@ -829,7 +829,7 @@ flowchart LR
 
 ---
 
-## Event-sourced and CQRS systems
+## Event-sourced and CQRS(Command Query Responsibility Segregation) systems
 
 | Component | Deploy concern |
 |-----------|----------------|
@@ -837,7 +837,7 @@ flowchart LR
 | **Projectors** | New projector version must handle old events; run dual-write or lag-tolerant reads during rollout |
 | **Read models** | Rebuild or backfill projections after schema expand — see [event-sourcing decision guide](../event-sourcing-and-cqrs/includes/06-decision-guide.md) |
 
-Deploy projectors **before** or **with** API changes that depend on new read-model fields.
+Deploy projectors **before** or **with** API(Application Programming Interface) changes that depend on new read-model fields.
 
 ---
 
@@ -889,7 +889,7 @@ Details → [postgresql-performance §15](../postgresql-performance/includes/15-
 
 ---
 
-# SLO-Based Rollback Triggers
+# SLO(Service Level Objective)-Based Rollback Triggers
 
 Automated rollback beats human judgment under incident pressure — but only when triggers are **defined before deploy**, tied to **version/build ID**, and tested in staging.
 
@@ -932,7 +932,7 @@ flowchart TD
 
 | Metric | Baseline window | Typical threshold |
 |--------|-----------------|-------------------|
-| HTTP 5xx rate | Pre-deploy 30 min | > 2× baseline |
+| HTTP(Hypertext Transfer Protocol) 5xx rate | Pre-deploy 30 min | > 2× baseline |
 | p99 latency | Pre-deploy 30 min | > 1.5× baseline or SLO |
 | 429 rate (paid tier) | Pre-deploy | Unexpected spike |
 | Error budget burn | Rolling 1 h | > 10% budget in 15 min |
@@ -1016,4 +1016,4 @@ Use flags for **release**; use deploy rollback for **broken artifact**.
 | [postgresql-performance §15](../postgresql-performance/includes/15-schema-migration-checklist.md) | Online DDL and backfill patterns |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Secret rotation during deploys |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limit rollout traffic during canary |
-| [tree-and-index-structures](../tree-and-index-structures/README.md) | LSM vs B+ when schema drives storage |
+| [tree-and-index-structures](../tree-and-index-structures/README.md) | LSM(Log-Structured Merge) vs B+ when schema drives storage |

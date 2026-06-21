@@ -1,4 +1,4 @@
-# API Protection
+# API(Application Programming Interface) Protection
 
 > **Related:** Entry architecture → [§3 Gateway](03-api-gateway.md) · Auth model → [§4 Auth model](04-auth-model.md) · Threat model → [§6 Threat model](06-threat-model.md) · Rate limits → [api-rate-limiting](../../api-rate-limiting/README.md)
 
@@ -26,8 +26,8 @@ flowchart TB
 
 | Layer | Responsibilities | Typical tools |
 |-------|------------------|---------------|
-| **Edge** | DDoS, WAF, bot management, geo rules | Cloudflare, AWS Shield, Fastly |
-| **Gateway** | TLS, authN, rate limits, routing, size limits | Kong, AWS API Gateway, Azure APIM |
+| **Edge** | DDoS, WAF(Web Application Firewall), bot management, geo rules | Cloudflare, AWS Shield, Fastly |
+| **Gateway** | TLS(Transport Layer Security), authN, rate limits, routing, size limits | Kong, AWS API Gateway, Azure APIM |
 | **Load balancer** | Health checks, scale replicas | AWS ALB/NLB, NGINX, K8s Service |
 | **Application** | authZ, validation, idempotency, business rules | Your service code |
 | **Data** | Encryption at rest, least-privilege DB roles | RDS, PostgreSQL RLS |
@@ -35,10 +35,10 @@ flowchart TB
 
 ## 1. Transport security
 
-- **HTTPS only** — reject or redirect HTTP
+- **HTTPS only** — reject or redirect HTTP(Hypertext Transfer Protocol)
 - **TLS 1.2+** (prefer 1.3)
 - **HSTS** for browser-facing APIs
-- **mTLS** for high-trust B2B or internal service mesh
+- **mTLS(Mutual Transport Layer Security)** for high-trust B2B or internal service mesh
 
 ### Pros
 
@@ -56,9 +56,9 @@ Prove **who** is calling.
 
 | Method | Best for |
 |--------|----------|
-| OAuth 2.0 / OIDC | User-facing and third-party apps |
+| OAuth(Open Authorization) 2.0 / OIDC(OpenID Connect) | User-facing and third-party apps |
 | API keys | Server-to-server, partners |
-| JWT access tokens | Stateless auth across services |
+| JWT(JSON Web Token) access tokens | Stateless auth across services |
 | mTLS | High-trust B2B, internal mesh |
 
 **Practices:**
@@ -73,8 +73,8 @@ Prove **who** is calling.
 Prove **what** the caller may do — always in the **application layer**, not gateway alone.
 
 - Scope-based: `orders:read`, `orders:write`
-- Object-level: user 123 may only access their orders (**BOLA** — OWASP API #1)
-- RBAC / ABAC as appropriate
+- Object-level: user 123 may only access their orders (**BOLA(Broken Object-Level Authorization)** — OWASP(Open Worldwide Application Security Project) API #1)
+- RBAC(Role-Based Access Control) / ABAC as appropriate
 
 | Response | When |
 |----------|------|
@@ -87,7 +87,7 @@ Treat all input as hostile: body, query, path, headers.
 
 - Validate type, length, format, range, enum
 - Reject unknown fields on write (mass assignment)
-- Parameterized queries — no SQL string concatenation
+- Parameterized queries — no SQL(Structured Query Language) string concatenation
 - Cap payload size and JSON nesting depth
 - Sanitize file uploads
 
@@ -105,7 +105,7 @@ See the dedicated guide: [api-rate-limiting](../../api-rate-limiting/README.md).
 
 **Inbound webhook replay protection:**
 
-- HMAC signatures + timestamps for webhooks
+- HMAC(Hash-based Message Authentication Code) signatures + timestamps for webhooks
 - Constant-time signature comparison
 - Reject stale signed requests
 - Dedup by `event_id` in a shared store

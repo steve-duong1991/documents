@@ -20,7 +20,7 @@
 - **Canary / progressive** — limit blast radius with real traffic
 - **Feature flags** — separate *deploying code* from *releasing features*
 - **Shadow** — validate rewrites safely before cutover
-- **GitOps** — declarative, auditable delivery (common on Kubernetes)
+- **GitOps(Git Operations)** — declarative, auditable delivery (common on Kubernetes)
 
 ## Common mistakes
 

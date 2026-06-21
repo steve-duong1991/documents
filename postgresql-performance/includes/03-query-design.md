@@ -76,8 +76,8 @@ Requires an index on `(created_at DESC, id DESC)`.
 ## When to use
 
 - After `EXPLAIN` shows the plan is structurally expensive (large sorts, hash joins on huge sets)
-- When ORMs generate inefficient SQL
-- When API latency scales with row count linearly
+- When ORMs generate inefficient SQL(Structured Query Language)
+- When API(Application Programming Interface) latency scales with row count linearly
 - When write amplification is high from many small statements
 
 ## Best practices

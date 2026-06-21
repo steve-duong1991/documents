@@ -4,6 +4,46 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ---
 
+## 2026-06-21 (acronym expansions)
+
+### Corpus
+- `acronyms.json` registry + `scripts/expand-acronyms.py` — first-use-per-file inline expansions (`CDC(Change Data Capture)`)
+- GLOSSARY Term column aligned with inline style; added SLI, RED, SSRF rows
+- CONTRIBUTING: acronym convention; CI `expand-acronyms.py --check`; `make check` includes acronym drift
+- Headings left unexpanded for stable `#anchors`; shorthand in parentheses `(DLQ)`, `(2PC)` not doubled
+
+---
+
+## 2026-06-21 (coverage expansion)
+
+### high-throughput-systems
+- §14 Message brokers and queues — queue vs stream vs outbox decision flow
+- §15 CDC and search indexing — OpenSearch pipelines, reindex
+- §1: capacity and cost planning
+- §4: Redis operations + Scope vs PG §11
+- §11: OpenTelemetry / distributed tracing
+- §12: quick links to §14–§15
+
+### event-sourcing-and-cqrs
+- §8 Event schema evolution — upcasting, projector compatibility
+- §9 Testing and verification — aggregates, projectors, sagas, CI
+- §7: cross-link to §9 testing
+
+### postgresql-performance
+- §16 Backup, restore, and PITR — operational recovery runbook
+- §11: Scope vs HTS §4 caching
+
+### api-design-and-protection
+- §16 Multi-tenant APIs — isolation, BOLA, tenant-scoped limits
+- §17 GraphQL and gRPC — when to use vs REST
+- §4 / §12: Scope blocks (auth protocols vs enterprise identity)
+
+### Corpus
+- GLOSSARY: BOLA, BRIN, GIN, CDC, choreography, RED/USE, SLI, SSRF, upcasting
+- Root README: on-call, B2B partner learning paths; DBA path includes PG §16
+- RUNBOOK-EXAMPLE-orders-api.md + RUNBOOK-TEMPLATE link
+- mkdocs.yml: new sections in nav
+
 ---
 
 ## 2026-06-21 (polish — nav, scope, HTS §13)

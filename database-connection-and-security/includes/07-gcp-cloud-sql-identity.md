@@ -1,6 +1,6 @@
-# GCP Cloud SQL identity
+# GCP Cloud SQL(Structured Query Language) identity
 
-> Connect to Cloud SQL (PostgreSQL / MySQL) using GCP-native identity, proxies, and Secret Manager — the GCP equivalent of AWS IAM + RDS patterns.
+> Connect to Cloud SQL (PostgreSQL / MySQL) using GCP-native identity, proxies, and Secret Manager — the GCP equivalent of AWS IAM(Identity and Access Management) + RDS patterns.
 
 > **Related:** AWS equivalents → [§4 IAM + RDS Proxy](04-aws-iam-rds-proxy.md), [§6 Direct RDS IAM](06-direct-rds-iam.md) · Static secret baseline → [§5 Secret manager](05-secret-manager-password.md) · Decision guide → [§13 Decision guide](13-decision-guide.md)
 
@@ -34,7 +34,7 @@ App connects to `127.0.0.1:5432`; the proxy authenticates to Cloud SQL using the
 **Setup:**
 
 1. Cloud SQL instance with **private IP** (VPC) or authorized networks restricted.
-2. Enable **Cloud SQL Admin API**.
+2. Enable **Cloud SQL Admin API(Application Programming Interface)**.
 3. Grant the app's service account `roles/cloudsql.client`.
 4. Run proxy with instance connection name: `project:region:instance`.
 
@@ -93,7 +93,7 @@ Common when IAM DB auth is not enabled or for legacy apps.
 | Layer | Coverage |
 |-------|----------|
 | 1. Network isolation | Private IP / VPC peering; no public IP |
-| 2. TLS | Proxy or connector enforces encryption |
+| 2. TLS(Transport Layer Security) | Proxy or connector enforces encryption |
 | 3. Authentication | IAM DB user or dedicated SQL user |
 | 4. Secrets management | Secret Manager or IAM (no app password) |
 | 6. Workload identity | GKE Workload Identity → GCP SA |

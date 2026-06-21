@@ -1,6 +1,6 @@
 # Decision Guide
 
-When to adopt Event Sourcing and CQRS, when to avoid them, and a concise pros/cons reference.
+When to adopt Event Sourcing and CQRS(Command Query Responsibility Segregation), when to avoid them, and a concise pros/cons reference.
 
 > **Related:** [Overview](00-overview.md) · [API design implications](04-api-design-implications.md) · [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md)
 
@@ -43,11 +43,11 @@ flowchart TD
 | Situation | Prefer |
 |-----------|--------|
 | Simple CRUD, few state transitions | PostgreSQL + normal tables |
-| Single service, one database, no external APIs | Normal ACID — no cross-service saga — see [When not to use a saga](07-sagas-and-distributed-workflows.md#when-not-to-use-a-saga) |
+| Single service, one database, no external APIs | Normal ACID(Atomicity, Consistency, Isolation, Durability) — no cross-service saga — see [When not to use a saga](07-sagas-and-distributed-workflows.md#when-not-to-use-a-saga) |
 | Team new to distributed patterns | CRUD; add audit table first |
 | Strong immediate read-after-write everywhere | CRUD or sync read model only |
 | Tight deadline, small team | Defer ES until domain stabilizes |
-| Heavy ad-hoc reporting on current state only | OLTP + warehouse ETL, not raw event replay |
+| Heavy ad-hoc reporting on current state only | OLTP + warehouse ETL(Extract, Transform, Load), not raw event replay |
 
 ---
 
@@ -58,7 +58,7 @@ flowchart TD
 | Pros | Cons |
 |------|------|
 | Complete audit trail by design | Higher complexity than CRUD |
-| Temporal queries ("state at time T") | Event schema evolution (upcasting) |
+| Temporal queries ("state at time T") | [Event schema evolution (upcasting)](08-event-schema-evolution.md) |
 | Debug by replaying exact sequence | Storage grows — snapshots + archival |
 | Aligns with domain language | GDPR/PII erasure vs immutability |
 | Flexible downstream consumers | Steeper learning curve |
@@ -121,11 +121,11 @@ Details → [Storage & projections](03-storage-and-projections.md).
 
 ---
 
-## API quick pick
+## API(Application Programming Interface) quick pick
 
 | Scenario | API shape |
 |----------|-----------|
-| Public REST SaaS | Resource POST commands + GET read models |
+| Public REST(Representational State Transfer) SaaS | Resource POST commands + GET read models |
 | High write conflict rate | `If-Match` + `409` + idempotency keys |
 | Partners need push | Domain events → webhooks via outbox |
 | Long exports / ML | Event triggers + [job resource](../../api-design-and-protection/includes/10-async-patterns.md) |
@@ -147,12 +147,12 @@ Details → [API design implications](04-api-design-implications.md).
 
 | Guide | Topics |
 |-------|--------|
-| [api-design-and-protection](../../api-design-and-protection/README.md) | HTTP, gateway, async, threat model |
+| [api-design-and-protection](../../api-design-and-protection/README.md) | HTTP(Hypertext Transfer Protocol), gateway, async, threat model |
 | [postgresql-performance](../../postgresql-performance/README.md) | Indexing, bulk ops for event tables |
 | [api-rate-limiting](../../api-rate-limiting/README.md) | Separate limits on command vs query routes |
 | [deployment-strategies](../../deployment-strategies/README.md) | Rolling deploys with projector compatibility |
 | [high-throughput-systems](../../high-throughput-systems/README.md) | Streaming, outbox, read-model throughput |
-| [database-connection-and-security](../../database-connection-and-security/README.md) | Event store credentials and cloud IAM |
+| [database-connection-and-security](../../database-connection-and-security/README.md) | Event store credentials and cloud IAM(Identity and Access Management) |
 
 ---
 

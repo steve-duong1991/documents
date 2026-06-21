@@ -2,7 +2,7 @@
 
 Multi-region adds throughput and availability — at the cost of **consistency complexity**. Design the write path first; reads follow.
 
-> **Related:** Consistency → [postgresql-performance/includes/14-consistency-promises-and-costs.md](../../postgresql-performance/includes/14-consistency-promises-and-costs.md) · Stateless API → [api-design-and-protection/includes/11-stateless-architecture.md](../../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) · DR → [database-connection-and-security/includes/12-credential-rotation-and-dr.md](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md)
+> **Related:** Consistency → [postgresql-performance/includes/14-consistency-promises-and-costs.md](../../postgresql-performance/includes/14-consistency-promises-and-costs.md) · Stateless API(Application Programming Interface) → [api-design-and-protection/includes/11-stateless-architecture.md](../../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) · DR → [database-connection-and-security/includes/12-credential-rotation-and-dr.md](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md)
 
 ---
 
@@ -30,8 +30,8 @@ flowchart LR
 
 | Metric | Typical target |
 |--------|----------------|
-| **RPO** | Replication lag window (seconds–minutes) |
-| **RTO** | DNS + promote + app config (minutes–hours) |
+| **RPO(Recovery Point Objective)** | Replication lag window (seconds–minutes) |
+| **RTO(Recovery Time Objective)** | DNS + promote + app config (minutes–hours) |
 
 Run DR drill quarterly → [database-connection-and-security §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md).
 
@@ -42,7 +42,7 @@ Run DR drill quarterly → [database-connection-and-security §12](../../databas
 | Request type | Route to |
 |--------------|----------|
 | **Session / read-your-writes** | Write region primary or sticky session |
-| **Public catalog** | Regional replica + CDN |
+| **Public catalog** | Regional replica + CDN(Content Delivery Network) |
 | **Analytics** | Regional replica; stale OK |
 | **All writes** | Single primary region |
 

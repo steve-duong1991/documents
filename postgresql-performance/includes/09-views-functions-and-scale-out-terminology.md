@@ -17,10 +17,10 @@ PostgreSQL offers several ways to abstract queries (views), encapsulate logic (f
 
 | Tool | Stored data? | Performance role | Primary use |
 |------|--------------|------------------|-------------|
-| **Standard view** | No — saved query | Abstraction only; no speedup by itself | Simplify SQL, hide columns, security |
+| **Standard view** | No — saved query | Abstraction only; no speedup by itself | Simplify SQL(Structured Query Language), hide columns, security |
 | **Materialized view** | Yes — snapshot | Pre-compute expensive reads | Dashboards, heavy aggregations |
 | **Function** | No — compiled logic | Can help or hurt index use | Reusable logic, triggers, expressions |
-| **Procedure** | No — batch logic | Batch work in fewer round trips | Maintenance jobs, multi-step ETL |
+| **Procedure** | No — batch logic | Batch work in fewer round trips | Maintenance jobs, multi-step ETL(Extract, Transform, Load) |
 | **Partitioning** | Yes — split on one server | Pruning, retention, smaller indexes | Time-series, large tables on one node |
 | **Replication** | Yes — full copy per node | Read scaling, HA | Same data on multiple servers |
 | **Sharding** | Yes — subset per node | Write scaling across servers | Single-node writes exhausted |
@@ -250,12 +250,12 @@ Full details → [Partitioning](10-partitioning.md).
 
 ### Replication (full copy per node)
 
-Streaming replication ships WAL from primary to one or more standbys. Each standby holds a **complete copy** of the database.
+Streaming replication ships WAL(Write-Ahead Log) from primary to one or more standbys. Each standby holds a **complete copy** of the database.
 
 | Mode | Consistency | Write throughput | Typical use |
 |------|-------------|------------------|-------------|
 | Async streaming | Eventual on replicas | Highest | Read scaling, HA |
-| Sync replication | Standby ack before commit | Lower | Stronger durability / RPO |
+| Sync replication | Standby ack before commit | Lower | Stronger durability / RPO(Recovery Point Objective) |
 | Logical replication | Table-level, selective | Flexible | Upgrades, selective sync |
 
 **Use for:** High availability, failover, offloading read-heavy traffic.
@@ -345,7 +345,7 @@ flowchart TD
 
 ## See also
 
-- [Indexing](02-indexing.md) — B-tree, partial, GIN, BRIN, and covering indexes
+- [Indexing](02-indexing.md) — B-tree, partial, GIN(Generalized Inverted Index), BRIN(Block-Range Index), and covering indexes
 - [Query design](03-query-design.md) — pagination, N+1, functions on indexed columns
 - [Partitioning](10-partitioning.md) — range, list, hash, pruning, retention
 - [Read scaling and caching](11-read-scaling-and-caching.md) — replicas, Redis, materialized view refresh

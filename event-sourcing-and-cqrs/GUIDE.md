@@ -4,11 +4,11 @@
 
 ---
 
-# Overview — Event Sourcing & CQRS
+# Overview — Event Sourcing & CQRS(Command Query Responsibility Segregation)
 
 **Event Sourcing** persists state as an **append-only sequence of domain events** instead of updating rows in place. **CQRS** (Command Query Responsibility Segregation) splits **writes** (commands → event store) from **reads** (queries → optimized projections). The two patterns are often used together but are independent.
 
-> **Related:** [API design & protection](../api-design-and-protection/README.md) (HTTP contracts, async, audit) · [PostgreSQL performance](../postgresql-performance/README.md) (event table indexing) · [Async patterns](../api-design-and-protection/includes/10-async-patterns.md) (outbox, queues) · Decision guide → [§6](06-decision-guide.md)
+> **Related:** [API design & protection](../api-design-and-protection/README.md) (HTTP(Hypertext Transfer Protocol) contracts, async, audit) · [PostgreSQL performance](../postgresql-performance/README.md) (event table indexing) · [Async patterns](../api-design-and-protection/includes/10-async-patterns.md) (outbox, queues) · Decision guide → [§6](06-decision-guide.md)
 
 ---
 
@@ -20,7 +20,7 @@
 | **Write model** | `UPDATE orders SET status = 'shipped'` | Append `OrderShipped` event |
 | **Current state** | Stored directly | Replayed or projected from events |
 | **History** | Lost unless separate audit table | Built-in |
-| **Queries** | Simple SQL on current tables | Often need read models / projections |
+| **Queries** | Simple SQL(Structured Query Language) on current tables | Often need read models / projections |
 
 ```mermaid
 flowchart LR
@@ -73,7 +73,7 @@ flowchart LR
 | 1 | Core concepts — aggregates, streams, replay | [01-core-concepts.md](01-core-concepts.md) |
 | 2 | CQRS and read models | [02-cqrs-and-read-models.md](02-cqrs-and-read-models.md) |
 | 3 | Storage, snapshots, projections | [03-storage-and-projections.md](03-storage-and-projections.md) |
-| 4 | API design implications | [04-api-design-implications.md](04-api-design-implications.md) |
+| 4 | API(Application Programming Interface) design implications | [04-api-design-implications.md](04-api-design-implications.md) |
 | 5 | Async integration — outbox, bus, consumers | [05-async-integration.md](05-async-integration.md) |
 | 6 | Decision guide — pros, cons, when to use | [06-decision-guide.md](06-decision-guide.md) |
 
@@ -106,7 +106,7 @@ See [Decision guide](06-decision-guide.md) for full flows and trade-offs.
 
 How event-sourced systems model state, handle commands, and rebuild aggregates from an append-only log.
 
-> **Related:** Storage choices → [Storage & projections](03-storage-and-projections.md) · API surface → [API design implications](04-api-design-implications.md)
+> **Related:** Storage choices → [Storage & projections](03-storage-and-projections.md) · API(Application Programming Interface) surface → [API design implications](04-api-design-implications.md)
 
 ---
 
@@ -212,7 +212,7 @@ VALUES ('order-123', 5, 'OrderShipped', '...')
 -- UNIQUE (aggregate_id, version) → conflict → return 409 to client
 ```
 
-Maps naturally to HTTP **`409 Conflict`** and `ETag` / `If-Match` on command APIs — see [API design implications](04-api-design-implications.md).
+Maps naturally to HTTP(Hypertext Transfer Protocol) **`409 Conflict`** and `ETag` / `If-Match` on command APIs — see [API design implications](04-api-design-implications.md).
 
 ---
 
@@ -222,7 +222,7 @@ Events are **never updated or deleted** in the normal model.
 
 | Need | Approach |
 |------|----------|
-| Bug in past event schema | **Upcast** on read — transform v1 → v2 in loader |
+| Bug in past event schema | **Upcast** on read — [§8 Event schema evolution](08-event-schema-evolution.md) |
 | Business mistake | Append **compensating event** (`PaymentRefunded`), not DELETE |
 | GDPR / right to erasure | Tombstone events, crypto-shredding, or legal retention policy — plan early |
 
@@ -269,9 +269,9 @@ See [Decision guide](06-decision-guide.md) for when the trade-off is worth it.
 
 ---
 
-# CQRS and Read Models
+# CQRS(Command Query Responsibility Segregation) and Read Models
 
-**CQRS** separates the **write model** (commands, aggregates, event store) from **read models** (queries optimized for specific screens or reports). Event Sourcing often pairs with CQRS because replaying the full log on every HTTP GET does not scale.
+**CQRS** separates the **write model** (commands, aggregates, event store) from **read models** (queries optimized for specific screens or reports). Event Sourcing often pairs with CQRS because replaying the full log on every HTTP(Hypertext Transfer Protocol) GET does not scale.
 
 > **Related:** Storage → [Storage & projections](03-storage-and-projections.md) · HTTP split → [API design implications](04-api-design-implications.md)
 
@@ -302,7 +302,7 @@ flowchart TB
     Q3[GET /orders/search] --> RM3
 ```
 
-**Rule of thumb:** Writes go through the aggregate + event store. Reads hit projections unless you explicitly need point-in-time replay (support, audit API).
+**Rule of thumb:** Writes go through the aggregate + event store. Reads hit projections unless you explicitly need point-in-time replay (support, audit API(Application Programming Interface)).
 
 ---
 
@@ -401,7 +401,7 @@ Event Sourcing is optional. Many teams use **CQRS-lite** (read replicas + caches
 - Read queries stay fast and simple (indexes, joins tuned per screen)
 - Scale read and write tiers independently
 - New views without changing write schema
-- Clear boundary for caching and CDN on query APIs
+- Clear boundary for caching and CDN(Content Delivery Network) on query APIs
 
 ## Cons
 
@@ -462,7 +462,7 @@ flowchart TB
 
 | Option | Best for | Notes |
 |--------|----------|-------|
-| **PostgreSQL / MySQL** | Default for most teams | Familiar ops, ACID, one event table |
+| **PostgreSQL / MySQL** | Default for most teams | Familiar ops, ACID(Atomicity, Consistency, Isolation, Durability), one event table |
 | **EventStoreDB** | ES-native features | Streams, subscriptions, competing consumers |
 | **Marten** (.NET + PostgreSQL) | .NET DDD projects | Document + event storage on Postgres |
 | **DynamoDB / Cosmos DB** | Serverless, partition by aggregate | PK = aggregate_id, SK = version |
@@ -530,7 +530,7 @@ Load path: snapshot at v500 + events 501..N → current state.
 | Lists, filters, joins | PostgreSQL / MySQL |
 | Full-text search | Elasticsearch / OpenSearch |
 | Hot dashboards | Redis (with Postgres backing) |
-| Analytics / BI | Warehouse (BigQuery, Snowflake) via CDC or projector |
+| Analytics / BI | Warehouse (BigQuery, Snowflake) via CDC(Change Data Capture) or projector |
 
 Read tables can be dropped and rebuilt by replaying the event log — treat them as **cache with a rebuild script**.
 
@@ -560,7 +560,7 @@ Never delete events from the authoritative store without explicit policy — pro
 | 100–1,000 | Snapshot every N commands or on schedule |
 | 1,000+ | **Required** — bound load latency |
 
-**Interval heuristic:** snapshot when replay p99 &gt; your SLO budget (e.g. &gt; 50ms), or every **M** events (often 100–500 for heavy aggregates).
+**Interval heuristic:** snapshot when replay p99 &gt; your SLO(Service Level Objective) budget (e.g. &gt; 50ms), or every **M** events (often 100–500 for heavy aggregates).
 
 ### Snapshot write path
 
@@ -653,11 +653,11 @@ See [Decision guide](06-decision-guide.md) for full trade-offs.
 
 ---
 
-# API Design Implications
+# API(Application Programming Interface) Design Implications
 
-How Event Sourcing and CQRS shape HTTP APIs: command vs query routes, status codes, idempotency, and gateway routing.
+How Event Sourcing and CQRS(Command Query Responsibility Segregation) shape HTTP(Hypertext Transfer Protocol) APIs: command vs query routes, status codes, idempotency, and gateway routing.
 
-> **Scope:** **ES/CQRS API lens** — command/query split, projection lag, and event-store write paths. General REST design (pagination, errors, versioning) → [api-design §1 API design](../api-design-and-protection/includes/01-api-design.md).
+> **Scope:** **ES/CQRS API lens** — command/query split, projection lag, and event-store write paths. General REST(Representational State Transfer) design (pagination, errors, versioning) → [api-design §1 API design](../api-design-and-protection/includes/01-api-design.md).
 
 > **Related:** [API design best practices](../api-design-and-protection/includes/01-api-design.md) · [Async patterns](../api-design-and-protection/includes/10-async-patterns.md) · [Gateway routing](../api-design-and-protection/includes/03-api-gateway.md)
 
@@ -830,8 +830,8 @@ Supports **Repudiation** controls in [threat modeling](../api-design-and-protect
 |---------|-------------|-----------|
 | Rate limits | Stricter on writes | Higher on reads |
 | Timeouts | Short (append only) | Tuned for list/search |
-| Caching | Never cache POST | CDN/cache safe on GET |
-| AuthZ | Scope + aggregate ownership | Same BOLA checks on read models |
+| Caching | Never cache POST | CDN(Content Delivery Network)/cache safe on GET |
+| AuthZ | Scope + aggregate ownership | Same BOLA(Broken Object-Level Authorization) checks on read models |
 
 Route both through the same gateway; scale query tier independently behind separate upstream pools if needed — see [Load balancer & gateway](../api-design-and-protection/includes/03-api-gateway.md#flow-3--both-together-common-at-scale).
 
@@ -899,7 +899,7 @@ See [Decision guide](06-decision-guide.md).
 
 # Async Integration
 
-How event-sourced systems integrate with queues, webhooks, and other services — transactional outbox, idempotent consumers, and overlap with async API patterns.
+How event-sourced systems integrate with queues, webhooks, and other services — transactional outbox, idempotent consumers, and overlap with async API(Application Programming Interface) patterns.
 
 > **Related:** [Async patterns in API design](../api-design-and-protection/includes/10-async-patterns.md) · [Storage & outbox](03-storage-and-projections.md) · [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md)
 
@@ -907,7 +907,7 @@ How event-sourced systems integrate with queues, webhooks, and other services �
 
 ## What it is
 
-After appending events to the store, other systems need to react: update read models, send emails, call payment providers, push **webhooks** to partners. This is **async integration** — decoupled from the HTTP command response.
+After appending events to the store, other systems need to react: update read models, send emails, call payment providers, push **webhooks** to partners. This is **async integration** — decoupled from the HTTP(Hypertext Transfer Protocol) command response.
 
 Event Sourcing does **not** replace job queues or webhooks. It complements them: the event store is durable truth; the bus delivers copies to consumers.
 
@@ -999,7 +999,7 @@ Compare with [async job architecture](../api-design-and-protection/includes/10-a
 |---------------|---------|------------------|
 | **Read model projector** | Query DB | Retry; idempotent UPSERT by event ID |
 | **Side-effect worker** | Email, payment, external API | Retry + dead-letter queue |
-| **Webhook dispatcher** | Partner HTTP POST | Backoff, HMAC — see [Auth model](../api-design-and-protection/includes/04-auth-model.md#hmac-webhooks) |
+| **Webhook dispatcher** | Partner HTTP POST | Backoff, HMAC(Hash-based Message Authentication Code) — see [Auth model](../api-design-and-protection/includes/04-auth-model.md#hmac-webhooks) |
 
 All must be **idempotent** on `event_id` — at-least-once delivery is normal.
 
@@ -1062,7 +1062,7 @@ Use `event_id` for partner deduplication — mirrors idempotency on the command 
 |--------|------------|
 | Outbox lag (unpublished count) | Growing backlog |
 | Projector lag (events behind head) | Read model stale beyond SLA |
-| Consumer error rate | DLQ filling |
+| Consumer error rate | DLQ(Dead Letter Queue) filling |
 | Webhook delivery failures | Partner integration broken |
 
 ---
@@ -1096,7 +1096,7 @@ See [Decision guide](06-decision-guide.md).
 
 # Decision Guide
 
-When to adopt Event Sourcing and CQRS, when to avoid them, and a concise pros/cons reference.
+When to adopt Event Sourcing and CQRS(Command Query Responsibility Segregation), when to avoid them, and a concise pros/cons reference.
 
 > **Related:** [Overview](00-overview.md) · [API design implications](04-api-design-implications.md) · [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md)
 
@@ -1139,11 +1139,11 @@ flowchart TD
 | Situation | Prefer |
 |-----------|--------|
 | Simple CRUD, few state transitions | PostgreSQL + normal tables |
-| Single service, one database, no external APIs | Normal ACID — no cross-service saga — see [When not to use a saga](07-sagas-and-distributed-workflows.md#when-not-to-use-a-saga) |
+| Single service, one database, no external APIs | Normal ACID(Atomicity, Consistency, Isolation, Durability) — no cross-service saga — see [When not to use a saga](07-sagas-and-distributed-workflows.md#when-not-to-use-a-saga) |
 | Team new to distributed patterns | CRUD; add audit table first |
 | Strong immediate read-after-write everywhere | CRUD or sync read model only |
 | Tight deadline, small team | Defer ES until domain stabilizes |
-| Heavy ad-hoc reporting on current state only | OLTP + warehouse ETL, not raw event replay |
+| Heavy ad-hoc reporting on current state only | OLTP + warehouse ETL(Extract, Transform, Load), not raw event replay |
 
 ---
 
@@ -1154,7 +1154,7 @@ flowchart TD
 | Pros | Cons |
 |------|------|
 | Complete audit trail by design | Higher complexity than CRUD |
-| Temporal queries ("state at time T") | Event schema evolution (upcasting) |
+| Temporal queries ("state at time T") | [Event schema evolution (upcasting)](08-event-schema-evolution.md) |
 | Debug by replaying exact sequence | Storage grows — snapshots + archival |
 | Aligns with domain language | GDPR/PII erasure vs immutability |
 | Flexible downstream consumers | Steeper learning curve |
@@ -1217,11 +1217,11 @@ Details → [Storage & projections](03-storage-and-projections.md).
 
 ---
 
-## API quick pick
+## API(Application Programming Interface) quick pick
 
 | Scenario | API shape |
 |----------|-----------|
-| Public REST SaaS | Resource POST commands + GET read models |
+| Public REST(Representational State Transfer) SaaS | Resource POST commands + GET read models |
 | High write conflict rate | `If-Match` + `409` + idempotency keys |
 | Partners need push | Domain events → webhooks via outbox |
 | Long exports / ML | Event triggers + [job resource](../api-design-and-protection/includes/10-async-patterns.md) |
@@ -1243,12 +1243,12 @@ Details → [API design implications](04-api-design-implications.md).
 
 | Guide | Topics |
 |-------|--------|
-| [api-design-and-protection](../api-design-and-protection/README.md) | HTTP, gateway, async, threat model |
+| [api-design-and-protection](../api-design-and-protection/README.md) | HTTP(Hypertext Transfer Protocol), gateway, async, threat model |
 | [postgresql-performance](../postgresql-performance/README.md) | Indexing, bulk ops for event tables |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Separate limits on command vs query routes |
 | [deployment-strategies](../deployment-strategies/README.md) | Rolling deploys with projector compatibility |
 | [high-throughput-systems](../high-throughput-systems/README.md) | Streaming, outbox, read-model throughput |
-| [database-connection-and-security](../database-connection-and-security/README.md) | Event store credentials and cloud IAM |
+| [database-connection-and-security](../database-connection-and-security/README.md) | Event store credentials and cloud IAM(Identity and Access Management) |
 
 ---
 
@@ -1278,11 +1278,11 @@ Coordinate multi-service business processes with local transactions, compensatin
 | Question | Answer |
 |----------|--------|
 | **What is it?** | A sequence of **local transactions** (one per service) coordinated so the process completes or is undone via **compensating actions** |
-| **When to use?** | Cross-service workflows (order → payment → inventory → shipping) where one ACID transaction across DBs is impossible |
-| **How are transactions handled?** | **Local ACID** per service — no 2PC across DBs; see [Transactions and distributed databases](#transactions-and-distributed-databases) |
+| **When to use?** | Cross-service workflows (order → payment → inventory → shipping) where one ACID(Atomicity, Consistency, Isolation, Durability) transaction across DBs is impossible |
+| **How are transactions handled?** | **Local ACID** per service — no 2PC(Two-Phase Commit) across DBs; see [Transactions and distributed databases](#transactions-and-distributed-databases) |
 | **When not to use?** | Single service + one DB → normal ACID; see [When not to use a saga](#when-not-to-use-a-saga) |
 | **Retry vs compensate?** | Transient → retry with cap; permanent → compensate; see [Retry vs compensate](#retry-vs-compensate) |
-| **How to operate?** | Stuck-saga metrics, DLQ, `saga_id` in traces — see [Observability and operations](#observability-and-operations) |
+| **How to operate?** | Stuck-saga metrics, DLQ(Dead Letter Queue), `saga_id` in traces — see [Observability and operations](#observability-and-operations) |
 | **Choreography vs orchestration?** | Events-only vs central **process manager** — see [Which one to choose?](#which-one-to-choose) |
 | **How to undo?** | Compensating transactions in **reverse order** (LIFO) — not a distributed `ROLLBACK` |
 | **Critical requirement?** | **Idempotent** steps + persisted saga state + correlation IDs |
@@ -1308,7 +1308,7 @@ flowchart LR
     end
 ```
 
-**Saga vs compensating event (ES):** In event sourcing, a compensating **event** (`PaymentRefunded`) corrects history within one aggregate stream — see [Immutability and corrections](01-core-concepts.md#immutability-and-corrections). In a saga, a compensating **action** is a new local transaction in another service (call refund API, publish `RefundPayment` command). They often combine: a saga orchestrator triggers compensating commands; each service appends domain events.
+**Saga vs compensating event (ES):** In event sourcing, a compensating **event** (`PaymentRefunded`) corrects history within one aggregate stream — see [Immutability and corrections](01-core-concepts.md#immutability-and-corrections). In a saga, a compensating **action** is a new local transaction in another service (call refund API(Application Programming Interface), publish `RefundPayment` command). They often combine: a saga orchestrator triggers compensating commands; each service appends domain events.
 
 ### Scope: one event store vs cross-service saga
 
@@ -1401,7 +1401,7 @@ Each compensate call is again **one local ACID transaction** in that service's d
 
 Strong consistency applies **inside one primary database**. Microservices are a layer where consistency breaks unless you design for it — see [Where consistency breaks](../postgresql-performance/includes/14-consistency-promises-and-costs.md#where-consistency-breaks).
 
-### Microservices vs distributed SQL
+### Microservices vs distributed SQL(Structured Query Language)
 
 | Setup | Saga role |
 |-------|-----------|
@@ -1707,7 +1707,7 @@ After timeout compensation started, the original step may still complete:
 - **Reconcile:** Payment captured after refund initiated → alert + manual or auto second refund check.
 - **Version field:** Saga instance `version` incremented on each transition; stale replies ignored.
 
-General HTTP idempotency (`Idempotency-Key`, storage patterns) → [Idempotency](../api-design-and-protection/includes/13-idempotency.md). Saga idempotency extends that to **async multi-step** flows.
+General HTTP(Hypertext Transfer Protocol) idempotency (`Idempotency-Key`, storage patterns) → [Idempotency](../api-design-and-protection/includes/13-idempotency.md). Saga idempotency extends that to **async multi-step** flows.
 
 ---
 
@@ -1826,7 +1826,7 @@ Do **not** compensate on the first transient blip — you will undo work that wo
 |--------|------------|
 | **Stuck sagas** | Count where `step_deadline < now()` and status is `STEP_*_IN_PROGRESS` — growing |
 | **In-flight by type** | Sudden spike or plateau near capacity |
-| **Step latency p95** | Per `saga_type` / step — SLO breach |
+| **Step latency p95** | Per `saga_type` / step — SLO(Service Level Objective) breach |
 | **Compensation rate** | Failures vs successes — compensation errors trending up |
 | **DLQ depth** | Non-zero for saga-related consumers |
 
@@ -1838,7 +1838,7 @@ Side-effect steps (payment, refund) that fail after max retries must land in a *
 
 ### Security (orchestrator → participants)
 
-The saga orchestrator calls participant APIs with **service identity** — mTLS, service JWT, or workload IAM — not end-user tokens alone. See [Identity, RBAC, IAM](../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
+The saga orchestrator calls participant APIs with **service identity** — mTLS(Mutual Transport Layer Security), service JWT(JSON Web Token), or workload IAM(Identity and Access Management) — not end-user tokens alone. See [Identity, RBAC, IAM](../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
 
 ---
 
@@ -1902,6 +1902,8 @@ Same expand/contract mindset as schema migrations — see [deployment §12 Schem
 | **Compensation order** | Assert LIFO matches forward step map |
 | **Workflow engines** | Optional: Temporal, Step Functions, Camunda — same saga rules; engine owns persistence and timers |
 
+Full ES test pyramid (aggregates, projectors, outbox) → [§9 Testing and verification](09-testing-and-verification.md).
+
 ---
 
 ## Pros
@@ -1935,6 +1937,211 @@ See [Decision guide](06-decision-guide.md).
 
 ---
 
+# Event Schema Evolution
+
+Event logs are forever — schema changes are **read-path** transformations (upcasting), not `UPDATE` on historical rows.
+
+> **Related:** Immutability → [01-core-concepts.md#immutability-and-corrections](01-core-concepts.md#immutability-and-corrections) · Projector rebuild → [03-storage-and-projections.md](03-storage-and-projections.md) · API(Application Programming Interface) versioning → [api-design §14](../api-design-and-protection/includes/14-api-versioning-and-deprecation.md) · Deploy coupling → [deployment §12](../deployment-strategies/includes/12-schema-migrations-and-deploy.md)
+
+---
+
+## At a glance
+
+| Strategy | What changes | Replay impact |
+|----------|--------------|---------------|
+| **Additive fields** | New optional JSON fields | Old events still valid |
+| **Upcasting** | Transform v1 → v2 on read | Loader applies per event |
+| **New event type** | v2 alongside v1 | Both types in stream |
+| **Projector version** | New read model shape | Rebuild projection from scratch |
+
+**Rule of thumb:** Never mutate stored events. Add version metadata; upcast at load time; rebuild projections when read models change structurally.
+
+---
+
+## Version metadata
+
+Store on every event:
+
+```json
+{
+  "event_type": "OrderCreated",
+  "schema_version": 2,
+  "aggregate_id": "ord-123",
+  "payload": { ... }
+}
+```
+
+| Field | Purpose |
+|-------|---------|
+|  | Routing to handler / projector |
+|  | Select upcaster chain |
+|  | Stream partition key |
+
+---
+
+## Upcasting
+
+```mermaid
+flowchart LR
+    Store[(Stored v1 event)] --> Load[Event loader]
+    Load --> Up1[v1 → v2 upcaster]
+    Up1 --> Up2[v2 → v3 upcaster]
+    Up2 --> Domain[Current domain object]
+```
+
+| Rule | Detail |
+|------|--------|
+| **Chain upcasters** | v1→v2, v2→v3 — not v1→v3 skip unless documented |
+| **Test fixtures** | Golden files for each historical version |
+| **Deploy order** | Deploy readers that understand new version **before** writers emit it |
+| **Snapshots** | Re-snapshot after major schema jumps to cut replay cost |
+
+Example: v1  int → v2  object .
+
+---
+
+## Projector compatibility
+
+| Change | Safe during rolling deploy? |
+|--------|----------------------------|
+| Add optional column to read model | ✅ Expand |
+| New projector for new view | ✅ Side-by-side |
+| Rename column consumed by API | ❌ Expand/contract —  |
+| Change projection logic only | Rebuild from events; may lag during deploy |
+
+Runbook: stop projector → deploy new code → rebuild or catch-up → resume. See  and snapshots in .
+
+---
+
+## Contract with consumers
+
+| Consumer type | Evolution rule |
+|---------------|----------------|
+| **Internal projector** | Upcast + rebuild |
+| **External Kafka subscriber** | Additive fields only; new topic for breaking |
+| **Public event API** | Versioned envelope; deprecation window |
+
+Pair with  for published schemas.
+
+---
+
+## Common mistakes
+
+| Mistake | Fix |
+|---------|-----|
+|  | Upcast on read |
+| Deploy writer before reader | Two-phase deploy: readers first |
+| No version field | Add  early |
+| Skip upcaster tests | Fixture per version in CI |
+
+---
+
+## Pros and cons
+
+### Upcasting on read
+
+**Pros:** Full history preserved; gradual migration.
+
+**Cons:** Loader complexity grows; replay slows without snapshots.
+
+---
+
+# Testing and Verification
+
+Event-sourced systems need tests at three layers: command handling, projection correctness, and integration paths (outbox, sagas).
+
+> **Related:** Sagas → [07-sagas-and-distributed-workflows.md](07-sagas-and-distributed-workflows.md) · Schema evolution → [08-event-schema-evolution.md](08-event-schema-evolution.md) · Contract CI → [api-design §15](../api-design-and-protection/includes/15-contract-and-schema-testing.md)
+
+---
+
+## At a glance
+
+| Layer | What to prove | Technique |
+|-------|---------------|-----------|
+| **Aggregate** | Given events → state; command → events | In-memory event store |
+| **Projector** | Event sequence → read model rows | Table-driven fixtures |
+| **Outbox relay** | Row published after commit | Integration test + test broker |
+| **Saga** | Happy path + compensation order | Orchestrator test harness |
+| **Replay** | Upcasters + rebuild = expected state | Golden event files |
+
+**Rule of thumb:** Test **behavior from events**, not hidden mutable fields. Use the same upcasters in tests and production loaders.
+
+---
+
+## Aggregate tests
+
+```mermaid
+flowchart LR
+    Events[Fixture event list] --> Replay[Replay aggregate]
+    Replay --> State[Assert state]
+    Cmd[Command] --> Handler[Handle]
+    Handler --> NewEvents[Assert emitted events]
+```
+
+| Check | Example |
+|-------|---------|
+| Replay from empty |  → status  |
+| Optimistic concurrency | Stale version → conflict |
+| Invalid command | No events appended |
+
+---
+
+## Projector tests
+
+| Pattern | Detail |
+|---------|--------|
+| **Given / when / then** | Given events in file → run projector → assert DB rows |
+| **Idempotent replay** | Run projector twice → same rows |
+| **Version jump** | Include v1 and v2 events after upcast |
+
+Rebuild test: wipe read table → replay full stream → compare to snapshot CSV.
+
+---
+
+## Saga and integration tests
+
+| Test type | Setup |
+|-----------|--------|
+| **Orchestrator unit** | Mock participant APIs; assert command order and compensation LIFO |
+| **In-memory bus** | Choreography with synchronous handlers |
+| **Outbox integration** | Real PG + test Kafka/SQS; assert message after TX commit |
+| **Failure injection** | Fail step 3 → assert compensate 2, 1 |
+
+Propagate  in test traces — same as production — .
+
+---
+
+## CI checklist
+
+- [ ] Golden event fixtures per `schema_version`
+- [ ] Projector tests on every PR touching projection logic
+- [ ] Contract test for published integration events (JSON Schema / Avro)
+- [ ] Saga compensation order test for each new workflow
+- [ ] Load test projector catch-up after deploy (optional nightly)
+
+---
+
+## Common mistakes
+
+| Mistake | Fix |
+|---------|-----|
+| Test only happy path | Compensation + duplicate delivery |
+| Mock event store that differs from prod | Same loader/upcaster code path |
+| Skip rebuild test after schema change | Automated rebuild in CI |
+| Saga tests without idempotency | Replay same command twice |
+
+---
+
+## Pros and cons
+
+### Fixture-driven event tests
+
+**Pros:** Deterministic; catches regression in rules and projections.
+
+**Cons:** Fixture maintenance as schemas evolve — pair with .
+
+---
+
 
 ---
 
@@ -1942,7 +2149,7 @@ See [Decision guide](06-decision-guide.md).
 
 | Guide | Topics |
 |-------|--------|
-| [api-design-and-protection](../api-design-and-protection/README.md) | HTTP contracts, async, idempotency, audit APIs |
+| [api-design-and-protection](../api-design-and-protection/README.md) | HTTP(Hypertext Transfer Protocol) contracts, async, idempotency, audit APIs |
 | [high-throughput-systems](../high-throughput-systems/README.md) | Streaming, outbox at scale, read-model throughput |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Event store connection identity and secrets |
 | [deployment-strategies](../deployment-strategies/README.md) | Rolling deploys with projector compatibility |

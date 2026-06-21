@@ -4,7 +4,7 @@ Horizontal throughput requires **interchangeable app instances** — no sticky s
 
 > **Scope:** **Throughput lens** — per-request cost, bounded concurrency, pool sizing, when to scale replicas. Full stateless architecture (auth flows, migration, checklist) → [api-design §11 Stateless architecture](../../api-design-and-protection/includes/11-stateless-architecture.md).
 >
-> **Related:** Full stateless guide → [api-design §11](../../api-design-and-protection/includes/11-stateless-architecture.md) · Connection pooling → [postgresql-performance §7](../../postgresql-performance/includes/07-connection-management.md) · API design → [api-design §1](../../api-design-and-protection/includes/01-api-design.md)
+> **Related:** Full stateless guide → [api-design §11](../../api-design-and-protection/includes/11-stateless-architecture.md) · Connection pooling → [postgresql-performance §7](../../postgresql-performance/includes/07-connection-management.md) · API(Application Programming Interface) design → [api-design §1](../../api-design-and-protection/includes/01-api-design.md)
 
 ---
 
@@ -47,7 +47,7 @@ flowchart LR
 
 | Phase | Optimization |
 |-------|--------------|
-| **Auth** | Local JWT verify; cache introspection if opaque token |
+| **Auth** | Local JWT(JSON Web Token) verify; cache introspection if opaque token |
 | **Cache** | Redis hit avoids DB |
 | **DB** | Index, eliminate N+1, pagination cap |
 | **Logic** | Move heavy work to queue |
@@ -61,7 +61,7 @@ Profile which phase dominates before adding instances.
 
 | Resource | Limit |
 |----------|-------|
-| **HTTP server threads / workers** | Match CPU and I/O profile |
+| **HTTP(Hypertext Transfer Protocol) server threads / workers** | Match CPU and I/O profile |
 | **DB pool per instance** | `(pool_size × instances) < DB max safe connections` |
 | **Outbound HTTP clients** | Cap parallel calls to partners |
 | **Expensive handlers** | Global semaphore (exports, search) |
@@ -119,7 +119,7 @@ See [06-async-queues-workers.md](06-async-queues-workers.md).
 |---------|-----|
 | Sticky sessions enabled | Token auth + external state |
 | `pool_size = 100` per instance | Size pool × instances vs DB limit |
-| Sync call to 5 microservices | Parallelize, cache, or aggregate in BFF |
+| Sync call to 5 microservices | Parallelize, cache, or aggregate in BFF(Backend for Frontend) |
 | No pagination cap | Enforce max `limit` |
 | Rate limit in app memory only | Shared Redis counters → [api-rate-limiting §11](../../api-rate-limiting/includes/11-common-mistakes-and-architecture.md) |
 

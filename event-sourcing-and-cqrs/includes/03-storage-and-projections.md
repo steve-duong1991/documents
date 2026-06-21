@@ -35,7 +35,7 @@ flowchart TB
 
 | Option | Best for | Notes |
 |--------|----------|-------|
-| **PostgreSQL / MySQL** | Default for most teams | Familiar ops, ACID, one event table |
+| **PostgreSQL / MySQL** | Default for most teams | Familiar ops, ACID(Atomicity, Consistency, Isolation, Durability), one event table |
 | **EventStoreDB** | ES-native features | Streams, subscriptions, competing consumers |
 | **Marten** (.NET + PostgreSQL) | .NET DDD projects | Document + event storage on Postgres |
 | **DynamoDB / Cosmos DB** | Serverless, partition by aggregate | PK = aggregate_id, SK = version |
@@ -103,7 +103,7 @@ Load path: snapshot at v500 + events 501..N → current state.
 | Lists, filters, joins | PostgreSQL / MySQL |
 | Full-text search | Elasticsearch / OpenSearch |
 | Hot dashboards | Redis (with Postgres backing) |
-| Analytics / BI | Warehouse (BigQuery, Snowflake) via CDC or projector |
+| Analytics / BI | Warehouse (BigQuery, Snowflake) via CDC(Change Data Capture) or projector |
 
 Read tables can be dropped and rebuilt by replaying the event log — treat them as **cache with a rebuild script**.
 
@@ -133,7 +133,7 @@ Never delete events from the authoritative store without explicit policy — pro
 | 100–1,000 | Snapshot every N commands or on schedule |
 | 1,000+ | **Required** — bound load latency |
 
-**Interval heuristic:** snapshot when replay p99 &gt; your SLO budget (e.g. &gt; 50ms), or every **M** events (often 100–500 for heavy aggregates).
+**Interval heuristic:** snapshot when replay p99 &gt; your SLO(Service Level Objective) budget (e.g. &gt; 50ms), or every **M** events (often 100–500 for heavy aggregates).
 
 ### Snapshot write path
 

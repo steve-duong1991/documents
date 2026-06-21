@@ -10,16 +10,16 @@ A practical reference for choosing strategies and avoiding common mistakes.
 
 | Scenario | Recommended approach |
 |----------|---------------------|
-| One slow API endpoint | `EXPLAIN ANALYZE` → index or query rewrite |
+| One slow API(Application Programming Interface) endpoint | `EXPLAIN ANALYZE` → index or query rewrite |
 | App feels slow generally | `pg_stat_statements` top 10 by total time |
 | "Too many connections" | PgBouncer before raising `max_connections` |
 | Table growing, queries slowing | Check dead tuples; tune autovacuum |
-| Time-series, 50M+ rows | Range partition on `created_at` + BRIN or B-tree |
+| Time-series, 50M+ rows | Range partition on `created_at` + BRIN(Block-Range Index) or B-tree |
 | Dashboard aggregations | Materialized view + periodic refresh |
 | Read-heavy SaaS | Optimize primary → read replica → Redis cache |
 | Nightly bulk import | `COPY` → `ANALYZE` → verify indexes |
 | Login brute force (many writes) | Short transactions; partial index on active sessions |
-| JSONB attribute search | GIN index; don't replace relational filters |
+| JSONB attribute search | GIN(Generalized Inverted Index) index; don't replace relational filters |
 
 ## Full decision flow
 
@@ -88,6 +88,6 @@ For every change:
 - [Database Security](../../database-connection-and-security/includes/02-prod-db-security.md) — production hardening
 - [Strong consistency — promises and costs](14-consistency-promises-and-costs.md) — when replicas and caches break strong reads
 - [High throughput systems](../../high-throughput-systems/README.md) — system-wide optimization order and scaling layers
-- [tree-and-index-structures](../../tree-and-index-structures/README.md) — B+ vs LSM for write-heavy workloads
+- [tree-and-index-structures](../../tree-and-index-structures/README.md) — B+ vs LSM(Log-Structured Merge) for write-heavy workloads
 - [api-rate-limiting](../../api-rate-limiting/README.md) — protect DB from connection storms via app-layer limits
 - [deployment-strategies](../../deployment-strategies/README.md) — safe rollout during pool and schema changes

@@ -1,6 +1,6 @@
 # mTLS (client certificate auth)
 
-> The database verifies a **client TLS certificate** instead of (or in addition to) a password — strong binding between identity and connection.
+> The database verifies a **client TLS(Transport Layer Security) certificate** instead of (or in addition to) a password — strong binding between identity and connection.
 
 > **Related:** TLS baseline → [§2 Production security](02-prod-db-security.md) · Cert lifecycle in Vault → [§3 HashiCorp Vault](03-hcv-vault.md) · Simpler baseline → [§5 Secret manager](05-secret-manager-password.md)
 
@@ -86,7 +86,7 @@ psql "host=db.internal port=5432 dbname=myapp user=app_user \
 | **AWS ACM Private CA** | Enterprise CA on AWS |
 | **Manual OpenSSL** | Dev/small setups only |
 
-Short-lived client certs (hours/days) reduce impact of key compromise — similar benefit to IAM tokens.
+Short-lived client certs (hours/days) reduce impact of key compromise — similar benefit to IAM(Identity and Access Management) tokens.
 
 ---
 

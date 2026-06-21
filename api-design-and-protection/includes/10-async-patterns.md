@@ -1,10 +1,10 @@
-# Async Patterns in API Design
+# Async Patterns in API(Application Programming Interface) Design
 
 How to design APIs for work that outlasts connection timeouts: job resources, polling, webhooks, streaming, and how each layer (gateway, queue, workers) participates.
 
-> **Scope:** **HTTP/API contract lens** — job resources, status codes, polling, webhooks. Queue sizing, worker autoscale, and throughput → [HTS §6 Async, queues, and workers](../../high-throughput-systems/includes/06-async-queues-workers.md). Reliable domain-event publish → [ES §5 Async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md).
+> **Scope:** **HTTP(Hypertext Transfer Protocol)/API contract lens** — job resources, status codes, polling, webhooks. Queue sizing, worker autoscale, and throughput → [HTS §6 Async, queues, and workers](../../high-throughput-systems/includes/06-async-queues-workers.md). Reliable domain-event publish → [ES §5 Async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md).
 
-> **Related:** Rate-limit async escape hatch → [Rate-limit tiers](05-rate-limit-tiers.md#async-escape-hatch) · Idempotency → [Idempotency](13-idempotency.md) · Webhook HMAC → [Auth model](04-auth-model.md#hmac-webhooks) · Reference stack → [Lifecycle & architecture](08-lifecycle-and-architecture.md) · Domain events + outbox → [Event Sourcing & CQRS](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Read consistency after jobs → [Strong consistency — promises and costs](../../postgresql-performance/includes/14-consistency-promises-and-costs.md)
+> **Related:** Rate-limit async escape hatch → [Rate-limit tiers](05-rate-limit-tiers.md#async-escape-hatch) · Idempotency → [Idempotency](13-idempotency.md) · Webhook HMAC(Hash-based Message Authentication Code) → [Auth model](04-auth-model.md#hmac-webhooks) · Reference stack → [Lifecycle & architecture](08-lifecycle-and-architecture.md) · Domain events + outbox → [Event Sourcing & CQRS](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Read consistency after jobs → [Strong consistency — promises and costs](../../postgresql-performance/includes/14-consistency-promises-and-costs.md)
 
 ---
 
@@ -254,7 +254,7 @@ flowchart TB
 | Timestamp | Prevents replay attacks |
 | Event ID (`evt_…`) | Client deduplicates |
 | HTTPS only | Transport security |
-| **SSRF on `callback_url`** | Block private IPs, metadata endpoints (OWASP API #7) |
+| **SSRF(Server-Side Request Forgery) on `callback_url`** | Block private IPs, metadata endpoints (OWASP(Open Worldwide Application Security Project) API #7) |
 
 ### Hybrid: webhook + poll fallback
 
@@ -295,7 +295,7 @@ sequenceDiagram
 
 ---
 
-## Pattern 4 — Server-Sent Events (SSE)
+## Pattern 4 — Server-Sent Events (SSE(Server-Sent Events))
 
 **One-way server → client stream** over HTTP. Good for progress logs, live feeds, LLM token streaming.
 
@@ -391,7 +391,7 @@ sequenceDiagram
 | **Job + poll** | Client pulls | Short | Reports, exports, batch jobs | Low |
 | **Webhooks** | Server pushes | Short (outbound) | B2B integrations | Medium |
 | **Long poll** | Client pulls | Long (held) | Near-real-time status | Medium |
-| **SSE** | Server pushes | Long | Progress, feeds, LLM tokens | Medium |
+| **SSE(Server-Sent Events)** | Server pushes | Long | Progress, feeds, LLM tokens | Medium |
 | **WebSockets** | Bidirectional | Long | Chat, live collaboration | High |
 | **NDJSON stream** | Server pushes in one request | Long | Search, incremental pipelines | Medium |
 

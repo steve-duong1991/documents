@@ -50,7 +50,7 @@ When data lives entirely in RAM and you need ordered maps or sets, binary tree v
 
 | | |
 |--|--|
-| **Pros** | O(log n) average search/insert; **easier concurrent updates** than rebalancing BSTs; used in LSM memtables |
+| **Pros** | O(log n) average search/insert; **easier concurrent updates** than rebalancing BSTs; used in LSM(Log-Structured Merge) memtables |
 | **Cons** | More memory than BST (forward pointers); randomness or deterministic levels add complexity |
 | **Use when** | Concurrent ordered maps, LevelDB/RocksDB memtables, Redis sorted sets (implementation detail) |
 

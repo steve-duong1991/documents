@@ -2,7 +2,7 @@
 
 Caching is often the largest throughput multiplier for read-heavy systems — if you accept defined staleness and invalidate correctly.
 
-> **Related:** PostgreSQL read scaling → [postgresql-performance/includes/11-read-scaling-and-caching.md](../../postgresql-performance/includes/11-read-scaling-and-caching.md) · Consistency in API design → [api-design-and-protection/includes/01-api-design.md](../../api-design-and-protection/includes/01-api-design.md)
+> **Related:** PostgreSQL read scaling → [postgresql-performance/includes/11-read-scaling-and-caching.md](../../postgresql-performance/includes/11-read-scaling-and-caching.md) · Consistency in API(Application Programming Interface) design → [api-design-and-protection/includes/01-api-design.md](../../api-design-and-protection/includes/01-api-design.md)
 
 ---
 
@@ -10,7 +10,7 @@ Caching is often the largest throughput multiplier for read-heavy systems — if
 
 | Layer | Latency | Throughput gain | Staleness |
 |-------|---------|-----------------|-----------|
-| **CDN** | Edge (~ms) | Very high for cacheable GET | TTL-based |
+| **CDN(Content Delivery Network)** | Edge (~ms) | Very high for cacheable GET | TTL-based |
 | **Application (Redis)** | Sub-ms to low ms | High for hot keys | TTL or event invalidation |
 | **Materialized view** | Query time | High for heavy aggregations | Refresh interval |
 | **Read replica** | DB round trip | Medium — offloads primary | Replication lag |
@@ -112,7 +112,7 @@ Document per endpoint in your API contract which consistency tier applies.
 | Scenario | Recommendation |
 |----------|----------------|
 | Same key read thousands/sec | Redis with TTL + consider CDN |
-| Heavy SQL aggregation | Materialized view + periodic refresh |
+| Heavy SQL(Structured Query Language) aggregation | Materialized view + periodic refresh |
 | 10× read vs write ratio | Replica + app routing + Redis |
 | Global low-latency public reads | CDN + regional replica |
 | Session or cart data | Redis keyed by `user_id` — not CDN |

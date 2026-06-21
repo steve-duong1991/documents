@@ -1,4 +1,4 @@
-# GitOps
+# GitOps(Git Operations)
 
 > **Related:** Progressive delivery controllers → [§10 Progressive delivery](10-progressive-delivery.md) · Rollback triggers → [§13 SLO rollback](13-slo-rollback-triggers.md) · Scope note in [root README](../../README.md#scope)
 

@@ -1,6 +1,6 @@
 # Progressive Delivery
 
-> **Related:** Canary basics → [§4 Canary](04-canary.md) · Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO gates → [§13 SLO rollback](13-slo-rollback-triggers.md) · Observability → [HTS §11](../../high-throughput-systems/includes/11-observability.md)
+> **Related:** Canary basics → [§4 Canary](04-canary.md) · Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO(Service Level Objective) gates → [§13 SLO rollback](13-slo-rollback-triggers.md) · Observability → [HTS §11](../../high-throughput-systems/includes/11-observability.md)
 
 ## What it is
 

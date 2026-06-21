@@ -39,10 +39,10 @@ flowchart TD
 | Laptop Postgres | [01](01-local-db-credentials.md) | Trust / local user *(template)* |
 | Supabase, Neon, Railway | [11](11-paas-managed-db.md) | Platform connection string |
 | First AWS prod app | [05](05-secret-manager-password.md) | Secrets Manager + DB user |
-| Many microservices on RDS | [04](04-aws-iam-rds-proxy.md) | IAM auth + RDS Proxy |
+| Many microservices on RDS | [04](04-aws-iam-rds-proxy.md) | IAM(Identity and Access Management) auth + RDS Proxy |
 | Compliance / dynamic secrets | [03](03-hcv-vault.md) | Vault database secrets engine |
 | Connection storm | [09](09-pgbouncer-proxy-password.md) + [PG §7](../../postgresql-performance/includes/07-connection-management.md) | PgBouncer |
-| mTLS instead of password | [10](10-mtls-client-certs.md) | Client certificates |
+| mTLS(Mutual Transport Layer Security) instead of password | [10](10-mtls-client-certs.md) | Client certificates |
 | Regulated rotation + DR | [12](12-credential-rotation-and-dr.md) | Dual-active creds + restore drills |
 
 ---
@@ -52,7 +52,7 @@ flowchart TD
 | # | Layer | All patterns must |
 |---|-------|-------------------|
 | 1 | Network | Private subnet or allowlist; no public PG port |
-| 2 | TLS | `sslmode=require` or equivalent in prod |
+| 2 | TLS(Transport Layer Security) | `sslmode=require` or equivalent in prod |
 | 3 | Auth | One DB role per service; least privilege |
 | 4 | Secrets | Not in git; rotate on schedule |
 | 9 | Monitoring | Failed auth, connection count, slow queries |

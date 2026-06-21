@@ -43,6 +43,6 @@ flowchart LR
 
 | Mistake | Fix |
 |---------|-----|
-| Recreate on production user-facing API | Use rolling or canary ([§2](02-rolling.md), [§4](04-canary.md)) |
+| Recreate on production user-facing API(Application Programming Interface) | Use rolling or canary ([§2](02-rolling.md), [§4](04-canary.md)) |
 | Non-backward-compatible migration before deploy | Expand/contract → [§12](12-schema-migrations-and-deploy.md) |
 | No tagged previous artifact | Keep last-known-good image/build ID for fast redeploy |

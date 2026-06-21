@@ -9,7 +9,7 @@
 - Removes passwords from source code, `.env` files committed to git, and Docker image layers
 - Central place to rotate and audit database credentials
 - Works with **any** database engine and **any** cloud or on-prem deployment
-- Simple for teams starting production without Vault or IAM auth
+- Simple for teams starting production without Vault or IAM(Identity and Access Management) auth
 
 ## What it does not solve
 
@@ -46,13 +46,13 @@ Private subnet → TLS → least-privilege DB user → password from secret mana
 | AWS | Secrets Manager | SDK / env from ECS task definition / Lambda extension |
 | GCP | Secret Manager | SDK / Workload Identity |
 | Azure | Key Vault | SDK / Managed Identity |
-| HashiCorp | Vault KV engine | Vault Agent or API — see [03-hcv-vault.md](03-hcv-vault.md) |
+| HashiCorp | Vault KV engine | Vault Agent or API(Application Programming Interface) — see [03-hcv-vault.md](03-hcv-vault.md) |
 
 ---
 
 ## Setup steps
 
-1. **RDS / managed DB** in a private subnet; TLS required; no public IP.
+1. **RDS / managed DB** in a private subnet; TLS(Transport Layer Security) required; no public IP.
 2. **Dedicated DB user** per service with least privilege (not `postgres` admin).
 3. **Store credentials** in the secret manager as JSON or connection string:
 

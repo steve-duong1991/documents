@@ -13,7 +13,7 @@ Throughput requires **adding capacity without downtime** — horizontal autoscal
 | **More RPS** | Horizontal scale of stateless app instances |
 | **More async work** | Scale workers on queue depth |
 | **Deploy during traffic** | Rolling, canary, or blue/green — not recreate |
-| **Global users** | CDN + regional read replicas |
+| **Global users** | CDN(Content Delivery Network) + regional read replicas |
 | **Spike handling** | Autoscale + backpressure — not unbounded queue |
 
 **Rule of thumb:** You can only scale what is **stateless and not saturated downstream**. Scaling app pods into a full DB pool buys nothing.
@@ -60,7 +60,7 @@ flowchart TD
 | **Rolling** | Gradual replacement; brief mixed versions | [02-rolling](../../deployment-strategies/includes/02-rolling.md) |
 | **Blue/green** | Instant switch; double capacity during cutover | [03-blue-green](../../deployment-strategies/includes/03-blue-green.md) |
 | **Canary** | Small % on new version first | [04-canary](../../deployment-strategies/includes/04-canary.md) |
-| **Recreate** | **Downtime** — avoid on production API | [01-recreate](../../deployment-strategies/includes/01-recreate.md) |
+| **Recreate** | **Downtime** — avoid on production API(Application Programming Interface) | [01-recreate](../../deployment-strategies/includes/01-recreate.md) |
 
 Stateless app tier enables rolling and blue/green without session migration → [11-stateless-architecture.md](../../api-design-and-protection/includes/11-stateless-architecture.md).
 
@@ -83,7 +83,7 @@ flowchart TB
 | Pattern | Use |
 |---------|-----|
 | **CDN** | Cacheable public GET globally |
-| **Read replica per region** | Low-latency reads with lag SLO |
+| **Read replica per region** | Low-latency reads with lag SLO(Service Level Objective) |
 | **Write to primary region** | Single write leader for strong consistency |
 | **Global load balancer** | Route to nearest healthy region |
 

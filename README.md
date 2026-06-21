@@ -10,14 +10,14 @@ Practical reference docs for building and operating production APIs and data sys
 
 | Guide | What it covers |
 |-------|----------------|
-| [api-design-and-protection](api-design-and-protection/README.md) | REST design, protection, gateway, auth, identity, async, idempotency, stateless architecture |
+| [api-design-and-protection](api-design-and-protection/README.md) | REST(Representational State Transfer) design, protection, gateway, auth, identity, async, idempotency, stateless architecture |
 | [api-rate-limiting](api-rate-limiting/README.md) | Limiter algorithms, scope, deployment layers, response strategies |
-| [database-connection-and-security](database-connection-and-security/README.md) | DB credentials, TLS, Vault, cloud IAM, PgBouncer, production connection patterns |
-| [deployment-strategies](deployment-strategies/README.md) | Rolling, blue/green, canary, feature flags, GitOps, progressive delivery |
-| [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) | Event store, aggregates, CQRS, projections, outbox, sagas, API implications |
+| [database-connection-and-security](database-connection-and-security/README.md) | DB credentials, TLS(Transport Layer Security), Vault, cloud IAM(Identity and Access Management), PgBouncer, production connection patterns |
+| [deployment-strategies](deployment-strategies/README.md) | Rolling, blue/green, canary, feature flags, GitOps(Git Operations), progressive delivery |
+| [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) | Event store, aggregates, CQRS(Command Query Responsibility Segregation), projections, outbox, sagas, API(Application Programming Interface) implications |
 | [high-throughput-systems](high-throughput-systems/README.md) | End-to-end throughput: measure, cache, async, streaming, backpressure, scale |
 | [postgresql-performance](postgresql-performance/README.md) | Measurement, indexing, queries, vacuum, pooling, replicas, bulk ops, consistency |
-| [tree-and-index-structures](tree-and-index-structures/README.md) | B+, LSM, in-memory trees, specialized structures, decision guides |
+| [tree-and-index-structures](tree-and-index-structures/README.md) | B+, LSM(Log-Structured Merge), in-memory trees, specialized structures, decision guides |
 
 ---
 
@@ -81,7 +81,7 @@ Multi-region reads, consistency promises, and DR before expanding globally.
 
 1. [high-throughput-systems §13 multi-region](high-throughput-systems/includes/13-multi-region-read-routing.md) — active-passive, read-local, geo routing
 2. [postgresql-performance §14 consistency](postgresql-performance/includes/14-consistency-promises-and-costs.md) — read-your-writes, staleness, costs
-3. [database-connection-and-security §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md) — RPO/RTO, failover drills
+3. [database-connection-and-security §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md) — RPO(Recovery Point Objective)/RTO(Recovery Time Objective), failover drills
 4. [deployment-strategies](deployment-strategies/README.md) — safe deploy during regional failover
 
 ### Event-sourced domain
@@ -110,8 +110,27 @@ Operate PostgreSQL safely: connections, migrations, backups, and deploy coupling
 
 1. [postgresql-performance](postgresql-performance/README.md) — measure, index, pool, maintain
 2. [postgresql-performance §15 migrations](postgresql-performance/includes/15-schema-migration-checklist.md) — expand/contract, concurrent indexes
-3. [database-connection-and-security](database-connection-and-security/README.md) — credentials, IAM, rotation, DR drills
-4. [deployment-strategies §12–13](deployment-strategies/includes/12-schema-migrations-and-deploy.md) — schema + deploy order, SLO rollback
+3. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) — restore drills and WAL(Write-Ahead Log)
+4. [database-connection-and-security](database-connection-and-security/README.md) — credentials, IAM, rotation, DR drills
+5. [deployment-strategies §12–13](deployment-strategies/includes/12-schema-migrations-and-deploy.md) — schema + deploy order, SLO(Service Level Objective) rollback
+
+### On-call / incident response
+
+Triage saturation-first, rollback, and DR when alerts fire.
+
+1. [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md) or [example orders-api runbook](RUNBOOK-EXAMPLE-orders-api.md)
+2. [high-throughput-systems §11 observability](high-throughput-systems/includes/11-observability.md) — triage order, RED(Rate, Errors, Duration)/USE(Utilization, Saturation, Errors), tracing
+3. [deployment-strategies §13 SLO rollback](deployment-strategies/includes/13-slo-rollback-triggers.md)
+4. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) + [database-connection §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md)
+
+### B2B / partner API
+
+Partner auth, quotas, and abuse caps.
+
+1. [api-design-and-protection §4 auth](api-design-and-protection/includes/04-auth-model.md) + [§12 identity](api-design-and-protection/includes/12-identity-rbac-iam-ad.md)
+2. [api-design-and-protection §5 tiers](api-design-and-protection/includes/05-rate-limit-tiers.md)
+3. [api-rate-limiting §6 scope](api-rate-limiting/includes/06-scope-identity.md)
+4. [api-design-and-protection §16 multi-tenant](api-design-and-protection/includes/16-multi-tenant-apis.md) — if SaaS with org isolation
 
 ---
 
@@ -124,6 +143,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for layout, link conventions, and how to 
 | [GLOSSARY.md](GLOSSARY.md) | Shared terms across guides |
 | [CHANGELOG.md](CHANGELOG.md) | Section additions and renames |
 | [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md) | Copy per service for incidents |
+| [RUNBOOK-EXAMPLE-orders-api.md](RUNBOOK-EXAMPLE-orders-api.md) | Filled example runbook |
 
 Validate and build:
 
@@ -152,10 +172,12 @@ documents/
 ├── GLOSSARY.md
 ├── CHANGELOG.md
 ├── RUNBOOK-TEMPLATE.md
+├── acronyms.json          ← acronym registry for expand-acronyms.py
 ├── Makefile
 ├── mkdocs.yml             ← optional static site
 ├── scripts/
 │   ├── build-guide.py
+│   ├── expand-acronyms.py
 │   ├── validate-doc-links.py
 │   └── validate-doc-readme.py
 └── guide-name/

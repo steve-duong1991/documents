@@ -1,4 +1,4 @@
-# LSM Trees (Log-Structured Merge Trees)
+# LSM(Log-Structured Merge) Trees (Log-Structured Merge Trees)
 
 LSM trees are the main alternative to **B+ trees** for **write-heavy, append-friendly** storage. They trade **write amplification and read complexity** for **fast sequential writes** and high **ingest throughput**.
 
@@ -10,7 +10,7 @@ LSM trees are the main alternative to **B+ trees** for **write-heavy, append-fri
 
 An LSM tree is not one tree in memory — it is a **tiered system**:
 
-1. **Write-ahead log (WAL)** — durability before the write is accepted
+1. **Write-ahead log (WAL(Write-Ahead Log))** — durability before the write is accepted
 2. **Memtable** — in-memory sorted structure (often a **skip list** or red-black tree)
 3. **Immutable SSTables** — sorted **S**orted **S**tring **Table** files on disk, organized in **levels**
 4. **Compaction** — background merge of SSTables to limit file count and reclaim space
@@ -37,7 +37,7 @@ Check memtable → older memtables → L0 SSTables → deeper levels. **Bloom fi
 | Component | Role |
 |-----------|------|
 | **Memtable** | Absorbs writes in RAM; sorted for flush |
-| **WAL** | Crash recovery if memtable not yet flushed |
+| **WAL(Write-Ahead Log)** | Crash recovery if memtable not yet flushed |
 | **SSTable** | Immutable on-disk sorted runs; no in-place updates |
 | **Bloom filter** | “Key probably not in this file” → skip I/O |
 | **Compaction** | Merge overlapping files; drop deleted/tombstoned keys |
@@ -72,7 +72,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 | **Fast writes** | Sequential WAL + memtable; flush is sequential I/O |
 | **High ingest** | Logs, metrics, time-series, event streams |
 | **SSD-friendly** | Large sequential writes; less random in-place mutation |
-| **Natural versioning** | Same key, multiple versions (MVCC-style stores) |
+| **Natural versioning** | Same key, multiple versions (MVCC(Multi-Version Concurrency Control)-style stores) |
 | **Horizontal scale** | Immutable SSTables replicate and ship cleanly |
 
 ## Cons
@@ -99,7 +99,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 | **Write throughput** | Moderate | Very high |
 | **Read latency (steady)** | Usually lower, stable | Can spike (compaction, L0 overlap) |
 | **Space after delete** | Faster reclaim (VACUUM, etc.) | Delayed until compaction |
-| **Transactions / SQL** | Native fit | Often KV or wide-column layer on top |
+| **Transactions / SQL(Structured Query Language)** | Native fit | Often KV or wide-column layer on top |
 | **Flash wear** | More random writes | More total bytes written (amplification) |
 
 ---

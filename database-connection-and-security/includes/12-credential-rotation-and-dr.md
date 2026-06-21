@@ -2,7 +2,7 @@
 
 Production database security does not end at **first connection** — credentials rotate, backups fail silently, and restores are untested until you need them.
 
-> **Related:** Secret patterns → [05-secret-manager-password.md](05-secret-manager-password.md) · Deploy rollout → [deployment-strategies/includes/12-schema-migrations-and-deploy.md](../../deployment-strategies/includes/12-schema-migrations-and-deploy.md) · Connection pooling → [postgresql-performance/includes/07-connection-management.md](../../postgresql-performance/includes/07-connection-management.md)
+> **Related:** Secret patterns → [05-secret-manager-password.md](05-secret-manager-password.md) · PG backup/PITR(Point-in-Time Recovery) ops → [postgresql-performance §16](../../postgresql-performance/includes/16-backup-restore-and-pitr.md) · Deploy rollout → [deployment-strategies/includes/12-schema-migrations-and-deploy.md](../../deployment-strategies/includes/12-schema-migrations-and-deploy.md) · Connection pooling → [postgresql-performance/includes/07-connection-management.md](../../postgresql-performance/includes/07-connection-management.md)
 
 ---
 
@@ -48,8 +48,8 @@ Coordinate with [deployment-strategies](../../deployment-strategies/README.md) �
 |---------|-------------------|
 | **Static password in Secrets Manager** | Generate new password → update secret → rolling restart → DB user password change |
 | **Vault dynamic credentials** | TTL handles expiry; ensure app renews leases |
-| **RDS IAM auth token** | Short-lived tokens; no manual password rotation |
-| **mTLS client certs** | CA + cert expiry alerts; renew before 30-day window |
+| **RDS IAM(Identity and Access Management) auth token** | Short-lived tokens; no manual password rotation |
+| **mTLS(Mutual Transport Layer Security) client certs** | CA + cert expiry alerts; renew before 30-day window |
 | **PaaS connection string** | Provider dashboard rotation; update platform env |
 
 ---
@@ -59,12 +59,12 @@ Coordinate with [deployment-strategies](../../deployment-strategies/README.md) �
 | Term | Meaning |
 |------|---------|
 | **Full backup** | Snapshot of data at a point in time |
-| **WAL / transaction log** | Continuous archive for point-in-time recovery |
+| **WAL(Write-Ahead Log) / transaction log** | Continuous archive for point-in-time recovery |
 | **PITR** | Restore to arbitrary second between backups |
-| **RPO** | Max acceptable data loss (backup interval) |
-| **RTO** | Max acceptable downtime to restore |
+| **RPO(Recovery Point Objective)** | Max acceptable data loss (backup interval) |
+| **RTO(Recovery Time Objective)** | Max acceptable downtime to restore |
 
-Typical managed PostgreSQL (RDS, Cloud SQL, Azure): enable automated backups + WAL; set retention to meet compliance.
+Typical managed PostgreSQL (RDS, Cloud SQL(Structured Query Language), Azure): enable automated backups + WAL; set retention to meet compliance.
 
 ---
 
@@ -82,7 +82,7 @@ flowchart LR
 |------------|--------|
 | Restore latest snapshot | Instance starts; extensions present |
 | PITR to specific timestamp | Data matches expected transaction boundary |
-| App connectivity | TLS, security group, credentials from secret |
+| App connectivity | TLS(Transport Layer Security), security group, credentials from secret |
 | Replication re-establish | If promoting replica — lag and cutover steps |
 
 Record **actual RTO** from drill — update on-call runbook.

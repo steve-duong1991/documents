@@ -1,8 +1,8 @@
-# Identity: RBAC, IAM & Active Directory
+# Identity: RBAC(Role-Based Access Control), IAM(Identity and Access Management) & Active Directory
 
 Enterprise identity foundations for APIs: how IAM governs access, how RBAC assigns permissions through roles, and how Active Directory (and cloud IdPs) feed tokens and policies your gateway and services enforce.
 
-> **Related:** Auth protocols (OAuth, JWT, mTLS) → [Auth model](04-auth-model.md) · Gateway enforcement → [Load Balancer & API Gateway](03-api-gateway.md) · DB connection identity → [database-connection-and-security](../../database-connection-and-security/README.md)
+> **Related:** Auth protocols (OAuth(Open Authorization), JWT(JSON Web Token), mTLS(Mutual Transport Layer Security)) → [Auth model](04-auth-model.md) · Gateway enforcement → [Load Balancer & API Gateway](03-api-gateway.md) · Multi-tenant claims → [16-multi-tenant-apis.md](16-multi-tenant-apis.md) · DB connection identity → [database-connection-and-security](../../database-connection-and-security/README.md)
 
 ---
 
@@ -12,11 +12,11 @@ Enterprise identity foundations for APIs: how IAM governs access, how RBAC assig
 |---------|------------|------------------|
 | **IAM** | Discipline + systems for identity and access lifecycle | Who are you, and are you allowed to do this? |
 | **RBAC** | Access **model**: permissions via **roles** | What role do you have, and what does that role allow? |
-| **Active Directory (AD)** | Microsoft **directory service** (identity store + auth) | Where do users, groups, and computers live in the org? |
+| **Active Directory (AD(Active Directory))** | Microsoft **directory service** (identity store + auth) | Where do users, groups, and computers live in the org? |
 
 **Relationship:** AD (or another IdP) holds identities → IAM is the overall framework that uses them → RBAC is one common way IAM assigns permissions at apps, APIs, and cloud layers.
 
-For **how clients authenticate** (OAuth, API keys, JWT validation), see [Auth model](04-auth-model.md). This section covers **organizational identity** and **authorization structure**.
+For **how clients authenticate** (OAuth, API(Application Programming Interface) keys, JWT validation), see [Auth model](04-auth-model.md). This section covers **organizational identity** and **authorization structure**.
 
 ---
 
@@ -30,7 +30,7 @@ For **how clients authenticate** (OAuth, API keys, JWT validation), see [Auth mo
 | **Authorization (AuthZ)** | RBAC, ABAC, resource policies |
 | **Provisioning** | SCIM, LDAP sync, just-in-time (JIT) access |
 | **Governance** | Access reviews, least privilege, audit logs |
-| **Federation** | SAML, OIDC — trust external IdPs |
+| **Federation** | SAML, OIDC(OpenID Connect) — trust external IdPs |
 | **Secrets & keys** | Service principals, workload identity |
 
 Cloud **IAM** (AWS IAM, Azure RBAC, GCP IAM) applies the same ideas to cloud control planes: principals + policies + enforcement at the API layer.
@@ -197,7 +197,7 @@ sequenceDiagram
 | **Permission** | `GET /orders`, `POST /orders`, `DELETE /orders/{id}` |
 | **Assignment** | Alice → `order-reader` (via AD group → app role mapping) |
 
-Gateway checks **coarse** role/scope; the app still enforces **object ownership** (BOLA) — see [Auth model](04-auth-model.md).
+Gateway checks **coarse** role/scope; the app still enforces **object ownership** (BOLA(Broken Object-Level Authorization)) — see [Auth model](04-auth-model.md).
 
 ---
 
@@ -265,7 +265,7 @@ Modern APIs rarely terminate Kerberos at the gateway directly. Typical pattern: 
 | | **On-prem AD** | **Microsoft Entra ID** |
 |--|----------------|------------------------|
 | **Primary use** | Windows domain, LAN, legacy apps | Cloud, SaaS, modern auth (OIDC/SAML) |
-| **Protocol** | Kerberos, NTLM, LDAP | OAuth 2.0, OIDC, SAML |
+| **Protocol** | Kerberos, NTLM, LDAP | OAuth(Open Authorization) 2.0, OIDC, SAML |
 | **Structure** | Domains, OUs, GPO | Tenants, users, groups, conditional access |
 | **Hybrid** | — | AD Connect syncs on-prem AD ↔ cloud |
 
@@ -366,7 +366,7 @@ Aligns with the [layered auth flow](04-auth-model.md#layered-auth-flow): gateway
 |----------|-----|
 | Map AD/IdP **groups** → app **roles**, not raw group names in app code | Survives reorgs; central mapping table |
 | Put **roles/scopes in JWT** (short TTL) | Stateless validation at gateway |
-| Enforce **object-level AuthZ in app** | RBAC alone does not prevent BOLA |
+| Enforce **object-level AuthZ in app** | RBAC alone does not prevent BOLA(Broken Object-Level Authorization) |
 | Automate **JML** (joiner-mover-leaver) | Orphan accounts are a top audit finding |
 | Regular **access reviews** | Least privilege over time |
 | Log **who** (subject), **what** (resource), **decision** | Audit without logging tokens |
@@ -398,7 +398,7 @@ Default stack for public SaaS APIs (extends [overview default](00-overview.md#de
 
 | Guide | Topics |
 |-------|--------|
-| [Auth model](04-auth-model.md) | OAuth, JWT, API keys, mTLS, webhook HMAC |
+| [Auth model](04-auth-model.md) | OAuth, JWT, API keys, mTLS, webhook HMAC(Hash-based Message Authentication Code) |
 | [API Gateway](03-api-gateway.md) | JWT validation, routing, policy at the edge |
 | [database-connection-and-security](../../database-connection-and-security/README.md) | RDS IAM, Vault, workload identity to databases |
 | [api-rate-limiting — scope identity](../../api-rate-limiting/includes/06-scope-identity.md) | Identity keys for rate-limit tiers |

@@ -2,7 +2,7 @@
 
 PostgreSQL performance work follows a predictable order: **measure first**, then fix queries and schema, tune the server, and scale out only when a single node is truly exhausted.
 
-> **Related:** System-wide throughput order → [HTS README](../../high-throughput-systems/README.md) · B+ vs LSM storage → [tree-and-index-structures](../../tree-and-index-structures/README.md) · Production credentials → [database-connection-and-security](../../database-connection-and-security/README.md)
+> **Related:** System-wide throughput order → [HTS README](../../high-throughput-systems/README.md) · B+ vs LSM(Log-Structured Merge) storage → [tree-and-index-structures](../../tree-and-index-structures/README.md) · Production credentials → [database-connection-and-security](../../database-connection-and-security/README.md)
 
 ## Layers at a glance
 
@@ -14,6 +14,7 @@ PostgreSQL performance work follows a predictable order: **measure first**, then
 | **Connections** | Too many clients | PgBouncer, RDS Proxy |
 | **Configuration** | Memory, planner costs, parallelism | `shared_buffers`, `work_mem` |
 | **Scale-out** | Read load, large tables, retention | Replicas, partitioning, caching |
+| **Backup / PITR(Point-in-Time Recovery)** | Recovery drills, WAL(Write-Ahead Log) restore | Managed backups, [§16](16-backup-restore-and-pitr.md) |
 
 ## Strategy quick comparison
 
@@ -65,3 +66,4 @@ Full decision flowchart, scenario table, and common mistakes → **[§13 Decisio
 6. **Config tuning** — memory and SSD-aware planner costs
 7. **Understand scale-out terms** — [§9](09-views-functions-and-scale-out-terminology.md): partitioning vs replication vs sharding
 8. **Partitioning / replicas / caching** — when single-node fixes aren't enough
+9. **Backup and PITR drills** — [§16 Backup, restore, and PITR](16-backup-restore-and-pitr.md) with [database-connection §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md)

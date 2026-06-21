@@ -1,6 +1,6 @@
 # Trees and Index Structures Guide
 
-A practical reference for tree data structures and storage indexes — B-Trees, B+ Trees, in-memory balanced trees, specialized trees, LSM trees, and when to use each.
+A practical reference for tree data structures and storage indexes — B-Trees, B+ Trees, in-memory balanced trees, specialized trees, LSM(Log-Structured Merge) trees, and when to use each.
 
 Related: [postgresql-performance](../postgresql-performance/README.md) (PostgreSQL index types and tuning) · [high-throughput-systems](../high-throughput-systems/README.md) (LSM write path at scale)
 
@@ -82,9 +82,9 @@ See full details → [includes/06-amplification-and-related-topics.md](includes/
 
 | Guide | Topics |
 |-------|--------|
-| [postgresql-performance](../postgresql-performance/README.md) | B-tree, GIN, partial, and covering indexes in practice |
+| [postgresql-performance](../postgresql-performance/README.md) | B-tree, GIN(Generalized Inverted Index), partial, and covering indexes in practice |
 | [high-throughput-systems](../high-throughput-systems/README.md) | Database throughput layer, when to consider LSM engines |
-| [api-design-and-protection](../api-design-and-protection/README.md) | API caching and read-path design |
+| [api-design-and-protection](../api-design-and-protection/README.md) | API(Application Programming Interface) caching and read-path design |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event store and append-heavy write paths |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Connection security is independent of index choice |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Overload protection when storage read path saturates |

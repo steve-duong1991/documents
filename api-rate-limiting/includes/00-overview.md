@@ -4,15 +4,15 @@ Rate limiting controls **how many requests** a client can make in a given time w
 
 > **Related:** Product tiers → [api-design §5 Rate-limit tiers](../../api-design-and-protection/includes/05-rate-limit-tiers.md) · Backpressure → [HTS §9](../../high-throughput-systems/includes/09-backpressure-and-limits.md) · Decision guide → [§10](10-decision-guide.md)
 
-Use it together with auth, WAF rules, and abuse detection.
+Use it together with auth, WAF(Web Application Firewall) rules, and abuse detection.
 
 ## Types at a glance
 
 | Category | Examples |
 |----------|----------|
 | **Algorithms** | Fixed window, sliding window, token bucket, leaky bucket |
-| **Scope** | Global, per-IP, per API key, per user, per endpoint |
-| **Deployment** | CDN/edge, API gateway, reverse proxy, app middleware |
+| **Scope** | Global, per-IP, per API(Application Programming Interface) key, per user, per endpoint |
+| **Deployment** | CDN(Content Delivery Network)/edge, API gateway, reverse proxy, app middleware |
 | **Specialized** | Concurrent limits, quotas, cost-based, adaptive |
 
 ## Algorithm quick comparison

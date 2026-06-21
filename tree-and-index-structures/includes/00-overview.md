@@ -3,7 +3,7 @@
 Trees organize data hierarchically. The right structure depends on **access pattern**, **memory hierarchy**, **mutation rate**, and **query types** — not on which name sounds most impressive.
 
 > **Related:**
-> - PostgreSQL index types (B-tree, GIN, GiST, BRIN) → [postgresql-performance/includes/02-indexing.md](../../postgresql-performance/includes/02-indexing.md)
+> - PostgreSQL index types (B-tree, GIN(Generalized Inverted Index), GiST, BRIN(Block-Range Index)) → [postgresql-performance/includes/02-indexing.md](../../postgresql-performance/includes/02-indexing.md)
 > - Amplification, complexity, glossary → [06-amplification-and-related-topics.md](06-amplification-and-related-topics.md)
 
 ## Tree families at a glance
@@ -12,7 +12,7 @@ Trees organize data hierarchically. The right structure depends on **access patt
 |-------------|-----------|------------|
 | **BST variants** | In-memory, pointer-heavy, O(log n) search | RAM, moderate size |
 | **B-Tree / B+ Tree** | Wide nodes, few disk seeks | Databases, file systems, SSDs |
-| **LSM Tree** | Append + merge sorted files | Write-heavy KV, time-series, distributed DBs |
+| **LSM(Log-Structured Merge) Tree** | Append + merge sorted files | Write-heavy KV, time-series, distributed DBs |
 | **Trie / Radix** | Prefix on edges | Strings, IPs, routing |
 | **Heap** | Parent ≥/≤ children | Priority queues, top-K |
 | **Segment / Fenwick** | Range aggregates | Range sum/min on arrays |
@@ -24,7 +24,7 @@ Most production storage falls into one of two designs:
 
 | | **B+ Tree** | **LSM Tree** |
 |--|-------------|--------------|
-| **Write model** | Update pages in place | Append to WAL + memtable; merge later |
+| **Write model** | Update pages in place | Append to WAL(Write-Ahead Log) + memtable; merge later |
 | **Read model** | Few page lookups | Memtable + filters + possibly many files |
 | **Range scans** | Excellent (linked leaves) | Good with leveled compaction; weaker at L0 |
 | **Typical home** | PostgreSQL, InnoDB, SQLite | RocksDB, Cassandra, Scylla, HBase |
@@ -33,7 +33,7 @@ Most production storage falls into one of two designs:
 
 | Need | Start here |
 |------|------------|
-| SQL index, pagination, `BETWEEN` | **B+ Tree** |
+| SQL(Structured Query Language) index, pagination, `BETWEEN` | **B+ Tree** |
 | Only `WHERE id = ?`, no sort | **Hash index** (if engine supports it) |
 | In-app ordered map | **Red-Black Tree** (default) or **AVL** (lookup-critical) |
 | Autocomplete / IP longest prefix | **Trie** or **Radix tree** |

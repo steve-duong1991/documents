@@ -4,7 +4,7 @@ Why stateless application tiers matter for APIs: how requests flow without serve
 
 > **Scope:** **Architecture lens** — what stateless means, auth flows, externalized state, migration, and deploy safety. Throughput prerequisites (pool sizing, per-request cost, replica scaling) → [HTS §3 Stateless app tier](../../high-throughput-systems/includes/03-stateless-app-tier.md).
 >
-> **Related:** Entry layer (LB + gateway) → [Load Balancer & API Gateway](03-api-gateway.md) · JWT auth → [Auth model](04-auth-model.md) · Idempotency store → [Idempotency](13-idempotency.md) · Reference stack → [Lifecycle & architecture](08-lifecycle-and-architecture.md) · Async workers → [Async patterns](10-async-patterns.md) · Blue/green deploys → [deployment-strategies §3](../../deployment-strategies/includes/03-blue-green.md)
+> **Related:** Entry layer (LB + gateway) → [Load Balancer & API Gateway](03-api-gateway.md) · JWT(JSON Web Token) auth → [Auth model](04-auth-model.md) · Idempotency store → [Idempotency](13-idempotency.md) · Reference stack → [Lifecycle & architecture](08-lifecycle-and-architecture.md) · Async workers → [Async patterns](10-async-patterns.md) · Blue/green deploys → [deployment-strategies §3](../../deployment-strategies/includes/03-blue-green.md)
 
 ---
 
@@ -17,7 +17,7 @@ Why stateless application tiers matter for APIs: how requests flow without serve
 | **Scale out** | Add identical replicas | Session replication or affinity |
 | **Instance failure** | Other instances continue | Users on that node lose session |
 | **Request context** | Token, headers, body, external store | Server-side session object |
-| **Typical fit** | REST APIs, microservices, serverless | WebSockets rooms, legacy session apps |
+| **Typical fit** | REST(Representational State Transfer) APIs, microservices, serverless | WebSockets rooms, legacy session apps |
 
 **Rule of thumb:** "Stateless" applies to the **application tier**, not the whole system. Durable state lives in **databases, caches, queues, and object storage** — not in individual process memory.
 
@@ -25,9 +25,9 @@ Why stateless application tiers matter for APIs: how requests flow without serve
 
 ## What it is
 
-**Stateless architecture** means each HTTP request is handled **independently**. The server does not rely on in-memory data from prior requests to decide what to do next. Any context needed to serve a request either:
+**Stateless architecture** means each HTTP(Hypertext Transfer Protocol) request is handled **independently**. The server does not rely on in-memory data from prior requests to decide what to do next. Any context needed to serve a request either:
 
-1. **Travels with the request** — JWT, API key, tenant header, trace ID, body
+1. **Travels with the request** — JWT, API(Application Programming Interface) key, tenant header, trace ID, body
 2. **Lives in shared external stores** — PostgreSQL, Redis, S3, message queues
 
 This is the default pattern behind modern API stacks: load balancers distribute freely, API gateways validate tokens without session affinity, and instances can be replaced at any time.
@@ -129,7 +129,7 @@ sequenceDiagram
 | Layer | Holds state? | What it stores |
 |-------|--------------|----------------|
 | **Client** | Yes (client-side) | Access token, refresh token, local cache |
-| **CDN / Edge** | Cache only | Cacheable GET responses (no user sessions) |
+| **CDN(Content Delivery Network) / Edge** | Cache only | Cacheable GET responses (no user sessions) |
 | **API Gateway** | Minimal | Rate-limit counters (Redis), optional token denylist |
 | **Load balancer** | No | Routing table, health status only |
 | **App instance** | **No durable state** | Request-scoped variables only |
@@ -337,7 +337,7 @@ Stateless APIs often fetch context from a DB or cache on every request. That mak
 - Return **`409 Conflict`** with `ETag` / version on stale updates — aligns with optimistic concurrency on the write side
 - After **`202` async jobs**, treat result reads like projections — poll until complete; don't assume immediate consistency on a replica
 
-> **Related:** Layered read path and replication lag → [Read scaling and caching](../../postgresql-performance/includes/11-read-scaling-and-caching.md) · CQRS projector lag → [Eventual consistency in read models](../../event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md#eventual-consistency)
+> **Related:** Layered read path and replication lag → [Read scaling and caching](../../postgresql-performance/includes/11-read-scaling-and-caching.md) · CQRS(Command Query Responsibility Segregation) projector lag → [Eventual consistency in read models](../../event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md#eventual-consistency)
 - **Security discipline** — never trust client-sent identity without cryptographic validation
 
 ---
@@ -346,7 +346,7 @@ Stateless APIs often fetch context from a DB or cache on every request. That mak
 
 | Scenario | Better approach |
 |----------|-----------------|
-| **WebSocket / SSE connection state** | Stateful connection gateway + stateless business logic behind it |
+| **WebSocket / SSE(Server-Sent Events) connection state** | Stateful connection gateway + stateless business logic behind it |
 | **In-memory chat/game room** | Dedicated stateful service or CRDT/sync layer |
 | **Heavy model loaded once per GPU** | Stateful worker pool with routing to warm instances |
 | **Legacy apps with server sessions** | Sticky sessions temporarily → migrate to external session store (Redis) |

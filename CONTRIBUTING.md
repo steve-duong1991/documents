@@ -134,6 +134,13 @@ cd documents && mkdocs serve -f mkdocs.yml
 - Link to sibling guides instead of duplicating full algorithms
 - No `TODO` / placeholder sections — ship complete sections or don't add the file
 
+### Acronym expansions
+
+- On **first use per file**, expand registered acronyms inline: `ACRONYM(Full Text)` — no space before `(` (e.g. `CDC(Change Data Capture)`).
+- Registry: [acronyms.json](acronyms.json). Refresh expansions after adding terms: `python3 scripts/expand-acronyms.py`.
+- Do not hand-edit `GUIDE.md` for acronyms — edit `includes/` and run `make build-all`.
+- CI runs `python3 scripts/expand-acronyms.py --check` to catch drift.
+
 ---
 
 ## Checklist before finishing

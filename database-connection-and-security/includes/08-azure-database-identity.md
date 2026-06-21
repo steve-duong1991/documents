@@ -1,6 +1,6 @@
 # Azure Database identity
 
-> Connect to Azure Database for PostgreSQL / MySQL using Managed Identity and Azure AD — no DB password stored in the application.
+> Connect to Azure Database for PostgreSQL / MySQL using Managed Identity and Azure AD(Active Directory) — no DB password stored in the application.
 
 > **Related:** Static secrets via Key Vault → [§5 Secret manager + password](05-secret-manager-password.md) · AWS comparison → [§4](04-aws-iam-rds-proxy.md), [§6](06-direct-rds-iam.md) · Decision guide → [§13 Decision guide](13-decision-guide.md)
 
@@ -8,8 +8,8 @@
 
 - Passwordless or centrally managed authentication for Azure-hosted apps
 - Integration with **Azure App Service**, **AKS**, **Azure Functions**, and VMs
-- Azure Key Vault for static secrets when IAM-style auth is not used
-- TLS to Azure Database endpoints
+- Azure Key Vault for static secrets when IAM(Identity and Access Management)-style auth is not used
+- TLS(Transport Layer Security) to Azure Database endpoints
 
 ---
 
@@ -31,7 +31,7 @@ App Service / AKS pod → Managed Identity → Azure AD token → Azure PostgreS
 4. App acquires token via `DefaultAzureCredential` (or MSI endpoint).
 5. Connect using token as password (similar model to AWS IAM auth tokens).
 
-**Benefit:** No long-lived SQL password in config; identity is the Azure AD principal.
+**Benefit:** No long-lived SQL(Structured Query Language) password in config; identity is the Azure AD principal.
 
 ---
 

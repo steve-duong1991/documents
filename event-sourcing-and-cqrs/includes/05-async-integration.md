@@ -1,6 +1,6 @@
 # Async Integration
 
-How event-sourced systems integrate with queues, webhooks, and other services — transactional outbox, idempotent consumers, and overlap with async API patterns.
+How event-sourced systems integrate with queues, webhooks, and other services — transactional outbox, idempotent consumers, and overlap with async API(Application Programming Interface) patterns.
 
 > **Related:** [Async patterns in API design](../../api-design-and-protection/includes/10-async-patterns.md) · [Storage & outbox](03-storage-and-projections.md) · [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md)
 
@@ -8,7 +8,7 @@ How event-sourced systems integrate with queues, webhooks, and other services �
 
 ## What it is
 
-After appending events to the store, other systems need to react: update read models, send emails, call payment providers, push **webhooks** to partners. This is **async integration** — decoupled from the HTTP command response.
+After appending events to the store, other systems need to react: update read models, send emails, call payment providers, push **webhooks** to partners. This is **async integration** — decoupled from the HTTP(Hypertext Transfer Protocol) command response.
 
 Event Sourcing does **not** replace job queues or webhooks. It complements them: the event store is durable truth; the bus delivers copies to consumers.
 
@@ -100,7 +100,7 @@ Compare with [async job architecture](../../api-design-and-protection/includes/1
 |---------------|---------|------------------|
 | **Read model projector** | Query DB | Retry; idempotent UPSERT by event ID |
 | **Side-effect worker** | Email, payment, external API | Retry + dead-letter queue |
-| **Webhook dispatcher** | Partner HTTP POST | Backoff, HMAC — see [Auth model](../../api-design-and-protection/includes/04-auth-model.md#hmac-webhooks) |
+| **Webhook dispatcher** | Partner HTTP POST | Backoff, HMAC(Hash-based Message Authentication Code) — see [Auth model](../../api-design-and-protection/includes/04-auth-model.md#hmac-webhooks) |
 
 All must be **idempotent** on `event_id` — at-least-once delivery is normal.
 
@@ -163,7 +163,7 @@ Use `event_id` for partner deduplication — mirrors idempotency on the command 
 |--------|------------|
 | Outbox lag (unpublished count) | Growing backlog |
 | Projector lag (events behind head) | Read model stale beyond SLA |
-| Consumer error rate | DLQ filling |
+| Consumer error rate | DLQ(Dead Letter Queue) filling |
 | Webhook delivery failures | Partner integration broken |
 
 ---

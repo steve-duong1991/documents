@@ -15,7 +15,7 @@ OpenAPI is not documentation only — it is the **contract** CI should enforce b
 | **Consumer contract** | Pact, schema tests | PR + nightly |
 | **Mock validation** | Prism, WireMock | CI integration tests |
 
-**Rule of thumb:** **Breaking API changes fail CI** unless the major version path changes (`/v2`).
+**Rule of thumb:** **Breaking API(Application Programming Interface) changes fail CI** unless the major version path changes (`/v2`).
 
 ---
 
@@ -46,7 +46,7 @@ flowchart LR
 | Add required request field | **Yes** |
 | Rename field | **Yes** |
 | Change `string` → `integer` | **Yes** |
-| Add new HTTP method on path | No |
+| Add new HTTP(Hypertext Transfer Protocol) method on path | No |
 | Remove endpoint | **Yes** |
 
 For intentional breaks: bump to `/v2` and update diff baseline.

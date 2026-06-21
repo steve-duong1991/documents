@@ -34,9 +34,9 @@ flowchart TD
 
 ## When to use
 
-- Public REST or GraphQL APIs
+- Public REST(Representational State Transfer) or GraphQL APIs
 - SaaS products with per-plan limits
-- API gateways (Kong, AWS API Gateway, Envoy)
+- API(Application Programming Interface) gateways (Kong, AWS API Gateway, Envoy)
 - Any production API where fairness matters but log-based storage is too costly
 
 ## Implementation note

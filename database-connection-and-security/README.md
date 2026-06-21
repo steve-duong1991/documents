@@ -2,7 +2,7 @@
 
 A reference for local PostgreSQL credentials (dev template), production security, and production database connection patterns.
 
-Related: [postgresql-performance](../postgresql-performance/README.md) (connection pooling, PgBouncer tuning) · [api-design-and-protection](../api-design-and-protection/README.md) (service identity and IAM to databases)
+Related: [postgresql-performance](../postgresql-performance/README.md) (connection pooling, PgBouncer tuning) · [api-design-and-protection](../api-design-and-protection/README.md) (service identity and IAM(Identity and Access Management) to databases)
 
 ---
 
@@ -85,7 +85,7 @@ See full details → [includes/06-direct-rds-iam.md](includes/06-direct-rds-iam.
 
 ---
 
-## 7. GCP Cloud SQL identity
+## 7. GCP Cloud SQL(Structured Query Language) identity
 
 Cloud SQL Auth Proxy, IAM DB auth, and Workload Identity on GCP.
 
@@ -95,7 +95,7 @@ See full details → [includes/07-gcp-cloud-sql-identity.md](includes/07-gcp-clo
 
 ## 8. Azure Database identity
 
-Managed Identity, Azure AD auth, and Key Vault on Azure.
+Managed Identity, Azure AD(Active Directory) auth, and Key Vault on Azure.
 
 See full details → [includes/08-azure-database-identity.md](includes/08-azure-database-identity.md)
 
@@ -109,7 +109,7 @@ See full details → [includes/09-pgbouncer-proxy-password.md](includes/09-pgbou
 
 ---
 
-## 10. mTLS client certificates
+## 10. mTLS(Mutual Transport Layer Security) client certificates
 
 Certificate-based client authentication — no password in the app.
 
@@ -127,7 +127,7 @@ See full details → [includes/11-paas-managed-db.md](includes/11-paas-managed-d
 
 ## 12. Credential rotation and DR
 
-Rotation runbook with dual-active credentials, backup/PITR fundamentals, and restore drill checklist.
+Rotation runbook with dual-active credentials, backup/PITR(Point-in-Time Recovery) fundamentals, and restore drill checklist.
 
 See full details → [includes/12-credential-rotation-and-dr.md](includes/12-credential-rotation-and-dr.md)
 
@@ -147,7 +147,7 @@ See full details → [includes/13-decision-guide.md](includes/13-decision-guide.
 |-------|--------|
 | [postgresql-performance](../postgresql-performance/README.md) | Connection management, pooling, read replicas |
 | [postgresql-performance §7](../postgresql-performance/includes/07-connection-management.md) | PgBouncer, pool sizing, `max_connections` |
-| [api-design-and-protection](../api-design-and-protection/README.md) | JWT, IAM, RBAC — identity that maps to DB users |
+| [api-design-and-protection](../api-design-and-protection/README.md) | JWT(JSON Web Token), IAM, RBAC(Role-Based Access Control) — identity that maps to DB users |
 | [high-throughput-systems](../high-throughput-systems/README.md) | App-tier scaling with pooled DB connections |
 | [deployment-strategies](../deployment-strategies/README.md) | Coordinate credential rotation with deploys |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Rate limits unrelated to DB auth but share Redis |

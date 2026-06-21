@@ -1,6 +1,6 @@
-# Batch and ETL
+# Batch and ETL(Extract, Transform, Load)
 
-Bulk ingest and backfills belong **off the API hot path** — use staging tables, `COPY`, chunked commits, and idempotent merges for throughput without locking production traffic.
+Bulk ingest and backfills belong **off the API(Application Programming Interface) hot path** — use staging tables, `COPY`, chunked commits, and idempotent merges for throughput without locking production traffic.
 
 > **Related:** PostgreSQL bulk ops → [postgresql-performance/includes/12-bulk-operations-and-concurrency.md](../../postgresql-performance/includes/12-bulk-operations-and-concurrency.md) · Async jobs → [06-async-queues-workers.md](06-async-queues-workers.md)
 

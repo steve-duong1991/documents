@@ -1,8 +1,8 @@
-# API Design Implications
+# API(Application Programming Interface) Design Implications
 
-How Event Sourcing and CQRS shape HTTP APIs: command vs query routes, status codes, idempotency, and gateway routing.
+How Event Sourcing and CQRS(Command Query Responsibility Segregation) shape HTTP(Hypertext Transfer Protocol) APIs: command vs query routes, status codes, idempotency, and gateway routing.
 
-> **Scope:** **ES/CQRS API lens** — command/query split, projection lag, and event-store write paths. General REST design (pagination, errors, versioning) → [api-design §1 API design](../../api-design-and-protection/includes/01-api-design.md).
+> **Scope:** **ES/CQRS API lens** — command/query split, projection lag, and event-store write paths. General REST(Representational State Transfer) design (pagination, errors, versioning) → [api-design §1 API design](../../api-design-and-protection/includes/01-api-design.md).
 
 > **Related:** [API design best practices](../../api-design-and-protection/includes/01-api-design.md) · [Async patterns](../../api-design-and-protection/includes/10-async-patterns.md) · [Gateway routing](../../api-design-and-protection/includes/03-api-gateway.md)
 
@@ -175,8 +175,8 @@ Supports **Repudiation** controls in [threat modeling](../../api-design-and-prot
 |---------|-------------|-----------|
 | Rate limits | Stricter on writes | Higher on reads |
 | Timeouts | Short (append only) | Tuned for list/search |
-| Caching | Never cache POST | CDN/cache safe on GET |
-| AuthZ | Scope + aggregate ownership | Same BOLA checks on read models |
+| Caching | Never cache POST | CDN(Content Delivery Network)/cache safe on GET |
+| AuthZ | Scope + aggregate ownership | Same BOLA(Broken Object-Level Authorization) checks on read models |
 
 Route both through the same gateway; scale query tier independently behind separate upstream pools if needed — see [Load balancer & gateway](../../api-design-and-protection/includes/03-api-gateway.md#flow-3--both-together-common-at-scale).
 

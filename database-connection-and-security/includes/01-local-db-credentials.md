@@ -99,7 +99,7 @@ PostgreSQL is **not** set to auto-start on macOS boot.
 
 | Mistake | Fix |
 |---------|-----|
-| Copy local connection string to production | Use [§5](05-secret-manager-password.md) or cloud IAM patterns |
+| Copy local connection string to production | Use [§5](05-secret-manager-password.md) or cloud IAM(Identity and Access Management) patterns |
 | Commit `.env` with `DATABASE_URL` | Platform secrets / CI variables only |
 | Use `brew services` when manual start is intended | `pg-start` / `pg-stop` per project convention |
 | Expose Postgres on `0.0.0.0` for convenience | Localhost only in dev |

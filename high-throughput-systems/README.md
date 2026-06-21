@@ -22,6 +22,8 @@ A practical reference for building systems that handle high request, event, and 
 | 11 | [Observability](#11-observability) | [includes/11-observability.md](includes/11-observability.md) |
 | 12 | [Decision guide and common mistakes](#12-decision-guide-and-common-mistakes) | [includes/12-decision-guide-and-common-mistakes.md](includes/12-decision-guide-and-common-mistakes.md) |
 | 13 | [Multi-region read routing](#13-multi-region-read-routing) | [includes/13-multi-region-read-routing.md](includes/13-multi-region-read-routing.md) |
+| 14 | [Message brokers and queues](#14-message-brokers-and-queues) | [includes/14-message-brokers-and-queues.md](includes/14-message-brokers-and-queues.md) |
+| 15 | [CDC and search indexing](#15-cdc-and-search-indexing) | [includes/15-cdc-and-search-indexing.md](includes/15-cdc-and-search-indexing.md) |
 
 > **Tip:** Open [GUIDE.md](GUIDE.md) for the full combined document in one file.
 
@@ -45,7 +47,7 @@ See full details → [includes/01-measurement-and-slo.md](includes/01-measuremen
 
 ## 2. Entry and Edge
 
-CDN, WAF, API gateway, and load balancer — absorb traffic early and route efficiently.
+CDN(Content Delivery Network), WAF(Web Application Firewall), API(Application Programming Interface) gateway, and load balancer — absorb traffic early and route efficiently.
 
 See full details → [includes/02-entry-and-edge.md](includes/02-entry-and-edge.md)
 
@@ -91,7 +93,7 @@ See full details → [includes/07-streaming-pipelines.md](includes/07-streaming-
 
 ---
 
-## 8. Batch and ETL
+## 8. Batch and ETL(Extract, Transform, Load)
 
 COPY, staging tables, chunked backfills, and idempotent bulk jobs.
 
@@ -139,6 +141,22 @@ See full details → [includes/13-multi-region-read-routing.md](includes/13-mult
 
 ---
 
+## 14. Message brokers and queues
+
+Queue vs stream vs outbox decision flow, product signals, ordering, and idempotency.
+
+See full details → [includes/14-message-brokers-and-queues.md](includes/14-message-brokers-and-queues.md)
+
+---
+
+## 15. CDC(Change Data Capture) and search indexing
+
+CDC/outbox pipelines to OpenSearch, reindex runbooks, and search consistency.
+
+See full details → [includes/15-cdc-and-search-indexing.md](includes/15-cdc-and-search-indexing.md)
+
+---
+
 ## See also
 
 | Guide | Topics |
@@ -146,7 +164,7 @@ See full details → [includes/13-multi-region-read-routing.md](includes/13-mult
 | [api-design-and-protection](../api-design-and-protection/README.md) | Gateway, stateless architecture, async API patterns |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limiter algorithms, deployment layers |
 | [postgresql-performance](../postgresql-performance/README.md) | DB measurement, indexing, replicas, bulk writes |
-| [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM storage engines |
+| [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM(Log-Structured Merge) storage engines |
 | [deployment-strategies](../deployment-strategies/README.md) | Rolling, canary, blue/green deploys |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event log, outbox, projections |
-| [database-connection-and-security](../database-connection-and-security/README.md) | DB credentials, IAM, PgBouncer |
+| [database-connection-and-security](../database-connection-and-security/README.md) | DB credentials, IAM(Identity and Access Management), PgBouncer |

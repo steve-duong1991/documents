@@ -8,10 +8,10 @@ Rate limits can be keyed by different dimensions. Layer them from cheapest to mo
 
 | Type | Key | Pros | Cons | When to use |
 |------|-----|------|------|-------------|
-| **Global** | Single counter for entire API | Simple DDoS brake | One noisy client affects everyone | Emergency circuit, small APIs |
+| **Global** | Single counter for entire API(Application Programming Interface) | Simple DDoS brake | One noisy client affects everyone | Emergency circuit, small APIs |
 | **Per IP** | Source IP / `X-Forwarded-For` | Easy, no auth needed | Shared NAT, VPN, mobile carriers; spoofable behind bad proxies | Public unauthenticated endpoints |
 | **Per API Key** | `Authorization` header | Ties to billing and plan | Key sharing, leaked keys | B2B APIs, developer portals |
-| **Per User / Account** | User ID from JWT/session | Fair per customer | Requires auth on every request | Logged-in SaaS APIs |
+| **Per User / Account** | User ID from JWT(JSON Web Token)/session | Fair per customer | Requires auth on every request | Logged-in SaaS APIs |
 | **Per Tenant / Org** | `org_id` | Multi-tenant fairness | Large tenants may need custom limits | B2B multi-tenant platforms |
 | **Per Endpoint** | `method + path` | Protects expensive ops only | Many rules to maintain | Search, export, ML inference |
 | **Per Resource** | `user:123:project:456` | Fine-grained abuse control | Key explosion, storage cost | File uploads, object CRUD |

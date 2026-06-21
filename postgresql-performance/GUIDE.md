@@ -8,7 +8,7 @@
 
 PostgreSQL performance work follows a predictable order: **measure first**, then fix queries and schema, tune the server, and scale out only when a single node is truly exhausted.
 
-> **Related:** System-wide throughput order → [HTS README](../high-throughput-systems/README.md) · B+ vs LSM storage → [tree-and-index-structures](../tree-and-index-structures/README.md) · Production credentials → [database-connection-and-security](../database-connection-and-security/README.md)
+> **Related:** System-wide throughput order → [HTS README](../high-throughput-systems/README.md) · B+ vs LSM(Log-Structured Merge) storage → [tree-and-index-structures](../tree-and-index-structures/README.md) · Production credentials → [database-connection-and-security](../database-connection-and-security/README.md)
 
 ## Layers at a glance
 
@@ -20,6 +20,7 @@ PostgreSQL performance work follows a predictable order: **measure first**, then
 | **Connections** | Too many clients | PgBouncer, RDS Proxy |
 | **Configuration** | Memory, planner costs, parallelism | `shared_buffers`, `work_mem` |
 | **Scale-out** | Read load, large tables, retention | Replicas, partitioning, caching |
+| **Backup / PITR(Point-in-Time Recovery)** | Recovery drills, WAL(Write-Ahead Log) restore | Managed backups, [§16](16-backup-restore-and-pitr.md) |
 
 ## Strategy quick comparison
 
@@ -71,6 +72,7 @@ Full decision flowchart, scenario table, and common mistakes → **[§13 Decisio
 6. **Config tuning** — memory and SSD-aware planner costs
 7. **Understand scale-out terms** — [§9](09-views-functions-and-scale-out-terminology.md): partitioning vs replication vs sharding
 8. **Partitioning / replicas / caching** — when single-node fixes aren't enough
+9. **Backup and PITR drills** — [§16 Backup, restore, and PITR](16-backup-restore-and-pitr.md) with [database-connection §12](../database-connection-and-security/includes/12-credential-rotation-and-dr.md)
 
 ---
 
@@ -177,7 +179,7 @@ Aim for **> 99%** on OLTP workloads. Lower values may indicate working set large
 
 Indexing is usually the **highest-ROI** optimization for read-heavy workloads. A well-chosen index turns a sequential scan of millions of rows into a few index lookups.
 
-> **Related:** General tree and index structures (B+, LSM, when to use each) → [tree-and-index-structures/GUIDE.md](../tree-and-index-structures/GUIDE.md) · Query shape → [§3 Query design](03-query-design.md) · Online index builds → [§15 Schema migration checklist](15-schema-migration-checklist.md)
+> **Related:** General tree and index structures (B+, LSM(Log-Structured Merge), when to use each) → [tree-and-index-structures/GUIDE.md](../tree-and-index-structures/GUIDE.md) · Query shape → [§3 Query design](03-query-design.md) · Online index builds → [§15 Schema migration checklist](15-schema-migration-checklist.md)
 
 ## Index types
 
@@ -187,9 +189,9 @@ Indexing is usually the **highest-ROI** optimization for read-heavy workloads. A
 | **Partial index** | Queries always filter on a subset | `WHERE deleted_at IS NULL` |
 | **Composite index** | Multi-column filters; order matters | `(tenant_id, created_at DESC)` |
 | **Covering index** (`INCLUDE`) | Avoid heap lookups for extra columns | `CREATE INDEX ... INCLUDE (name, email)` |
-| **GIN** | Full-text search, JSONB containment, arrays | `WHERE data @> '{"key": "val"}'` |
+| **GIN(Generalized Inverted Index)** | Full-text search, JSONB containment, arrays | `WHERE data @> '{"key": "val"}'` |
 | **GiST / SP-GiST** | Geospatial, range types, nearest-neighbor | PostGIS, `tsrange` |
-| **BRIN** | Very large, naturally ordered data | Time-series timestamps, monotonic IDs |
+| **BRIN(Block-Range Index)** | Very large, naturally ordered data | Time-series timestamps, monotonic IDs |
 
 ## Column order in composite indexes
 
@@ -365,8 +367,8 @@ Requires an index on `(created_at DESC, id DESC)`.
 ## When to use
 
 - After `EXPLAIN` shows the plan is structurally expensive (large sorts, hash joins on huge sets)
-- When ORMs generate inefficient SQL
-- When API latency scales with row count linearly
+- When ORMs generate inefficient SQL(Structured Query Language)
+- When API(Application Programming Interface) latency scales with row count linearly
 - When write amplification is high from many small statements
 
 ## Best practices
@@ -462,7 +464,7 @@ Always measure join cost before denormalizing.
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
-| JSONB for every filter column | Slow scans, huge GIN indexes | Relational columns for hot paths |
+| JSONB for every filter column | Slow scans, huge GIN(Generalized Inverted Index) indexes | Relational columns for hot paths |
 | Random UUID primary keys | Index bloat, poor insert locality | Sequential IDs or `uuidv7` |
 | Missing FK index on child table | Parent DELETE/UPDATE scans child | Index referencing columns |
 | Denormalize before measuring | Extra write complexity for no gain | `EXPLAIN` join cost first |
@@ -561,7 +563,7 @@ ORDER BY n_dead_tup DESC;
 
 # Vacuum, Bloat, and Maintenance
 
-PostgreSQL uses MVCC — updated and deleted rows leave **dead tuples** until vacuum reclaims space. Neglected maintenance causes bloat, slower scans, and blocked index-only scans.
+PostgreSQL uses MVCC(Multi-Version Concurrency Control) — updated and deleted rows leave **dead tuples** until vacuum reclaims space. Neglected maintenance causes bloat, slower scans, and blocked index-only scans.
 
 > **Related:** Statistics refresh after vacuum → [§5 Statistics and the planner](05-statistics-and-planner.md) · Retention without mass DELETE → [§10 Partitioning](10-partitioning.md) · Online maintenance → [§15 Schema migration checklist](15-schema-migration-checklist.md)
 
@@ -687,7 +689,7 @@ Use a pooler between apps and PostgreSQL:
 | Tool | Notes |
 |------|-------|
 | **PgBouncer** | Most common; transaction or session pooling |
-| **RDS Proxy** | AWS managed; IAM auth support |
+| **RDS Proxy** | AWS managed; IAM(Identity and Access Management) auth support |
 | **Supabase pooler** | Built on PgBouncer |
 | **Pgpool-II** | Pooling + load balancing + replication |
 
@@ -792,7 +794,7 @@ max_connections = 200
 
 Adjust for your RAM and workload — these are starting points, not gospel.
 
-## WAL and checkpoint (write-heavy)
+## WAL(Write-Ahead Log) and checkpoint (write-heavy)
 
 | Parameter | Notes |
 |-----------|-------|
@@ -830,7 +832,7 @@ Spiky write latency during checkpoints? Increase `max_wal_size` and tune checkpo
 
 ## Managed databases
 
-RDS, Cloud SQL, Supabase, and Azure expose these via parameter groups. Some require reboot; others are dynamic. Check provider docs for limits.
+RDS, Cloud SQL(Structured Query Language), Supabase, and Azure expose these via parameter groups. Some require reboot; others are dynamic. Check provider docs for limits.
 
 ## Best practices
 
@@ -860,10 +862,10 @@ PostgreSQL offers several ways to abstract queries (views), encapsulate logic (f
 
 | Tool | Stored data? | Performance role | Primary use |
 |------|--------------|------------------|-------------|
-| **Standard view** | No — saved query | Abstraction only; no speedup by itself | Simplify SQL, hide columns, security |
+| **Standard view** | No — saved query | Abstraction only; no speedup by itself | Simplify SQL(Structured Query Language), hide columns, security |
 | **Materialized view** | Yes — snapshot | Pre-compute expensive reads | Dashboards, heavy aggregations |
 | **Function** | No — compiled logic | Can help or hurt index use | Reusable logic, triggers, expressions |
-| **Procedure** | No — batch logic | Batch work in fewer round trips | Maintenance jobs, multi-step ETL |
+| **Procedure** | No — batch logic | Batch work in fewer round trips | Maintenance jobs, multi-step ETL(Extract, Transform, Load) |
 | **Partitioning** | Yes — split on one server | Pruning, retention, smaller indexes | Time-series, large tables on one node |
 | **Replication** | Yes — full copy per node | Read scaling, HA | Same data on multiple servers |
 | **Sharding** | Yes — subset per node | Write scaling across servers | Single-node writes exhausted |
@@ -1093,12 +1095,12 @@ Full details → [Partitioning](10-partitioning.md).
 
 ### Replication (full copy per node)
 
-Streaming replication ships WAL from primary to one or more standbys. Each standby holds a **complete copy** of the database.
+Streaming replication ships WAL(Write-Ahead Log) from primary to one or more standbys. Each standby holds a **complete copy** of the database.
 
 | Mode | Consistency | Write throughput | Typical use |
 |------|-------------|------------------|-------------|
 | Async streaming | Eventual on replicas | Highest | Read scaling, HA |
-| Sync replication | Standby ack before commit | Lower | Stronger durability / RPO |
+| Sync replication | Standby ack before commit | Lower | Stronger durability / RPO(Recovery Point Objective) |
 | Logical replication | Table-level, selective | Flexible | Upgrades, selective sync |
 
 **Use for:** High availability, failover, offloading read-heavy traffic.
@@ -1188,7 +1190,7 @@ flowchart TD
 
 ## See also
 
-- [Indexing](02-indexing.md) — B-tree, partial, GIN, BRIN, and covering indexes
+- [Indexing](02-indexing.md) — B-tree, partial, GIN(Generalized Inverted Index), BRIN(Block-Range Index), and covering indexes
 - [Query design](03-query-design.md) — pagination, N+1, functions on indexed columns
 - [Partitioning](10-partitioning.md) — range, list, hash, pruning, retention
 - [Read scaling and caching](11-read-scaling-and-caching.md) — replicas, Redis, materialized view refresh
@@ -1279,7 +1281,7 @@ CREATE INDEX ON events (org_id, created_at DESC);
 - Choose partition granularity so each partition is **manageable** (often monthly or weekly for events)
 - Automate partition creation and old partition drops
 - Include partition key in unique constraints and PKs
-- Combine with **BRIN** on time column inside very large partitions if appropriate
+- Combine with **BRIN(Block-Range Index)** on time column inside very large partitions if appropriate
 
 ## Common mistakes
 
@@ -1301,7 +1303,7 @@ When query optimization and indexing aren't enough for read load, scale reads ho
 
 ## Read replicas
 
-Streaming replication sends WAL changes to one or more standby servers.
+Streaming replication sends WAL(Write-Ahead Log) changes to one or more standby servers.
 
 | Pros | Cons |
 |------|------|
@@ -1326,8 +1328,8 @@ Streaming replication sends WAL changes to one or more standby servers.
 | Layer | Tool | When to use |
 |-------|------|-------------|
 | **Application cache** | Redis, Memcached | Hot keys, session data, idempotent reads |
-| **Materialized view** | PostgreSQL native | Expensive SQL aggregations refreshed periodically |
-| **Query result cache** | ORM / CDN | Identical repeated API responses |
+| **Materialized view** | PostgreSQL native | Expensive SQL(Structured Query Language) aggregations refreshed periodically |
+| **Query result cache** | ORM / CDN(Content Delivery Network) | Identical repeated API(Application Programming Interface) responses |
 | **Unlogged tables** | PostgreSQL | Staging/bulk temp data (not crash-safe) |
 
 ### Materialized views
@@ -1366,7 +1368,7 @@ End-to-end flow (Redis → primary vs replica routing, plus CDN for public GETs)
 | Single slow report query | Materialized view or pre-aggregation table |
 | Hot product page | Redis cache with TTL |
 | 10× read vs write ratio | Read replica + app routing |
-| Search autocomplete | Dedicated index (GIN) + cache; not replica alone |
+| Search autocomplete | Dedicated index (GIN(Generalized Inverted Index)) + cache; not replica alone |
 | Global low-latency reads | Replicas per region + CDN for static API responses |
 
 ## Best practices
@@ -1461,13 +1463,13 @@ Use **`REPEATABLE READ`** or **`SERIALIZABLE`** only when you have proven race c
 | **Storage** | NVMe SSD — random IO matters |
 | **RAM** | Working set should fit in cache for hot data |
 | **CPU** | More cores help parallel queries; OLTP needs fast single-core too |
-| **Separate WAL disk** | High-write bare metal; rarely needed on cloud managed |
+| **Separate WAL(Write-Ahead Log) disk** | High-write bare metal; rarely needed on cloud managed |
 
 ## When to use
 
 | Situation | Strategy |
 |-----------|----------|
-| Nightly ETL | `COPY` + staging table |
+| Nightly ETL(Extract, Transform, Load) | `COPY` + staging table |
 | Backfill column on 100M rows | Batch UPDATE in chunks; avoid one giant transaction |
 | Job workers competing | `FOR UPDATE SKIP LOCKED` |
 | Migration in production | `CREATE INDEX CONCURRENTLY`; online schema tools |
@@ -1506,16 +1508,16 @@ A practical reference for choosing strategies and avoiding common mistakes.
 
 | Scenario | Recommended approach |
 |----------|---------------------|
-| One slow API endpoint | `EXPLAIN ANALYZE` → index or query rewrite |
+| One slow API(Application Programming Interface) endpoint | `EXPLAIN ANALYZE` → index or query rewrite |
 | App feels slow generally | `pg_stat_statements` top 10 by total time |
 | "Too many connections" | PgBouncer before raising `max_connections` |
 | Table growing, queries slowing | Check dead tuples; tune autovacuum |
-| Time-series, 50M+ rows | Range partition on `created_at` + BRIN or B-tree |
+| Time-series, 50M+ rows | Range partition on `created_at` + BRIN(Block-Range Index) or B-tree |
 | Dashboard aggregations | Materialized view + periodic refresh |
 | Read-heavy SaaS | Optimize primary → read replica → Redis cache |
 | Nightly bulk import | `COPY` → `ANALYZE` → verify indexes |
 | Login brute force (many writes) | Short transactions; partial index on active sessions |
-| JSONB attribute search | GIN index; don't replace relational filters |
+| JSONB attribute search | GIN(Generalized Inverted Index) index; don't replace relational filters |
 
 ## Full decision flow
 
@@ -1584,7 +1586,7 @@ For every change:
 - [Database Security](../database-connection-and-security/includes/02-prod-db-security.md) — production hardening
 - [Strong consistency — promises and costs](14-consistency-promises-and-costs.md) — when replicas and caches break strong reads
 - [High throughput systems](../high-throughput-systems/README.md) — system-wide optimization order and scaling layers
-- [tree-and-index-structures](../tree-and-index-structures/README.md) — B+ vs LSM for write-heavy workloads
+- [tree-and-index-structures](../tree-and-index-structures/README.md) — B+ vs LSM(Log-Structured Merge) for write-heavy workloads
 - [api-rate-limiting](../api-rate-limiting/README.md) — protect DB from connection storms via app-layer limits
 - [deployment-strategies](../deployment-strategies/README.md) — safe rollout during pool and schema changes
 
@@ -1594,7 +1596,7 @@ For every change:
 
 What strong consistency guarantees, what it costs in latency and scale, and how to apply it when you add replicas, caches, and multi-region deployments.
 
-> **Related:** Operational routing → [Read scaling and caching](11-read-scaling-and-caching.md) · API implications → [Stateless architecture](../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) · CQRS lag → [Eventual consistency in read models](../event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md#eventual-consistency)
+> **Related:** Operational routing → [Read scaling and caching](11-read-scaling-and-caching.md) · API(Application Programming Interface) implications → [Stateless architecture](../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) · CQRS(Command Query Responsibility Segregation) lag → [Eventual consistency in read models](../event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md#eventual-consistency)
 
 ---
 
@@ -1644,7 +1646,7 @@ flowchart TB
 
 | Layer | Why reads can be stale |
 |-------|------------------------|
-| **Async read replica** | WAL replay lags behind primary |
+| **Async read replica** | WAL(Write-Ahead Log) replay lags behind primary |
 | **Application cache** | TTL, missed invalidation, race on write-through |
 | **Materialized view** | Refreshed on schedule, not on every write |
 | **Multi-region replica** | Cross-region replication + routing |
@@ -1672,7 +1674,7 @@ Strong writes often require waiting for:
 | Sync multi-AZ | +5–20 ms |
 | Cross-region sync | +50–200+ ms |
 
-### Availability (CAP)
+### Availability (CAP(Consistency, Availability, Partition Tolerance))
 
 Under network partition, a strongly consistent system often **refuses** reads or writes rather than serve stale data.
 
@@ -1754,7 +1756,7 @@ Use **`SERIALIZABLE`** or **`REPEATABLE READ`** only when proven race conditions
 
 ### Async streaming replication
 
-Default on managed PostgreSQL (RDS, Cloud SQL, Azure). Replicas lag by milliseconds to seconds under load.
+Default on managed PostgreSQL (RDS, Cloud SQL(Structured Query Language), Azure). Replicas lag by milliseconds to seconds under load.
 
 ```sql
 -- On primary: monitor lag
@@ -1773,7 +1775,7 @@ ALTER SYSTEM SET synchronous_standby_names = 'ANY 1 (standby1)';
 SELECT pg_reload_conf();
 ```
 
-**When to use:** Failover RPO = 0 for committed transactions; financial writes that must survive primary loss immediately.
+**When to use:** Failover RPO(Recovery Point Objective) = 0 for committed transactions; financial writes that must survive primary loss immediately.
 
 **Cost:** Write latency tied to slowest sync standby; availability hit if standby is down (writes block or fail).
 
@@ -1955,7 +1957,7 @@ SELECT * FROM orders WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT 20;
 | `CREATE INDEX` without `CONCURRENTLY` on prod | Blocks writes for full build |
 | `NOT NULL` + default in one step on huge table | Rewrite table — plan expand/contract |
 | Drop column while old pods run | `SELECT *` or ORM breaks |
-| Backfill in one transaction | WAL bloat; long locks |
+| Backfill in one transaction | WAL(Write-Ahead Log) bloat; long locks |
 | No `ANALYZE` after large change | Bad plans post-migration |
 
 ---
@@ -1967,6 +1969,113 @@ SELECT * FROM orders WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT 20;
 
 ---
 
+# Backup, Restore, and PITR(Point-in-Time Recovery)
+
+Operational PostgreSQL recovery — backups, WAL(Write-Ahead Log), point-in-time restore, and verification drills. Pair with org DR policy in .
+
+> **Related:** DR policy and RPO(Recovery Point Objective)/RTO(Recovery Time Objective) → [database-connection §12](../database-connection-and-security/includes/12-credential-rotation-and-dr.md) · Migrations during restore → [§15 Schema migration checklist](15-schema-migration-checklist.md) · Runbook template → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md)
+
+---
+
+## At a glance
+
+| Concept | Meaning |
+|---------|---------|
+| **Full backup** | Snapshot of data files at a point in time |
+| **WAL / continuous archiving** | Log of changes since backup |
+| **PITR** | Restore to any second within retention window |
+| **RPO(Recovery Point Objective)** | Max acceptable data loss (backup + WAL gap) |
+| **RTO(Recovery Time Objective)** | Max time to restore service |
+
+**Rule of thumb:** Managed RDS / Cloud SQL(Structured Query Language) / Azure DB: enable automated backups + PITR; **still run quarterly restore drills** — .
+
+---
+
+## What to enable (managed PostgreSQL)
+
+| Setting | Typical value | Notes |
+|---------|---------------|-------|
+| Automated backups | Daily | Provider-managed snapshot |
+| PITR retention | 7–35 days | Compliance-driven |
+| WAL archiving | On (managed) | Required for PITR |
+| Cross-region backup copy | Regulated workloads | DR region |
+
+Self-hosted: `archive_mode = on`, `archive_command` to S3/GCS, base backups via `pg_basebackup` or volume snapshots.
+
+---
+
+## Restore flow (PITR)
+
+```mermaid
+flowchart TD
+    Start[Incident: need restore] --> Pick[Pick target timestamp T]
+    Pick --> Restore[Restore latest full backup before T]
+    Restore --> WAL[Replay WAL to T]
+    WAL --> Verify[Verify row counts + app smoke]
+    Verify --> Cutover[Redirect apps or promote clone]
+```
+
+| Step | Action |
+|------|--------|
+| 1 | Stop writes to affected DB (or fail over to standby) |
+| 2 | Restore snapshot to staging clone |
+| 3 | PITR to timestamp **before** bad migration or data event |
+| 4 | Run verification queries (counts, checksums, sample orders) |
+| 5 | Either promote clone or export repaired subset |
+
+Document provider-specific CLI in your runbook — RDS , Cloud SQL clone, etc.
+
+---
+
+## Logical vs physical backup
+
+| Type | Tool | Use when |
+|------|------|----------|
+| **Physical** | Snapshot,  | Full instance PITR, DR |
+| **Logical** | ,  | Single schema, cross-version migrate, dev seeds |
+
+| | Physical | Logical |
+|--|----------|---------|
+| **PITR** | ✅ | ❌ (point snapshot only) |
+| **Selective table** | Hard |  |
+| **Restore speed** | Fast at scale | Slow for large DBs |
+
+Bulk export patterns → .
+
+---
+
+## Verification checklist
+
+- [ ] Automated backup job success alert (not only email on failure)
+- [ ] Monthly restore to **staging** with app smoke test
+- [ ] Quarterly PITR drill to specific timestamp
+- [ ] Documented RPO/RTO vs actual restore time from last drill
+- [ ] Runbook: who approves production cutover after restore
+- [ ] After restore: `ANALYZE`; check replication if re-attaching replica
+
+---
+
+## Common mistakes
+
+| Mistake | Fix |
+|---------|-----|
+| Backups enabled, never restored | Scheduled drill |
+| PITR window shorter than deploy rollback need | Extend retention |
+| Restore without `ANALYZE` | Planner stats stale → slow queries |
+| Logical dump as sole DR strategy | Physical + WAL for production |
+
+---
+
+## Pros and cons
+
+### Managed PITR
+
+**Pros:** One-click restore; WAL handled by provider.
+
+**Cons:** Cost scales with retention; cross-account restore needs planning.
+
+---
+
 
 ---
 
@@ -1975,8 +2084,8 @@ SELECT * FROM orders WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT 20;
 | Guide | Topics |
 |-------|--------|
 | [high-throughput-systems](../high-throughput-systems/README.md) | System-wide throughput order: cache, scale, async, backpressure |
-| [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM storage engines for write-heavy workloads |
-| [database-connection-and-security](../database-connection-and-security/README.md) | Production credentials, IAM, PgBouncer |
+| [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM(Log-Structured Merge) storage engines for write-heavy workloads |
+| [database-connection-and-security](../database-connection-and-security/README.md) | Production credentials, IAM(Identity and Access Management), PgBouncer |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limiter algorithms and deployment layers |
-| [deployment-strategies](../deployment-strategies/README.md) | Safe rollout during schema and API changes |
+| [deployment-strategies](../deployment-strategies/README.md) | Safe rollout during schema and API(Application Programming Interface) changes |
 | [deployment-strategies §12](../deployment-strategies/includes/12-schema-migrations-and-deploy.md) | Expand/contract with rolling deploy |

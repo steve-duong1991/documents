@@ -4,7 +4,7 @@ The database is usually the **throughput ceiling**. Fix measurement, queries, in
 
 > **Scope:** **System throughput lens** — where DB fits in the HTS build order and DB-first moves under load. Full PostgreSQL tuning → [postgresql-performance](../../postgresql-performance/README.md). Scenario tables → [PG §13](../../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md), [HTS §12](12-decision-guide-and-common-mistakes.md).
 >
-> **Related:** Full PostgreSQL guide → [postgresql-performance/README.md](../../postgresql-performance/README.md) · LSM for extreme writes → [tree-and-index-structures §4](../../tree-and-index-structures/includes/04-lsm-trees.md) · Caching → [04-caching-layers.md](04-caching-layers.md)
+> **Related:** Full PostgreSQL guide → [postgresql-performance/README.md](../../postgresql-performance/README.md) · LSM(Log-Structured Merge) for extreme writes → [tree-and-index-structures §4](../../tree-and-index-structures/includes/04-lsm-trees.md) · Caching → [04-caching-layers.md](04-caching-layers.md)
 
 ---
 
@@ -57,9 +57,9 @@ Database-layer first moves below. System-wide scenarios (cache + scale + async +
 
 | Scenario | First move |
 |----------|------------|
-| Read API at 10k RPS | Cache hot keys **before** adding replicas |
+| Read API(Application Programming Interface) at 10k RPS | Cache hot keys **before** adding replicas |
 | Write spike | Short transactions → batch INSERT → queue side effects |
-| Time-series ingest | Range partition + BRIN/B-tree |
+| Time-series ingest | Range partition + BRIN(Block-Range Index)/B-tree |
 | Hot row contention | `FOR UPDATE SKIP LOCKED` → partition → per-key queue |
 | Nightly bulk import | Staging + `COPY` → [08-batch-and-etl.md](08-batch-and-etl.md) |
 | Dashboard aggregations | Materialized view → Redis |
@@ -71,9 +71,9 @@ Database-layer first moves below. System-wide scenarios (cache + scale + async +
 
 | Signal | Consider |
 |--------|----------|
-| Sustained write rate exceeds single-node WAL/IO | Partitioning, then dedicated write path |
+| Sustained write rate exceeds single-node WAL(Write-Ahead Log)/IO | Partitioning, then dedicated write path |
 | Append-only metrics at massive scale | Time-series DB or LSM KV |
-| Full-text at billions of docs | OpenSearch/Elasticsearch + CDC |
+| Full-text at billions of docs | OpenSearch/Elasticsearch + CDC(Change Data Capture) |
 
 LSM tradeoffs → [tree-and-index-structures/includes/04-lsm-trees.md](../../tree-and-index-structures/includes/04-lsm-trees.md):
 
@@ -106,7 +106,7 @@ Must fit within PostgreSQL capacity (often via PgBouncer)
 |---------|----------|
 | **Read-heavy** | Cache → replica → materialized view |
 | **Write-heavy** | Batch, partition, queue, shorten transactions |
-| **Mixed** | Separate read models (CQRS) for heavy reads |
+| **Mixed** | Separate read models (CQRS(Command Query Responsibility Segregation)) for heavy reads |
 
 See [event-sourcing-and-cqrs](../../event-sourcing-and-cqrs/README.md) for read model separation at scale.
 

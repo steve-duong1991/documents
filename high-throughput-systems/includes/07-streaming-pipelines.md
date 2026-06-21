@@ -2,19 +2,19 @@
 
 When request/response cannot keep up with event volume, fan-out, or audit requirements, move to **event streaming** — append-only logs with partitioned parallel consumption.
 
-> **Related:** Event sourcing and outbox → [event-sourcing-and-cqrs/includes/05-async-integration.md](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Async API patterns → [api-design-and-protection/includes/10-async-patterns.md](../../api-design-and-protection/includes/10-async-patterns.md) · LSM write path → [tree-and-index-structures/includes/04-lsm-trees.md](../../tree-and-index-structures/includes/04-lsm-trees.md)
+> **Related:** Event sourcing and outbox → [event-sourcing-and-cqrs/includes/05-async-integration.md](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Async patterns → [api-design-and-protection/includes/10-async-patterns.md](../../api-design-and-protection/includes/10-async-patterns.md) · LSM(Log-Structured Merge) write path → [tree-and-index-structures/includes/04-lsm-trees.md](../../tree-and-index-structures/includes/04-lsm-trees.md)
 
 ---
 
 ## At a glance
 
-| | **Sync API** | **Event stream** |
+| | **Sync API(Application Programming Interface)** | **Event stream** |
 |--|--------------|------------------|
 | **Model** | Request → response | Append event → consumers process |
 | **Coupling** | Producer waits for consumer | Decoupled in time |
 | **Scale** | Limited by handler capacity | Partitions × consumer groups |
 | **Ordering** | Per request | Per partition key |
-| **Best for** | CRUD, queries | Metrics, audit, fan-out, CDC |
+| **Best for** | CRUD, queries | Metrics, audit, fan-out, CDC(Change Data Capture) |
 
 **Rule of thumb:** Use streaming when **many consumers** need the same events, **volume exceeds** comfortable API throughput, or you need a **durable audit log** — not for simple CRUD that fits in PostgreSQL.
 
@@ -116,7 +116,7 @@ Store payload references (S3 URL, row ID) when messages exceed ~1 MB.
 
 ---
 
-## Stream DLQ and poison messages
+## Stream DLQ(Dead Letter Queue) and poison messages
 
 | Approach | When |
 |----------|------|

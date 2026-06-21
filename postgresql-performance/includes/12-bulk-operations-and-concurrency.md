@@ -71,13 +71,13 @@ Use **`REPEATABLE READ`** or **`SERIALIZABLE`** only when you have proven race c
 | **Storage** | NVMe SSD — random IO matters |
 | **RAM** | Working set should fit in cache for hot data |
 | **CPU** | More cores help parallel queries; OLTP needs fast single-core too |
-| **Separate WAL disk** | High-write bare metal; rarely needed on cloud managed |
+| **Separate WAL(Write-Ahead Log) disk** | High-write bare metal; rarely needed on cloud managed |
 
 ## When to use
 
 | Situation | Strategy |
 |-----------|----------|
-| Nightly ETL | `COPY` + staging table |
+| Nightly ETL(Extract, Transform, Load) | `COPY` + staging table |
 | Backfill column on 100M rows | Batch UPDATE in chunks; avoid one giant transaction |
 | Job workers competing | `FOR UPDATE SKIP LOCKED` |
 | Migration in production | `CREATE INDEX CONCURRENTLY`; online schema tools |

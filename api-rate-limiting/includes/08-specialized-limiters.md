@@ -28,7 +28,7 @@ Time-based budgets: e.g. 10,000 calls/month. Endpoints can have different credit
 | Aligns with billing and plans | Needs persistence and reset logic |
 | Flexible per-plan pricing | Users hit walls at period boundaries |
 
-**When to use:** Paid API products, freemium tiers, marketplace APIs.
+**When to use:** Paid API(Application Programming Interface) products, freemium tiers, marketplace APIs.
 
 ---
 
@@ -86,7 +86,7 @@ flowchart TD
 
 Limits bytes per second, not request count.
 
-**When to use:** File upload/download APIs, streaming endpoints, CDN origin protection.
+**When to use:** File upload/download APIs, streaming endpoints, CDN(Content Delivery Network) origin protection.
 
 ## Common mistakes
 

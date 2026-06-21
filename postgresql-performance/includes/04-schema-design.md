@@ -82,7 +82,7 @@ Always measure join cost before denormalizing.
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
-| JSONB for every filter column | Slow scans, huge GIN indexes | Relational columns for hot paths |
+| JSONB for every filter column | Slow scans, huge GIN(Generalized Inverted Index) indexes | Relational columns for hot paths |
 | Random UUID primary keys | Index bloat, poor insert locality | Sequential IDs or `uuidv7` |
 | Missing FK index on child table | Parent DELETE/UPDATE scans child | Index referencing columns |
 | Denormalize before measuring | Extra write complexity for no gain | `EXPLAIN` join cost first |

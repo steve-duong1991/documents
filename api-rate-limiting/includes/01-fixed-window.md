@@ -31,7 +31,7 @@ flowchart LR
 
 ## When to use
 
-- Daily or monthly API quotas
+- Daily or monthly API(Application Programming Interface) quotas
 - Coarse API tier limits (free vs paid)
 - Internal services where edge bursts are acceptable
 - Billing/usage metering where exact per-second fairness is not required

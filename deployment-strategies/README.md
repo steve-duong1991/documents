@@ -99,7 +99,7 @@ See full details → [includes/08-immutable.md](includes/08-immutable.md)
 
 ---
 
-## 9. GitOps
+## 9. GitOps(Git Operations)
 
 Git is the source of truth; a controller reconciles live state to match the repo.
 
@@ -125,13 +125,13 @@ See full details → [includes/11-choosing-and-practices.md](includes/11-choosin
 
 ## 12. Schema migrations and deploy coupling
 
-Expand / deploy / contract, online DDL with rolling and canary, and CQRS projector ordering.
+Expand / deploy / contract, online DDL with rolling and canary, and CQRS(Command Query Responsibility Segregation) projector ordering.
 
 See full details → [includes/12-schema-migrations-and-deploy.md](includes/12-schema-migrations-and-deploy.md)
 
 ---
 
-## 13. SLO-based rollback triggers
+## 13. SLO(Service Level Objective)-based rollback triggers
 
 Error-budget burn, version-tagged metrics, and automated halt/rollback by deploy strategy.
 
@@ -150,4 +150,4 @@ See full details → [includes/13-slo-rollback-triggers.md](includes/13-slo-roll
 | [postgresql-performance §15](../postgresql-performance/includes/15-schema-migration-checklist.md) | Online DDL and backfill patterns |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Secret rotation during deploys |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limit rollout traffic during canary |
-| [tree-and-index-structures](../tree-and-index-structures/README.md) | LSM vs B+ when schema drives storage |
+| [tree-and-index-structures](../tree-and-index-structures/README.md) | LSM(Log-Structured Merge) vs B+ when schema drives storage |

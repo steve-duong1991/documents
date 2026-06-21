@@ -112,7 +112,7 @@ SELECT * FROM orders WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT 20;
 | `CREATE INDEX` without `CONCURRENTLY` on prod | Blocks writes for full build |
 | `NOT NULL` + default in one step on huge table | Rewrite table — plan expand/contract |
 | Drop column while old pods run | `SELECT *` or ORM breaks |
-| Backfill in one transaction | WAL bloat; long locks |
+| Backfill in one transaction | WAL(Write-Ahead Log) bloat; long locks |
 | No `ANALYZE` after large change | Bad plans post-migration |
 
 ---

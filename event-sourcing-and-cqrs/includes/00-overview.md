@@ -1,8 +1,8 @@
-# Overview — Event Sourcing & CQRS
+# Overview — Event Sourcing & CQRS(Command Query Responsibility Segregation)
 
 **Event Sourcing** persists state as an **append-only sequence of domain events** instead of updating rows in place. **CQRS** (Command Query Responsibility Segregation) splits **writes** (commands → event store) from **reads** (queries → optimized projections). The two patterns are often used together but are independent.
 
-> **Related:** [API design & protection](../../api-design-and-protection/README.md) (HTTP contracts, async, audit) · [PostgreSQL performance](../../postgresql-performance/README.md) (event table indexing) · [Async patterns](../../api-design-and-protection/includes/10-async-patterns.md) (outbox, queues) · Decision guide → [§6](06-decision-guide.md)
+> **Related:** [API design & protection](../../api-design-and-protection/README.md) (HTTP(Hypertext Transfer Protocol) contracts, async, audit) · [PostgreSQL performance](../../postgresql-performance/README.md) (event table indexing) · [Async patterns](../../api-design-and-protection/includes/10-async-patterns.md) (outbox, queues) · Decision guide → [§6](06-decision-guide.md)
 
 ---
 
@@ -14,7 +14,7 @@
 | **Write model** | `UPDATE orders SET status = 'shipped'` | Append `OrderShipped` event |
 | **Current state** | Stored directly | Replayed or projected from events |
 | **History** | Lost unless separate audit table | Built-in |
-| **Queries** | Simple SQL on current tables | Often need read models / projections |
+| **Queries** | Simple SQL(Structured Query Language) on current tables | Often need read models / projections |
 
 ```mermaid
 flowchart LR
@@ -67,7 +67,7 @@ flowchart LR
 | 1 | Core concepts — aggregates, streams, replay | [01-core-concepts.md](01-core-concepts.md) |
 | 2 | CQRS and read models | [02-cqrs-and-read-models.md](02-cqrs-and-read-models.md) |
 | 3 | Storage, snapshots, projections | [03-storage-and-projections.md](03-storage-and-projections.md) |
-| 4 | API design implications | [04-api-design-implications.md](04-api-design-implications.md) |
+| 4 | API(Application Programming Interface) design implications | [04-api-design-implications.md](04-api-design-implications.md) |
 | 5 | Async integration — outbox, bus, consumers | [05-async-integration.md](05-async-integration.md) |
 | 6 | Decision guide — pros, cons, when to use | [06-decision-guide.md](06-decision-guide.md) |
 

@@ -1,6 +1,6 @@
-# Event Sourcing & CQRS Guide
+# Event Sourcing & CQRS(Command Query Responsibility Segregation) Guide
 
-A practical reference for Event Sourcing and CQRS — append-only event stores, aggregates, read projections, storage choices, API design, async integration (outbox), sagas, and when to adopt vs stay with CRUD.
+A practical reference for Event Sourcing and CQRS — append-only event stores, aggregates, read projections, storage choices, API(Application Programming Interface) design, async integration (outbox), sagas, and when to adopt vs stay with CRUD.
 
 Related: [API Design & Protection](../api-design-and-protection/README.md) · [PostgreSQL Performance](../postgresql-performance/README.md)
 
@@ -18,6 +18,8 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [P
 | 5 | [Async integration](#5-async-integration) | [includes/05-async-integration.md](includes/05-async-integration.md) |
 | 6 | [Decision guide](#6-decision-guide) | [includes/06-decision-guide.md](includes/06-decision-guide.md) |
 | 7 | [Sagas and distributed workflows](#7-sagas-and-distributed-workflows) | [includes/07-sagas-and-distributed-workflows.md](includes/07-sagas-and-distributed-workflows.md) |
+| 8 | [Event schema evolution](#8-event-schema-evolution) | [includes/08-event-schema-evolution.md](includes/08-event-schema-evolution.md) |
+| 9 | [Testing and verification](#9-testing-and-verification) | [includes/09-testing-and-verification.md](includes/09-testing-and-verification.md) |
 
 > **Tip:** Open [GUIDE.md](GUIDE.md) for the full combined document in one file.
 
@@ -87,6 +89,22 @@ See full details → [includes/07-sagas-and-distributed-workflows.md](includes/0
 
 ---
 
+## 8. Event schema evolution
+
+Upcasting, version metadata, projector compatibility, and deploy order for historical events.
+
+See full details → [includes/08-event-schema-evolution.md](includes/08-event-schema-evolution.md)
+
+---
+
+## 9. Testing and verification
+
+Aggregate, projector, outbox, and saga test patterns plus CI checklist.
+
+See full details → [includes/09-testing-and-verification.md](includes/09-testing-and-verification.md)
+
+---
+
 ## Reading paths
 
 | If you are… | Read in order |
@@ -102,7 +120,7 @@ See full details → [includes/07-sagas-and-distributed-workflows.md](includes/0
 
 | Guide | Topics |
 |-------|--------|
-| [api-design-and-protection](../api-design-and-protection/README.md) | HTTP contracts, async, idempotency, audit APIs |
+| [api-design-and-protection](../api-design-and-protection/README.md) | HTTP(Hypertext Transfer Protocol) contracts, async, idempotency, audit APIs |
 | [high-throughput-systems](../high-throughput-systems/README.md) | Streaming, outbox at scale, read-model throughput |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Event store connection identity and secrets |
 | [deployment-strategies](../deployment-strategies/README.md) | Rolling deploys with projector compatibility |

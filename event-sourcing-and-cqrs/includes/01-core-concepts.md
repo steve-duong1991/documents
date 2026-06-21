@@ -2,7 +2,7 @@
 
 How event-sourced systems model state, handle commands, and rebuild aggregates from an append-only log.
 
-> **Related:** Storage choices → [Storage & projections](03-storage-and-projections.md) · API surface → [API design implications](04-api-design-implications.md)
+> **Related:** Storage choices → [Storage & projections](03-storage-and-projections.md) · API(Application Programming Interface) surface → [API design implications](04-api-design-implications.md)
 
 ---
 
@@ -108,7 +108,7 @@ VALUES ('order-123', 5, 'OrderShipped', '...')
 -- UNIQUE (aggregate_id, version) → conflict → return 409 to client
 ```
 
-Maps naturally to HTTP **`409 Conflict`** and `ETag` / `If-Match` on command APIs — see [API design implications](04-api-design-implications.md).
+Maps naturally to HTTP(Hypertext Transfer Protocol) **`409 Conflict`** and `ETag` / `If-Match` on command APIs — see [API design implications](04-api-design-implications.md).
 
 ---
 
@@ -118,7 +118,7 @@ Events are **never updated or deleted** in the normal model.
 
 | Need | Approach |
 |------|----------|
-| Bug in past event schema | **Upcast** on read — transform v1 → v2 in loader |
+| Bug in past event schema | **Upcast** on read — [§8 Event schema evolution](08-event-schema-evolution.md) |
 | Business mistake | Append **compensating event** (`PaymentRefunded`), not DELETE |
 | GDPR / right to erasure | Tombstone events, crypto-shredding, or legal retention policy — plan early |
 

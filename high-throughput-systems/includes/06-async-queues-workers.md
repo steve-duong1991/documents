@@ -1,8 +1,8 @@
 # Async, Queues, and Workers
 
-Decouple **accept rate** from **process rate** — the API enqueues quickly; workers drain at sustainable throughput.
+Decouple **accept rate** from **process rate** — the API(Application Programming Interface) enqueues quickly; workers drain at sustainable throughput.
 
-> **Scope:** **Throughput lens** — queue depth, worker scale, and accept-vs-process rates. HTTP job contracts (202, polling, webhooks) → [api-design §10 Async patterns](../../api-design-and-protection/includes/10-async-patterns.md). Domain event publish → [ES §5 Async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md).
+> **Scope:** **Throughput lens** — queue depth, worker scale, and accept-vs-process rates. HTTP(Hypertext Transfer Protocol) job contracts (202, polling, webhooks) → [api-design §10 Async patterns](../../api-design-and-protection/includes/10-async-patterns.md). Domain event publish → [ES §5 Async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md).
 
 > **Related:** Async API patterns → [api-design-and-protection/includes/10-async-patterns.md](../../api-design-and-protection/includes/10-async-patterns.md) · Rate-limit escape hatch → [api-design-and-protection/includes/05-rate-limit-tiers.md](../../api-design-and-protection/includes/05-rate-limit-tiers.md) · Outbox → [event-sourcing-and-cqrs/includes/05-async-integration.md](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Multi-service sagas → [event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md](../../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
 
@@ -15,7 +15,7 @@ Decouple **accept rate** from **process rate** — the API enqueues quickly; wor
 | **Connection** | Held until work completes | Released after enqueue (~50ms) |
 | **Rate limit slot** | Occupied for minutes | Only enqueue costs a slot |
 | **Throughput** | Limited by slowest work | API accepts; workers scale separately |
-| **Client pattern** | Wait for 200 | `202` + poll, webhook, or SSE |
+| **Client pattern** | Wait for 200 | `202` + poll, webhook, or SSE(Server-Sent Events) |
 
 **Rule of thumb:** If work might exceed **~10–30 seconds**, or is CPU/IO expensive (exports, ML, bulk search), design **async from day one**.
 
@@ -106,7 +106,7 @@ Retries are guaranteed at scale:
 |---------|--------|
 | Queue depth > threshold for N minutes | Add worker instances |
 | Depth near zero sustained | Scale down |
-| DLQ growing | Fix poison messages — don't just add workers |
+| DLQ(Dead Letter Queue) growing | Fix poison messages — don't just add workers |
 | DB pool exhausted | Reduce worker concurrency or optimize job |
 
 Workers are **stateless** — any worker processes any job. Job state in DB + result in object storage.

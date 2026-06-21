@@ -26,14 +26,14 @@ flowchart TD
 
 | Scenario | Recommended stack |
 |----------|-------------------|
-| Public REST API (SaaS) | Sliding window + per API key + per-endpoint on heavy routes |
+| Public REST(Representational State Transfer) API (SaaS) | Sliding window + per API key + per-endpoint on heavy routes |
 | Mobile app backend | Token bucket (burst-friendly) + per user |
 | Login / auth endpoints | Sliding window log, strict per-IP + per-username |
 | Internal microservices | Gateway global limit + per-service concurrency |
 | GraphQL | Cost-based limiting + query depth/complexity analysis |
 | File upload API | Per-user quota + concurrent upload limit + bandwidth cap |
 | LLM / inference API | Token bucket on tokens/min + per-user daily quota |
-| DDoS / volumetric attack | Edge/CDN rate limit + WAF before app logic |
+| DDoS / volumetric attack | Edge/CDN(Content Delivery Network) rate limit + WAF(Web Application Firewall) before app logic |
 | Paid API with tiers | Quota system + per API key + graduated response |
 
 ## Common stack combinations

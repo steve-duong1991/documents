@@ -1,6 +1,6 @@
 # Idempotency
 
-How to design writes that are safe to retry: HTTP semantics, `Idempotency-Key` headers, storage patterns, and how idempotency fits async jobs, webhooks, and stateless app tiers.
+How to design writes that are safe to retry: HTTP(Hypertext Transfer Protocol) semantics, `Idempotency-Key` headers, storage patterns, and how idempotency fits async jobs, webhooks, and stateless app tiers.
 
 > **Related:** Write safety contract → [API design §7](01-api-design.md#7-write-safety) · Webhook replay → [API protection §6](02-api-protection.md#6-idempotency-and-replay-protection) · Async job retries → [Async patterns](10-async-patterns.md) · Shared stores → [Stateless architecture](11-stateless-architecture.md) · Event-sourced commands → [Event Sourcing & CQRS](../../event-sourcing-and-cqrs/includes/04-api-design-implications.md) · Multi-step sagas → [Sagas and distributed workflows](../../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md#idempotency-patterns-specific-to-sagas)
 
@@ -15,7 +15,7 @@ How to design writes that are safe to retry: HTTP semantics, `Idempotency-Key` h
 | **When is a key required?** | `POST` (and some `PATCH`) with side effects: payments, orders, provisioning, external calls |
 | **Where to store keys?** | Shared **Redis** or **PostgreSQL** — never per-instance memory ([stateless checklist](11-stateless-architecture.md#checklist-is-your-app-tier-stateless)) |
 | **Updates to existing resources?** | Use `ETag` / `If-Match`, not idempotency keys |
-| **Inbound webhooks?** | HMAC + timestamp + dedup by event ID — see [API protection §6](02-api-protection.md#6-idempotency-and-replay-protection) |
+| **Inbound webhooks?** | HMAC(Hash-based Message Authentication Code) + timestamp + dedup by event ID — see [API protection §6](02-api-protection.md#6-idempotency-and-replay-protection) |
 
 **Rule of thumb:** If a client might retry on timeout and a duplicate would charge money, create a row, or send a notification — require `Idempotency-Key`.
 
@@ -64,7 +64,7 @@ Require on **`POST`** when the operation:
 
 - Moves money (charges, refunds, transfers)
 - Creates durable resources (orders, subscriptions, tickets)
-- Triggers external side effects (email, SMS, partner API calls)
+- Triggers external side effects (email, SMS, partner API(Application Programming Interface) calls)
 - Enqueues async work the client may retry ([Async patterns](10-async-patterns.md))
 - Runs on unreliable networks (mobile, partner integrations)
 

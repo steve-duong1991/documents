@@ -10,7 +10,7 @@ Practical flows for choosing tree and index structures by workload.
 
 | Scenario | Recommended structure |
 |----------|----------------------|
-| SQL index, pagination, `BETWEEN` | B+ Tree |
+| SQL(Structured Query Language) index, pagination, `BETWEEN` | B+ Tree |
 | Only `WHERE id = ?`, no sort | Hash index / hash table |
 | In-app ordered map | Red-Black Tree (default) or AVL (lookup-critical) |
 | Autocomplete / IP longest prefix | Trie or Radix tree |
@@ -20,7 +20,7 @@ Practical flows for choosing tree and index structures by workload.
 | Closest point in 2D/3D | KD-Tree |
 | Verify file/block without full download | Merkle tree |
 | Filesystem directory metadata | B-Tree variants (ext4, NTFS) |
-| Write-heavy logs, metrics, KV at scale | LSM Tree |
+| Write-heavy logs, metrics, KV at scale | LSM(Log-Structured Merge) Tree |
 | Read-heavy OLTP with complex queries | B+ Tree |
 
 ---

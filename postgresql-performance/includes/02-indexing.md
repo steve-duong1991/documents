@@ -2,7 +2,7 @@
 
 Indexing is usually the **highest-ROI** optimization for read-heavy workloads. A well-chosen index turns a sequential scan of millions of rows into a few index lookups.
 
-> **Related:** General tree and index structures (B+, LSM, when to use each) → [tree-and-index-structures/GUIDE.md](../../tree-and-index-structures/GUIDE.md) · Query shape → [§3 Query design](03-query-design.md) · Online index builds → [§15 Schema migration checklist](15-schema-migration-checklist.md)
+> **Related:** General tree and index structures (B+, LSM(Log-Structured Merge), when to use each) → [tree-and-index-structures/GUIDE.md](../../tree-and-index-structures/GUIDE.md) · Query shape → [§3 Query design](03-query-design.md) · Online index builds → [§15 Schema migration checklist](15-schema-migration-checklist.md)
 
 ## Index types
 
@@ -12,9 +12,9 @@ Indexing is usually the **highest-ROI** optimization for read-heavy workloads. A
 | **Partial index** | Queries always filter on a subset | `WHERE deleted_at IS NULL` |
 | **Composite index** | Multi-column filters; order matters | `(tenant_id, created_at DESC)` |
 | **Covering index** (`INCLUDE`) | Avoid heap lookups for extra columns | `CREATE INDEX ... INCLUDE (name, email)` |
-| **GIN** | Full-text search, JSONB containment, arrays | `WHERE data @> '{"key": "val"}'` |
+| **GIN(Generalized Inverted Index)** | Full-text search, JSONB containment, arrays | `WHERE data @> '{"key": "val"}'` |
 | **GiST / SP-GiST** | Geospatial, range types, nearest-neighbor | PostGIS, `tsrange` |
-| **BRIN** | Very large, naturally ordered data | Time-series timestamps, monotonic IDs |
+| **BRIN(Block-Range Index)** | Very large, naturally ordered data | Time-series timestamps, monotonic IDs |
 
 ## Column order in composite indexes
 

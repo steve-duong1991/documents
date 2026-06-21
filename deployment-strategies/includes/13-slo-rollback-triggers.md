@@ -1,4 +1,4 @@
-# SLO-Based Rollback Triggers
+# SLO(Service Level Objective)-Based Rollback Triggers
 
 Automated rollback beats human judgment under incident pressure — but only when triggers are **defined before deploy**, tied to **version/build ID**, and tested in staging.
 
@@ -41,7 +41,7 @@ flowchart TD
 
 | Metric | Baseline window | Typical threshold |
 |--------|-----------------|-------------------|
-| HTTP 5xx rate | Pre-deploy 30 min | > 2× baseline |
+| HTTP(Hypertext Transfer Protocol) 5xx rate | Pre-deploy 30 min | > 2× baseline |
 | p99 latency | Pre-deploy 30 min | > 1.5× baseline or SLO |
 | 429 rate (paid tier) | Pre-deploy | Unexpected spike |
 | Error budget burn | Rolling 1 h | > 10% budget in 15 min |

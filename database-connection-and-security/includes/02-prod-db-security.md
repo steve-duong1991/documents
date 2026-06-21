@@ -4,7 +4,7 @@
 
 > **Related:** Pattern picker (canonical flow) → [§13 Decision guide](13-decision-guide.md) · Pool sizing → [postgresql-performance §7](../../postgresql-performance/includes/07-connection-management.md) · Rotation runbook → [§12 Credential rotation and DR](12-credential-rotation-and-dr.md)
 
-Production database security is **layered** — no single control is enough. Secret managers such as HashiCorp Vault or AWS IAM + RDS Proxy address authentication and secrets, but they sit alongside network, TLS, and monitoring controls.
+Production database security is **layered** — no single control is enough. Secret managers such as HashiCorp Vault or AWS IAM(Identity and Access Management) + RDS Proxy address authentication and secrets, but they sit alongside network, TLS(Transport Layer Security), and monitoring controls.
 
 ---
 
@@ -18,7 +18,7 @@ Production database security is **layered** — no single control is enough. Sec
 | 4. Secrets management | No credentials in code or git |
 | 5. Connection proxy | Pooling and credential brokering |
 | 6. Workload identity | IAM / K8s service accounts |
-| 7. Application protections | SQL injection, RLS, read replicas |
+| 7. Application protections | SQL(Structured Query Language) injection, RLS, read replicas |
 | 8. Encryption at rest | Disk and backup encryption |
 | 9. Monitoring & audit | Log and alert on connections |
 | 10. Admin vs app access | Separate human and service access |
@@ -47,7 +47,7 @@ Keep the database off the public internet and reachable only from trusted hosts.
 |----------|--------------|
 | Require SSL/TLS | `sslmode=require` or `verify-full` (PostgreSQL) |
 | Verify server certificate | Prevent man-in-the-middle attacks |
-| Mutual TLS (mTLS) | Client presents a cert; DB verifies client identity |
+| Mutual TLS (mTLS(Mutual Transport Layer Security)) | Client presents a cert; DB verifies client identity |
 | TLS 1.2+ only | Disable old protocols and weak ciphers |
 
 Example connection string:
@@ -65,7 +65,7 @@ postgresql://user:pass@db-host:5432/mydb?sslmode=verify-full
 | Dedicated DB user per service | Never use `postgres` / admin for apps |
 | Least privilege | Grant only needed tables and operations |
 | Strong passwords | Long, random; stored in a secret manager |
-| IAM / identity-based auth | AWS RDS IAM, Azure AD, GCP Cloud SQL IAM |
+| IAM / identity-based auth | AWS RDS IAM, Azure AD(Active Directory), GCP Cloud SQL IAM |
 | Certificate-based client auth | Client cert required to connect |
 | Credential rotation | Rotate passwords and keys on a schedule |
 | Short-lived credentials | Tokens that expire (Vault dynamic secrets, IAM auth tokens) |

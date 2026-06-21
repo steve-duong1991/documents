@@ -93,10 +93,10 @@ Why app instances must not hold session state → [Stateless architecture](11-st
 | Layer | Responsibility | Does NOT do |
 |-------|----------------|-------------|
 | **OpenAPI spec** | Contract, docs, CI validation | Runtime enforcement |
-| **Edge (CDN/WAF)** | DDoS, bot rules, geo block | Business logic |
+| **Edge (CDN(Content Delivery Network)/WAF(Web Application Firewall))** | DDoS, bot rules, geo block | Business logic |
 | **API Gateway** | AuthN, rate limits, routing, size caps | Object-level AuthZ; instance scaling |
 | **Load balancer** | Health checks, distribute to replicas | API keys, tiers, versioning |
-| **Application** | AuthZ, validation, idempotency | TLS at edge (usually) |
+| **Application** | AuthZ, validation, idempotency | TLS(Transport Layer Security) at edge (usually) |
 | **Database** | Persist with encryption + least privilege | Rate limiting |
 | **Observability** | Detect abuse, debug with correlation IDs | Block attacks alone |
 
@@ -125,7 +125,7 @@ flowchart LR
 
 Do not hold rate-limit slots for minutes-long work. Use the **job resource pattern**: `POST` → `202 Accepted` + `Location: /v1/jobs/{id}` → poll or webhook → signed result URL.
 
-See [Async patterns](10-async-patterns.md) for full flows (polling, webhooks, SSE, streaming), HTTP contracts, and architecture.
+See [Async patterns](10-async-patterns.md) for full flows (polling, webhooks, SSE(Server-Sent Events), streaming), HTTP(Hypertext Transfer Protocol) contracts, and architecture.
 
 ## Event Sourcing and CQRS (optional write/read split)
 
@@ -151,10 +151,10 @@ Full pattern → [Event Sourcing & CQRS](../../event-sourcing-and-cqrs/README.md
 | Edge | Full WAF + DDoS | Optional; VPN/private network |
 | Gateway | Full features + tiers | Lightweight ingress or mesh |
 | Load balancer | ALB/NLB per service | K8s Service or internal LB |
-| Auth | OAuth + API keys | mTLS + service JWT |
+| Auth | OAuth(Open Authorization) + API keys | mTLS(Mutual Transport Layer Security) + service JWT(JSON Web Token) |
 | Rate limits | Product tiers | High limits; concurrency caps |
 | OpenAPI | Required + portal | Recommended for discovery |
-| Threat model | Full OWASP + abuse | Focus on lateral movement |
+| Threat model | Full OWASP(Open Worldwide Application Security Project) + abuse | Focus on lateral movement |
 
 ## Pros of the reference architecture
 

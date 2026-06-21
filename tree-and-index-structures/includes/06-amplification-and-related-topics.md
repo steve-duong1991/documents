@@ -16,7 +16,7 @@ Storage engineers compare engines with three metrics. Lower is better for each �
 | Metric | What it means | B+ Tree | LSM Tree |
 |--------|---------------|---------|----------|
 | **Read amplification** | Bytes (or I/Os) read per logical read | Low — ~tree height page reads | Higher — memtable + multiple SSTables + Bloom false positives |
-| **Write amplification** | Bytes written to disk per logical write | Moderate — page splits, WAL | High — compaction rewrites data repeatedly |
+| **Write amplification** | Bytes written to disk per logical write | Moderate — page splits, WAL(Write-Ahead Log) | High — compaction rewrites data repeatedly |
 | **Space amplification** | Extra disk vs logical data size | Moderate — page fill, bloat until VACUUM | Higher until compaction — tombstones, L0 overlap, old versions |
 
 **Takeaway:** B+ trees optimize **steady reads and range scans**. LSM trees optimize **write ingest** and accept higher read/write/space amplification unless compaction is tuned.
@@ -27,7 +27,7 @@ See also → [04-lsm-trees.md](04-lsm-trees.md) (LSM pros/cons), [01-b-trees-and
 
 ## Clustered vs secondary index (B+ tree engines)
 
-In **InnoDB**, **SQL Server clustered index**, and similar engines:
+In **InnoDB**, **SQL(Structured Query Language) Server clustered index**, and similar engines:
 
 | Type | Leaf contains | Lookup cost |
 |------|---------------|-------------|
@@ -82,7 +82,7 @@ In **InnoDB**, **SQL Server clustered index**, and similar engines:
 | Too many secondary indexes on hot write path | Every INSERT/UPDATE touches each index | Index only proven query patterns; partial indexes — [PostgreSQL indexing](../../postgresql-performance/includes/02-indexing.md) |
 | Choosing LSM for “fast deletes” | Space not reclaimed until compaction | Plan TTL + compaction; or B+ with routine maintenance |
 | Using heap for keyed lookup | Heaps are not search trees | Map/set or DB index |
-| GiST/R-Tree for non-spatial JSON | Wrong index family | GIN for JSONB — [PostgreSQL indexing](../../postgresql-performance/includes/02-indexing.md) |
+| GiST/R-Tree for non-spatial JSON | Wrong index family | GIN(Generalized Inverted Index) for JSONB — [PostgreSQL indexing](../../postgresql-performance/includes/02-indexing.md) |
 | Ignoring clustered vs secondary cost | Hidden double lookup on wide secondaries | Covering index, narrower secondary keys, or PK redesign |
 
 ---
@@ -97,7 +97,7 @@ PostgreSQL uses several index access methods. Not all are B-trees:
 | **Hash** | Hash table | Equality only; rare in practice |
 | **GIN** | Inverted index | JSONB `@>`, full-text, arrays |
 | **GiST / SP-GiST** | Generalized search trees | PostGIS, ranges, NN |
-| **BRIN** | Block range summaries | Very large, naturally ordered columns |
+| **BRIN(Block-Range Index)** | Block range summaries | Very large, naturally ordered columns |
 
 Full detail → [postgresql-performance/includes/02-indexing.md](../../postgresql-performance/includes/02-indexing.md)
 

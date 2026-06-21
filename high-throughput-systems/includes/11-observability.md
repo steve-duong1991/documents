@@ -2,7 +2,7 @@
 
 Throughput work fails in production when you watch **CPU only**. Alert on **saturation** — pool wait, queue depth, replication lag, cache miss storms — before users notice.
 
-> **Related:** API checklist observability → [api-design-and-protection/includes/09-checklist-and-practices.md](../../api-design-and-protection/includes/09-checklist-and-practices.md) · Measurement → [01-measurement-and-slo.md](01-measurement-and-slo.md)
+> **Related:** API(Application Programming Interface) checklist observability → [api-design-and-protection/includes/09-checklist-and-practices.md](../../api-design-and-protection/includes/09-checklist-and-practices.md) · Measurement → [01-measurement-and-slo.md](01-measurement-and-slo.md)
 
 ---
 
@@ -10,7 +10,7 @@ Throughput work fails in production when you watch **CPU only**. Alert on **satu
 
 | Signal | Indicates | Alert when |
 |--------|-----------|------------|
-| **RPS + p99 latency** | Capacity headroom | p99 > SLO at normal RPS |
+| **RPS + p99 latency** | Capacity headroom | p99 > SLO(Service Level Objective) at normal RPS |
 | **Error rate / 5xx** | Reliability | Spike above baseline |
 | **429 rate** | Overload or abuse | Tier-specific spike |
 | **DB pool wait** | Connection exhaustion | p99 wait > threshold |
@@ -66,14 +66,14 @@ flowchart TB
 
 | Layer | Key metrics |
 |-------|-------------|
-| **Edge / CDN** | Cache hit ratio, origin offload, edge 429 |
+| **Edge / CDN(Content Delivery Network)** | Cache hit ratio, origin offload, edge 429 |
 | **Gateway** | Added latency, auth failures, throttle rate |
 | **Load balancer** | Healthy host count, active connections |
 | **Application** | RPS per route, p50/p99, error rate by route |
 | **Database** | Top queries by `total_time`, locks, connections |
 | **Cache** | Hit rate, evictions, command latency |
 | **Queue / stream** | Depth, oldest message age, consumer lag |
-| **Workers** | Process rate, failure rate, DLQ size |
+| **Workers** | Process rate, failure rate, DLQ(Dead Letter Queue) size |
 
 ---
 
@@ -163,7 +163,7 @@ Store results in CI or runbook for comparison.
 
 ---
 
-## RED and USE methods
+## RED(Rate, Errors, Duration) and USE(Utilization, Saturation, Errors) methods
 
 Two frameworks for choosing what to monitor:
 
@@ -194,7 +194,7 @@ Apply **per route** and per tier — not only global aggregates.
 | Concept | Definition |
 |---------|------------|
 | **SLO** | Target reliability (e.g. 99.9% monthly) |
-| **SLI** | Measured indicator (e.g. successful requests / total) |
+| **SLI(Service Level Indicator)** | Measured indicator (e.g. successful requests / total) |
 | **Error budget** | Allowed unreliability = 100% − SLO |
 
 Alert on **burn rate** — how fast budget is consumed:
@@ -207,6 +207,35 @@ Alert on **burn rate** — how fast budget is consumed:
 Example: 99.9% monthly ≈ 43 min downtime/month. Burning 10% in one hour triggers investigation.
 
 Tie deploy rollback triggers → [deployment-strategies §13](../../deployment-strategies/includes/13-slo-rollback-triggers.md).
+
+---
+
+## Distributed tracing (OpenTelemetry)
+
+Metrics show **what** is slow; traces show **where** in the chain.
+
+```mermaid
+flowchart LR
+    Edge[Edge / CDN] --> GW[Gateway]
+    GW --> App[orders-api]
+    App --> DB[(PostgreSQL)]
+    App --> Redis[(Redis)]
+    App --> Pay[payments-api]
+```
+
+| Practice | Detail |
+|----------|--------|
+| **Propagation** | W3C `traceparent` from edge through gateway → app → downstream |
+| **Correlation ID** | Same value in logs, traces, and support tickets |
+| **Span attributes** | `tenant_id`, `saga_id`, `build_id`, `route` |
+| **Sampling** | Head-based 1–10% baseline; tail sampling for errors |
+| **DB** | Optional PG statement spans — watch overhead |
+
+Saga debugging → propagate `saga_id` — [ES §7](../../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md#observability-and-operations).
+
+| RED / USE | Tracing adds |
+|-----------|--------------|
+| Rate, errors, duration per route | Span waterfall for one slow request |
 
 ---
 

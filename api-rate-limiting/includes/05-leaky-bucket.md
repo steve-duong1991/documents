@@ -33,7 +33,7 @@ flowchart TD
 
 - Protecting databases from write storms
 - Legacy systems with hard throughput caps
-- Third-party API integrations with strict rate contracts
+- Third-party API(Application Programming Interface) integrations with strict rate contracts
 - Message processors and async job ingestion
 - Any downstream that cannot handle burst traffic
 

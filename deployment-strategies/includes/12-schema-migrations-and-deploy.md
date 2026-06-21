@@ -56,7 +56,7 @@ flowchart LR
 
 ---
 
-## Event-sourced and CQRS systems
+## Event-sourced and CQRS(Command Query Responsibility Segregation) systems
 
 | Component | Deploy concern |
 |-----------|----------------|
@@ -64,7 +64,7 @@ flowchart LR
 | **Projectors** | New projector version must handle old events; run dual-write or lag-tolerant reads during rollout |
 | **Read models** | Rebuild or backfill projections after schema expand — see [event-sourcing decision guide](../../event-sourcing-and-cqrs/includes/06-decision-guide.md) |
 
-Deploy projectors **before** or **with** API changes that depend on new read-model fields.
+Deploy projectors **before** or **with** API(Application Programming Interface) changes that depend on new read-model fields.
 
 ---
 

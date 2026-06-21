@@ -4,7 +4,6 @@ docs_dir: .
 site_dir: ../.mkdocs-site
 
 # Build from documents/ root: mkdocs build -f mkdocs.yml
-# Nav: README TOC + combined GUIDE + individual includes for deep links and search.
 
 nav:
   - Home: README.md
@@ -12,6 +11,7 @@ nav:
   - Glossary: GLOSSARY.md
   - Changelog: CHANGELOG.md
   - Runbook template: RUNBOOK-TEMPLATE.md
+  - Runbook example (orders-api): RUNBOOK-EXAMPLE-orders-api.md
   - API Design & Protection:
       - Table of contents: api-design-and-protection/README.md
       - Full guide: api-design-and-protection/GUIDE.md
@@ -32,6 +32,8 @@ nav:
           - Idempotency: api-design-and-protection/includes/13-idempotency.md
           - API Versioning and Deprecation: api-design-and-protection/includes/14-api-versioning-and-deprecation.md
           - Contract and Schema Testing: api-design-and-protection/includes/15-contract-and-schema-testing.md
+          - Multi-Tenant APIs: api-design-and-protection/includes/16-multi-tenant-apis.md
+          - GraphQL and gRPC: api-design-and-protection/includes/17-graphql-and-grpc.md
   - API Rate Limiting:
       - Table of contents: api-rate-limiting/README.md
       - Full guide: api-rate-limiting/GUIDE.md
@@ -96,6 +98,8 @@ nav:
           - Async Integration: event-sourcing-and-cqrs/includes/05-async-integration.md
           - Decision Guide: event-sourcing-and-cqrs/includes/06-decision-guide.md
           - Sagas and Distributed Workflows: event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md
+          - Event Schema Evolution: event-sourcing-and-cqrs/includes/08-event-schema-evolution.md
+          - Testing and Verification: event-sourcing-and-cqrs/includes/09-testing-and-verification.md
   - High Throughput Systems:
       - Table of contents: high-throughput-systems/README.md
       - Full guide: high-throughput-systems/GUIDE.md
@@ -114,6 +118,8 @@ nav:
           - Observability: high-throughput-systems/includes/11-observability.md
           - Decision Guide, Checklist, and Common Mistakes: high-throughput-systems/includes/12-decision-guide-and-common-mistakes.md
           - Multi-Region Read Routing: high-throughput-systems/includes/13-multi-region-read-routing.md
+          - Message Brokers and Queues: high-throughput-systems/includes/14-message-brokers-and-queues.md
+          - CDC and Search Indexing: high-throughput-systems/includes/15-cdc-and-search-indexing.md
   - PostgreSQL Performance:
       - Table of contents: postgresql-performance/README.md
       - Full guide: postgresql-performance/GUIDE.md
@@ -134,6 +140,7 @@ nav:
           - Decision Guide, Checklist, and Common Mistakes: postgresql-performance/includes/13-decision-guide-and-common-mistakes.md
           - Strong Consistency — Promises and Costs: postgresql-performance/includes/14-consistency-promises-and-costs.md
           - Schema Migration Checklist: postgresql-performance/includes/15-schema-migration-checklist.md
+          - Backup, Restore, and PITR: postgresql-performance/includes/16-backup-restore-and-pitr.md
   - Tree & Index Structures:
       - Table of contents: tree-and-index-structures/README.md
       - Full guide: tree-and-index-structures/GUIDE.md
@@ -145,7 +152,6 @@ nav:
           - LSM Trees (Log-Structured Merge Trees): tree-and-index-structures/includes/04-lsm-trees.md
           - Decision Guides and Cheat Sheets: tree-and-index-structures/includes/05-decision-guides.md
           - Amplification, Complexity, and Related Topics: tree-and-index-structures/includes/06-amplification-and-related-topics.md
-
 theme:
   name: material
   palette:

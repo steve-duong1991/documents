@@ -22,7 +22,7 @@ Canonical `429` example and header names for product tiers → [api-design §5 R
 
 | Header | Purpose |
 |--------|---------|
-| `Retry-After` | Seconds (or HTTP-date) until client should retry |
+| `Retry-After` | Seconds (or HTTP(Hypertext Transfer Protocol)-date) until client should retry |
 | `X-RateLimit-Limit` | Max requests allowed in the window |
 | `X-RateLimit-Remaining` | Requests left in current window |
 | `X-RateLimit-Reset` | Unix timestamp when the window resets |
@@ -31,7 +31,7 @@ Canonical `429` example and header names for product tiers → [api-design §5 R
 
 Clients that retry aggressively on `429` amplify load. Mitigate with:
 
-1. Document exponential backoff in your API docs
+1. Document exponential backoff in your API(Application Programming Interface) docs
 2. Return accurate `Retry-After` values
 3. Use jitter in client SDKs
 4. Consider a separate, stricter limit for rapid retries from the same client

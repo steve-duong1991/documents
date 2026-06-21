@@ -1,6 +1,6 @@
 # Canary Deployment
 
-> **Related:** Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO rollback → [§13](13-slo-rollback-triggers.md) · Progressive delivery → [§10](10-progressive-delivery.md)
+> **Related:** Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO(Service Level Objective) rollback → [§13](13-slo-rollback-triggers.md) · Progressive delivery → [§10](10-progressive-delivery.md)
 
 ## What it is
 
@@ -27,7 +27,7 @@ flowchart TB
 
 ## Cons
 
-- Requires traffic splitting (service mesh, load balancer, CDN, API gateway)
+- Requires traffic splitting (service mesh, load balancer, CDN(Content Delivery Network), API(Application Programming Interface) gateway)
 - Two versions plus compatible schemas and APIs
 - Observability and SLOs must be solid
 

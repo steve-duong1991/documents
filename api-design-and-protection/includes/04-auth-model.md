@@ -6,7 +6,7 @@
 
 The **auth model** defines how clients prove identity (authentication) and how the system decides what they may access (authorization). Gateway handles AuthN; services must handle AuthZ — especially **object-level** permissions.
 
-OAuth and JWT tell you **who** called; **RBAC** and **IAM** define **what roles and permissions** they have. Enterprise identity often flows from Active Directory (or Entra ID) into token claims and API policies.
+OAuth(Open Authorization) and JWT(JSON Web Token) tell you **who** called; **RBAC(Role-Based Access Control)** and **IAM(Identity and Access Management)** define **what roles and permissions** they have. Enterprise identity often flows from Active Directory (or Entra ID) into token claims and API(Application Programming Interface) policies.
 
 Full details → [Identity: RBAC, IAM & Active Directory](12-identity-rbac-iam-ad.md)
 
@@ -39,10 +39,10 @@ flowchart LR
 
 | Client | Auth model | Token lifetime | Gateway | Application |
 |--------|------------|----------------|---------|-------------|
-| **End-user app** | OAuth 2.0 + PKCE → JWT | Access: ~15 min; refresh: days | Validate JWT sig, iss, aud, exp | Scopes + user owns resource |
-| **Partner / server** | API key + IP allowlist; optional mTLS | Rotate quarterly | Key lookup → `client_id` | Scope per key; audit all calls |
+| **End-user app** | OAuth 2.0 + PKCE(Proof Key for Code Exchange) → JWT | Access: ~15 min; refresh: days | Validate JWT sig, iss, aud, exp | Scopes + user owns resource |
+| **Partner / server** | API key + IP allowlist; optional mTLS(Mutual Transport Layer Security) | Rotate quarterly | Key lookup → `client_id` | Scope per key; audit all calls |
 | **Internal service** | mTLS + short-lived service JWT | 5–15 min | Terminate mTLS, forward identity | RBAC / service allowlists |
-| **Webhooks (inbound)** | HMAC-SHA256 + timestamp | N/A | Optional IP allowlist | Verify signature, reject replays |
+| **Webhooks (inbound)** | HMAC(Hash-based Message Authentication Code)-SHA256 + timestamp | N/A | Optional IP allowlist | Verify signature, reject replays |
 
 ## Layered auth flow
 
@@ -126,7 +126,7 @@ flowchart TB
 - Short TTL (minutes)
 - Asymmetric keys (RS256) with key rotation
 
-## mTLS (mutual TLS)
+## mTLS (mutual TLS(Transport Layer Security))
 
 ### Pros
 
@@ -165,7 +165,7 @@ flowchart TB
 
 ## Common mistakes
 
-- AuthN at gateway but **no object-level AuthZ** in app (BOLA)
+- AuthN at gateway but **no object-level AuthZ** in app (BOLA(Broken Object-Level Authorization))
 - Long-lived JWTs treated as permanent API keys
 - Returning `404` instead of `403` inconsistently
 - Logging `Authorization` headers

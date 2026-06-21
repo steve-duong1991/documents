@@ -32,8 +32,8 @@ flowchart LR
 
 | Concern | Best layer |
 |---------|------------|
-| Block garbage / DDoS | Edge / CDN |
-| Enforce API key validity + global quota | API Gateway |
+| Block garbage / DDoS | Edge / CDN(Content Delivery Network) |
+| Enforce API(Application Programming Interface) key validity + global quota | API Gateway |
 | Per-plan business quotas | App middleware |
 | Protect database writes | App semaphore or leaky bucket near DB |
 
@@ -41,7 +41,7 @@ Full layer comparison → [api-rate-limiting/includes/07-deployment-layers.md](.
 
 ---
 
-## HTTP 429 and Retry-After
+## HTTP(Hypertext Transfer Protocol) 429 and Retry-After
 
 When limiting, return proper semantics so clients backoff:
 
@@ -69,7 +69,7 @@ Rate limits cap **requests per second**; semaphores cap **in-flight expensive wo
 |-----------|---------------|
 | Full-text export | Long DB hold |
 | Complex search | CPU + IO heavy |
-| Bulk write endpoint | WAL and lock pressure |
+| Bulk write endpoint | WAL(Write-Ahead Log) and lock pressure |
 | External API fan-out | Partner rate limits |
 
 ```text

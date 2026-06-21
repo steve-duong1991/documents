@@ -42,17 +42,17 @@ System-wide scenarios (cache, scale, async, overload). Database-only tuning → 
 
 | Layer | Scenario | Recommended approach |
 |-------|----------|------------------------|
-| **System** | Public read API at 10k RPS | Cache hot keys → horizontal app scale → read replica → [PG §13](../../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md) for query tuning |
+| **System** | Public read API(Application Programming Interface) at 10k RPS | Cache hot keys → horizontal app scale → read replica → [PG §13](../../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md) for query tuning |
 | **App** | Slow list endpoint | Cap page size, field selection, cursor pagination → [PG §13](../../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md) for `EXPLAIN`/indexes |
 | **App + queue** | Write spike on orders table | Short transactions → batch INSERT → queue non-critical side effects |
 | **Database** | Hot row contention (inventory) | `FOR UPDATE SKIP LOCKED` → partition → [PG §12 bulk](../../postgresql-performance/includes/12-bulk-operations-and-concurrency.md) |
-| **Database** | Time-series ingest at millions/day | [PG §10 partitioning](../../postgresql-performance/includes/10-partitioning.md) → BRIN/B-tree → LSM if PG exhausted |
+| **Database** | Time-series ingest at millions/day | [PG §10 partitioning](../../postgresql-performance/includes/10-partitioning.md) → BRIN(Block-Range Index)/B-tree → LSM(Log-Structured Merge) if PG exhausted |
 | **App + async** | Export/report blocking API | Async job + polling/webhook → scale workers on queue depth |
 | **Edge + app** | Login brute force | Gateway + IP limits → [PG §13](../../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md) for short transactions + partial index |
 | **Edge** | Partner API burst traffic | Token bucket at gateway → identity tiers → Redis counters |
-| **System** | Global low-latency reads | CDN for cacheable GET → regional read replica → [PG §11](../../postgresql-performance/includes/11-read-scaling-and-caching.md) |
+| **System** | Global low-latency reads | CDN(Content Delivery Network) for cacheable GET → regional read replica → [PG §11](../../postgresql-performance/includes/11-read-scaling-and-caching.md) |
 | **Stream** | Audit log at high volume | Event stream → partitioned topic → async projections |
-| **Batch** | Nightly ETL | Staging + `COPY` → validate → merge → `ANALYZE` |
+| **Batch** | Nightly ETL(Extract, Transform, Load) | Staging + `COPY` → validate → merge → `ANALYZE` |
 | **Async** | ML inference at scale | Job queue → GPU worker pool → result in object storage |
 | **App** | GraphQL expensive queries | Cost-based limits + depth cap → cache persisted queries |
 | **Cache** | Redis hot key saturation | Key sharding → local shadow cache → pre-warm on deploy |
@@ -114,6 +114,8 @@ Use this order — skipping steps wastes effort and money:
 | Where to rate limit? | Edge (abuse) → gateway (API key) → app (plan tier) |
 | What to alert on? | Pool wait, queue depth, replication lag — not just CPU |
 | Stateless app tier? | Yes — state in DB, Redis, queue, object storage |
+| Broker vs queue? | [§14 Message brokers](14-message-brokers-and-queues.md) decision flow |
+| Search at scale? | [§15 CDC and search](15-cdc-and-search-indexing.md) — not PG alone |
 
 ---
 

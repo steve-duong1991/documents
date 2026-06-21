@@ -20,7 +20,7 @@ Use a pooler between apps and PostgreSQL:
 | Tool | Notes |
 |------|-------|
 | **PgBouncer** | Most common; transaction or session pooling |
-| **RDS Proxy** | AWS managed; IAM auth support |
+| **RDS Proxy** | AWS managed; IAM(Identity and Access Management) auth support |
 | **Supabase pooler** | Built on PgBouncer |
 | **Pgpool-II** | Pooling + load balancing + replication |
 

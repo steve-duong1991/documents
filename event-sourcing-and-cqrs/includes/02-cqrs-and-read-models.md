@@ -1,6 +1,6 @@
-# CQRS and Read Models
+# CQRS(Command Query Responsibility Segregation) and Read Models
 
-**CQRS** separates the **write model** (commands, aggregates, event store) from **read models** (queries optimized for specific screens or reports). Event Sourcing often pairs with CQRS because replaying the full log on every HTTP GET does not scale.
+**CQRS** separates the **write model** (commands, aggregates, event store) from **read models** (queries optimized for specific screens or reports). Event Sourcing often pairs with CQRS because replaying the full log on every HTTP(Hypertext Transfer Protocol) GET does not scale.
 
 > **Related:** Storage → [Storage & projections](03-storage-and-projections.md) · HTTP split → [API design implications](04-api-design-implications.md)
 
@@ -31,7 +31,7 @@ flowchart TB
     Q3[GET /orders/search] --> RM3
 ```
 
-**Rule of thumb:** Writes go through the aggregate + event store. Reads hit projections unless you explicitly need point-in-time replay (support, audit API).
+**Rule of thumb:** Writes go through the aggregate + event store. Reads hit projections unless you explicitly need point-in-time replay (support, audit API(Application Programming Interface)).
 
 ---
 
@@ -130,7 +130,7 @@ Event Sourcing is optional. Many teams use **CQRS-lite** (read replicas + caches
 - Read queries stay fast and simple (indexes, joins tuned per screen)
 - Scale read and write tiers independently
 - New views without changing write schema
-- Clear boundary for caching and CDN on query APIs
+- Clear boundary for caching and CDN(Content Delivery Network) on query APIs
 
 ## Cons
 

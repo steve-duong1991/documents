@@ -1,6 +1,6 @@
 # Choosing a Strategy & Best Practices
 
-> **Related:** Overview comparison → [§00 Overview](00-overview.md) · Schema migrations → [§12](12-schema-migrations-and-deploy.md) · SLO rollback → [§13](13-slo-rollback-triggers.md)
+> **Related:** Overview comparison → [§00 Overview](00-overview.md) · Schema migrations → [§12](12-schema-migrations-and-deploy.md) · SLO(Service Level Objective) rollback → [§13](13-slo-rollback-triggers.md)
 
 ## Decision flow
 
@@ -46,7 +46,7 @@ flowchart TD
 
 | Stack | Typical pattern |
 |-------|-----------------|
-| **Kubernetes** | Rolling default; Argo Rollouts/Flagger for canary; GitOps with Argo CD |
+| **Kubernetes** | Rolling default; Argo Rollouts/Flagger for canary; GitOps(Git Operations) with Argo CD |
 | **AWS ECS/Fargate** | Rolling update; CodeDeploy blue-green for Lambda/ECS |
 | **Serverless** | Alias weighted routing (canary); immutable versions |
 | **VMs + load balancer** | Rolling pool replace or blue-green ASG swap |

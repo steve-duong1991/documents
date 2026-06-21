@@ -1,4 +1,4 @@
-# API Rate Limiting Guide
+# API(Application Programming Interface) Rate Limiting Guide
 
 A practical reference for rate limiters in API protection — how they work, pros and cons, when to use each, and production architecture patterns.
 
@@ -29,7 +29,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (ga
 
 ## Overview
 
-Rate limiting protects availability, cost, and fairness. It is not authentication on its own — combine it with auth, WAF, and abuse detection.
+Rate limiting protects availability, cost, and fairness. It is not authentication on its own — combine it with auth, WAF(Web Application Firewall), and abuse detection.
 
 See full details → [includes/00-overview.md](includes/00-overview.md)
 
@@ -85,7 +85,7 @@ See full details → [includes/06-scope-identity.md](includes/06-scope-identity.
 
 ## 7. Deployment Layers
 
-CDN/edge, API gateway, reverse proxy, app middleware — where to enforce limits in the stack.
+CDN(Content Delivery Network)/edge, API gateway, reverse proxy, app middleware — where to enforce limits in the stack.
 
 See full details → [includes/07-deployment-layers.md](includes/07-deployment-layers.md)
 

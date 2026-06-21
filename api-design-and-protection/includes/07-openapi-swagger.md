@@ -4,9 +4,9 @@
 
 ## What it is
 
-**OpenAPI Specification (OAS)** is a standard format (`openapi.yaml` / `openapi.json`) for describing REST APIs. **Swagger** is the tooling ecosystem around OAS: Swagger Editor, Swagger UI, Swagger Codegen, and related validators.
+**OpenAPI Specification (OAS)** is a standard format (`openapi.yaml` / `openapi.json`) for describing REST(Representational State Transfer) APIs. **Swagger** is the tooling ecosystem around OAS: Swagger Editor, Swagger UI, Swagger Codegen, and related validators.
 
-Swagger does **not** replace gateway auth, WAF, or rate limits. It defines and documents the **contract**; runtime protection is configured separately.
+Swagger does **not** replace gateway auth, WAF(Web Application Firewall), or rate limits. It defines and documents the **contract**; runtime protection is configured separately.
 
 ## Where Swagger fits in the lifecycle
 
@@ -54,7 +54,7 @@ flowchart TB
 |------|----------------------|----------------------------------|
 | **Design** | Define paths, schemas, errors, auth schemes | Threat modeling (separate) |
 | **Build** | Codegen, validation middleware, mocks, contract tests | App validation code |
-| **Deploy** | Publish Swagger UI; optional gateway route import | Gateway policies, WAF, TLS |
+| **Deploy** | Publish Swagger UI; optional gateway route import | Gateway policies, WAF, TLS(Transport Layer Security) |
 | **Operate** | Detect spec vs implementation drift | Monitoring, key rotation |
 
 ## Example spec fragment
@@ -110,7 +110,7 @@ Document rate-limit headers in response descriptions even though the gateway enf
 
 ### Cons
 
-- Exposes full API surface to attackers (mitigate with auth on try-it-out)
+- Exposes full API(Application Programming Interface) surface to attackers (mitigate with auth on try-it-out)
 - Can drift from implementation if not CI-gated
 - Not a substitute for narrative guides and examples
 - Large specs are hard to navigate without grouping/tags
@@ -188,7 +188,7 @@ Some gateways auto-create routes from the spec.
 |------------|----------|-------------|
 | Rate limiting | No | API Gateway, Cloudflare |
 | WAF / DDoS | No | Edge provider |
-| JWT validation | No | Gateway / middleware |
+| JWT(JSON Web Token) validation | No | Gateway / middleware |
 | Object-level AuthZ | No | Application |
 | Idempotency enforcement | No | Application |
 | Secret storage | No | Vault, cloud secret managers |
@@ -221,6 +221,6 @@ Your app         =  business rules and object permissions
 |---------|-----|
 | Spec drift from implementation | Contract tests fail CI on mismatch |
 | Monolithic 5k-line spec | Modular `$ref` files per domain |
-| Document auth but not scopes | List OAuth scopes per operation |
+| Document auth but not scopes | List OAuth(Open Authorization) scopes per operation |
 | Treat spec as rate-limit source of truth | Document tiers in portal; enforce in gateway |
 | Skip breaking-change detection | `openapi-diff` / oasdiff on every PR |

@@ -1,8 +1,8 @@
 # Entry and Edge
 
-Absorb traffic **before it hits origin** — CDN cache, WAF, edge rate limits, then API gateway and load balancer for policy and distribution.
+Absorb traffic **before it hits origin** — CDN(Content Delivery Network) cache, WAF(Web Application Firewall), edge rate limits, then API(Application Programming Interface) gateway and load balancer for policy and distribution.
 
-> **Scope:** **Throughput lens** — reduce origin RPS, shed abuse early, minimize hops and TLS CPU on the hot path. LB vs gateway definitions, request flows, and product selection → [api-design §3 Gateway](../../api-design-and-protection/includes/03-api-gateway.md).
+> **Scope:** **Throughput lens** — reduce origin RPS, shed abuse early, minimize hops and TLS(Transport Layer Security) CPU on the hot path. LB vs gateway definitions, request flows, and product selection → [api-design §3 Gateway](../../api-design-and-protection/includes/03-api-gateway.md).
 >
 > **Related:** Full gateway + LB guide → [api-design §3 Gateway](../../api-design-and-protection/includes/03-api-gateway.md) · Edge rate limits → [api-rate-limiting §7](../../api-rate-limiting/includes/07-deployment-layers.md)
 
@@ -72,7 +72,7 @@ See [Flow 3 — Both together](../../api-design-and-protection/includes/03-api-g
 
 | Situation | Consider |
 |-----------|----------|
-| Internal service-to-service | mTLS mesh may replace gateway |
+| Internal service-to-service | mTLS(Mutual Transport Layer Security) mesh may replace gateway |
 | Simple internal API | L7 LB with path routing may suffice |
 | Public API with tiers | Gateway worth the ~1–5ms |
 | Global users | CDN + edge gateway (Cloudflare-style) |

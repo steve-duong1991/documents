@@ -1,4 +1,4 @@
-# Direct RDS IAM auth (no RDS Proxy)
+# Direct RDS IAM(Identity and Access Management) auth (no RDS Proxy)
 
 > App connects to RDS using an IAM auth token as the password — same token model as [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md), but **without** RDS Proxy in the path.
 
@@ -108,7 +108,7 @@ psql "host=mydb.abc123.us-east-1.rds.amazonaws.com port=5432 dbname=myapp user=a
 | Layer | Coverage |
 |-------|----------|
 | 1. Network isolation | RDS in private subnet |
-| 2. TLS | Required for IAM auth |
+| 2. TLS(Transport Layer Security) | Required for IAM auth |
 | 3. Authentication | IAM token + dedicated DB user |
 | 4. Secrets management | No static app password |
 | 6. Workload identity | EC2/ECS/Lambda/EKS IAM roles |

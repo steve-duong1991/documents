@@ -1,4 +1,4 @@
-# Overview — API Design, Protection & Full Flow
+# Overview — API(Application Programming Interface) Design, Protection & Full Flow
 
 This guide covers how to **design** public and internal APIs, **protect** them in production, and wire the pieces together: gateway, auth, rate limits, threat modeling, and OpenAPI/Swagger.
 
@@ -9,15 +9,15 @@ This guide covers how to **design** public and internal APIs, **protect** them i
 | Layer | Topics |
 |-------|--------|
 | **Design** | Resources, versioning, errors, pagination, idempotency |
-| **Protection** | AuthN/AuthZ, WAF, TLS, validation, logging |
+| **Protection** | AuthN/AuthZ, WAF(Web Application Firewall), TLS(Transport Layer Security), validation, logging |
 | **Entry architecture** | Load balancer vs API gateway, flows, tech stacks |
 | **Gateway** | Product choice, routing, policy enforcement |
-| **Auth model** | OAuth, API keys, mTLS, webhooks |
-| **Identity (RBAC / IAM / AD)** | Enterprise identity, roles, AD → API access |
+| **Auth model** | OAuth(Open Authorization), API keys, mTLS(Mutual Transport Layer Security), webhooks |
+| **Identity (RBAC(Role-Based Access Control) / IAM(Identity and Access Management) / AD(Active Directory))** | Enterprise identity, roles, AD → API access |
 | **Rate tiers** | Free → Enterprise quotas |
-| **Threat model** | STRIDE + OWASP API Top 10 |
+| **Threat model** | STRIDE(Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) + OWASP(Open Worldwide Application Security Project) API Top 10 |
 | **OpenAPI/Swagger** | Contract-first design, docs, contract tests |
-| **Async patterns** | Jobs, polling, webhooks, SSE, streaming |
+| **Async patterns** | Jobs, polling, webhooks, SSE(Server-Sent Events), streaming |
 | **Idempotency** | Safe retries, Idempotency-Key, storage patterns |
 | **Stateless architecture** | Externalized state, scaling, token-based auth, deploy freedom |
 

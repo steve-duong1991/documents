@@ -1,6 +1,6 @@
 # Rolling Deployment
 
-> **Related:** SLO rollback triggers → [§13](13-slo-rollback-triggers.md) · Schema coupling → [§12](12-schema-migrations-and-deploy.md) · Stateless prerequisite → [api-design §11](../../api-design-and-protection/includes/11-stateless-architecture.md)
+> **Related:** SLO(Service Level Objective) rollback triggers → [§13](13-slo-rollback-triggers.md) · Schema coupling → [§12](12-schema-migrations-and-deploy.md) · Stateless prerequisite → [api-design §11](../../api-design-and-protection/includes/11-stateless-architecture.md)
 
 ## What it is
 
@@ -35,7 +35,7 @@ flowchart TB
 
 ## Cons
 
-- Two versions run at once — schema and API compatibility required
+- Two versions run at once — schema and API(Application Programming Interface) compatibility required
 - Rollback is slower (roll back instance by instance)
 - A bad release can affect a subset of users before you stop
 

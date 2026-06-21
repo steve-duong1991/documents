@@ -79,10 +79,10 @@ Before Vault gives DB credentials, the service must prove its identity:
 
 | Auth method | Typical use |
 |-------------|-------------|
-| **Kubernetes auth** | Pods use service account JWT |
-| **AWS IAM auth** | EC2 / ECS / Lambda uses IAM role |
+| **Kubernetes auth** | Pods use service account JWT(JSON Web Token) |
+| **AWS IAM(Identity and Access Management) auth** | EC2 / ECS / Lambda uses IAM role |
 | **AppRole** | VMs and custom apps with `role_id` + `secret_id` |
-| **JWT / OIDC** | Cloud-native workloads |
+| **JWT / OIDC(OpenID Connect)** | Cloud-native workloads |
 
 ---
 
@@ -100,7 +100,7 @@ Vault Agent authenticates to Vault, fetches/renews DB credentials, and writes th
 
 An init container fetches credentials before the main app container starts.
 
-### Direct SDK / API
+### Direct SDK / API(Application Programming Interface)
 
 The app calls the Vault API at startup and again before credentials expire.
 
@@ -151,7 +151,7 @@ The app calls the Vault API at startup and again before credentials expire.
 Steps:
 
 1. Postgres in a **private subnet**
-2. **TLS required** for all DB connections
+2. **TLS(Transport Layer Security) required** for all DB connections
 3. Vault holds a **DB admin role** (used only by Vault, never by apps)
 4. Each app gets its own **Vault role** (`api-service`, `worker-service`, etc.)
 5. App pod uses **Kubernetes auth** to reach Vault

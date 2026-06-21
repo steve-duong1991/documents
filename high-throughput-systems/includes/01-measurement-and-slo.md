@@ -10,7 +10,7 @@ You cannot optimize throughput blind. Define targets, load test realistic paths,
 
 ## At a glance
 
-| Metric | What it tells you | Typical SLO example |
+| Metric | What it tells you | Typical SLO(Service Level Objective) example |
 |--------|-------------------|---------------------|
 | **RPS / QPS** | Request or query rate | 10,000 RPS sustained |
 | **p50 / p99 latency** | User experience under load | p99 < 200ms |
@@ -37,6 +37,31 @@ Document which endpoints require **strong consistency** (primary DB) vs **eventu
 
 ---
 
+## Capacity and cost planning
+
+Throughput work has a **bill** — model before you scale.
+
+| Cost driver | Scales with | Levers |
+|-------------|-------------|--------|
+| **App replicas** | RPS, CPU | Right-size; autoscale on saturation not CPU alone |
+| **Read replicas** | SELECT volume | Fix queries first — replicas multiply bad query cost |
+| **Redis / cache** | Memory, hot keys | TTL, eviction, separate clusters |
+| **Message retention** | Kafka topic size | Retention days, compaction |
+| **CDN(Content Delivery Network) egress** | Bytes out | Cache hit ratio, compress responses |
+| **Cross-region replication** | Write volume, regions | Single write region default — [§13 multi-region](13-multi-region-read-routing.md) |
+| **Search index** | Document count | CDC(Change Data Capture) vs sync write path — [§15 CDC and search](15-cdc-and-search-indexing.md) |
+
+| Planning step | Action |
+|---------------|--------|
+| Baseline | RPS ceiling at SLO from load test |
+| Growth | `peak_rps × 1.5` headroom for 6 months |
+| Unit economics | Cost per 1M requests after cache + replica count |
+| Error budget | Slow burn → capacity project before fast burn pages |
+
+Pair with product **rate tiers** — [api-design §5](../../api-design-and-protection/includes/05-rate-limit-tiers.md).
+
+---
+
 ## Load testing
 
 ### What to test
@@ -45,7 +70,7 @@ Document which endpoints require **strong consistency** (primary DB) vs **eventu
 |------|-----|
 | **List / search** | Often the heaviest read — pagination, joins, sort |
 | **Hot key read** | Same resource fetched repeatedly — cache effectiveness |
-| **Write burst** | INSERT/UPDATE spikes — lock contention, WAL pressure |
+| **Write burst** | INSERT/UPDATE spikes — lock contention, WAL(Write-Ahead Log) pressure |
 | **Mixed realistic ratio** | Match production read/write mix |
 | **Expensive async trigger** | Export, report, bulk search enqueue rate |
 
@@ -61,7 +86,7 @@ Document which endpoints require **strong consistency** (primary DB) vs **eventu
 
 | Tool | Best for |
 |------|----------|
-| **k6** | Scriptable HTTP; CI-friendly; threshold assertions |
+| **k6** | Scriptable HTTP(Hypertext Transfer Protocol); CI-friendly; threshold assertions |
 | **Locust** | Python scenarios; interactive ramp |
 | **Gatling** | JVM shops; detailed reports |
 | **Vegeta** | Quick constant-rate HTTP flood |

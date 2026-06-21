@@ -1,6 +1,6 @@
 # Overview — High Throughput Systems
 
-High throughput means handling **many useful operations per second** — HTTP requests, events, or writes — without breaking SLOs on latency, error rate, or data consistency.
+High throughput means handling **many useful operations per second** — HTTP(Hypertext Transfer Protocol) requests, events, or writes — without breaking SLOs on latency, error rate, or data consistency.
 
 **Rule of thumb:** Optimize in order. Measure first, reduce work per operation, fix the database hot path, cache, scale horizontally, async deferrable work, then protect under overload. Skipping steps wastes money and complexity.
 
@@ -20,7 +20,7 @@ High throughput means handling **many useful operations per second** — HTTP re
 | **Throughput** | Operations completed per unit time | 10,000 RPS, 500k events/sec |
 | **Latency** | Time for one operation | p99 = 200ms |
 | **Concurrency** | In-flight operations at once | 500 open requests |
-| **Capacity** | Max sustained throughput within SLO | 8k RPS at p99 < 250ms |
+| **Capacity** | Max sustained throughput within SLO(Service Level Objective) | 8k RPS at p99 < 250ms |
 
 Throughput, latency, and concurrency are related — not interchangeable.
 
@@ -50,7 +50,7 @@ At fixed concurrency, **lower latency → higher throughput**. At fixed latency,
 Sustainable throughput ≈ (instances × concurrency per instance) / average operation cost
 ```
 
-Bounded by the **slowest shared resource** — usually the database, cache hot key, or external API.
+Bounded by the **slowest shared resource** — usually the database, cache hot key, or external API(Application Programming Interface).
 
 ---
 
@@ -58,7 +58,7 @@ Bounded by the **slowest shared resource** — usually the database, cache hot k
 
 | Layer | Throughput lever | Deep dive |
 |-------|------------------|-----------|
-| **Edge / CDN** | Cache static responses; block abuse early | [02-entry-and-edge.md](02-entry-and-edge.md) |
+| **Edge / CDN(Content Delivery Network)** | Cache static responses; block abuse early | [02-entry-and-edge.md](02-entry-and-edge.md) |
 | **API gateway** | Auth, routing, coarse rate limits | [03-api-gateway.md](../../api-design-and-protection/includes/03-api-gateway.md) |
 | **Load balancer** | Horizontal scale of app instances | [02-entry-and-edge.md](02-entry-and-edge.md) |
 | **App tier** | Stateless replicas, bounded concurrency | [03-stateless-app-tier.md](03-stateless-app-tier.md) |
@@ -144,7 +144,7 @@ flowchart TD
 | 5 | Database throughput | [05-database-throughput.md](05-database-throughput.md) |
 | 6 | Async, queues, workers | [06-async-queues-workers.md](06-async-queues-workers.md) |
 | 7 | Streaming pipelines | [07-streaming-pipelines.md](07-streaming-pipelines.md) |
-| 8 | Batch and ETL | [08-batch-and-etl.md](08-batch-and-etl.md) |
+| 8 | Batch and ETL(Extract, Transform, Load) | [08-batch-and-etl.md](08-batch-and-etl.md) |
 | 9 | Backpressure and limits | [09-backpressure-and-limits.md](09-backpressure-and-limits.md) |
 | 10 | Scale and deploy | [10-scale-and-deploy.md](10-scale-and-deploy.md) |
 | 11 | Observability | [11-observability.md](11-observability.md) |
@@ -156,6 +156,6 @@ flowchart TD
 |---------|-----|
 | Scale replicas before fixing DB hot path | Measure → index → then horizontal scale |
 | Cache before knowing what's hot | Profile top endpoints first |
-| Async queue without DLQ | Dead-letter queue + alert on depth |
+| Async queue without DLQ(Dead Letter Queue) | Dead-letter queue + alert on depth |
 | Optimize `/health` load tests only | Test auth + DB + business paths |
 | No backpressure when at capacity | 429, queue limits, circuit breakers |

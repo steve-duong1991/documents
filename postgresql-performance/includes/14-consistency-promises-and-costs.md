@@ -2,7 +2,7 @@
 
 What strong consistency guarantees, what it costs in latency and scale, and how to apply it when you add replicas, caches, and multi-region deployments.
 
-> **Related:** Operational routing → [Read scaling and caching](11-read-scaling-and-caching.md) · API implications → [Stateless architecture](../../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) · CQRS lag → [Eventual consistency in read models](../../event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md#eventual-consistency)
+> **Related:** Operational routing → [Read scaling and caching](11-read-scaling-and-caching.md) · API(Application Programming Interface) implications → [Stateless architecture](../../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) · CQRS(Command Query Responsibility Segregation) lag → [Eventual consistency in read models](../../event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md#eventual-consistency)
 
 ---
 
@@ -52,7 +52,7 @@ flowchart TB
 
 | Layer | Why reads can be stale |
 |-------|------------------------|
-| **Async read replica** | WAL replay lags behind primary |
+| **Async read replica** | WAL(Write-Ahead Log) replay lags behind primary |
 | **Application cache** | TTL, missed invalidation, race on write-through |
 | **Materialized view** | Refreshed on schedule, not on every write |
 | **Multi-region replica** | Cross-region replication + routing |
@@ -80,7 +80,7 @@ Strong writes often require waiting for:
 | Sync multi-AZ | +5–20 ms |
 | Cross-region sync | +50–200+ ms |
 
-### Availability (CAP)
+### Availability (CAP(Consistency, Availability, Partition Tolerance))
 
 Under network partition, a strongly consistent system often **refuses** reads or writes rather than serve stale data.
 
@@ -162,7 +162,7 @@ Use **`SERIALIZABLE`** or **`REPEATABLE READ`** only when proven race conditions
 
 ### Async streaming replication
 
-Default on managed PostgreSQL (RDS, Cloud SQL, Azure). Replicas lag by milliseconds to seconds under load.
+Default on managed PostgreSQL (RDS, Cloud SQL(Structured Query Language), Azure). Replicas lag by milliseconds to seconds under load.
 
 ```sql
 -- On primary: monitor lag
@@ -181,7 +181,7 @@ ALTER SYSTEM SET synchronous_standby_names = 'ANY 1 (standby1)';
 SELECT pg_reload_conf();
 ```
 
-**When to use:** Failover RPO = 0 for committed transactions; financial writes that must survive primary loss immediately.
+**When to use:** Failover RPO(Recovery Point Objective) = 0 for committed transactions; financial writes that must survive primary loss immediately.
 
 **Cost:** Write latency tied to slowest sync standby; availability hit if standby is down (writes block or fail).
 

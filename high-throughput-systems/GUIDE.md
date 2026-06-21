@@ -6,7 +6,7 @@
 
 # Overview — High Throughput Systems
 
-High throughput means handling **many useful operations per second** — HTTP requests, events, or writes — without breaking SLOs on latency, error rate, or data consistency.
+High throughput means handling **many useful operations per second** — HTTP(Hypertext Transfer Protocol) requests, events, or writes — without breaking SLOs on latency, error rate, or data consistency.
 
 **Rule of thumb:** Optimize in order. Measure first, reduce work per operation, fix the database hot path, cache, scale horizontally, async deferrable work, then protect under overload. Skipping steps wastes money and complexity.
 
@@ -26,7 +26,7 @@ High throughput means handling **many useful operations per second** — HTTP re
 | **Throughput** | Operations completed per unit time | 10,000 RPS, 500k events/sec |
 | **Latency** | Time for one operation | p99 = 200ms |
 | **Concurrency** | In-flight operations at once | 500 open requests |
-| **Capacity** | Max sustained throughput within SLO | 8k RPS at p99 < 250ms |
+| **Capacity** | Max sustained throughput within SLO(Service Level Objective) | 8k RPS at p99 < 250ms |
 
 Throughput, latency, and concurrency are related — not interchangeable.
 
@@ -56,7 +56,7 @@ At fixed concurrency, **lower latency → higher throughput**. At fixed latency,
 Sustainable throughput ≈ (instances × concurrency per instance) / average operation cost
 ```
 
-Bounded by the **slowest shared resource** — usually the database, cache hot key, or external API.
+Bounded by the **slowest shared resource** — usually the database, cache hot key, or external API(Application Programming Interface).
 
 ---
 
@@ -64,7 +64,7 @@ Bounded by the **slowest shared resource** — usually the database, cache hot k
 
 | Layer | Throughput lever | Deep dive |
 |-------|------------------|-----------|
-| **Edge / CDN** | Cache static responses; block abuse early | [02-entry-and-edge.md](02-entry-and-edge.md) |
+| **Edge / CDN(Content Delivery Network)** | Cache static responses; block abuse early | [02-entry-and-edge.md](02-entry-and-edge.md) |
 | **API gateway** | Auth, routing, coarse rate limits | [03-api-gateway.md](../api-design-and-protection/includes/03-api-gateway.md) |
 | **Load balancer** | Horizontal scale of app instances | [02-entry-and-edge.md](02-entry-and-edge.md) |
 | **App tier** | Stateless replicas, bounded concurrency | [03-stateless-app-tier.md](03-stateless-app-tier.md) |
@@ -150,7 +150,7 @@ flowchart TD
 | 5 | Database throughput | [05-database-throughput.md](05-database-throughput.md) |
 | 6 | Async, queues, workers | [06-async-queues-workers.md](06-async-queues-workers.md) |
 | 7 | Streaming pipelines | [07-streaming-pipelines.md](07-streaming-pipelines.md) |
-| 8 | Batch and ETL | [08-batch-and-etl.md](08-batch-and-etl.md) |
+| 8 | Batch and ETL(Extract, Transform, Load) | [08-batch-and-etl.md](08-batch-and-etl.md) |
 | 9 | Backpressure and limits | [09-backpressure-and-limits.md](09-backpressure-and-limits.md) |
 | 10 | Scale and deploy | [10-scale-and-deploy.md](10-scale-and-deploy.md) |
 | 11 | Observability | [11-observability.md](11-observability.md) |
@@ -162,7 +162,7 @@ flowchart TD
 |---------|-----|
 | Scale replicas before fixing DB hot path | Measure → index → then horizontal scale |
 | Cache before knowing what's hot | Profile top endpoints first |
-| Async queue without DLQ | Dead-letter queue + alert on depth |
+| Async queue without DLQ(Dead Letter Queue) | Dead-letter queue + alert on depth |
 | Optimize `/health` load tests only | Test auth + DB + business paths |
 | No backpressure when at capacity | 429, queue limits, circuit breakers |
 
@@ -180,7 +180,7 @@ You cannot optimize throughput blind. Define targets, load test realistic paths,
 
 ## At a glance
 
-| Metric | What it tells you | Typical SLO example |
+| Metric | What it tells you | Typical SLO(Service Level Objective) example |
 |--------|-------------------|---------------------|
 | **RPS / QPS** | Request or query rate | 10,000 RPS sustained |
 | **p50 / p99 latency** | User experience under load | p99 < 200ms |
@@ -207,6 +207,31 @@ Document which endpoints require **strong consistency** (primary DB) vs **eventu
 
 ---
 
+## Capacity and cost planning
+
+Throughput work has a **bill** — model before you scale.
+
+| Cost driver | Scales with | Levers |
+|-------------|-------------|--------|
+| **App replicas** | RPS, CPU | Right-size; autoscale on saturation not CPU alone |
+| **Read replicas** | SELECT volume | Fix queries first — replicas multiply bad query cost |
+| **Redis / cache** | Memory, hot keys | TTL, eviction, separate clusters |
+| **Message retention** | Kafka topic size | Retention days, compaction |
+| **CDN(Content Delivery Network) egress** | Bytes out | Cache hit ratio, compress responses |
+| **Cross-region replication** | Write volume, regions | Single write region default — [§13 multi-region](13-multi-region-read-routing.md) |
+| **Search index** | Document count | CDC(Change Data Capture) vs sync write path — [§15 CDC and search](15-cdc-and-search-indexing.md) |
+
+| Planning step | Action |
+|---------------|--------|
+| Baseline | RPS ceiling at SLO from load test |
+| Growth | `peak_rps × 1.5` headroom for 6 months |
+| Unit economics | Cost per 1M requests after cache + replica count |
+| Error budget | Slow burn → capacity project before fast burn pages |
+
+Pair with product **rate tiers** — [api-design §5](../api-design-and-protection/includes/05-rate-limit-tiers.md).
+
+---
+
 ## Load testing
 
 ### What to test
@@ -215,7 +240,7 @@ Document which endpoints require **strong consistency** (primary DB) vs **eventu
 |------|-----|
 | **List / search** | Often the heaviest read — pagination, joins, sort |
 | **Hot key read** | Same resource fetched repeatedly — cache effectiveness |
-| **Write burst** | INSERT/UPDATE spikes — lock contention, WAL pressure |
+| **Write burst** | INSERT/UPDATE spikes — lock contention, WAL(Write-Ahead Log) pressure |
 | **Mixed realistic ratio** | Match production read/write mix |
 | **Expensive async trigger** | Export, report, bulk search enqueue rate |
 
@@ -231,7 +256,7 @@ Document which endpoints require **strong consistency** (primary DB) vs **eventu
 
 | Tool | Best for |
 |------|----------|
-| **k6** | Scriptable HTTP; CI-friendly; threshold assertions |
+| **k6** | Scriptable HTTP(Hypertext Transfer Protocol); CI-friendly; threshold assertions |
 | **Locust** | Python scenarios; interactive ramp |
 | **Gatling** | JVM shops; detailed reports |
 | **Vegeta** | Quick constant-rate HTTP flood |
@@ -363,9 +388,9 @@ Before any optimization:
 
 # Entry and Edge
 
-Absorb traffic **before it hits origin** — CDN cache, WAF, edge rate limits, then API gateway and load balancer for policy and distribution.
+Absorb traffic **before it hits origin** — CDN(Content Delivery Network) cache, WAF(Web Application Firewall), edge rate limits, then API(Application Programming Interface) gateway and load balancer for policy and distribution.
 
-> **Scope:** **Throughput lens** — reduce origin RPS, shed abuse early, minimize hops and TLS CPU on the hot path. LB vs gateway definitions, request flows, and product selection → [api-design §3 Gateway](../api-design-and-protection/includes/03-api-gateway.md).
+> **Scope:** **Throughput lens** — reduce origin RPS, shed abuse early, minimize hops and TLS(Transport Layer Security) CPU on the hot path. LB vs gateway definitions, request flows, and product selection → [api-design §3 Gateway](../api-design-and-protection/includes/03-api-gateway.md).
 >
 > **Related:** Full gateway + LB guide → [api-design §3 Gateway](../api-design-and-protection/includes/03-api-gateway.md) · Edge rate limits → [api-rate-limiting §7](../api-rate-limiting/includes/07-deployment-layers.md)
 
@@ -435,7 +460,7 @@ See [Flow 3 — Both together](../api-design-and-protection/includes/03-api-gate
 
 | Situation | Consider |
 |-----------|----------|
-| Internal service-to-service | mTLS mesh may replace gateway |
+| Internal service-to-service | mTLS(Mutual Transport Layer Security) mesh may replace gateway |
 | Simple internal API | L7 LB with path routing may suffice |
 | Public API with tiers | Gateway worth the ~1–5ms |
 | Global users | CDN + edge gateway (Cloudflare-style) |
@@ -486,7 +511,7 @@ Horizontal throughput requires **interchangeable app instances** — no sticky s
 
 > **Scope:** **Throughput lens** — per-request cost, bounded concurrency, pool sizing, when to scale replicas. Full stateless architecture (auth flows, migration, checklist) → [api-design §11 Stateless architecture](../api-design-and-protection/includes/11-stateless-architecture.md).
 >
-> **Related:** Full stateless guide → [api-design §11](../api-design-and-protection/includes/11-stateless-architecture.md) · Connection pooling → [postgresql-performance §7](../postgresql-performance/includes/07-connection-management.md) · API design → [api-design §1](../api-design-and-protection/includes/01-api-design.md)
+> **Related:** Full stateless guide → [api-design §11](../api-design-and-protection/includes/11-stateless-architecture.md) · Connection pooling → [postgresql-performance §7](../postgresql-performance/includes/07-connection-management.md) · API(Application Programming Interface) design → [api-design §1](../api-design-and-protection/includes/01-api-design.md)
 
 ---
 
@@ -529,7 +554,7 @@ flowchart LR
 
 | Phase | Optimization |
 |-------|--------------|
-| **Auth** | Local JWT verify; cache introspection if opaque token |
+| **Auth** | Local JWT(JSON Web Token) verify; cache introspection if opaque token |
 | **Cache** | Redis hit avoids DB |
 | **DB** | Index, eliminate N+1, pagination cap |
 | **Logic** | Move heavy work to queue |
@@ -543,7 +568,7 @@ Profile which phase dominates before adding instances.
 
 | Resource | Limit |
 |----------|-------|
-| **HTTP server threads / workers** | Match CPU and I/O profile |
+| **HTTP(Hypertext Transfer Protocol) server threads / workers** | Match CPU and I/O profile |
 | **DB pool per instance** | `(pool_size × instances) < DB max safe connections` |
 | **Outbound HTTP clients** | Cap parallel calls to partners |
 | **Expensive handlers** | Global semaphore (exports, search) |
@@ -601,7 +626,7 @@ See [06-async-queues-workers.md](06-async-queues-workers.md).
 |---------|-----|
 | Sticky sessions enabled | Token auth + external state |
 | `pool_size = 100` per instance | Size pool × instances vs DB limit |
-| Sync call to 5 microservices | Parallelize, cache, or aggregate in BFF |
+| Sync call to 5 microservices | Parallelize, cache, or aggregate in BFF(Backend for Frontend) |
 | No pagination cap | Enforce max `limit` |
 | Rate limit in app memory only | Shared Redis counters → [api-rate-limiting §11](../api-rate-limiting/includes/11-common-mistakes-and-architecture.md) |
 
@@ -624,7 +649,7 @@ Full stateless checklist (identity, externalized state, deploy safety) → [api-
 
 Caching is often the largest throughput multiplier for read-heavy systems — if you accept defined staleness and invalidate correctly.
 
-> **Related:** PostgreSQL read scaling → [postgresql-performance/includes/11-read-scaling-and-caching.md](../postgresql-performance/includes/11-read-scaling-and-caching.md) · Consistency in API design → [api-design-and-protection/includes/01-api-design.md](../api-design-and-protection/includes/01-api-design.md)
+> **Related:** PostgreSQL read scaling → [postgresql-performance/includes/11-read-scaling-and-caching.md](../postgresql-performance/includes/11-read-scaling-and-caching.md) · Consistency in API(Application Programming Interface) design → [api-design-and-protection/includes/01-api-design.md](../api-design-and-protection/includes/01-api-design.md)
 
 ---
 
@@ -632,7 +657,7 @@ Caching is often the largest throughput multiplier for read-heavy systems — if
 
 | Layer | Latency | Throughput gain | Staleness |
 |-------|---------|-----------------|-----------|
-| **CDN** | Edge (~ms) | Very high for cacheable GET | TTL-based |
+| **CDN(Content Delivery Network)** | Edge (~ms) | Very high for cacheable GET | TTL-based |
 | **Application (Redis)** | Sub-ms to low ms | High for hot keys | TTL or event invalidation |
 | **Materialized view** | Query time | High for heavy aggregations | Refresh interval |
 | **Read replica** | DB round trip | Medium — offloads primary | Replication lag |
@@ -734,7 +759,7 @@ Document per endpoint in your API contract which consistency tier applies.
 | Scenario | Recommendation |
 |----------|----------------|
 | Same key read thousands/sec | Redis with TTL + consider CDN |
-| Heavy SQL aggregation | Materialized view + periodic refresh |
+| Heavy SQL(Structured Query Language) aggregation | Materialized view + periodic refresh |
 | 10× read vs write ratio | Replica + app routing + Redis |
 | Global low-latency public reads | CDN + regional replica |
 | Session or cart data | Redis keyed by `user_id` — not CDN |
@@ -814,7 +839,7 @@ The database is usually the **throughput ceiling**. Fix measurement, queries, in
 
 > **Scope:** **System throughput lens** — where DB fits in the HTS build order and DB-first moves under load. Full PostgreSQL tuning → [postgresql-performance](../postgresql-performance/README.md). Scenario tables → [PG §13](../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md), [HTS §12](12-decision-guide-and-common-mistakes.md).
 >
-> **Related:** Full PostgreSQL guide → [postgresql-performance/README.md](../postgresql-performance/README.md) · LSM for extreme writes → [tree-and-index-structures §4](../tree-and-index-structures/includes/04-lsm-trees.md) · Caching → [04-caching-layers.md](04-caching-layers.md)
+> **Related:** Full PostgreSQL guide → [postgresql-performance/README.md](../postgresql-performance/README.md) · LSM(Log-Structured Merge) for extreme writes → [tree-and-index-structures §4](../tree-and-index-structures/includes/04-lsm-trees.md) · Caching → [04-caching-layers.md](04-caching-layers.md)
 
 ---
 
@@ -867,9 +892,9 @@ Database-layer first moves below. System-wide scenarios (cache + scale + async +
 
 | Scenario | First move |
 |----------|------------|
-| Read API at 10k RPS | Cache hot keys **before** adding replicas |
+| Read API(Application Programming Interface) at 10k RPS | Cache hot keys **before** adding replicas |
 | Write spike | Short transactions → batch INSERT → queue side effects |
-| Time-series ingest | Range partition + BRIN/B-tree |
+| Time-series ingest | Range partition + BRIN(Block-Range Index)/B-tree |
 | Hot row contention | `FOR UPDATE SKIP LOCKED` → partition → per-key queue |
 | Nightly bulk import | Staging + `COPY` → [08-batch-and-etl.md](08-batch-and-etl.md) |
 | Dashboard aggregations | Materialized view → Redis |
@@ -881,9 +906,9 @@ Database-layer first moves below. System-wide scenarios (cache + scale + async +
 
 | Signal | Consider |
 |--------|----------|
-| Sustained write rate exceeds single-node WAL/IO | Partitioning, then dedicated write path |
+| Sustained write rate exceeds single-node WAL(Write-Ahead Log)/IO | Partitioning, then dedicated write path |
 | Append-only metrics at massive scale | Time-series DB or LSM KV |
-| Full-text at billions of docs | OpenSearch/Elasticsearch + CDC |
+| Full-text at billions of docs | OpenSearch/Elasticsearch + CDC(Change Data Capture) |
 
 LSM tradeoffs → [tree-and-index-structures/includes/04-lsm-trees.md](../tree-and-index-structures/includes/04-lsm-trees.md):
 
@@ -916,7 +941,7 @@ Must fit within PostgreSQL capacity (often via PgBouncer)
 |---------|----------|
 | **Read-heavy** | Cache → replica → materialized view |
 | **Write-heavy** | Batch, partition, queue, shorten transactions |
-| **Mixed** | Separate read models (CQRS) for heavy reads |
+| **Mixed** | Separate read models (CQRS(Command Query Responsibility Segregation)) for heavy reads |
 
 See [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) for read model separation at scale.
 
@@ -938,9 +963,9 @@ Full database decision guide → [postgresql-performance/includes/13-decision-gu
 
 # Async, Queues, and Workers
 
-Decouple **accept rate** from **process rate** — the API enqueues quickly; workers drain at sustainable throughput.
+Decouple **accept rate** from **process rate** — the API(Application Programming Interface) enqueues quickly; workers drain at sustainable throughput.
 
-> **Scope:** **Throughput lens** — queue depth, worker scale, and accept-vs-process rates. HTTP job contracts (202, polling, webhooks) → [api-design §10 Async patterns](../api-design-and-protection/includes/10-async-patterns.md). Domain event publish → [ES §5 Async integration](../event-sourcing-and-cqrs/includes/05-async-integration.md).
+> **Scope:** **Throughput lens** — queue depth, worker scale, and accept-vs-process rates. HTTP(Hypertext Transfer Protocol) job contracts (202, polling, webhooks) → [api-design §10 Async patterns](../api-design-and-protection/includes/10-async-patterns.md). Domain event publish → [ES §5 Async integration](../event-sourcing-and-cqrs/includes/05-async-integration.md).
 
 > **Related:** Async API patterns → [api-design-and-protection/includes/10-async-patterns.md](../api-design-and-protection/includes/10-async-patterns.md) · Rate-limit escape hatch → [api-design-and-protection/includes/05-rate-limit-tiers.md](../api-design-and-protection/includes/05-rate-limit-tiers.md) · Outbox → [event-sourcing-and-cqrs/includes/05-async-integration.md](../event-sourcing-and-cqrs/includes/05-async-integration.md) · Multi-service sagas → [event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md](../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
 
@@ -953,7 +978,7 @@ Decouple **accept rate** from **process rate** — the API enqueues quickly; wor
 | **Connection** | Held until work completes | Released after enqueue (~50ms) |
 | **Rate limit slot** | Occupied for minutes | Only enqueue costs a slot |
 | **Throughput** | Limited by slowest work | API accepts; workers scale separately |
-| **Client pattern** | Wait for 200 | `202` + poll, webhook, or SSE |
+| **Client pattern** | Wait for 200 | `202` + poll, webhook, or SSE(Server-Sent Events) |
 
 **Rule of thumb:** If work might exceed **~10–30 seconds**, or is CPU/IO expensive (exports, ML, bulk search), design **async from day one**.
 
@@ -1044,7 +1069,7 @@ Retries are guaranteed at scale:
 |---------|--------|
 | Queue depth > threshold for N minutes | Add worker instances |
 | Depth near zero sustained | Scale down |
-| DLQ growing | Fix poison messages — don't just add workers |
+| DLQ(Dead Letter Queue) growing | Fix poison messages — don't just add workers |
 | DB pool exhausted | Reduce worker concurrency or optimize job |
 
 Workers are **stateless** — any worker processes any job. Job state in DB + result in object storage.
@@ -1148,19 +1173,19 @@ Expensive sync endpoints burn throughput slots. Pattern from [05-rate-limit-tier
 
 When request/response cannot keep up with event volume, fan-out, or audit requirements, move to **event streaming** — append-only logs with partitioned parallel consumption.
 
-> **Related:** Event sourcing and outbox → [event-sourcing-and-cqrs/includes/05-async-integration.md](../event-sourcing-and-cqrs/includes/05-async-integration.md) · Async API patterns → [api-design-and-protection/includes/10-async-patterns.md](../api-design-and-protection/includes/10-async-patterns.md) · LSM write path → [tree-and-index-structures/includes/04-lsm-trees.md](../tree-and-index-structures/includes/04-lsm-trees.md)
+> **Related:** Event sourcing and outbox → [event-sourcing-and-cqrs/includes/05-async-integration.md](../event-sourcing-and-cqrs/includes/05-async-integration.md) · Async patterns → [api-design-and-protection/includes/10-async-patterns.md](../api-design-and-protection/includes/10-async-patterns.md) · LSM(Log-Structured Merge) write path → [tree-and-index-structures/includes/04-lsm-trees.md](../tree-and-index-structures/includes/04-lsm-trees.md)
 
 ---
 
 ## At a glance
 
-| | **Sync API** | **Event stream** |
+| | **Sync API(Application Programming Interface)** | **Event stream** |
 |--|--------------|------------------|
 | **Model** | Request → response | Append event → consumers process |
 | **Coupling** | Producer waits for consumer | Decoupled in time |
 | **Scale** | Limited by handler capacity | Partitions × consumer groups |
 | **Ordering** | Per request | Per partition key |
-| **Best for** | CRUD, queries | Metrics, audit, fan-out, CDC |
+| **Best for** | CRUD, queries | Metrics, audit, fan-out, CDC(Change Data Capture) |
 
 **Rule of thumb:** Use streaming when **many consumers** need the same events, **volume exceeds** comfortable API throughput, or you need a **durable audit log** — not for simple CRUD that fits in PostgreSQL.
 
@@ -1262,7 +1287,7 @@ Store payload references (S3 URL, row ID) when messages exceed ~1 MB.
 
 ---
 
-## Stream DLQ and poison messages
+## Stream DLQ(Dead Letter Queue) and poison messages
 
 | Approach | When |
 |----------|------|
@@ -1356,9 +1381,9 @@ sequenceDiagram
 
 ---
 
-# Batch and ETL
+# Batch and ETL(Extract, Transform, Load)
 
-Bulk ingest and backfills belong **off the API hot path** — use staging tables, `COPY`, chunked commits, and idempotent merges for throughput without locking production traffic.
+Bulk ingest and backfills belong **off the API(Application Programming Interface) hot path** — use staging tables, `COPY`, chunked commits, and idempotent merges for throughput without locking production traffic.
 
 > **Related:** PostgreSQL bulk ops → [postgresql-performance/includes/12-bulk-operations-and-concurrency.md](../postgresql-performance/includes/12-bulk-operations-and-concurrency.md) · Async jobs → [06-async-queues-workers.md](06-async-queues-workers.md)
 
@@ -1546,8 +1571,8 @@ flowchart LR
 
 | Concern | Best layer |
 |---------|------------|
-| Block garbage / DDoS | Edge / CDN |
-| Enforce API key validity + global quota | API Gateway |
+| Block garbage / DDoS | Edge / CDN(Content Delivery Network) |
+| Enforce API(Application Programming Interface) key validity + global quota | API Gateway |
 | Per-plan business quotas | App middleware |
 | Protect database writes | App semaphore or leaky bucket near DB |
 
@@ -1555,7 +1580,7 @@ Full layer comparison → [api-rate-limiting/includes/07-deployment-layers.md](.
 
 ---
 
-## HTTP 429 and Retry-After
+## HTTP(Hypertext Transfer Protocol) 429 and Retry-After
 
 When limiting, return proper semantics so clients backoff:
 
@@ -1583,7 +1608,7 @@ Rate limits cap **requests per second**; semaphores cap **in-flight expensive wo
 |-----------|---------------|
 | Full-text export | Long DB hold |
 | Complex search | CPU + IO heavy |
-| Bulk write endpoint | WAL and lock pressure |
+| Bulk write endpoint | WAL(Write-Ahead Log) and lock pressure |
 | External API fan-out | Partner rate limits |
 
 ```text
@@ -1691,7 +1716,7 @@ Throughput requires **adding capacity without downtime** — horizontal autoscal
 | **More RPS** | Horizontal scale of stateless app instances |
 | **More async work** | Scale workers on queue depth |
 | **Deploy during traffic** | Rolling, canary, or blue/green — not recreate |
-| **Global users** | CDN + regional read replicas |
+| **Global users** | CDN(Content Delivery Network) + regional read replicas |
 | **Spike handling** | Autoscale + backpressure — not unbounded queue |
 
 **Rule of thumb:** You can only scale what is **stateless and not saturated downstream**. Scaling app pods into a full DB pool buys nothing.
@@ -1738,7 +1763,7 @@ flowchart TD
 | **Rolling** | Gradual replacement; brief mixed versions | [02-rolling](../deployment-strategies/includes/02-rolling.md) |
 | **Blue/green** | Instant switch; double capacity during cutover | [03-blue-green](../deployment-strategies/includes/03-blue-green.md) |
 | **Canary** | Small % on new version first | [04-canary](../deployment-strategies/includes/04-canary.md) |
-| **Recreate** | **Downtime** — avoid on production API | [01-recreate](../deployment-strategies/includes/01-recreate.md) |
+| **Recreate** | **Downtime** — avoid on production API(Application Programming Interface) | [01-recreate](../deployment-strategies/includes/01-recreate.md) |
 
 Stateless app tier enables rolling and blue/green without session migration → [11-stateless-architecture.md](../api-design-and-protection/includes/11-stateless-architecture.md).
 
@@ -1761,7 +1786,7 @@ flowchart TB
 | Pattern | Use |
 |---------|-----|
 | **CDN** | Cacheable public GET globally |
-| **Read replica per region** | Low-latency reads with lag SLO |
+| **Read replica per region** | Low-latency reads with lag SLO(Service Level Objective) |
 | **Write to primary region** | Single write leader for strong consistency |
 | **Global load balancer** | Route to nearest healthy region |
 
@@ -1822,7 +1847,7 @@ Bad deploy detected → roll back canary before full fleet affected.
 
 Throughput work fails in production when you watch **CPU only**. Alert on **saturation** — pool wait, queue depth, replication lag, cache miss storms — before users notice.
 
-> **Related:** API checklist observability → [api-design-and-protection/includes/09-checklist-and-practices.md](../api-design-and-protection/includes/09-checklist-and-practices.md) · Measurement → [01-measurement-and-slo.md](01-measurement-and-slo.md)
+> **Related:** API(Application Programming Interface) checklist observability → [api-design-and-protection/includes/09-checklist-and-practices.md](../api-design-and-protection/includes/09-checklist-and-practices.md) · Measurement → [01-measurement-and-slo.md](01-measurement-and-slo.md)
 
 ---
 
@@ -1830,7 +1855,7 @@ Throughput work fails in production when you watch **CPU only**. Alert on **satu
 
 | Signal | Indicates | Alert when |
 |--------|-----------|------------|
-| **RPS + p99 latency** | Capacity headroom | p99 > SLO at normal RPS |
+| **RPS + p99 latency** | Capacity headroom | p99 > SLO(Service Level Objective) at normal RPS |
 | **Error rate / 5xx** | Reliability | Spike above baseline |
 | **429 rate** | Overload or abuse | Tier-specific spike |
 | **DB pool wait** | Connection exhaustion | p99 wait > threshold |
@@ -1886,14 +1911,14 @@ flowchart TB
 
 | Layer | Key metrics |
 |-------|-------------|
-| **Edge / CDN** | Cache hit ratio, origin offload, edge 429 |
+| **Edge / CDN(Content Delivery Network)** | Cache hit ratio, origin offload, edge 429 |
 | **Gateway** | Added latency, auth failures, throttle rate |
 | **Load balancer** | Healthy host count, active connections |
 | **Application** | RPS per route, p50/p99, error rate by route |
 | **Database** | Top queries by `total_time`, locks, connections |
 | **Cache** | Hit rate, evictions, command latency |
 | **Queue / stream** | Depth, oldest message age, consumer lag |
-| **Workers** | Process rate, failure rate, DLQ size |
+| **Workers** | Process rate, failure rate, DLQ(Dead Letter Queue) size |
 
 ---
 
@@ -1983,7 +2008,7 @@ Store results in CI or runbook for comparison.
 
 ---
 
-## RED and USE methods
+## RED(Rate, Errors, Duration) and USE(Utilization, Saturation, Errors) methods
 
 Two frameworks for choosing what to monitor:
 
@@ -2014,7 +2039,7 @@ Apply **per route** and per tier — not only global aggregates.
 | Concept | Definition |
 |---------|------------|
 | **SLO** | Target reliability (e.g. 99.9% monthly) |
-| **SLI** | Measured indicator (e.g. successful requests / total) |
+| **SLI(Service Level Indicator)** | Measured indicator (e.g. successful requests / total) |
 | **Error budget** | Allowed unreliability = 100% − SLO |
 
 Alert on **burn rate** — how fast budget is consumed:
@@ -2027,6 +2052,35 @@ Alert on **burn rate** — how fast budget is consumed:
 Example: 99.9% monthly ≈ 43 min downtime/month. Burning 10% in one hour triggers investigation.
 
 Tie deploy rollback triggers → [deployment-strategies §13](../deployment-strategies/includes/13-slo-rollback-triggers.md).
+
+---
+
+## Distributed tracing (OpenTelemetry)
+
+Metrics show **what** is slow; traces show **where** in the chain.
+
+```mermaid
+flowchart LR
+    Edge[Edge / CDN] --> GW[Gateway]
+    GW --> App[orders-api]
+    App --> DB[(PostgreSQL)]
+    App --> Redis[(Redis)]
+    App --> Pay[payments-api]
+```
+
+| Practice | Detail |
+|----------|--------|
+| **Propagation** | W3C `traceparent` from edge through gateway → app → downstream |
+| **Correlation ID** | Same value in logs, traces, and support tickets |
+| **Span attributes** | `tenant_id`, `saga_id`, `build_id`, `route` |
+| **Sampling** | Head-based 1–10% baseline; tail sampling for errors |
+| **DB** | Optional PG statement spans — watch overhead |
+
+Saga debugging → propagate `saga_id` — [ES §7](../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md#observability-and-operations).
+
+| RED / USE | Tracing adds |
+|-----------|--------------|
+| Rate, errors, duration per route | Span waterfall for one slow request |
 
 ---
 
@@ -2108,17 +2162,17 @@ System-wide scenarios (cache, scale, async, overload). Database-only tuning → 
 
 | Layer | Scenario | Recommended approach |
 |-------|----------|------------------------|
-| **System** | Public read API at 10k RPS | Cache hot keys → horizontal app scale → read replica → [PG §13](../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md) for query tuning |
+| **System** | Public read API(Application Programming Interface) at 10k RPS | Cache hot keys → horizontal app scale → read replica → [PG §13](../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md) for query tuning |
 | **App** | Slow list endpoint | Cap page size, field selection, cursor pagination → [PG §13](../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md) for `EXPLAIN`/indexes |
 | **App + queue** | Write spike on orders table | Short transactions → batch INSERT → queue non-critical side effects |
 | **Database** | Hot row contention (inventory) | `FOR UPDATE SKIP LOCKED` → partition → [PG §12 bulk](../postgresql-performance/includes/12-bulk-operations-and-concurrency.md) |
-| **Database** | Time-series ingest at millions/day | [PG §10 partitioning](../postgresql-performance/includes/10-partitioning.md) → BRIN/B-tree → LSM if PG exhausted |
+| **Database** | Time-series ingest at millions/day | [PG §10 partitioning](../postgresql-performance/includes/10-partitioning.md) → BRIN(Block-Range Index)/B-tree → LSM(Log-Structured Merge) if PG exhausted |
 | **App + async** | Export/report blocking API | Async job + polling/webhook → scale workers on queue depth |
 | **Edge + app** | Login brute force | Gateway + IP limits → [PG §13](../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md) for short transactions + partial index |
 | **Edge** | Partner API burst traffic | Token bucket at gateway → identity tiers → Redis counters |
-| **System** | Global low-latency reads | CDN for cacheable GET → regional read replica → [PG §11](../postgresql-performance/includes/11-read-scaling-and-caching.md) |
+| **System** | Global low-latency reads | CDN(Content Delivery Network) for cacheable GET → regional read replica → [PG §11](../postgresql-performance/includes/11-read-scaling-and-caching.md) |
 | **Stream** | Audit log at high volume | Event stream → partitioned topic → async projections |
-| **Batch** | Nightly ETL | Staging + `COPY` → validate → merge → `ANALYZE` |
+| **Batch** | Nightly ETL(Extract, Transform, Load) | Staging + `COPY` → validate → merge → `ANALYZE` |
 | **Async** | ML inference at scale | Job queue → GPU worker pool → result in object storage |
 | **App** | GraphQL expensive queries | Cost-based limits + depth cap → cache persisted queries |
 | **Cache** | Redis hot key saturation | Key sharding → local shadow cache → pre-warm on deploy |
@@ -2180,6 +2234,8 @@ Use this order — skipping steps wastes effort and money:
 | Where to rate limit? | Edge (abuse) → gateway (API key) → app (plan tier) |
 | What to alert on? | Pool wait, queue depth, replication lag — not just CPU |
 | Stateless app tier? | Yes — state in DB, Redis, queue, object storage |
+| Broker vs queue? | [§14 Message brokers](14-message-brokers-and-queues.md) decision flow |
+| Search at scale? | [§15 CDC and search](15-cdc-and-search-indexing.md) — not PG alone |
 
 ---
 
@@ -2200,7 +2256,7 @@ Use this order — skipping steps wastes effort and money:
 
 Multi-region adds throughput and availability — at the cost of **consistency complexity**. Design the write path first; reads follow.
 
-> **Related:** Consistency → [postgresql-performance/includes/14-consistency-promises-and-costs.md](../postgresql-performance/includes/14-consistency-promises-and-costs.md) · Stateless API → [api-design-and-protection/includes/11-stateless-architecture.md](../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) · DR → [database-connection-and-security/includes/12-credential-rotation-and-dr.md](../database-connection-and-security/includes/12-credential-rotation-and-dr.md)
+> **Related:** Consistency → [postgresql-performance/includes/14-consistency-promises-and-costs.md](../postgresql-performance/includes/14-consistency-promises-and-costs.md) · Stateless API(Application Programming Interface) → [api-design-and-protection/includes/11-stateless-architecture.md](../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) · DR → [database-connection-and-security/includes/12-credential-rotation-and-dr.md](../database-connection-and-security/includes/12-credential-rotation-and-dr.md)
 
 ---
 
@@ -2228,8 +2284,8 @@ flowchart LR
 
 | Metric | Typical target |
 |--------|----------------|
-| **RPO** | Replication lag window (seconds–minutes) |
-| **RTO** | DNS + promote + app config (minutes–hours) |
+| **RPO(Recovery Point Objective)** | Replication lag window (seconds–minutes) |
+| **RTO(Recovery Time Objective)** | DNS + promote + app config (minutes–hours) |
 
 Run DR drill quarterly → [database-connection-and-security §12](../database-connection-and-security/includes/12-credential-rotation-and-dr.md).
 
@@ -2240,7 +2296,7 @@ Run DR drill quarterly → [database-connection-and-security §12](../database-c
 | Request type | Route to |
 |--------------|----------|
 | **Session / read-your-writes** | Write region primary or sticky session |
-| **Public catalog** | Regional replica + CDN |
+| **Public catalog** | Regional replica + CDN(Content Delivery Network) |
 | **Analytics** | Regional replica; stale OK |
 | **All writes** | Single primary region |
 
@@ -2293,6 +2349,207 @@ PostgreSQL details → [postgresql-performance §11](../postgresql-performance/i
 
 ---
 
+# Message Brokers and Queues
+
+Pick the integration pattern before you pick the product — task queue, log, or outbox relay each solve different throughput problems.
+
+> **Related:** Async workers → [06-async-queues-workers.md](06-async-queues-workers.md) · Streaming → [07-streaming-pipelines.md](07-streaming-pipelines.md) · Outbox → [ES §5 Async integration](../event-sourcing-and-cqrs/includes/05-async-integration.md) · Async jobs → [api-design §10](../api-design-and-protection/includes/10-async-patterns.md)
+
+---
+
+## At a glance
+
+| Pattern | Best for | Ordering | Replay | Typical products |
+|---------|----------|----------|--------|------------------|
+| **Task queue** | Job dispatch, retries, DLQ(Dead Letter Queue) | Per queue (optional FIFO(First In, First Out)) | Limited | SQS, RabbitMQ |
+| **Log / stream** | Fan-out, audit, high volume | Per partition key | Yes (retention window) | Kafka, Kinesis, Pulsar |
+| **Redis Streams / lists** | Low-latency co-located work | Per stream | Trimmed history | Redis |
+| **Transactional outbox** | Reliable publish after DB write | Relay preserves order per aggregate | From event store | App + any bus |
+| **CDC(Change Data Capture)** | DB change capture without app dual-write | Table/partition | From retention | Debezium → Kafka |
+
+**Rule of thumb:** **Queue** when work is a job with a consumer. **Stream** when many subscribers need the same history. **Outbox** when the write and the message must not diverge.
+
+---
+
+## Decision flow
+
+```mermaid
+flowchart TD
+    Start[Need async integration] --> Q1{Must commit with DB write?}
+    Q1 -->|Yes| Outbox[Transactional outbox or ES event store]
+    Q1 -->|No| Q2{Many subscribers same event?}
+    Q2 -->|Yes| Stream[Kafka / Kinesis log]
+    Q2 -->|No| Q3{Volume and ops appetite?}
+    Q3 -->|Millions msg/s, replay| Stream
+    Q3 -->|Simple jobs, moderate volume| Queue[SQS / RabbitMQ]
+    Q3 -->|Already on Redis, low latency| Redis[Redis Streams]
+    Outbox --> Relay{Relay mechanism}
+    Relay --> Poll[Outbox poller]
+    Relay --> CDC[CDC from WAL]
+```
+
+Full outbox patterns → . CDC to search → .
+
+---
+
+## Queue vs stream (when both seem to work)
+
+| Need | Queue (SQS, RabbitMQ) | Stream (Kafka, Kinesis) |
+|------|-------------------------|-------------------------|
+| **Job with result** ( + poll) | ✅ Natural fit | Awkward |
+| **Fan-out to 5+ consumers** | Duplicate publishes or bridge | ✅ Native |
+| **Replay last 7 days** | ❌ unless you store elsewhere | ✅ Retention |
+| **Strict global ordering** | Single consumer or FIFO shard | Partition key design |
+| **Ops complexity** | Lower | Higher (brokers, partitions, lag) |
+| **Throughput ceiling** | High with sharding | Very high |
+
+See  for worker scaling notes.
+
+---
+
+## Product signals
+
+| Situation | Lean toward |
+|-----------|-------------|
+| AWS-native, few consumers, at-least-once OK | **SQS** (+ DLQ) |
+| Complex routing, priority, delayed messages | **RabbitMQ** |
+| Event bus, audit log, metrics pipeline | **Kafka** |
+| AWS managed stream, fewer ops than Kafka | **Kinesis** |
+| Cache + queue already on Redis | **Redis Streams** (know memory limits) |
+| PostgreSQL write + bus without 2PC(Two-Phase Commit) | **Outbox** or **CDC** |
+
+---
+
+## Ordering and idempotency
+
+| Broker | Ordering guarantee | Your responsibility |
+|--------|------------------|-------------------|
+| SQS standard | Best-effort | Idempotent consumers |
+| SQS FIFO | Per message group | Design `message_group_id` |
+| Kafka | Per partition | Key = `aggregate_id` or `saga_id` |
+| RabbitMQ | Per queue if single consumer | Idempotency + DLQ |
+
+Cross-service sagas → partition by `saga_id` — .
+
+---
+
+## Common mistakes
+
+| Mistake | Fix |
+|---------|-----|
+| Kafka for simple background emails | SQS/RabbitMQ |
+| Dual-write DB + publish without outbox | Outbox or CDC |
+| No DLQ | Failed messages retry forever or vanish |
+| Hot partition key | Shard keys (e.g. ) |
+| Infinite retention on Kafka | Tiered retention + compaction policy |
+
+---
+
+## Pros and cons
+
+### Managed queue (SQS)
+
+**Pros:** Low ops, integrates with AWS, DLQ built-in.
+
+**Cons:** No native fan-out replay; cross-cloud portability lower.
+
+### Kafka
+
+**Pros:** Replay, fan-out, ecosystem (Connect, Streams).
+
+**Cons:** Operational surface; partition and consumer lag tuning.
+
+---
+
+# CDC(Change Data Capture) and Search Indexing
+
+Full-text and faceted search at scale usually lives outside PostgreSQL — sync via CDC or outbox, and plan for reindex and staleness.
+
+> **Related:** DB throughput lens → [05-database-throughput.md](05-database-throughput.md) · Outbox → [ES §5](../event-sourcing-and-cqrs/includes/05-async-integration.md) · Brokers → [14-message-brokers-and-queues.md](14-message-brokers-and-queues.md) · PG GIN(Generalized Inverted Index) limits → [postgresql-performance §2](../postgresql-performance/includes/02-indexing.md)
+
+---
+
+## At a glance
+
+| Approach | How it works | When to use |
+|----------|--------------|-------------|
+| **PostgreSQL GIN(Generalized Inverted Index) / tsvector** | Index inside PG | Moderate corpus, simple search |
+| **Outbox → indexer** | App publishes change events | You control event shape |
+| **CDC (Debezium)** | WAL(Write-Ahead Log) → Kafka → consumer | Near-real-time without app change |
+| **Batch ETL(Extract, Transform, Load)** | Nightly  / snapshot | Analytics search, low freshness OK |
+
+**Rule of thumb:** Billions of documents or heavy facets → **OpenSearch / Elasticsearch**. Sync with **CDC or outbox** — not synchronous double-write from the request path.
+
+---
+
+## Pipeline pattern
+
+```mermaid
+flowchart LR
+    PG[(PostgreSQL)] -->|WAL| CDC[Debezium / logical replication]
+    PG -->|same TX| Outbox[(Outbox table)]
+    Outbox --> Relay[Outbox relay]
+    CDC --> Bus[(Kafka)]
+    Relay --> Bus
+    Bus --> Indexer[Indexer worker]
+    Indexer --> OS[(OpenSearch / ES)]
+    API[Query API] --> OS
+```
+
+| Path | Pros | Cons |
+|------|------|------|
+| **CDC** | No app code for every table change | Schema migrations affect connectors |
+| **Outbox** | Explicit domain events | App must write outbox row |
+
+---
+
+## Consistency and UX
+
+| User expectation | Pattern |
+|------------------|---------|
+| Search lags writes by seconds | CDC/outbox + async index — document in API(Application Programming Interface) |
+| Read-your-writes on search | Route recent user's queries to PG fallback or primary index refresh |
+| Reindex after mapping change | Blue/green index alias swap —  |
+
+See  for staleness promises.
+
+---
+
+## Reindex runbook
+
+| Step | Action |
+|------|--------|
+| 1 | Create new index with updated mapping |
+| 2 | Backfill from PG snapshot or replay Kafka topic |
+| 3 | Verify document counts and sample queries |
+| 4 | Alias swap ( → ) |
+| 5 | Delete old index after retention window |
+
+Pair with  when search fields depend on DB schema.
+
+---
+
+## Common mistakes
+
+| Mistake | Fix |
+|---------|-----|
+| `SELECT` + index on every write in request path | Async pipeline |
+| CDC without monitoring lag | Alert on consumer lag |
+| Full reindex in place without alias | Blue/green index |
+| Same index for analytics and user search | Separate read models |
+
+---
+
+## Pros and cons
+
+### CDC + OpenSearch
+
+**Pros:** Scales search independently; rich query features.
+
+**Cons:** Dual system ops; eventual consistency; reindex discipline.
+
+---
+
 
 ---
 
@@ -2303,7 +2560,7 @@ PostgreSQL details → [postgresql-performance §11](../postgresql-performance/i
 | [api-design-and-protection](../api-design-and-protection/README.md) | Gateway, stateless architecture, async API patterns |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limiter algorithms, deployment layers |
 | [postgresql-performance](../postgresql-performance/README.md) | DB measurement, indexing, replicas, bulk writes |
-| [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM storage engines |
+| [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM(Log-Structured Merge) storage engines |
 | [deployment-strategies](../deployment-strategies/README.md) | Rolling, canary, blue/green deploys |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event log, outbox, projections |
-| [database-connection-and-security](../database-connection-and-security/README.md) | DB credentials, IAM, PgBouncer |
+| [database-connection-and-security](../database-connection-and-security/README.md) | DB credentials, IAM(Identity and Access Management), PgBouncer |

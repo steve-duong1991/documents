@@ -6,7 +6,7 @@
 
 ### 1. Rate limiting is not security
 
-Attackers rotate IPs, API keys, and accounts. Rate limiting reduces abuse volume — it does not stop determined attackers.
+Attackers rotate IPs, API(Application Programming Interface) keys, and accounts. Rate limiting reduces abuse volume — it does not stop determined attackers.
 
 ### 2. Clock skew
 
@@ -93,7 +93,7 @@ flowchart TB
 | **Mitigation** | Redis Cluster with persistence; conservative local cap during failover; monitor `429` spike |
 | **Prevention** | Document fail-open policy; run failover game day |
 
-### OAuth token refresh burst
+### OAuth(Open Authorization) token refresh burst
 
 | Symptom | `/oauth/token` hammers rate limit; legitimate apps get `429` |
 |---------|----------------------------------------------------------------|

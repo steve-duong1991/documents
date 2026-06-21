@@ -1,8 +1,8 @@
-# Load Balancer, API Gateway & Entry Architecture
+# Load Balancer, API(Application Programming Interface) Gateway & Entry Architecture
 
 How traffic enters your API stack: what load balancers and API gateways each do, how they work together, and which products to pick by scenario.
 
-> **Scope:** **Architecture lens** — LB vs gateway, request flows, product selection. Throughput tips (CDN cache, hop count, TLS CPU) → [HTS §2 Entry and edge](../../high-throughput-systems/includes/02-entry-and-edge.md).
+> **Scope:** **Architecture lens** — LB vs gateway, request flows, product selection. Throughput tips (CDN(Content Delivery Network) cache, hop count, TLS(Transport Layer Security) CPU) → [HTS §2 Entry and edge](../../high-throughput-systems/includes/02-entry-and-edge.md).
 >
 > **Related:** Rate-limit deployment layers → [api-rate-limiting §7](../../api-rate-limiting/includes/07-deployment-layers.md) · Throughput tips → [HTS §2 Entry and edge](../../high-throughput-systems/includes/02-entry-and-edge.md)
 
@@ -13,9 +13,9 @@ How traffic enters your API stack: what load balancers and API gateways each do,
 | | **Load balancer (LB)** | **API gateway** |
 |---|---|---|
 | **Primary job** | Distribute traffic across healthy backends | Manage, secure, and route **API** traffic |
-| **Layer** | L4 (TCP/UDP) or L7 (HTTP) | L7 (HTTP/HTTPS) |
+| **Layer** | L4 (TCP/UDP) or L7 (HTTP(Hypertext Transfer Protocol)) | L7 (HTTP/HTTPS) |
 | **Routing** | IP, port, basic path/host | Path, method, headers, version, tenant |
-| **Auth / rate limits** | Usually none (minimal at L7) | JWT, API keys, OAuth, throttling, usage plans |
+| **Auth / rate limits** | Usually none (minimal at L7) | JWT(JSON Web Token), API keys, OAuth(Open Authorization), throttling, usage plans |
 | **Transformation** | Rare | Request/response rewrite, aggregation |
 | **Examples** | AWS ALB/NLB, NGINX, HAProxy | Kong, AWS API Gateway, Azure APIM, Cloudflare |
 
@@ -48,8 +48,8 @@ Both sit in front of backend services, but they solve different problems.
 | Path routing `/users`, `/orders` | Basic (L7 ALB) | ✅ Rich |
 | Usage plans / product tiers | ❌ | ✅ |
 | Health checks + failover | ✅ | Via upstream targets |
-| mTLS service-to-service | NLB or mesh | Client mTLS at gateway |
-| Global low latency | CDN in front | Edge gateway (Cloudflare) |
+| mTLS(Mutual Transport Layer Security) service-to-service | NLB or mesh | Client mTLS at gateway |
+| Global low latency | CDN(Content Delivery Network) in front | Edge gateway (Cloudflare) |
 
 ### When to use which
 
@@ -58,13 +58,13 @@ Both sit in front of backend services, but they solve different problems.
 | Scale web app or microservice replicas | **Load balancer** |
 | Single entry point for many microservices | **API gateway** |
 | Public third-party API with keys and quotas | **API gateway** |
-| Raw TCP / internal non-HTTP traffic | **L4 load balancer** (not gateway) |
+| Raw TCP / internal non-HTTP(Hypertext Transfer Protocol) traffic | **L4 load balancer** (not gateway) |
 | TLS termination + simple path routing only | **L7 load balancer** may be enough |
-| BFF, request aggregation, GraphQL federation | **API gateway** or dedicated BFF |
+| BFF(Backend for Frontend), request aggregation, GraphQL federation | **API gateway** or dedicated BFF |
 
 ### Overlap (why people confuse them)
 
-Modern **L7 load balancers** (AWS ALB, NGINX) can do path routing, TLS, and WAF integration. **API gateways** also load-balance across upstreams. The difference is **intent**:
+Modern **L7 load balancers** (AWS ALB, NGINX) can do path routing, TLS, and WAF(Web Application Firewall) integration. **API gateways** also load-balance across upstreams. The difference is **intent**:
 
 - **LB** — infrastructure: availability and distribution
 - **Gateway** — application/API: contracts, security, developer experience
@@ -251,7 +251,7 @@ Route 53 → CloudFront + WAF → API Gateway → ALB → ECS Fargate / EKS / La
 
 | Piece | Pick |
 |-------|------|
-| Gateway | AWS API Gateway (HTTP API for simple; REST for usage plans) |
+| Gateway | AWS API Gateway (HTTP API for simple; REST(Representational State Transfer) for usage plans) |
 | LB | ALB for containers; NLB for raw TCP |
 | Auth | Cognito, Lambda authorizers, IAM (internal) |
 | IaC | Terraform or AWS CDK |
@@ -302,7 +302,7 @@ flowchart TD
 | **Azure APIM** | Enterprise B2B | OAuth, certs, subscriptions | Per-subscription quotas | Azure Front Door + WAF | Developer portal, enterprise features | Heavier, Azure-centric |
 | **Cloudflare API Gateway** | Edge-first, global latency | JWT, mTLS, API tokens | Edge rate limiting | Built-in WAF + DDoS | Low ops, global edge | Less backend transformation |
 | **NGINX / Envoy** | Self-hosted, K8s ingress | External auth subrequest | lua/redis modules | External WAF required | Full control, predictable cost | You operate everything |
-| **Istio / Linkerd** | Internal microservices | mTLS + RBAC | Local limits | Not north-south alone | Strong east-west zero-trust | Wrong tool as sole public gateway |
+| **Istio / Linkerd** | Internal microservices | mTLS + RBAC(Role-Based Access Control) | Local limits | Not north-south alone | Strong east-west zero-trust | Wrong tool as sole public gateway |
 
 ---
 

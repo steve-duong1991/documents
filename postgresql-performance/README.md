@@ -24,6 +24,7 @@ A practical reference for PostgreSQL performance — measurement, indexing, quer
 | 13 | [Decision guide and common mistakes](#13-decision-guide-and-common-mistakes) | [includes/13-decision-guide-and-common-mistakes.md](includes/13-decision-guide-and-common-mistakes.md) |
 | 14 | [Strong consistency — promises and costs](#14-strong-consistency--promises-and-costs) | [includes/14-consistency-promises-and-costs.md](includes/14-consistency-promises-and-costs.md) |
 | 15 | [Schema migration checklist](#15-schema-migration-checklist) | [includes/15-schema-migration-checklist.md](includes/15-schema-migration-checklist.md) |
+| 16 | [Backup, restore, and PITR](#16-backup-restore-and-pitr) | [includes/16-backup-restore-and-pitr.md](includes/16-backup-restore-and-pitr.md) |
 
 > **Tip:** Open [GUIDE.md](GUIDE.md) for the full combined document in one file.
 
@@ -47,7 +48,7 @@ See full details → [includes/01-measurement.md](includes/01-measurement.md)
 
 ## 2. Indexing
 
-B-tree, partial, composite, covering, GIN, and BRIN — when each type pays off.
+B-tree, partial, composite, covering, GIN(Generalized Inverted Index), and BRIN(Block-Range Index) — when each type pays off.
 
 See full details → [includes/02-indexing.md](includes/02-indexing.md)
 
@@ -95,7 +96,7 @@ See full details → [includes/07-connection-management.md](includes/07-connecti
 
 ## 8. Memory and Configuration
 
-`shared_buffers`, `work_mem`, SSD planner costs, and WAL tuning.
+`shared_buffers`, `work_mem`, SSD planner costs, and WAL(Write-Ahead Log) tuning.
 
 See full details → [includes/08-memory-and-config.md](includes/08-memory-and-config.md)
 
@@ -143,7 +144,7 @@ See full details → [includes/13-decision-guide-and-common-mistakes.md](include
 
 ## 14. Strong Consistency — Promises and Costs
 
-Definitions (ACID, linearizability, read-your-writes), CAP trade-offs, PostgreSQL replication modes, and when to require strong reads vs accept staleness.
+Definitions (ACID(Atomicity, Consistency, Isolation, Durability), linearizability, read-your-writes), CAP(Consistency, Availability, Partition Tolerance) trade-offs, PostgreSQL replication modes, and when to require strong reads vs accept staleness.
 
 See full details → [includes/14-consistency-promises-and-costs.md](includes/14-consistency-promises-and-costs.md)
 
@@ -157,13 +158,21 @@ See full details → [includes/15-schema-migration-checklist.md](includes/15-sch
 
 ---
 
+## 16. Backup, restore, and PITR(Point-in-Time Recovery)
+
+Physical vs logical backup, WAL, PITR restore flow, and verification drills.
+
+See full details → [includes/16-backup-restore-and-pitr.md](includes/16-backup-restore-and-pitr.md)
+
+---
+
 ## See also
 
 | Guide | Topics |
 |-------|--------|
 | [high-throughput-systems](../high-throughput-systems/README.md) | System-wide throughput order: cache, scale, async, backpressure |
-| [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM storage engines for write-heavy workloads |
-| [database-connection-and-security](../database-connection-and-security/README.md) | Production credentials, IAM, PgBouncer |
+| [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM(Log-Structured Merge) storage engines for write-heavy workloads |
+| [database-connection-and-security](../database-connection-and-security/README.md) | Production credentials, IAM(Identity and Access Management), PgBouncer |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limiter algorithms and deployment layers |
-| [deployment-strategies](../deployment-strategies/README.md) | Safe rollout during schema and API changes |
+| [deployment-strategies](../deployment-strategies/README.md) | Safe rollout during schema and API(Application Programming Interface) changes |
 | [deployment-strategies §12](../deployment-strategies/includes/12-schema-migrations-and-deploy.md) | Expand/contract with rolling deploy |
