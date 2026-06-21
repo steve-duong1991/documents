@@ -1,0 +1,33 @@
+name: Documents link check
+
+on:
+  push:
+    paths:
+      - 'documents/**'
+  pull_request:
+    paths:
+      - 'documents/**'
+
+jobs:
+  validate-links:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: documents
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate links, anchors, and README TOC
+        run: |
+          python3 scripts/validate-doc-links.py
+          python3 scripts/validate-doc-readme.py
+      - name: Verify GUIDE.md matches includes
+        run: |
+          python3 scripts/build-guide.py
+          git diff --exit-code -- '*.md'
+      - name: Verify MkDocs site builds
+        run: |
+          pip install mkdocs-material
+          mkdocs build -f mkdocs.yml

@@ -1,0 +1,49 @@
+site_name: Engineering Guides
+site_description: API, database, throughput, and deployment reference docs
+docs_dir: .
+site_dir: ../.mkdocs-site
+
+# Build from documents/ root: mkdocs build -f mkdocs.yml
+# Note: GUIDE.md files are the combined view; README.md files are TOC entry points.
+
+nav:
+  - Home: README.md
+  - Contributing: CONTRIBUTING.md
+  - Glossary: GLOSSARY.md
+  - Changelog: CHANGELOG.md
+  - Runbook template: RUNBOOK-TEMPLATE.md
+  - API Design & Protection: api-design-and-protection/GUIDE.md
+  - API Rate Limiting: api-rate-limiting/GUIDE.md
+  - Database Connection & Security: database-connection-and-security/GUIDE.md
+  - Deployment Strategies: deployment-strategies/GUIDE.md
+  - Event Sourcing & CQRS: event-sourcing-and-cqrs/GUIDE.md
+  - High Throughput Systems: high-throughput-systems/GUIDE.md
+  - PostgreSQL Performance: postgresql-performance/GUIDE.md
+  - Tree & Index Structures: tree-and-index-structures/GUIDE.md
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Light mode
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
