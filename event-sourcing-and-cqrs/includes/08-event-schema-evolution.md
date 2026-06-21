@@ -12,7 +12,7 @@ Event logs are forever — schema changes are **read-path** transformations (upc
 |----------|--------------|---------------|
 | **Additive fields** | New optional JSON fields | Old events still valid |
 | **Upcasting** | Transform v1 → v2 on read | Loader applies per event |
-| **New event type** | v2 alongside v1 | Both types in stream |
+| **New event type** | `OrderCreatedV2` alongside v1 | Both types in stream |
 | **Projector version** | New read model shape | Rebuild projection from scratch |
 
 **Rule of thumb:** Never mutate stored events. Add version metadata; upcast at load time; rebuild projections when read models change structurally.
@@ -34,9 +34,9 @@ Store on every event:
 
 | Field | Purpose |
 |-------|---------|
-|  | Routing to handler / projector |
-|  | Select upcaster chain |
-|  | Stream partition key |
+| `event_type` | Routing to handler / projector |
+| `schema_version` | Select upcaster chain |
+| `aggregate_id` | Stream partition key |
 
 ---
 
@@ -57,7 +57,7 @@ flowchart LR
 | **Deploy order** | Deploy readers that understand new version **before** writers emit it |
 | **Snapshots** | Re-snapshot after major schema jumps to cut replay cost |
 
-Example: v1  int → v2  object .
+Example: v1 `amount_cents` int → v2 `money` object `{ currency, amount }`.
 
 ---
 
@@ -67,10 +67,10 @@ Example: v1  int → v2  object .
 |--------|----------------------------|
 | Add optional column to read model | ✅ Expand |
 | New projector for new view | ✅ Side-by-side |
-| Rename column consumed by API | ❌ Expand/contract —  |
+| Rename column consumed by API | ❌ Expand/contract — [PG §15](../../postgresql-performance/includes/15-schema-migration-checklist.md) |
 | Change projection logic only | Rebuild from events; may lag during deploy |
 
-Runbook: stop projector → deploy new code → rebuild or catch-up → resume. See  and snapshots in .
+Runbook: stop projector → deploy new code → rebuild or catch-up → resume. See [Rebuild-from-scratch runbook](03-storage-and-projections.md#rebuild-from-scratch-runbook).
 
 ---
 
@@ -82,7 +82,7 @@ Runbook: stop projector → deploy new code → rebuild or catch-up → resume. 
 | **External Kafka subscriber** | Additive fields only; new topic for breaking |
 | **Public event API** | Versioned envelope; deprecation window |
 
-Pair with  for published schemas.
+Pair with [api-design §15 contract testing](../../api-design-and-protection/includes/15-contract-and-schema-testing.md) for published schemas.
 
 ---
 
@@ -90,9 +90,9 @@ Pair with  for published schemas.
 
 | Mistake | Fix |
 |---------|-----|
-|  | Upcast on read |
+| `UPDATE events SET payload = ...` | Upcast on read |
 | Deploy writer before reader | Two-phase deploy: readers first |
-| No version field | Add  early |
+| No version field | Add `schema_version` early |
 | Skip upcaster tests | Fixture per version in CI |
 
 ---

@@ -1,6 +1,6 @@
-# Backup, Restore, and PITR(Point-in-Time Recovery)
+# Backup, Restore, and PITR
 
-Operational PostgreSQL recovery — backups, WAL(Write-Ahead Log), point-in-time restore, and verification drills. Pair with org DR policy in .
+Operational PostgreSQL recovery — backups, WAL(Write-Ahead Log), point-in-time restore, and verification drills. Pair with org DR policy in [database-connection §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md).
 
 > **Related:** DR policy and RPO(Recovery Point Objective)/RTO(Recovery Time Objective) → [database-connection §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) · Migrations during restore → [§15 Schema migration checklist](15-schema-migration-checklist.md) · Runbook template → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md)
 
@@ -13,10 +13,10 @@ Operational PostgreSQL recovery — backups, WAL(Write-Ahead Log), point-in-time
 | **Full backup** | Snapshot of data files at a point in time |
 | **WAL / continuous archiving** | Log of changes since backup |
 | **PITR** | Restore to any second within retention window |
-| **RPO(Recovery Point Objective)** | Max acceptable data loss (backup + WAL gap) |
-| **RTO(Recovery Time Objective)** | Max time to restore service |
+| **RPO** | Max acceptable data loss (backup + WAL gap) |
+| **RTO** | Max time to restore service |
 
-**Rule of thumb:** Managed RDS / Cloud SQL(Structured Query Language) / Azure DB: enable automated backups + PITR; **still run quarterly restore drills** — .
+**Rule of thumb:** Managed RDS / Cloud SQL(Structured Query Language) / Azure DB: enable automated backups + PITR; **still run quarterly restore drills** — [database-connection §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md).
 
 ---
 
@@ -60,8 +60,8 @@ Document provider-specific CLI in your runbook — RDS `restore-db-instance-to-p
 
 | Type | Tool | Use when |
 |------|------|----------|
-| **Physical** | Snapshot,  | Full instance PITR, DR |
-| **Logical** | ,  | Single schema, cross-version migrate, dev seeds |
+| **Physical** | Snapshot, `pg_basebackup` | Full instance PITR, DR |
+| **Logical** | `pg_dump`, `pg_dumpall` | Single schema, cross-version migrate, dev seeds |
 
 | | Physical | Logical |
 |--|----------|---------|

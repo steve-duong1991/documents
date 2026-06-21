@@ -3995,7 +3995,7 @@ flowchart TB
 
 | Model | Pros | Cons |
 |-------|------|------|
-| **Shared table + ** | Simple ops | Noisy neighbor; strict query discipline |
+| **Shared table + `tenant_id`** | Simple ops | Noisy neighbor; strict query discipline |
 | **Row-level security (RLS)** | DB enforces tenant | Policy complexity |
 | **Schema / DB per tenant** | Strong isolation | Ops scale; migration cost |
 | **Silos for enterprise** | Compliance | Highest cost |
@@ -4004,15 +4004,15 @@ Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level 
 
 ---
 
-## API(Application Programming Interface) patterns
+## API patterns
 
 | Pattern | Detail |
 |---------|--------|
-| **Claim binding** |  from token — never from client body alone |
-| **URL design** |  — validate  matches token |
-| **Idempotency** | Key scoped  —  |
+| **Claim binding** | `tenant_id` from token — never from client body alone |
+| **URL design** | `/v1/orgs/{org_id}/orders` — validate `org_id` matches token |
+| **Idempotency** | Key scoped `(tenant_id, endpoint, key)` — [§13](13-idempotency.md) |
 | **Pagination** | Cursor includes tenant scope |
-| **Rate limits** | Per-tenant + global abuse cap —  |
+| **Rate limits** | Per-tenant + global abuse cap — [api-rate-limiting §6](../api-rate-limiting/includes/06-scope-identity.md) |
 
 ---
 
@@ -4020,7 +4020,7 @@ Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level 
 
 | Need | Approach |
 |------|----------|
-| EU-only data | Region-specific deployment + routing —  |
+| EU-only data | Region-specific deployment + routing — [HTS §13](../high-throughput-systems/includes/13-multi-region-read-routing.md) |
 | Noisy neighbor tenant | Per-tenant rate limits; optional dedicated pool |
 | Large enterprise | Dedicated DB or schema silo |
 
@@ -4084,8 +4084,8 @@ flowchart LR
 | **Depth / cost limits** | Max depth, complexity scoring, query cost analysis |
 | **Authorization** | Field-level rules — not only gateway JWT(JSON Web Token) |
 | **N+1** | DataLoader batching to backing REST/DB |
-| **Caching** | HTTP cache weak; prefer persisted queries + CDN(Content Delivery Network) for public reads |
-| **Versioning** | Schema deprecation vs REST URL versioning —  |
+| **Caching** | HTTP cache weak; prefer persisted queries + CDN for public reads |
+| **Versioning** | Schema deprecation vs REST URL versioning — [§14](14-api-versioning-and-deprecation.md) |
 
 | Pros | Cons |
 |------|------|
@@ -4101,7 +4101,7 @@ flowchart LR
 | **Contracts** | `.proto` files; version fields in messages |
 | **Transport** | HTTP/2, binary protobuf |
 | **Gateway** | gRPC-Web or envoy transcoding for browser edge cases |
-| **Mesh** | Often paired with mTLS(Mutual Transport Layer Security) —  |
+| **Mesh** | Often paired with mTLS(Mutual Transport Layer Security) — [§3 Gateway / mesh](03-api-gateway.md) |
 | **Errors** | Map gRPC status to client retry policy |
 
 | Pros | Cons |
@@ -4131,8 +4131,8 @@ flowchart TD
 | Mistake | Fix |
 |---------|-----|
 | GraphQL at edge without query cost limits | Depth/complexity caps |
-| gRPC everywhere including public mobile | REST or BFF(Backend for Frontend) for public |
-| Skip contract tests on  | Same CI discipline as OpenAPI —  |
+| gRPC everywhere including public mobile | REST or BFF for public |
+| Skip contract tests on `.proto` | Same CI discipline as OpenAPI — [§15](15-contract-and-schema-testing.md) |
 | GraphQL N+1 to database | Batch loaders |
 
 ---

@@ -87,7 +87,7 @@ flowchart TD
 
 | Topic | Link |
 |-------|------|
-| Rollback triggers |  |
-| DR / PITR |  |
-| On-call triage |  |
-| Saga stuck orders |  |
+| Rollback triggers | [deployment-strategies §13](deployment-strategies/includes/13-slo-rollback-triggers.md) |
+| DR / PITR | [PG §16 backup restore](postgresql-performance/includes/16-backup-restore-and-pitr.md) |
+| On-call triage | [HTS §11 observability](high-throughput-systems/includes/11-observability.md) |
+| Saga stuck orders | [ES §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) |

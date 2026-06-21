@@ -41,7 +41,7 @@ flowchart TB
 
 | Model | Pros | Cons |
 |-------|------|------|
-| **Shared table + ** | Simple ops | Noisy neighbor; strict query discipline |
+| **Shared table + `tenant_id`** | Simple ops | Noisy neighbor; strict query discipline |
 | **Row-level security (RLS)** | DB enforces tenant | Policy complexity |
 | **Schema / DB per tenant** | Strong isolation | Ops scale; migration cost |
 | **Silos for enterprise** | Compliance | Highest cost |
@@ -50,15 +50,15 @@ Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level 
 
 ---
 
-## API(Application Programming Interface) patterns
+## API patterns
 
 | Pattern | Detail |
 |---------|--------|
-| **Claim binding** |  from token — never from client body alone |
-| **URL design** |  — validate  matches token |
-| **Idempotency** | Key scoped  —  |
+| **Claim binding** | `tenant_id` from token — never from client body alone |
+| **URL design** | `/v1/orgs/{org_id}/orders` — validate `org_id` matches token |
+| **Idempotency** | Key scoped `(tenant_id, endpoint, key)` — [§13](13-idempotency.md) |
 | **Pagination** | Cursor includes tenant scope |
-| **Rate limits** | Per-tenant + global abuse cap —  |
+| **Rate limits** | Per-tenant + global abuse cap — [api-rate-limiting §6](../../api-rate-limiting/includes/06-scope-identity.md) |
 
 ---
 
@@ -66,7 +66,7 @@ Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level 
 
 | Need | Approach |
 |------|----------|
-| EU-only data | Region-specific deployment + routing —  |
+| EU-only data | Region-specific deployment + routing — [HTS §13](../../high-throughput-systems/includes/13-multi-region-read-routing.md) |
 | Noisy neighbor tenant | Per-tenant rate limits; optional dedicated pool |
 | Large enterprise | Dedicated DB or schema silo |
 

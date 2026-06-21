@@ -35,8 +35,8 @@ flowchart LR
 | **Depth / cost limits** | Max depth, complexity scoring, query cost analysis |
 | **Authorization** | Field-level rules — not only gateway JWT(JSON Web Token) |
 | **N+1** | DataLoader batching to backing REST/DB |
-| **Caching** | HTTP cache weak; prefer persisted queries + CDN(Content Delivery Network) for public reads |
-| **Versioning** | Schema deprecation vs REST URL versioning —  |
+| **Caching** | HTTP cache weak; prefer persisted queries + CDN for public reads |
+| **Versioning** | Schema deprecation vs REST URL versioning — [§14](14-api-versioning-and-deprecation.md) |
 
 | Pros | Cons |
 |------|------|
@@ -52,7 +52,7 @@ flowchart LR
 | **Contracts** | `.proto` files; version fields in messages |
 | **Transport** | HTTP/2, binary protobuf |
 | **Gateway** | gRPC-Web or envoy transcoding for browser edge cases |
-| **Mesh** | Often paired with mTLS(Mutual Transport Layer Security) —  |
+| **Mesh** | Often paired with mTLS(Mutual Transport Layer Security) — [§3 Gateway / mesh](03-api-gateway.md) |
 | **Errors** | Map gRPC status to client retry policy |
 
 | Pros | Cons |
@@ -82,8 +82,8 @@ flowchart TD
 | Mistake | Fix |
 |---------|-----|
 | GraphQL at edge without query cost limits | Depth/complexity caps |
-| gRPC everywhere including public mobile | REST or BFF(Backend for Frontend) for public |
-| Skip contract tests on  | Same CI discipline as OpenAPI —  |
+| gRPC everywhere including public mobile | REST or BFF for public |
+| Skip contract tests on `.proto` | Same CI discipline as OpenAPI — [§15](15-contract-and-schema-testing.md) |
 | GraphQL N+1 to database | Batch loaders |
 
 ---

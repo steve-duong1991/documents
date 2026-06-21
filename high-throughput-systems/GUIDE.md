@@ -2461,7 +2461,7 @@ Cross-service sagas → partition by `saga_id` — .
 
 ---
 
-# CDC(Change Data Capture) and Search Indexing
+# CDC and Search Indexing
 
 Full-text and faceted search at scale usually lives outside PostgreSQL — sync via CDC or outbox, and plan for reindex and staleness.
 
@@ -2473,10 +2473,10 @@ Full-text and faceted search at scale usually lives outside PostgreSQL — sync 
 
 | Approach | How it works | When to use |
 |----------|--------------|-------------|
-| **PostgreSQL GIN(Generalized Inverted Index) / tsvector** | Index inside PG | Moderate corpus, simple search |
+| **PostgreSQL GIN / tsvector** | Index inside PG | Moderate corpus, simple search |
 | **Outbox → indexer** | App publishes change events | You control event shape |
 | **CDC (Debezium)** | WAL(Write-Ahead Log) → Kafka → consumer | Near-real-time without app change |
-| **Batch ETL(Extract, Transform, Load)** | Nightly  / snapshot | Analytics search, low freshness OK |
+| **Batch ETL(Extract, Transform, Load)** | Nightly `COPY` / snapshot | Analytics search, low freshness OK |
 
 **Rule of thumb:** Billions of documents or heavy facets → **OpenSearch / Elasticsearch**. Sync with **CDC or outbox** — not synchronous double-write from the request path.
 
@@ -2509,9 +2509,9 @@ flowchart LR
 |------------------|---------|
 | Search lags writes by seconds | CDC/outbox + async index — document in API(Application Programming Interface) |
 | Read-your-writes on search | Route recent user's queries to PG fallback or primary index refresh |
-| Reindex after mapping change | Blue/green index alias swap —  |
+| Reindex after mapping change | Blue/green index alias swap — [deployment §3](../deployment-strategies/includes/03-blue-green.md) |
 
-See  for staleness promises.
+See [PG §14 Strong consistency](../postgresql-performance/includes/14-consistency-promises-and-costs.md) for staleness promises.
 
 ---
 
@@ -2522,10 +2522,10 @@ See  for staleness promises.
 | 1 | Create new index with updated mapping |
 | 2 | Backfill from PG snapshot or replay Kafka topic |
 | 3 | Verify document counts and sample queries |
-| 4 | Alias swap ( → ) |
+| 4 | Alias swap (`orders` → `orders_v2`) |
 | 5 | Delete old index after retention window |
 
-Pair with  when search fields depend on DB schema.
+Pair with [deployment §12 schema migrations](../deployment-strategies/includes/12-schema-migrations-and-deploy.md) when search fields depend on DB schema.
 
 ---
 
