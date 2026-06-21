@@ -940,6 +940,8 @@ Full database decision guide → [postgresql-performance/includes/13-decision-gu
 
 Decouple **accept rate** from **process rate** — the API enqueues quickly; workers drain at sustainable throughput.
 
+> **Scope:** **Throughput lens** — queue depth, worker scale, and accept-vs-process rates. HTTP job contracts (202, polling, webhooks) → [api-design §10 Async patterns](../api-design-and-protection/includes/10-async-patterns.md). Domain event publish → [ES §5 Async integration](../event-sourcing-and-cqrs/includes/05-async-integration.md).
+
 > **Related:** Async API patterns → [api-design-and-protection/includes/10-async-patterns.md](../api-design-and-protection/includes/10-async-patterns.md) · Rate-limit escape hatch → [api-design-and-protection/includes/05-rate-limit-tiers.md](../api-design-and-protection/includes/05-rate-limit-tiers.md) · Outbox → [event-sourcing-and-cqrs/includes/05-async-integration.md](../event-sourcing-and-cqrs/includes/05-async-integration.md) · Multi-service sagas → [event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md](../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
 
 ---
@@ -1678,7 +1680,7 @@ Full decision flow → [api-rate-limiting/includes/10-decision-guide.md](../api-
 
 Throughput requires **adding capacity without downtime** — horizontal autoscaling, safe deploy strategies, and multi-region read paths.
 
-> **Related:** Stateless prerequisites → [03-stateless-app-tier.md](03-stateless-app-tier.md) · Deployment strategies → [deployment-strategies/README.md](../deployment-strategies/README.md) · Blue/green → [deployment-strategies/includes/03-blue-green.md](../deployment-strategies/includes/03-blue-green.md)
+> **Related:** Stateless prerequisites → [03-stateless-app-tier.md](03-stateless-app-tier.md) · Multi-region routing → [§13 Multi-region read routing](13-multi-region-read-routing.md) · Deployment strategies → [deployment-strategies/README.md](../deployment-strategies/README.md) · Blue/green → [deployment-strategies/includes/03-blue-green.md](../deployment-strategies/includes/03-blue-green.md)
 
 ---
 

@@ -1,3 +1,4 @@
 .mkdocs-site/
 .venv-mkdocs/
 site/
+.DS_Store

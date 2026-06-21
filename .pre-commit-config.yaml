@@ -1,0 +1,15 @@
+repos:
+  - repo: local
+    hooks:
+      - id: validate-doc-links
+        name: Validate documents links and README TOC
+        entry: bash -c 'python3 scripts/validate-doc-links.py && python3 scripts/validate-doc-readme.py'
+        language: system
+        files: \.md$
+        pass_filenames: false
+      - id: validate-doc-guides
+        name: Verify GUIDE.md matches includes
+        entry: bash -c 'python3 scripts/build-guide.py && git diff --quiet -- "*.md" || (echo "GUIDE.md out of sync — run: make build-all" >&2; git diff --stat -- "*.md"; exit 1)'
+        language: system
+        files: \.md$
+        pass_filenames: false

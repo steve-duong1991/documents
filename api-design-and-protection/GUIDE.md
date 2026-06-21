@@ -207,6 +207,8 @@ See [Load Balancer, API Gateway & Entry Architecture](03-api-gateway.md) for flo
 
 # API Design Best Practices
 
+> **Scope:** **General REST/HTTP API design** — resources, errors, pagination, contracts. Event-sourced command/query APIs → [ES §4 API design implications](../event-sourcing-and-cqrs/includes/04-api-design-implications.md).
+
 > **Related:** Protection layers → [§2 API protection](02-api-protection.md) · OpenAPI contract → [§7 OpenAPI / Swagger](07-openapi-swagger.md) · Idempotency → [§13 Idempotency](13-idempotency.md) · Versioning → [§14 API versioning](14-api-versioning-and-deprecation.md)
 
 ## What it is
@@ -1920,6 +1922,8 @@ Do not build the full stack on day one unless compliance requires it.
 # Async Patterns in API Design
 
 How to design APIs for work that outlasts connection timeouts: job resources, polling, webhooks, streaming, and how each layer (gateway, queue, workers) participates.
+
+> **Scope:** **HTTP/API contract lens** — job resources, status codes, polling, webhooks. Queue sizing, worker autoscale, and throughput → [HTS §6 Async, queues, and workers](../high-throughput-systems/includes/06-async-queues-workers.md). Reliable domain-event publish → [ES §5 Async integration](../event-sourcing-and-cqrs/includes/05-async-integration.md).
 
 > **Related:** Rate-limit async escape hatch → [Rate-limit tiers](05-rate-limit-tiers.md#async-escape-hatch) · Idempotency → [Idempotency](13-idempotency.md) · Webhook HMAC → [Auth model](04-auth-model.md#hmac-webhooks) · Reference stack → [Lifecycle & architecture](08-lifecycle-and-architecture.md) · Domain events + outbox → [Event Sourcing & CQRS](../event-sourcing-and-cqrs/includes/05-async-integration.md) · Read consistency after jobs → [Strong consistency — promises and costs](../postgresql-performance/includes/14-consistency-promises-and-costs.md)
 

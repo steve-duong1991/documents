@@ -6,6 +6,31 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ---
 
+## 2026-06-21 (polish — nav, scope, HTS §13)
+
+### high-throughput-systems
+- Renumbered §14 Multi-region read routing → **§13** (`13-multi-region-read-routing.md`)
+- §10: cross-link to §13 multi-region
+- §6: **Scope** block (throughput vs api-design §10 HTTP contract)
+
+### event-sourcing-and-cqrs
+- §4: **Scope** block (ES/CQRS API lens vs api-design §1)
+
+### api-design-and-protection
+- §1: **Scope** block (general REST vs ES §4)
+- §10: **Scope** block (HTTP contract vs HTS §6 / ES §5)
+
+### tree-and-index-structures
+- §3: **Production signals** table — when specialized trees appear in real systems
+
+### Corpus
+- Root README: **Global scale and consistency** learning path; HTS §13 + PG §14 in Make it fast
+- `mkdocs.yml`: per-guide TOC, full GUIDE, and individual `includes/` in nav
+- CI: weekly `documents-external.yml` for `make validate-external`
+- Moved CI/pre-commit into repo root (`documents/.github/`, `.pre-commit-config.yaml`); removed orphan `workflows/` folder
+
+---
+
 ## 2026-06-21 (saga ops gaps)
 
 ### event-sourcing-and-cqrs

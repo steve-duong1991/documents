@@ -356,6 +356,19 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 | Integrity proofs | Merkle tree |
 | String prefix / longest match | Trie / Radix |
 
+## Production signals (when to pick this)
+
+| Structure | Typical production use | Usually not in your DB layer |
+|-----------|------------------------|------------------------------|
+| Trie / Radix | IP routing tables, URL/path routers, autocomplete indexes | PostgreSQL default indexes |
+| Heap | Job schedulers, priority queues inside workers | General row lookup |
+| Segment / Fenwick | In-process range aggregates on bounded arrays | Disk-backed analytics at scale |
+| KD / Ball tree | ML nearest-neighbor (Faiss, scikit pipelines) | SQL `ORDER BY distance` on millions of rows |
+| R-tree | GIS (`PostGIS`), spatial indexes on maps | Plain B+ on scalar columns |
+| Merkle tree | Git, blockchains, content-addressed sync proofs | Application CRUD indexes |
+
+**Rule of thumb:** Default to **B+ (PostgreSQL)** or **LSM (Cassandra, RocksDB)** for persistence. Specialized trees appear in **libraries, gateways, or search/ML services** — see [§5 Decision guides](05-decision-guides.md).
+
 ## Common mistakes
 
 | Mistake | Fix |

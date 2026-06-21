@@ -1,19 +1,25 @@
-name: Documents link check
+name: Documents
 
 on:
   push:
     paths:
-      - 'documents/**'
+      - '**.md'
+      - 'scripts/**'
+      - 'Makefile'
+      - 'mkdocs.yml'
+      - '.github/workflows/documents.yml'
   pull_request:
     paths:
-      - 'documents/**'
+      - '**.md'
+      - 'scripts/**'
+      - 'Makefile'
+      - 'mkdocs.yml'
+      - '.github/workflows/documents.yml'
+  workflow_dispatch:
 
 jobs:
-  validate-links:
+  validate:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: documents
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

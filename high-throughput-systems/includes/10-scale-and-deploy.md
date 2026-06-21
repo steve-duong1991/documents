@@ -2,7 +2,7 @@
 
 Throughput requires **adding capacity without downtime** — horizontal autoscaling, safe deploy strategies, and multi-region read paths.
 
-> **Related:** Stateless prerequisites → [03-stateless-app-tier.md](03-stateless-app-tier.md) · Deployment strategies → [deployment-strategies/README.md](../../deployment-strategies/README.md) · Blue/green → [deployment-strategies/includes/03-blue-green.md](../../deployment-strategies/includes/03-blue-green.md)
+> **Related:** Stateless prerequisites → [03-stateless-app-tier.md](03-stateless-app-tier.md) · Multi-region routing → [§13 Multi-region read routing](13-multi-region-read-routing.md) · Deployment strategies → [deployment-strategies/README.md](../../deployment-strategies/README.md) · Blue/green → [deployment-strategies/includes/03-blue-green.md](../../deployment-strategies/includes/03-blue-green.md)
 
 ---
 

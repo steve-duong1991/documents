@@ -106,7 +106,8 @@ make build GUIDE=postgresql-performance
 
 ## CI and pre-commit
 
-- GitHub Actions: `.github/workflows/documents.yml` (paths: `documents/**`) — link/anchor validation, README TOC sync, `GUIDE.md` drift check, MkDocs build
+- GitHub Actions: `.github/workflows/documents.yml` — link/anchor validation, README TOC sync, `GUIDE.md` drift check, MkDocs build
+- Weekly: `.github/workflows/documents-external.yml` — `make validate-external` (https links; may fail on transient outages)
 - Pre-commit: `.pre-commit-config.yaml` at repo root — link validation, README sync, and `GUIDE.md` drift check; run `pre-commit install`
 
 Both pre-commit and CI run the same checks as `make check` (without optional external URL validation).

@@ -73,6 +73,16 @@ Optimize in order: measure, reduce work, fix the database hot path, then cache a
 2. [postgresql-performance](postgresql-performance/README.md) — indexes, queries, pooling, replicas
    - Read [§9 scale-out terminology](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md) first if partitioning vs replication vs sharding is unclear
 3. [tree-and-index-structures](tree-and-index-structures/README.md) — B+ vs LSM when writes dominate
+4. Global users → [HTS §13 multi-region](high-throughput-systems/includes/13-multi-region-read-routing.md) + [PG §14 consistency](postgresql-performance/includes/14-consistency-promises-and-costs.md)
+
+### Global scale and consistency
+
+Multi-region reads, consistency promises, and DR before expanding globally.
+
+1. [high-throughput-systems §13 multi-region](high-throughput-systems/includes/13-multi-region-read-routing.md) — active-passive, read-local, geo routing
+2. [postgresql-performance §14 consistency](postgresql-performance/includes/14-consistency-promises-and-costs.md) — read-your-writes, staleness, costs
+3. [database-connection-and-security §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md) — RPO/RTO, failover drills
+4. [deployment-strategies](deployment-strategies/README.md) — safe deploy during regional failover
 
 ### Event-sourced domain
 
@@ -123,7 +133,7 @@ cd documents && make validate && make build-all
 
 `make validate` checks file links, cross-file `#anchors`, and README ↔ includes sync. Optional: `make validate-external` for https URLs (see CONTRIBUTING).
 
-Optional static site: `pip install mkdocs-material && mkdocs build -f mkdocs.yml` (from `documents/`; output in `../.mkdocs-site/`). CI verifies the site builds. Local preview: `mkdocs serve -f mkdocs.yml`.
+Optional static site: `pip install mkdocs-material && mkdocs build -f mkdocs.yml` (from `documents/`; output in `../.mkdocs-site/`). Nav lists each guide's README, combined `GUIDE.md`, and individual `includes/` sections. CI verifies the site builds. Local preview: `mkdocs serve -f mkdocs.yml`.
 
 ---
 

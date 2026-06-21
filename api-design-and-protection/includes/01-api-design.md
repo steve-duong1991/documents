@@ -1,5 +1,7 @@
 # API Design Best Practices
 
+> **Scope:** **General REST/HTTP API design** — resources, errors, pagination, contracts. Event-sourced command/query APIs → [ES §4 API design implications](../../event-sourcing-and-cqrs/includes/04-api-design-implications.md).
+
 > **Related:** Protection layers → [§2 API protection](02-api-protection.md) · OpenAPI contract → [§7 OpenAPI / Swagger](07-openapi-swagger.md) · Idempotency → [§13 Idempotency](13-idempotency.md) · Versioning → [§14 API versioning](14-api-versioning-and-deprecation.md)
 
 ## What it is

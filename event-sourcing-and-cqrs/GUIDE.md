@@ -657,6 +657,8 @@ See [Decision guide](06-decision-guide.md) for full trade-offs.
 
 How Event Sourcing and CQRS shape HTTP APIs: command vs query routes, status codes, idempotency, and gateway routing.
 
+> **Scope:** **ES/CQRS API lens** — command/query split, projection lag, and event-store write paths. General REST design (pagination, errors, versioning) → [api-design §1 API design](../api-design-and-protection/includes/01-api-design.md).
+
 > **Related:** [API design best practices](../api-design-and-protection/includes/01-api-design.md) · [Async patterns](../api-design-and-protection/includes/10-async-patterns.md) · [Gateway routing](../api-design-and-protection/includes/03-api-gateway.md)
 
 ---

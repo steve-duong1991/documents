@@ -21,7 +21,7 @@ A practical reference for building systems that handle high request, event, and 
 | 10 | [Scale and deploy](#10-scale-and-deploy) | [includes/10-scale-and-deploy.md](includes/10-scale-and-deploy.md) |
 | 11 | [Observability](#11-observability) | [includes/11-observability.md](includes/11-observability.md) |
 | 12 | [Decision guide and common mistakes](#12-decision-guide-and-common-mistakes) | [includes/12-decision-guide-and-common-mistakes.md](includes/12-decision-guide-and-common-mistakes.md) |
-| 14 | [Multi-region read routing](#14-multi-region-read-routing) | [includes/14-multi-region-read-routing.md](includes/14-multi-region-read-routing.md) |
+| 13 | [Multi-region read routing](#13-multi-region-read-routing) | [includes/13-multi-region-read-routing.md](includes/13-multi-region-read-routing.md) |
 
 > **Tip:** Open [GUIDE.md](GUIDE.md) for the full combined document in one file.
 
@@ -131,11 +131,11 @@ See full details → [includes/12-decision-guide-and-common-mistakes.md](include
 
 ---
 
-## 14. Multi-region read routing
+## 13. Multi-region read routing
 
 Active-passive DR, read-local/write-global, geo routing, and consistency trade-offs.
 
-See full details → [includes/14-multi-region-read-routing.md](includes/14-multi-region-read-routing.md)
+See full details → [includes/13-multi-region-read-routing.md](includes/13-multi-region-read-routing.md)
 
 ---
 

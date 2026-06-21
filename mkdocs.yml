@@ -4,7 +4,7 @@ docs_dir: .
 site_dir: ../.mkdocs-site
 
 # Build from documents/ root: mkdocs build -f mkdocs.yml
-# Note: GUIDE.md files are the combined view; README.md files are TOC entry points.
+# Nav: README TOC + combined GUIDE + individual includes for deep links and search.
 
 nav:
   - Home: README.md
@@ -12,14 +12,139 @@ nav:
   - Glossary: GLOSSARY.md
   - Changelog: CHANGELOG.md
   - Runbook template: RUNBOOK-TEMPLATE.md
-  - API Design & Protection: api-design-and-protection/GUIDE.md
-  - API Rate Limiting: api-rate-limiting/GUIDE.md
-  - Database Connection & Security: database-connection-and-security/GUIDE.md
-  - Deployment Strategies: deployment-strategies/GUIDE.md
-  - Event Sourcing & CQRS: event-sourcing-and-cqrs/GUIDE.md
-  - High Throughput Systems: high-throughput-systems/GUIDE.md
-  - PostgreSQL Performance: postgresql-performance/GUIDE.md
-  - Tree & Index Structures: tree-and-index-structures/GUIDE.md
+  - API Design & Protection:
+      - Table of contents: api-design-and-protection/README.md
+      - Full guide: api-design-and-protection/GUIDE.md
+      - Sections:
+          - Overview — API Design, Protection & Full Flow: api-design-and-protection/includes/00-overview.md
+          - API Design Best Practices: api-design-and-protection/includes/01-api-design.md
+          - API Protection: api-design-and-protection/includes/02-api-protection.md
+          - Load Balancer, API Gateway & Entry Architecture: api-design-and-protection/includes/03-api-gateway.md
+          - Auth Model: api-design-and-protection/includes/04-auth-model.md
+          - Rate-Limit Tiers: api-design-and-protection/includes/05-rate-limit-tiers.md
+          - Threat Model: api-design-and-protection/includes/06-threat-model.md
+          - OpenAPI / Swagger: api-design-and-protection/includes/07-openapi-swagger.md
+          - Lifecycle & Reference Architecture: api-design-and-protection/includes/08-lifecycle-and-architecture.md
+          - Checklist & Cross-Cutting Practices: api-design-and-protection/includes/09-checklist-and-practices.md
+          - Async Patterns in API Design: api-design-and-protection/includes/10-async-patterns.md
+          - Stateless Architecture: api-design-and-protection/includes/11-stateless-architecture.md
+          - Identity: RBAC, IAM & Active Directory: api-design-and-protection/includes/12-identity-rbac-iam-ad.md
+          - Idempotency: api-design-and-protection/includes/13-idempotency.md
+          - API Versioning and Deprecation: api-design-and-protection/includes/14-api-versioning-and-deprecation.md
+          - Contract and Schema Testing: api-design-and-protection/includes/15-contract-and-schema-testing.md
+  - API Rate Limiting:
+      - Table of contents: api-rate-limiting/README.md
+      - Full guide: api-rate-limiting/GUIDE.md
+      - Sections:
+          - Overview — What Rate Limiting Is: api-rate-limiting/includes/00-overview.md
+          - Fixed Window Counter: api-rate-limiting/includes/01-fixed-window.md
+          - Sliding Window Log: api-rate-limiting/includes/02-sliding-window-log.md
+          - Sliding Window Counter (Hybrid): api-rate-limiting/includes/03-sliding-window-counter.md
+          - Token Bucket: api-rate-limiting/includes/04-token-bucket.md
+          - Leaky Bucket: api-rate-limiting/includes/05-leaky-bucket.md
+          - Scope & Identity-Based Limiters: api-rate-limiting/includes/06-scope-identity.md
+          - Deployment Layers: api-rate-limiting/includes/07-deployment-layers.md
+          - Specialized Limiters: api-rate-limiting/includes/08-specialized-limiters.md
+          - Response Strategies: api-rate-limiting/includes/09-response-strategies.md
+          - Decision Guide — Choosing a Limiter: api-rate-limiting/includes/10-decision-guide.md
+          - Common Mistakes & Production Architecture: api-rate-limiting/includes/11-common-mistakes-and-architecture.md
+  - Database Connection & Security:
+      - Table of contents: database-connection-and-security/README.md
+      - Full guide: database-connection-and-security/GUIDE.md
+      - Sections:
+          - Overview — Database Connection & Security: database-connection-and-security/includes/00-overview.md
+          - Local Database Credentials: database-connection-and-security/includes/01-local-db-credentials.md
+          - Production Database Security: database-connection-and-security/includes/02-prod-db-security.md
+          - HashiCorp Vault (HCV): database-connection-and-security/includes/03-hcv-vault.md
+          - AWS IAM auth + RDS Proxy: database-connection-and-security/includes/04-aws-iam-rds-proxy.md
+          - Secret manager + static password: database-connection-and-security/includes/05-secret-manager-password.md
+          - Direct RDS IAM auth (no RDS Proxy): database-connection-and-security/includes/06-direct-rds-iam.md
+          - GCP Cloud SQL identity: database-connection-and-security/includes/07-gcp-cloud-sql-identity.md
+          - Azure Database identity: database-connection-and-security/includes/08-azure-database-identity.md
+          - PgBouncer + secret (proxy + password): database-connection-and-security/includes/09-pgbouncer-proxy-password.md
+          - mTLS (client certificate auth): database-connection-and-security/includes/10-mtls-client-certs.md
+          - PaaS / platform-managed database: database-connection-and-security/includes/11-paas-managed-db.md
+          - Credential Rotation and Disaster Recovery: database-connection-and-security/includes/12-credential-rotation-and-dr.md
+          - Decision Guide — Connection Patterns: database-connection-and-security/includes/13-decision-guide.md
+  - Deployment Strategies:
+      - Table of contents: deployment-strategies/README.md
+      - Full guide: deployment-strategies/GUIDE.md
+      - Sections:
+          - Overview — Quick Comparison: deployment-strategies/includes/00-overview.md
+          - Recreate (Big Bang): deployment-strategies/includes/01-recreate.md
+          - Rolling Deployment: deployment-strategies/includes/02-rolling.md
+          - Blue-Green Deployment: deployment-strategies/includes/03-blue-green.md
+          - Canary Deployment: deployment-strategies/includes/04-canary.md
+          - A/B Testing (Experiment Deployment): deployment-strategies/includes/05-ab-testing.md
+          - Shadow / Mirror / Dark Launch: deployment-strategies/includes/06-shadow.md
+          - Feature Flags (Toggle-Based Release): deployment-strategies/includes/07-feature-flags.md
+          - Immutable Deployment: deployment-strategies/includes/08-immutable.md
+          - GitOps: deployment-strategies/includes/09-gitops.md
+          - Progressive Delivery: deployment-strategies/includes/10-progressive-delivery.md
+          - Choosing a Strategy & Best Practices: deployment-strategies/includes/11-choosing-and-practices.md
+          - Schema Migrations and Deploy Coupling: deployment-strategies/includes/12-schema-migrations-and-deploy.md
+          - SLO-Based Rollback Triggers: deployment-strategies/includes/13-slo-rollback-triggers.md
+  - Event Sourcing & CQRS:
+      - Table of contents: event-sourcing-and-cqrs/README.md
+      - Full guide: event-sourcing-and-cqrs/GUIDE.md
+      - Sections:
+          - Overview — Event Sourcing & CQRS: event-sourcing-and-cqrs/includes/00-overview.md
+          - Core Concepts: event-sourcing-and-cqrs/includes/01-core-concepts.md
+          - CQRS and Read Models: event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md
+          - Storage and Projections: event-sourcing-and-cqrs/includes/03-storage-and-projections.md
+          - API Design Implications: event-sourcing-and-cqrs/includes/04-api-design-implications.md
+          - Async Integration: event-sourcing-and-cqrs/includes/05-async-integration.md
+          - Decision Guide: event-sourcing-and-cqrs/includes/06-decision-guide.md
+          - Sagas and Distributed Workflows: event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md
+  - High Throughput Systems:
+      - Table of contents: high-throughput-systems/README.md
+      - Full guide: high-throughput-systems/GUIDE.md
+      - Sections:
+          - Overview — High Throughput Systems: high-throughput-systems/includes/00-overview.md
+          - Measurement and SLOs: high-throughput-systems/includes/01-measurement-and-slo.md
+          - Entry and Edge: high-throughput-systems/includes/02-entry-and-edge.md
+          - Stateless App Tier: high-throughput-systems/includes/03-stateless-app-tier.md
+          - Caching Layers: high-throughput-systems/includes/04-caching-layers.md
+          - Database Throughput: high-throughput-systems/includes/05-database-throughput.md
+          - Async, Queues, and Workers: high-throughput-systems/includes/06-async-queues-workers.md
+          - Streaming Pipelines: high-throughput-systems/includes/07-streaming-pipelines.md
+          - Batch and ETL: high-throughput-systems/includes/08-batch-and-etl.md
+          - Backpressure and Limits: high-throughput-systems/includes/09-backpressure-and-limits.md
+          - Scale and Deploy: high-throughput-systems/includes/10-scale-and-deploy.md
+          - Observability: high-throughput-systems/includes/11-observability.md
+          - Decision Guide, Checklist, and Common Mistakes: high-throughput-systems/includes/12-decision-guide-and-common-mistakes.md
+          - Multi-Region Read Routing: high-throughput-systems/includes/13-multi-region-read-routing.md
+  - PostgreSQL Performance:
+      - Table of contents: postgresql-performance/README.md
+      - Full guide: postgresql-performance/GUIDE.md
+      - Sections:
+          - Overview — PostgreSQL Performance: postgresql-performance/includes/00-overview.md
+          - Measurement — Start Here: postgresql-performance/includes/01-measurement.md
+          - Indexing: postgresql-performance/includes/02-indexing.md
+          - Query Design: postgresql-performance/includes/03-query-design.md
+          - Schema Design: postgresql-performance/includes/04-schema-design.md
+          - Statistics and the Query Planner: postgresql-performance/includes/05-statistics-and-planner.md
+          - Vacuum, Bloat, and Maintenance: postgresql-performance/includes/06-vacuum-and-bloat.md
+          - Connection Management: postgresql-performance/includes/07-connection-management.md
+          - Memory and Configuration Tuning: postgresql-performance/includes/08-memory-and-config.md
+          - Views, Functions, and Scale-Out Terminology: postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md
+          - Partitioning: postgresql-performance/includes/10-partitioning.md
+          - Read Scaling, Replication, and Caching: postgresql-performance/includes/11-read-scaling-and-caching.md
+          - Bulk Operations, Locking, and Concurrency: postgresql-performance/includes/12-bulk-operations-and-concurrency.md
+          - Decision Guide, Checklist, and Common Mistakes: postgresql-performance/includes/13-decision-guide-and-common-mistakes.md
+          - Strong Consistency — Promises and Costs: postgresql-performance/includes/14-consistency-promises-and-costs.md
+          - Schema Migration Checklist: postgresql-performance/includes/15-schema-migration-checklist.md
+  - Tree & Index Structures:
+      - Table of contents: tree-and-index-structures/README.md
+      - Full guide: tree-and-index-structures/GUIDE.md
+      - Sections:
+          - Overview — Trees and Index Structures: tree-and-index-structures/includes/00-overview.md
+          - B-Trees and B+ Trees: tree-and-index-structures/includes/01-b-trees-and-b-plus.md
+          - In-Memory Balanced Trees: tree-and-index-structures/includes/02-in-memory-trees.md
+          - Specialized Trees: tree-and-index-structures/includes/03-specialized-trees.md
+          - LSM Trees (Log-Structured Merge Trees): tree-and-index-structures/includes/04-lsm-trees.md
+          - Decision Guides and Cheat Sheets: tree-and-index-structures/includes/05-decision-guides.md
+          - Amplification, Complexity, and Related Topics: tree-and-index-structures/includes/06-amplification-and-related-topics.md
 
 theme:
   name: material
