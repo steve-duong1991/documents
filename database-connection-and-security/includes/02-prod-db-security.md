@@ -171,7 +171,7 @@ Quick picks:
 | Parameterized queries / ORM | Prevent SQL injection |
 | Read-only DB user | Read paths use a read-only role |
 | Read replicas | Writes to primary; reads from replica |
-| Row-Level Security (RLS) | Postgres policies restrict rows per tenant |
+| Row-Level Security (RLS) | Postgres policies restrict rows per tenant — [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md) |
 | Connection timeouts and limits | Avoid connection exhaustion |
 
 ---

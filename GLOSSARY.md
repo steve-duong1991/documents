@@ -38,6 +38,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **LSM(Log-Structured Merge) tree** | Log-structured merge; write-optimized storage | [tree-and-index-structures §4](tree-and-index-structures/includes/04-lsm-trees.md) |
 | **Memtable** | In-memory sorted buffer in LSM; absorbs writes before flush to disk | [tree §4](tree-and-index-structures/includes/04-lsm-trees.md) |
 | **Materialized view** | PostgreSQL snapshot of a query; fast reads until `REFRESH` | [PG §11](postgresql-performance/includes/11-read-scaling-and-caching.md#materialized-views), [§9](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md#materialized-views) |
+| **Multi-tenant** | One deployment serves many customer orgs; data isolated per tenant | [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md) |
 | **Optimistic concurrency** | Detect conflicting writes via version/check; retry on conflict | [ES §1](event-sourcing-and-cqrs/includes/01-core-concepts.md), [PG §12](postgresql-performance/includes/12-bulk-operations-and-concurrency.md) |
 | **Outbox pattern** | DB table + relay for reliable event publish | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md), [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
 | **Partitioning** | Split one logical table across child tables on a single PostgreSQL server | [PG §10](postgresql-performance/includes/10-partitioning.md) |
@@ -49,6 +50,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Read replica** | Standby replaying WAL; offloads SELECT, adds replication lag | [PG §11](postgresql-performance/includes/11-read-scaling-and-caching.md) |
 | **Read-your-writes** | User sees own write immediately after POST | [PG §14](postgresql-performance/includes/14-consistency-promises-and-costs.md), [api-design §11](api-design-and-protection/includes/11-stateless-architecture.md) |
 | **Replication** | Full copy of database on another node for HA or read scale | [PG §9](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md), [§11](postgresql-performance/includes/11-read-scaling-and-caching.md) |
+| **RLS(Row-Level Security)** | PostgreSQL policy that filters rows per session (e.g. per `tenant_id`) | [PG §17](postgresql-performance/includes/17-row-level-security-multi-tenant.md), [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md) |
 | **Rolling deploy** | Replace instances incrementally; mixed versions during rollout | [deployment-strategies §2](deployment-strategies/includes/02-rolling.md) |
 | **RPO(Recovery Point Objective)** | Recovery point objective — max data loss | [database-connection §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
 | **RTO(Recovery Time Objective)** | Recovery time objective — max downtime to restore | [database-connection §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
@@ -63,6 +65,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **SSRF(Server-Side Request Forgery)** | Server-side request forgery — unsafe outbound fetches (e.g. webhook URL) | [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
 | **Snapshot (ES)** | Cached aggregate state at version N; not source of truth | [ES §3](event-sourcing-and-cqrs/includes/03-storage-and-projections.md) |
 | **Stateless app tier** | No session in process memory; horizontal scale | [api-design §11](api-design-and-protection/includes/11-stateless-architecture.md) |
+| **Tenant** | One customer org (company, workspace) on shared SaaS(Software as a Service) infrastructure | [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md#what-is-a-tenant) |
 | **Thundering herd** | Same as cache stampede — synchronized miss storm on hot keys | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
 | **Token bucket** | Rate limit algorithm allowing controlled bursts | [api-rate-limiting §4](api-rate-limiting/includes/04-token-bucket.md) |
 | **Transactional outbox** | Same transaction: business write + outbox row | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |

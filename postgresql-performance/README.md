@@ -25,6 +25,7 @@ A practical reference for PostgreSQL performance — measurement, indexing, quer
 | 14 | [Strong consistency — promises and costs](includes/14-consistency-promises-and-costs.md) |
 | 15 | [Schema migration checklist](includes/15-schema-migration-checklist.md) |
 | 16 | [Backup, restore, and PITR](includes/16-backup-restore-and-pitr.md) |
+| 17 | [Row-level security for multi-tenant data](includes/17-row-level-security-multi-tenant.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 

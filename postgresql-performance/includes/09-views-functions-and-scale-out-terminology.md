@@ -69,6 +69,8 @@ WITH (security_barrier) AS
 SELECT * FROM orders WHERE tenant_id = current_setting('app.tenant_id')::int;
 ```
 
+Enable RLS on base tables, policy design, and `BYPASSRLS` roles → [§17 Row-level security for multi-tenant data](17-row-level-security-multi-tenant.md).
+
 ### Materialized views
 
 Pre-computed snapshot of a query — fast reads, stale until `REFRESH`. Use for dashboards and heavy aggregations that tolerate lag; **not** for read-your-writes after a write.
