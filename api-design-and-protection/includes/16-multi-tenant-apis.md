@@ -46,7 +46,7 @@ flowchart TB
 | **Schema / DB per tenant** | Strong isolation | Ops scale; migration cost |
 | **Silos for enterprise** | Compliance | Highest cost |
 
-Default for most B2B SaaS: **shared PostgreSQL +  + RLS or app-level checks**.
+Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level checks**.
 
 ---
 

@@ -37,7 +37,7 @@ flowchart TD
     Relay --> CDC[CDC from WAL]
 ```
 
-Full outbox patterns → . CDC to search → .
+Full outbox patterns → [ES §5](../../event-sourcing-and-cqrs/includes/05-async-integration.md). CDC to search → [15-cdc-and-search-indexing.md](15-cdc-and-search-indexing.md).
 
 ---
 

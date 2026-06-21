@@ -2023,7 +2023,7 @@ flowchart TD
 | 4 | Run verification queries (counts, checksums, sample orders) |
 | 5 | Either promote clone or export repaired subset |
 
-Document provider-specific CLI in your runbook — RDS , Cloud SQL clone, etc.
+Document provider-specific CLI in your runbook — RDS `restore-db-instance-to-point-in-time`, Cloud SQL clone, etc.
 
 ---
 
@@ -2037,10 +2037,10 @@ Document provider-specific CLI in your runbook — RDS , Cloud SQL clone, etc.
 | | Physical | Logical |
 |--|----------|---------|
 | **PITR** | ✅ | ❌ (point snapshot only) |
-| **Selective table** | Hard |  |
+| **Selective table** | Hard | `pg_dump -t` |
 | **Restore speed** | Fast at scale | Slow for large DBs |
 
-Bulk export patterns → .
+Bulk export patterns → [§12 Bulk operations](12-bulk-operations-and-concurrency.md).
 
 ---
 
