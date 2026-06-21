@@ -1,4 +1,4 @@
-# Direct RDS IAM(Identity and Access Management) auth (no RDS Proxy)
+# Direct RDS IAM auth (no RDS Proxy)
 
 > App connects to RDS using an IAM auth token as the password — same token model as [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md), but **without** RDS Proxy in the path.
 

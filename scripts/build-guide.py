@@ -37,6 +37,18 @@ def rewrite_links_for_guide(text: str) -> str:
     )
 
 
+def demote_headings(text: str) -> str:
+    """Demote each heading one level so stitched sections nest under GUIDE title."""
+    lines: list[str] = []
+    for line in text.splitlines():
+        m = re.match(r"^(#{1,6})\s", line)
+        if m and len(m.group(1)) < 6:
+            lines.append("#" + line)
+        else:
+            lines.append(line)
+    return "\n".join(lines)
+
+
 def build_guide(guide_dir: Path) -> None:
     name = guide_dir.name
     includes = sorted((guide_dir / "includes").glob("*.md"))
@@ -49,12 +61,15 @@ def build_guide(guide_dir: Path) -> None:
         f"# {title} (Full)",
         "",
         "> Combined view of all sections. Modular sources live in `includes/`.",
+        "> On GitHub, use the guide **README** table of contents for direct section links.",
         "",
         "---",
         "",
     ]
     for inc in includes:
-        body = rewrite_links_for_guide(inc.read_text(encoding="utf-8").rstrip())
+        body = demote_headings(
+            rewrite_links_for_guide(inc.read_text(encoding="utf-8").rstrip())
+        )
         parts.append(body)
         parts.extend(["", "---", ""])
 

@@ -134,7 +134,7 @@ Each compensate call is again **one local ACID transaction** in that service's d
 
 Strong consistency applies **inside one primary database**. Microservices are a layer where consistency breaks unless you design for it — see [Where consistency breaks](../../postgresql-performance/includes/14-consistency-promises-and-costs.md#where-consistency-breaks).
 
-### Microservices vs distributed SQL(Structured Query Language)
+### Microservices vs distributed SQL
 
 | Setup | Saga role |
 |-------|-----------|

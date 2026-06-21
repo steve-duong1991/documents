@@ -126,7 +126,7 @@ flowchart TB
 - Short TTL (minutes)
 - Asymmetric keys (RS256) with key rotation
 
-## mTLS (mutual TLS(Transport Layer Security))
+## mTLS (mutual TLS)
 
 ### Pros
 

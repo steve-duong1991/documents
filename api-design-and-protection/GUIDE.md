@@ -1,16 +1,17 @@
 # API Design & Protection Guide (Full)
 
 > Combined view of all sections. Modular sources live in `includes/`.
+> On GitHub, use the guide **README** table of contents for direct section links.
 
 ---
 
-# Overview — API(Application Programming Interface) Design, Protection & Full Flow
+## Overview — API Design, Protection & Full Flow
 
 This guide covers how to **design** public and internal APIs, **protect** them in production, and wire the pieces together: gateway, auth, rate limits, threat modeling, and OpenAPI/Swagger.
 
 > **Related:** Rate limiting algorithms → [api-rate-limiting](../api-rate-limiting/README.md) · Event sourcing / audit writes → [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) · Throughput order → [high-throughput-systems](../high-throughput-systems/README.md) · Decision checklist → [§9 Checklist](09-checklist-and-practices.md)
 
-## What this guide covers
+### What this guide covers
 
 | Layer | Topics |
 |-------|--------|
@@ -27,7 +28,7 @@ This guide covers how to **design** public and internal APIs, **protect** them i
 | **Idempotency** | Safe retries, Idempotency-Key, storage patterns |
 | **Stateless architecture** | Externalized state, scaling, token-based auth, deploy freedom |
 
-## End-to-end request flow
+### End-to-end request flow
 
 ```mermaid
 flowchart TB
@@ -93,7 +94,7 @@ flowchart TB
     RL --> Audit
 ```
 
-## Sequence: one protected API call
+### Sequence: one protected API call
 
 ```mermaid
 sequenceDiagram
@@ -136,7 +137,7 @@ sequenceDiagram
     Note over G,A: All steps logged with correlation ID<br/>No tokens or PII in logs
 ```
 
-## Trust zones
+### Trust zones
 
 ```mermaid
 flowchart LR
@@ -160,7 +161,7 @@ flowchart LR
     SVC --> DB2
 ```
 
-## Default recommendation
+### Default recommendation
 
 For most **public SaaS APIs**:
 
@@ -173,27 +174,27 @@ For most **public SaaS APIs**:
 
 See [Load Balancer, API Gateway & Entry Architecture](03-api-gateway.md) for flows and stack choices.
 
-## Pros of this layered approach
+### Pros of this layered approach
 
 - Each layer has a single responsibility — easier to reason about and audit
 - Failures are contained (edge absorbs DDoS; gateway absorbs auth/rate abuse)
 - Design contract (OpenAPI) stays separate from runtime enforcement (gateway)
 - Teams can evolve services behind a stable `/v1` surface
 
-## Cons of this layered approach
+### Cons of this layered approach
 
 - More moving parts — ops complexity, cost, and latency hops
 - Policies must stay consistent across edge, gateway, and app (drift risk)
 - Over-engineering for internal-only APIs with trusted callers
 - Debugging requires correlation IDs across all layers
 
-## When a simpler stack is enough
+### When a simpler stack is enough
 
 - Internal-only APIs behind VPN with mTLS and trusted services
 - Early MVP with one service, HTTPS + API key + basic rate limit
 - Batch/integration workloads with low QPS and contractual SLAs only
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -205,19 +206,19 @@ See [Load Balancer, API Gateway & Entry Architecture](03-api-gateway.md) for flo
 
 ---
 
-# API(Application Programming Interface) Design Best Practices
+## API Design Best Practices
 
 > **Scope:** **General REST(Representational State Transfer)/HTTP(Hypertext Transfer Protocol) API design** — resources, errors, pagination, contracts. Event-sourced command/query APIs → [ES §4 API design implications](../event-sourcing-and-cqrs/includes/04-api-design-implications.md).
 
 > **Related:** Protection layers → [§2 API protection](02-api-protection.md) · OpenAPI contract → [§7 OpenAPI / Swagger](07-openapi-swagger.md) · Idempotency → [§13 Idempotency](13-idempotency.md) · Versioning → [§14 API versioning](14-api-versioning-and-deprecation.md)
 
-## What it is
+### What it is
 
 API design defines **how clients interact with your system**: URLs, HTTP methods, request/response shapes, errors, pagination, and versioning. Good design is **predictable**, **consistent**, and **hard to misuse**.
 
-## Core principles
+### Core principles
 
-### 1. Design around resources, not actions
+#### 1. Design around resources, not actions
 
 Use **nouns** in paths; let HTTP verbs express behavior.
 
@@ -235,7 +236,7 @@ POST /v1/orders/123/cancel
 POST /v1/payments/456/refund
 ```
 
-### 2. Be consistent
+#### 2. Be consistent
 
 - Plural resource names: `/users`, `/orders`
 - One JSON casing convention (`snake_case` or `camelCase`) everywhere
@@ -243,7 +244,7 @@ POST /v1/payments/456/refund
 - Same pagination and error shape on every endpoint
 - Same wrapper pattern (either always `{ "data": ... }` or never)
 
-### 3. Use HTTP methods and status codes correctly
+#### 3. Use HTTP methods and status codes correctly
 
 | Method | Use for |
 |--------|---------|
@@ -269,7 +270,7 @@ POST /v1/payments/456/refund
 
 **Do not** return `200` with `{ "success": false }`. **Do not** use `404` to hide authorization failures when existence leakage matters.
 
-### 4. Standard response shapes
+#### 4. Standard response shapes
 
 **List success:**
 
@@ -300,7 +301,7 @@ POST /v1/payments/456/refund
 }
 ```
 
-### 5. Pagination, filtering, sorting
+#### 5. Pagination, filtering, sorting
 
 ```http
 GET /v1/orders?status=open&sort=-created_at&limit=20&cursor=abc
@@ -311,7 +312,7 @@ GET /v1/orders?status=open&sort=-created_at&limit=20&cursor=abc
 - Prefer **cursor pagination** for large or frequently changing datasets
 - Offset pagination is simpler but performs poorly at scale
 
-### 6. Versioning
+#### 6. Versioning
 
 | Approach | Example | Pros | Cons |
 |----------|---------|------|------|
@@ -325,7 +326,7 @@ GET /v1/orders?status=open&sort=-created_at&limit=20&cursor=abc
 - Deprecate with `Deprecation` and `Sunset` headers
 - Never make breaking changes in place on a stable version
 
-### 7. Write safety
+#### 7. Write safety
 
 ```http
 POST /v1/orders
@@ -342,14 +343,14 @@ For operations that may run longer than ~30 seconds (exports, batch jobs), use a
 
 Event-sourced write models use the same headers for command APIs — see [Event Sourcing & CQRS](../event-sourcing-and-cqrs/includes/04-api-design-implications.md).
 
-### 8. Modeling tips
+#### 8. Modeling tips
 
 - Stable IDs: prefixed strings (`usr_`, `ord_`) or UUIDs — avoid exposing auto-increment integers publicly
 - Money: minor units + currency code, or decimal string — **never floats**
 - Enums as strings, not magic numbers
 - Relationships via sub-resources: `GET /v1/users/123/orders`
 
-## REST vs RPC-style HTTP
+### REST vs RPC-style HTTP
 
 | Style | Pros | Cons | When to use |
 |-------|------|------|-------------|
@@ -358,7 +359,7 @@ Event-sourced write models use the same headers for command APIs — see [Event 
 | **GraphQL** | Flexible queries, one endpoint | Complexity, caching, authorization per field | Mobile/apps with varied data needs |
 | **gRPC** | Performance, strong contracts | Not browser-native | Internal microservices |
 
-## Common mistakes
+### Common mistakes
 
 - Verbs in every URL (`/getUser`, `/deleteUser`)
 - Inconsistent pluralization (`/user` vs `/orders`)
@@ -367,14 +368,14 @@ Event-sourced write models use the same headers for command APIs — see [Event 
 - Giant response objects with 80+ fields
 - Silent breaking changes without version bump
 
-## Pros of strong API design
+### Pros of strong API design
 
 - Faster partner and client integration
 - Fewer support tickets and misuse bugs
 - Easier to add gateway policies and contract tests
 - Clear evolution path via versioning
 
-## Cons / trade-offs
+### Cons / trade-offs
 
 - Contract-first design slows initial prototyping
 - Strict consistency requires discipline across teams
@@ -383,15 +384,15 @@ Event-sourced write models use the same headers for command APIs — see [Event 
 
 ---
 
-# API(Application Programming Interface) Protection
+## API Protection
 
 > **Related:** Entry architecture → [§3 Gateway](03-api-gateway.md) · Auth model → [§4 Auth model](04-auth-model.md) · Threat model → [§6 Threat model](06-threat-model.md) · Rate limits → [api-rate-limiting](../api-rate-limiting/README.md)
 
-## What it is
+### What it is
 
 API protection is **layered defense**: verify callers, limit abuse, validate input, encrypt transport, and detect attacks. No single control is sufficient.
 
-## Defense in depth
+### Defense in depth
 
 ```mermaid
 flowchart TB
@@ -407,7 +408,7 @@ flowchart TB
 
 > LB may be omitted for a single-instance MVP. See [entry architecture](03-api-gateway.md).
 
-## Protection layers
+### Protection layers
 
 | Layer | Responsibilities | Typical tools |
 |-------|------------------|---------------|
@@ -418,24 +419,24 @@ flowchart TB
 | **Data** | Encryption at rest, least-privilege DB roles | RDS, PostgreSQL RLS |
 | **Operations** | Audit logs, alerting, secret rotation, pen tests | Datadog, SIEM, Vault |
 
-## 1. Transport security
+### 1. Transport security
 
 - **HTTPS only** — reject or redirect HTTP(Hypertext Transfer Protocol)
 - **TLS 1.2+** (prefer 1.3)
 - **HSTS** for browser-facing APIs
 - **mTLS(Mutual Transport Layer Security)** for high-trust B2B or internal service mesh
 
-### Pros
+#### Pros
 
 - Industry baseline; required for compliance
 - Protects credentials and data in transit
 
-### Cons
+#### Cons
 
 - Certificate management overhead
 - mTLS adds operational complexity for partners
 
-## 2. Authentication (AuthN)
+### 2. Authentication (AuthN)
 
 Prove **who** is calling.
 
@@ -453,7 +454,7 @@ Prove **who** is calling.
 - Rotate secrets; support overlapping validity during rotation
 - Store secrets in a vault, not in code or git
 
-## 3. Authorization (AuthZ)
+### 3. Authorization (AuthZ)
 
 Prove **what** the caller may do — always in the **application layer**, not gateway alone.
 
@@ -466,7 +467,7 @@ Prove **what** the caller may do — always in the **application layer**, not ga
 | `401` | Missing or invalid credentials |
 | `403` | Valid credentials but insufficient permission |
 
-## 4. Input validation
+### 4. Input validation
 
 Treat all input as hostile: body, query, path, headers.
 
@@ -476,13 +477,13 @@ Treat all input as hostile: body, query, path, headers.
 - Cap payload size and JSON nesting depth
 - Sanitize file uploads
 
-## 5. Rate limiting
+### 5. Rate limiting
 
 Controls **how much** a caller can consume. Not a substitute for auth.
 
 See the dedicated guide: [api-rate-limiting](../api-rate-limiting/README.md).
 
-## 6. Idempotency and replay protection
+### 6. Idempotency and replay protection
 
 **Write idempotency** (client retries, duplicate POSTs):
 
@@ -495,13 +496,13 @@ See the dedicated guide: [api-rate-limiting](../api-rate-limiting/README.md).
 - Reject stale signed requests
 - Dedup by `event_id` in a shared store
 
-## 7. CORS, CSRF, browser-facing APIs
+### 7. CORS, CSRF, browser-facing APIs
 
 - CORS: allowlist origins; never `*` with credentials
 - CSRF tokens or SameSite cookies for cookie-based sessions
 - Security headers: `Content-Security-Policy`, `X-Content-Type-Options`
 
-## 8. Logging and monitoring
+### 8. Logging and monitoring
 
 **Log safely:**
 
@@ -518,7 +519,7 @@ See the dedicated guide: [api-rate-limiting](../api-rate-limiting/README.md).
 - Error rate anomalies
 - Unusual geo or IP patterns
 
-## Fail-open vs fail-closed
+### Fail-open vs fail-closed
 
 | Strategy | Pros | Cons | When |
 |----------|------|------|------|
@@ -527,21 +528,21 @@ See the dedicated guide: [api-rate-limiting](../api-rate-limiting/README.md).
 
 Default: **fail closed** for auth and expensive writes; document the choice. Production fail-open policy and war stories → [api-rate-limiting §11](../api-rate-limiting/includes/11-common-mistakes-and-architecture.md).
 
-## Pros of layered API protection
+### Pros of layered API protection
 
 - Attack surface reduced at each hop
 - Blast radius contained (edge absorbs volumetric attacks)
 - Clear audit trail when combined with correlation IDs
 - Aligns with compliance frameworks (SOC2, PCI)
 
-## Cons
+### Cons
 
 - Latency added at each layer
 - Cost of WAF, gateway, and observability tooling
 - Policy drift if edge, gateway, and app disagree
 - False positives from WAF/bot rules blocking legitimate clients
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -553,7 +554,7 @@ Default: **fail closed** for auth and expensive writes; document the choice. Pro
 
 ---
 
-# Load Balancer, API(Application Programming Interface) Gateway & Entry Architecture
+## Load Balancer, API Gateway & Entry Architecture
 
 How traffic enters your API stack: what load balancers and API gateways each do, how they work together, and which products to pick by scenario.
 
@@ -563,7 +564,7 @@ How traffic enters your API stack: what load balancers and API gateways each do,
 
 ---
 
-## At a glance
+### At a glance
 
 | | **Load balancer (LB)** | **API gateway** |
 |---|---|---|
@@ -590,11 +591,11 @@ flowchart TB
 
 ---
 
-## Load balancer vs API gateway
+### Load balancer vs API gateway
 
 Both sit in front of backend services, but they solve different problems.
 
-### Comparison
+#### Comparison
 
 | Concern | Load balancer | API gateway |
 |---------|---------------|-------------|
@@ -606,7 +607,7 @@ Both sit in front of backend services, but they solve different problems.
 | mTLS(Mutual Transport Layer Security) service-to-service | NLB or mesh | Client mTLS at gateway |
 | Global low latency | CDN(Content Delivery Network) in front | Edge gateway (Cloudflare) |
 
-### When to use which
+#### When to use which
 
 | Scenario | Use |
 |----------|-----|
@@ -617,14 +618,14 @@ Both sit in front of backend services, but they solve different problems.
 | TLS termination + simple path routing only | **L7 load balancer** may be enough |
 | BFF(Backend for Frontend), request aggregation, GraphQL federation | **API gateway** or dedicated BFF |
 
-### Overlap (why people confuse them)
+#### Overlap (why people confuse them)
 
 Modern **L7 load balancers** (AWS ALB, NGINX) can do path routing, TLS, and WAF(Web Application Firewall) integration. **API gateways** also load-balance across upstreams. The difference is **intent**:
 
 - **LB** — infrastructure: availability and distribution
 - **Gateway** — application/API: contracts, security, developer experience
 
-### Gateway vs load balancer vs service mesh
+#### Gateway vs load balancer vs service mesh
 
 | Component | Role | Direction | Pros | Cons |
 |-----------|------|-----------|------|------|
@@ -634,9 +635,9 @@ Modern **L7 load balancers** (AWS ALB, NGINX) can do path routing, TLS, and WAF(
 
 ---
 
-## Request flows
+### Request flows
 
-### Flow 1 — Load balancer only
+#### Flow 1 — Load balancer only
 
 Traffic spreads across identical (or similar) service instances. The client uses one hostname; the LB picks a backend.
 
@@ -663,7 +664,7 @@ flowchart LR
 
 ---
 
-### Flow 2 — API gateway only (single backend pool)
+#### Flow 2 — API gateway only (single backend pool)
 
 The gateway handles API concerns; one service (or small set) sits behind it.
 
@@ -687,7 +688,7 @@ flowchart LR
 
 ---
 
-### Flow 3 — Both together (common at scale)
+#### Flow 3 — Both together (common at scale)
 
 **Gateway** for API policy; **LB** for scaling each microservice.
 
@@ -718,7 +719,7 @@ Client
 
 ---
 
-### Flow 4 — Sequence: what each layer sees
+#### Flow 4 — Sequence: what each layer sees
 
 ```mermaid
 sequenceDiagram
@@ -741,9 +742,9 @@ This sequence matches the protected call in [Overview — full flow](00-overview
 
 ---
 
-## Tech stacks by scenario
+### Tech stacks by scenario
 
-### Layer reference
+#### Layer reference
 
 | Layer | Job | Common choices |
 |-------|-----|----------------|
@@ -753,7 +754,7 @@ This sequence matches the protected call in [Overview — full flow](00-overview
 | **Services** | Business logic | Node, Go, Java microservices, or monolith |
 | **Rate-limit store** | Shared counters across gateway instances | Redis (ElastiCache, Memorystore, etc.) |
 
-### Stack decision flow
+#### Stack decision flow
 
 ```mermaid
 flowchart TD
@@ -766,7 +767,7 @@ flowchart TD
     Q3 -->|No| NGINX[NGINX/Envoy + Kong OSS on VM]
 ```
 
-### Recommended stacks by API type
+#### Recommended stacks by API type
 
 | API type | Stack |
 |----------|-------|
@@ -779,9 +780,9 @@ flowchart TD
 | **Startup MVP** | Cloudflare + single gateway (AWS HTTP API or Kong OSS); skip separate LB until you scale |
 | **Self-hosted / on-prem** | HAProxy or NGINX (LB) → Kong OSS or Tyk → app servers; Redis for limits |
 
-### Scenario details
+#### Scenario details
 
-#### Public SaaS API
+##### Public SaaS API
 
 ```
 Cloudflare (edge)
@@ -798,7 +799,7 @@ Cloudflare (edge)
 | Auth | Auth0, Cognito, or Kong OAuth/JWT plugins |
 | Limits | Gateway + Redis; app layer for plan-specific quotas |
 
-#### AWS-native
+##### AWS-native
 
 ```
 Route 53 → CloudFront + WAF → API Gateway → ALB → ECS Fargate / EKS / Lambda
@@ -811,7 +812,7 @@ Route 53 → CloudFront + WAF → API Gateway → ALB → ECS Fargate / EKS / La
 | Auth | Cognito, Lambda authorizers, IAM (internal) |
 | IaC | Terraform or AWS CDK |
 
-#### Kubernetes
+##### Kubernetes
 
 | Piece | Pick |
 |-------|------|
@@ -822,17 +823,17 @@ Route 53 → CloudFront + WAF → API Gateway → ALB → ECS Fargate / EKS / La
 
 **Mental model:** Ingress/Gateway API ≈ API gateway layer; Kubernetes Service ≈ load balancer for pods.
 
-#### Greenfield default
+##### Greenfield default
 
 If no strong constraints: **Cloudflare** (edge) + **Kong** or **AWS API Gateway** + **ALB** per service + **EKS/ECS** + **Cognito/Auth0** + **OpenAPI 3** contract.
 
 ---
 
-## Choosing an API gateway product
+### Choosing an API gateway product
 
 Once you know you need a gateway (not just an LB), pick the product.
 
-### Gateway selection flow
+#### Gateway selection flow
 
 ```mermaid
 flowchart TD
@@ -848,7 +849,7 @@ flowchart TD
     Q3 -->|No| NGINX["NGINX / Envoy / Kong OSS<br/>on VM or managed LB"]
 ```
 
-### Gateway comparison matrix
+#### Gateway comparison matrix
 
 | Gateway | Best for | Auth | Rate limits | WAF/DDoS | Pros | Cons |
 |---------|----------|------|-------------|----------|------|------|
@@ -861,7 +862,7 @@ flowchart TD
 
 ---
 
-## What the gateway should do
+### What the gateway should do
 
 | Responsibility | Gateway | Load balancer | Application |
 |----------------|---------|---------------|-------------|
@@ -877,16 +878,16 @@ flowchart TD
 
 ---
 
-## Importing OpenAPI into gateway
+### Importing OpenAPI into gateway
 
 Some gateways (Kong, Azure APIM, AWS) can **import OpenAPI** to auto-create routes.
 
-### Pros
+#### Pros
 
 - Faster bootstrap from contract-first spec
 - Routes stay aligned with documented paths
 
-### Cons
+#### Cons
 
 - Policies (rate limits, auth) still configured separately
 - Spec drift if import is one-time only — use CI to verify
@@ -895,27 +896,27 @@ See [OpenAPI / Swagger](07-openapi-swagger.md) for the full lifecycle role of th
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Using a load balancer
+#### Using a load balancer
 
 **Pros:** Simple, fast, proven HA pattern; minimal latency overhead.
 
 **Cons:** No API-aware auth, tiers, or versioning; wrong tool for public API products alone.
 
-### Using an API gateway
+#### Using an API gateway
 
 **Pros:** Central auth, rate limits, and routing; hides internal topology; usage plans map to product tiers.
 
 **Cons:** Single point of failure if not HA; added latency (typically single-digit ms); can become a policy junk drawer; migration pain if chosen wrong.
 
-### Using both (typical production)
+#### Using both (typical production)
 
 **Pros:** Clear separation — gateway for API policy, LB for scaling each service.
 
 **Cons:** More hops, cost, and operational surface; requires correlation IDs for debugging.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -927,11 +928,11 @@ See [OpenAPI / Swagger](07-openapi-swagger.md) for the full lifecycle role of th
 
 ---
 
-# Auth Model
+## Auth Model
 
 > **Related:** Enterprise identity → [§12 Identity RBAC / IAM / AD](12-identity-rbac-iam-ad.md) · Gateway enforcement → [§3 Gateway](03-api-gateway.md) · Webhook security → [§10 Async patterns](10-async-patterns.md)
 
-## What it is
+### What it is
 
 The **auth model** defines how clients prove identity (authentication) and how the system decides what they may access (authorization). Gateway handles AuthN; services must handle AuthZ — especially **object-level** permissions.
 
@@ -939,7 +940,7 @@ OAuth(Open Authorization) and JWT(JSON Web Token) tell you **who** called; **RBA
 
 Full details → [Identity: RBAC, IAM & Active Directory](12-identity-rbac-iam-ad.md)
 
-## Auth by client type
+### Auth by client type
 
 ```mermaid
 flowchart LR
@@ -964,7 +965,7 @@ flowchart LR
     Webhook --> HMAC
 ```
 
-## Decision matrix
+### Decision matrix
 
 | Client | Auth model | Token lifetime | Gateway | Application |
 |--------|------------|----------------|---------|-------------|
@@ -973,7 +974,7 @@ flowchart LR
 | **Internal service** | mTLS + short-lived service JWT | 5–15 min | Terminate mTLS, forward identity | RBAC / service allowlists |
 | **Webhooks (inbound)** | HMAC(Hash-based Message Authentication Code)-SHA256 + timestamp | N/A | Optional IP allowlist | Verify signature, reject replays |
 
-## Layered auth flow
+### Layered auth flow
 
 ```mermaid
 flowchart TB
@@ -989,16 +990,16 @@ flowchart TB
     Object -->|Yes| OK["Execute business logic"]
 ```
 
-## OAuth 2.0 + OIDC (user-facing)
+### OAuth 2.0 + OIDC (user-facing)
 
-### Pros
+#### Pros
 
 - Industry standard; SDK support everywhere
 - Short-lived access tokens; refresh token rotation
 - Fine-grained scopes
 - PKCE secures public clients (SPAs, mobile)
 
-### Cons
+#### Cons
 
 - Complex to implement correctly (many failure modes)
 - Token validation overhead at gateway
@@ -1012,15 +1013,15 @@ flowchart TB
 - Minimal scopes per client
 - Short access token TTL
 
-## API keys (server-to-server)
+### API keys (server-to-server)
 
-### Pros
+#### Pros
 
 - Simple for partners to integrate
 - Easy to issue, revoke, and rotate
 - Maps cleanly to rate-limit tiers
 
-### Cons
+#### Cons
 
 - Long-lived secrets — high impact if leaked
 - No built-in user context (service identity only)
@@ -1034,15 +1035,15 @@ flowchart TB
 - Store hashed keys server-side if feasible
 - Per-key audit logging
 
-## JWT access tokens
+### JWT access tokens
 
-### Pros
+#### Pros
 
 - Stateless validation (no DB lookup per request)
 - Works across distributed services
 - Claims carry scopes and subject
 
-### Cons
+#### Cons
 
 - Hard to revoke instantly without blocklist or short TTL
 - Payload is signed, not encrypted — no secrets in claims
@@ -1055,35 +1056,35 @@ flowchart TB
 - Short TTL (minutes)
 - Asymmetric keys (RS256) with key rotation
 
-## mTLS (mutual TLS(Transport Layer Security))
+### mTLS (mutual TLS)
 
-### Pros
+#### Pros
 
 - Strong cryptographic identity for B2B and internal calls
 - No shared secret in every request header
 - Fits zero-trust internal mesh
 
-### Cons
+#### Cons
 
 - Certificate lifecycle management for every client
 - Partner onboarding friction
 - Not suitable for browser clients
 - Debugging connectivity issues is harder
 
-## HMAC webhooks
+### HMAC webhooks
 
-### Pros
+#### Pros
 
 - Proves payload integrity and origin
 - No OAuth dance for simple callbacks
 
-### Cons
+#### Cons
 
 - Shared secret rotation requires coordination
 - Replay attacks if timestamp/nonce not enforced
 - Each provider uses different header conventions
 
-## Auth model comparison summary
+### Auth model comparison summary
 
 | Model | Security | Ease of integration | Revocation | Best fit |
 |-------|----------|---------------------|------------|----------|
@@ -1092,7 +1093,7 @@ flowchart TB
 | mTLS | Very high | Low | Medium (cert revoke) | B2B, internal |
 | HMAC webhook | Medium | Medium | Medium | Inbound webhooks |
 
-## Common mistakes
+### Common mistakes
 
 - AuthN at gateway but **no object-level AuthZ** in app (BOLA(Broken Object-Level Authorization))
 - Long-lived JWTs treated as permanent API keys
@@ -1102,19 +1103,19 @@ flowchart TB
 
 ---
 
-# Rate-Limit Tiers
+## Rate-Limit Tiers
 
 > **Scope:** **Product lens** — tier definitions, per-endpoint multipliers, canonical `429` headers. Algorithms, deployment layers, and production architecture → [api-rate-limiting](../api-rate-limiting/README.md).
 >
 > **Related:** Limiter algorithms → [api-rate-limiting](../api-rate-limiting/README.md) · Gateway usage plans → [§3 Gateway](03-api-gateway.md) · Async escape hatch → [§10 Async patterns](10-async-patterns.md)
 
-## What it is
+### What it is
 
 **Rate-limit tiers** map product plans (Free, Standard, Professional, Enterprise) to request quotas. Limits should be keyed by **identity** (API(Application Programming Interface) key, user, subscription) — not IP alone.
 
 For algorithm details (fixed window, token bucket, sliding window), see: [api-rate-limiting](../api-rate-limiting/README.md).
 
-## Tier flow
+### Tier flow
 
 ```mermaid
 flowchart LR
@@ -1124,7 +1125,7 @@ flowchart LR
     Bucket -->|Exceeded| Block["429 + Retry-After"]
 ```
 
-## Tier definitions
+### Tier definitions
 
 | Tier | Typical caller | Requests/min | Requests/day | Burst | Expensive endpoints* | Monthly quota |
 |------|----------------|--------------|--------------|-------|----------------------|---------------|
@@ -1137,7 +1138,7 @@ flowchart LR
 \*Expensive: reports, search, bulk export, ML inference, file processing  
 †Still apply abuse caps and cost alerts
 
-## Per-endpoint multipliers
+### Per-endpoint multipliers
 
 Apply stricter limits to costlier operations:
 
@@ -1149,7 +1150,7 @@ Apply stricter limits to costlier operations:
 | Bulk / export | 0.05× base | `POST /v1/reports/export` |
 | Auth / token | 0.2× base + CAPTCHA at edge | `POST /oauth/token` |
 
-## Response headers
+### Response headers
 
 Always return rate-limit metadata (canonical header set for product tiers):
 
@@ -1163,20 +1164,20 @@ X-RateLimit-Reset: 1718380860
 
 Response strategies (hard reject vs throttle, retry-storm prevention) → [api-rate-limiting §9 Response strategies](../api-rate-limiting/includes/09-response-strategies.md).
 
-## Layered limits
+### Layered limits
 
 Enforce **global → per-IP → per-tier/API(Application Programming Interface) key → per-endpoint** (cheapest check first). This section defines **product tiers**; where each layer runs and how counters are shared is in the rate-limiting guide:
 
 - Deployment layers (edge, gateway, app) → [api-rate-limiting §7](../api-rate-limiting/includes/07-deployment-layers.md)
 - Production architecture diagram + fail-open policy → [api-rate-limiting §11](../api-rate-limiting/includes/11-common-mistakes-and-architecture.md)
 
-## Async escape hatch
+### Async escape hatch
 
 For heavy work, return `202 Accepted` instead of holding a request slot — tier limits still apply at enqueue time, but the client does not block on completion.
 
 Full design (job states, webhooks, SSE(Server-Sent Events), OpenAPI) → [Async patterns](10-async-patterns.md).
 
-## Mapping tiers to gateway products
+### Mapping tiers to gateway products
 
 | Platform | Feature |
 |----------|---------|
@@ -1185,14 +1186,14 @@ Full design (job states, webhooks, SSE(Server-Sent Events), OpenAPI) → [Async 
 | **Azure APIM** | Subscriptions + product tiers |
 | **Cloudflare** | Rate limiting rules per hostname/path |
 
-## Pros of tier-based rate limiting
+### Pros of tier-based rate limiting
 
 - Fair monetization aligned with product plans
 - Protects infrastructure cost predictably
 - Clear upgrade path for customers hitting limits
 - Combines with analytics for capacity planning
 
-## Cons
+### Cons
 
 - Complex to communicate (multiple counters confuse developers)
 - Wrong tier defaults frustrate free-tier users
@@ -1200,7 +1201,7 @@ Full design (job states, webhooks, SSE(Server-Sent Events), OpenAPI) → [Async 
 - Per-endpoint multipliers require maintenance as API evolves
 - Distributed rate limiting needs Redis/similar — failure mode → [api-rate-limiting §11](../api-rate-limiting/includes/11-common-mistakes-and-architecture.md#5-fail-open-vs-fail-closed)
 
-## Tier design best practices
+### Tier design best practices
 
 - Document limits in OpenAPI description and developer portal
 - Return consistent `429` body with `request_id`
@@ -1208,7 +1209,7 @@ Full design (job states, webhooks, SSE(Server-Sent Events), OpenAPI) → [Async 
 - Monitor `429` rate per tier — signals product or attack issues
 - Separate **auth endpoint** limits to prevent credential stuffing
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1220,15 +1221,15 @@ Full design (job states, webhooks, SSE(Server-Sent Events), OpenAPI) → [Async 
 
 ---
 
-# Threat Model
+## Threat Model
 
 > **Related:** Protection layers → [§2 API protection](02-api-protection.md) · AuthZ gaps (BOLA(Broken Object-Level Authorization)) → [§4 Auth model](04-auth-model.md) · Pre-launch checklist → [§9 Checklist](09-checklist-and-practices.md)
 
-## What it is
+### What it is
 
 A **threat model** identifies what can go wrong, who might attack, and which controls mitigate each risk. For APIs, combine **STRIDE(Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege)** (systematic categories) with **OWASP(Open Worldwide Application Security Project) API(Application Programming Interface) Security Top 10** (API-specific risks).
 
-## STRIDE mapped to layers
+### STRIDE mapped to layers
 
 ```mermaid
 flowchart TB
@@ -1261,7 +1262,7 @@ flowchart TB
     E --> C3
 ```
 
-## STRIDE detail
+### STRIDE detail
 
 | Threat | Definition | API example | Primary control |
 |--------|------------|-------------|-----------------|
@@ -1272,7 +1273,7 @@ flowchart TB
 | **Denial of service** | Making service unavailable | Flood expensive endpoints | Rate limits, WAF, autoscaling |
 | **Elevation of privilege** | Gaining unauthorized access | Mass assignment `role=admin` | Field whitelists, RBAC(Role-Based Access Control) |
 
-## OWASP API Security Top 10 (2023)
+### OWASP API Security Top 10 (2023)
 
 | # | Risk | Example attack | Control |
 |---|------|----------------|---------|
@@ -1287,7 +1288,7 @@ flowchart TB
 | 9 | **Improper inventory management** | Old `/v0` still exposed | API inventory, Sunset headers, gateway audit |
 | 10 | **Unsafe consumption of third-party APIs** | Malformed upstream crashes parser | Validate external responses, timeouts, circuit breakers |
 
-## Trust zones
+### Trust zones
 
 ```mermaid
 flowchart LR
@@ -1311,7 +1312,7 @@ flowchart LR
 
 **Assumption:** Everything in the untrusted zone is hostile. Everything crossing into trusted must be authenticated, validated, and logged.
 
-## Threat modeling workshop (minimal)
+### Threat modeling workshop (minimal)
 
 1. **Draw data flow** — client → edge → gateway → service → DB
 2. **List assets** — user PII, payment data, API keys, admin functions
@@ -1322,21 +1323,21 @@ flowchart LR
 7. **Assign controls** — design, gateway, code, ops
 8. **Revisit** on every major API version or new endpoint class
 
-## Pros of formal threat modeling
+### Pros of formal threat modeling
 
 - Finds BOLA and auth gaps before production
 - Aligns security and product teams on priorities
 - Evidence for compliance audits
 - Reduces pen-test surprises
 
-## Cons
+### Cons
 
 - Time-consuming if done as heavy documentation only
 - Can become stale if not tied to CI/CD and reviews
 - Over-focus on theoretical threats vs actual abuse patterns
 - Not a substitute for penetration testing and monitoring
 
-## Red team vs real abuse
+### Red team vs real abuse
 
 | Approach | Pros | Cons |
 |----------|------|------|
@@ -1347,7 +1348,7 @@ flowchart LR
 
 Use all four at different maturity stages.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1359,17 +1360,17 @@ Use all four at different maturity stages.
 
 ---
 
-# OpenAPI / Swagger
+## OpenAPI / Swagger
 
 > **Related:** Contract testing in CI → [§15 Contract and schema testing](15-contract-and-schema-testing.md) · Versioning → [§14 API versioning](14-api-versioning-and-deprecation.md) · Gateway import → [§3 Gateway](03-api-gateway.md)
 
-## What it is
+### What it is
 
 **OpenAPI Specification (OAS)** is a standard format (`openapi.yaml` / `openapi.json`) for describing REST(Representational State Transfer) APIs. **Swagger** is the tooling ecosystem around OAS: Swagger Editor, Swagger UI, Swagger Codegen, and related validators.
 
 Swagger does **not** replace gateway auth, WAF(Web Application Firewall), or rate limits. It defines and documents the **contract**; runtime protection is configured separately.
 
-## Where Swagger fits in the lifecycle
+### Where Swagger fits in the lifecycle
 
 ```mermaid
 flowchart TB
@@ -1409,7 +1410,7 @@ flowchart TB
     Deploy --> Runtime
 ```
 
-## Step-by-step responsibilities
+### Step-by-step responsibilities
 
 | Step | Swagger/OpenAPI role | What actually enforces security |
 |------|----------------------|----------------------------------|
@@ -1418,7 +1419,7 @@ flowchart TB
 | **Deploy** | Publish Swagger UI; optional gateway route import | Gateway policies, WAF, TLS(Transport Layer Security) |
 | **Operate** | Detect spec vs implementation drift | Monitoring, key rotation |
 
-## Example spec fragment
+### Example spec fragment
 
 ```yaml
 openapi: 3.0.3
@@ -1460,23 +1461,23 @@ components:
 
 Document rate-limit headers in response descriptions even though the gateway enforces them.
 
-## Swagger UI (developer portal)
+### Swagger UI (developer portal)
 
-### Pros
+#### Pros
 
 - Interactive docs — partners try endpoints with real auth
 - Always in sync if generated from the same spec as CI
 - Reduces integration support burden
 - Shows required scopes and error codes
 
-### Cons
+#### Cons
 
 - Exposes full API(Application Programming Interface) surface to attackers (mitigate with auth on try-it-out)
 - Can drift from implementation if not CI-gated
 - Not a substitute for narrative guides and examples
 - Large specs are hard to navigate without grouping/tags
 
-## Contract testing in CI
+### Contract testing in CI
 
 ```mermaid
 sequenceDiagram
@@ -1490,18 +1491,18 @@ sequenceDiagram
     CI->>CI: Block merge on drift
 ```
 
-### Pros
+#### Pros
 
 - Catches breaking changes before release
 - Enforces design standards via Spectral (e.g. must document `401`, must use `/v1`)
 
-### Cons
+#### Cons
 
 - Test maintenance cost
 - May not cover all edge cases or AuthZ logic
 - False confidence if only happy paths are tested
 
-## Code generation
+### Code generation
 
 | Direction | Pros | Cons |
 |-----------|------|------|
@@ -1509,21 +1510,21 @@ sequenceDiagram
 | **Client SDKs from spec** | Consistent partner integrations | SDK versioning and publishing overhead |
 | **Hand-written server + spec** | Full control | Drift risk without CI checks |
 
-## Gateway import from OpenAPI
+### Gateway import from OpenAPI
 
 Some gateways auto-create routes from the spec.
 
-### Pros
+#### Pros
 
 - Faster initial gateway setup
 - Route paths match documentation
 
-### Cons
+#### Cons
 
 - Auth, rate limits, WAF still manual
 - One-time import drifts quickly — prefer pipeline sync or verification
 
-## OpenAPI vs implementation — who wins?
+### OpenAPI vs implementation — who wins?
 
 | Approach | Pros | Cons |
 |----------|------|------|
@@ -1533,7 +1534,7 @@ Some gateways auto-create routes from the spec.
 
 **Recommendation:** Contract-first for public/partner APIs; CI contract tests for all.
 
-## Terminology
+### Terminology
 
 | Term | Meaning |
 |------|---------|
@@ -1543,7 +1544,7 @@ Some gateways auto-create routes from the spec.
 | **Spectral** | Linter for OpenAPI style and security rules |
 | **Schemathesis / Dredd** | Contract test runners |
 
-## What Swagger does NOT do
+### What Swagger does NOT do
 
 | Capability | Swagger? | Who does it |
 |------------|----------|-------------|
@@ -1554,7 +1555,7 @@ Some gateways auto-create routes from the spec.
 | Idempotency enforcement | No | Application |
 | Secret storage | No | Vault, cloud secret managers |
 
-## Mental model
+### Mental model
 
 ```
 OpenAPI/Swagger  =  blueprint and instruction manual
@@ -1562,21 +1563,21 @@ API Gateway      =  bouncer, traffic cop, ID checker
 Your app         =  business rules and object permissions
 ```
 
-## Pros of using OpenAPI/Swagger in the workflow
+### Pros of using OpenAPI/Swagger in the workflow
 
 - Single source of truth for design, docs, and tests
 - Faster partner onboarding
 - Enforces consistency (errors, pagination, auth documentation)
 - Integrates with gateway and SDK pipelines
 
-## Cons
+### Cons
 
 - Learning curve for OpenAPI syntax and tooling
 - Large specs become hard to maintain without modular `$ref` files
 - Spec cannot express all runtime policies (rate tier numbers, WAF rules)
 - Codegen can produce ugly or insecure boilerplate if used blindly
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1588,11 +1589,11 @@ Your app         =  business rules and object permissions
 
 ---
 
-# Lifecycle & Reference Architecture
+## Lifecycle & Reference Architecture
 
 > **Related:** Deploy safely → [deployment-strategies](../deployment-strategies/README.md) · Stateless scaling → [§11 Stateless architecture](11-stateless-architecture.md) · Checklist → [§9 Checklist](09-checklist-and-practices.md)
 
-## Full lifecycle
+### Full lifecycle
 
 ```mermaid
 flowchart TB
@@ -1630,7 +1631,7 @@ flowchart TB
     Operate -->|"New threats / scale"| Design
 ```
 
-## Reference architecture — public SaaS API
+### Reference architecture — public SaaS API
 
 ```mermaid
 flowchart TB
@@ -1678,7 +1679,7 @@ Entry-layer details and stack options → [Load Balancer, API Gateway & Entry Ar
 
 Why app instances must not hold session state → [Stateless architecture](11-stateless-architecture.md).
 
-## Layer responsibility matrix
+### Layer responsibility matrix
 
 | Layer | Responsibility | Does NOT do |
 |-------|----------------|-------------|
@@ -1690,7 +1691,7 @@ Why app instances must not hold session state → [Stateless architecture](11-st
 | **Database** | Persist with encryption + least privilege | Rate limiting |
 | **Observability** | Detect abuse, debug with correlation IDs | Block attacks alone |
 
-## Version evolution
+### Version evolution
 
 ```mermaid
 flowchart LR
@@ -1711,13 +1712,13 @@ flowchart LR
 - Change field types or semantics
 - Change auth requirements
 
-## Async and long-running work
+### Async and long-running work
 
 Do not hold rate-limit slots for minutes-long work. Use the **job resource pattern**: `POST` → `202 Accepted` + `Location: /v1/jobs/{id}` → poll or webhook → signed result URL.
 
 See [Async patterns](10-async-patterns.md) for full flows (polling, webhooks, SSE(Server-Sent Events), streaming), HTTP(Hypertext Transfer Protocol) contracts, and architecture.
 
-## Event Sourcing and CQRS (optional write/read split)
+### Event Sourcing and CQRS (optional write/read split)
 
 For audit-heavy domains, commands append to an **event store**; queries hit **read projections** (eventual consistency). Gateway routes command POSTs and query GETs; scale each tier independently.
 
@@ -1734,7 +1735,7 @@ flowchart TB
 
 Full pattern → [Event Sourcing & CQRS](../event-sourcing-and-cqrs/README.md).
 
-## Internal vs public API architectures
+### Internal vs public API architectures
 
 | Aspect | Public API | Internal API |
 |--------|------------|--------------|
@@ -1746,21 +1747,21 @@ Full pattern → [Event Sourcing & CQRS](../event-sourcing-and-cqrs/README.md).
 | OpenAPI | Required + portal | Recommended for discovery |
 | Threat model | Full OWASP(Open Worldwide Application Security Project) + abuse | Focus on lateral movement |
 
-## Pros of the reference architecture
+### Pros of the reference architecture
 
 - Proven pattern used by most SaaS platforms
 - Scales horizontally at edge, gateway, and load balancer
 - Clear separation for security audits
 - OpenAPI stays the contract; gateway enforces traffic
 
-## Cons
+### Cons
 
 - High operational surface area
 - Cost at scale (edge + gateway + LB + Redis + observability)
 - Overkill for monolith MVP — start simpler and evolve
 - Requires strong platform team or managed services
 
-## Simpler MVP evolution path
+### Simpler MVP evolution path
 
 ```mermaid
 flowchart LR
@@ -1770,7 +1771,7 @@ flowchart LR
 
 Do not build the full stack on day one unless compliance requires it.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1782,11 +1783,11 @@ Do not build the full stack on day one unless compliance requires it.
 
 ---
 
-# Checklist & Cross-Cutting Practices
+## Checklist & Cross-Cutting Practices
 
 > **Related:** Threat model → [§6 Threat model](06-threat-model.md) · Lifecycle → [§8 Lifecycle](08-lifecycle-and-architecture.md) · Rate limiting → [api-rate-limiting](../api-rate-limiting/README.md)
 
-## Pre-launch checklist
+### Pre-launch checklist
 
 | Area | Check |
 |------|-------|
@@ -1813,7 +1814,7 @@ Do not build the full stack on day one unless compliance requires it.
 | **Ops** | Alerts on 401/403/429 spikes and 5xx error rate |
 | **Ops** | Runbook for key rotation and incident response |
 
-## HTTP(Hypertext Transfer Protocol) status code quick reference
+### HTTP status code quick reference
 
 | Code | Use | Do not use for |
 |------|-----|----------------|
@@ -1829,7 +1830,7 @@ Do not build the full stack on day one unless compliance requires it.
 | `429` | Rate limited | Generic errors |
 | `500` | Unexpected server fault | Client mistakes |
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Why it hurts | Fix |
 |--------------|--------------|-----|
@@ -1844,34 +1845,34 @@ Do not build the full stack on day one unless compliance requires it.
 | Sticky sessions with in-memory state | Scale/deploy breaks user sessions | Externalize state; token auth ([§11](11-stateless-architecture.md)) |
 | `200` + pending on async POST | Breaks HTTP semantics | `202` + `Location` + `Retry-After` |
 
-## Cross-cutting best practices
+### Cross-cutting best practices
 
-### Documentation
+#### Documentation
 
 - OpenAPI as source of truth for public APIs
 - Document rate tiers, auth scopes, and error codes in portal
 - Provide curl examples and idempotency guidance — see [Idempotency](13-idempotency.md)
 
-### Testing
+#### Testing
 
 - Unit tests for AuthZ and validation
 - Contract tests against OpenAPI
 - Load tests on list and search endpoints
 - Periodic OWASP ZAP / API security scans
 
-### Observability
+#### Observability
 
 - Structured JSON logs with `request_id`, `client_id`, `route`, `status`, `latency_ms`
 - Metrics: RPS, p99 latency, error rate, 429 rate per tier
 - Distributed tracing across gateway → service → DB
 
-### Secret and key management
+#### Secret and key management
 
 - Rotate API keys on schedule and after incidents
 - Support two active keys during rotation window
 - Never commit `.env` or credentials to git
 
-## Other guides in this repo
+### Other guides in this repo
 
 | Guide | Topics |
 |-------|--------|
@@ -1882,7 +1883,7 @@ Do not build the full stack on day one unless compliance requires it.
 | [high-throughput-systems](../high-throughput-systems/README.md) | End-to-end throughput: measure, cache, async, streaming, backpressure |
 | [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM(Log-Structured Merge) storage engines for write-heavy workloads |
 
-## Quick decision summary
+### Quick decision summary
 
 | Question | Default answer |
 |----------|----------------|
@@ -1895,19 +1896,19 @@ Do not build the full stack on day one unless compliance requires it.
 | Spec tooling? | OpenAPI + Swagger UI + Spectral + contract CI |
 | Where is AuthZ? | Always in application code |
 
-## Pros of using this checklist
+### Pros of using this checklist
 
 - Catches gaps before launch (especially BOLA and rate limits)
 - Repeatable across teams and services
 - Audit-friendly evidence of security review
 
-## Cons
+### Cons
 
 - Checkbox fatigue if treated as bureaucracy only
 - Must be updated when architecture or threats evolve
 - Does not replace pen testing or production monitoring
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1919,7 +1920,7 @@ Do not build the full stack on day one unless compliance requires it.
 
 ---
 
-# Async Patterns in API(Application Programming Interface) Design
+## Async Patterns in API Design
 
 How to design APIs for work that outlasts connection timeouts: job resources, polling, webhooks, streaming, and how each layer (gateway, queue, workers) participates.
 
@@ -1929,7 +1930,7 @@ How to design APIs for work that outlasts connection timeouts: job resources, po
 
 ---
 
-## What it is
+### What it is
 
 **Async API design** moves long or expensive work off the request thread. The client starts work, receives a trackable handle (usually a **job resource**), and retrieves the result via polling, push (webhook), or stream — instead of holding an HTTP connection open for minutes.
 
@@ -1937,7 +1938,7 @@ How to design APIs for work that outlasts connection timeouts: job resources, po
 
 ---
 
-## Why sync breaks
+### Why sync breaks
 
 ```mermaid
 flowchart TB
@@ -1969,11 +1970,11 @@ flowchart TB
 
 ---
 
-## Pattern 1 — Job resource + polling (default)
+### Pattern 1 — Job resource + polling (default)
 
 The **async escape hatch** used in [Rate-limit tiers](05-rate-limit-tiers.md#async-escape-hatch). Best default for reports, exports, batch jobs, and any operation with unpredictable duration.
 
-### Full sequence
+#### Full sequence
 
 ```mermaid
 sequenceDiagram
@@ -2007,7 +2008,7 @@ sequenceDiagram
     A-->>C: 200 { status: "completed", result: { download_url } }
 ```
 
-### Job state machine
+#### Job state machine
 
 ```mermaid
 stateDiagram-v2
@@ -2022,7 +2023,7 @@ stateDiagram-v2
     cancelled --> [*]
 ```
 
-### HTTP contract
+#### HTTP contract
 
 **Start work:**
 
@@ -2085,7 +2086,7 @@ Content-Type: application/json
 }
 ```
 
-### Design rules
+#### Design rules
 
 | Decision | Recommendation |
 |----------|----------------|
@@ -2098,7 +2099,7 @@ Content-Type: application/json
 | Cancel | `DELETE /v1/jobs/{id}` → `status: cancelled` if not yet started |
 | Idempotency | Same `Idempotency-Key` → return same `job_id`, do not enqueue twice |
 
-### Polling rate limits
+#### Polling rate limits
 
 ```mermaid
 flowchart LR
@@ -2112,11 +2113,11 @@ flowchart LR
 
 ---
 
-## Pattern 2 — Webhooks (server push)
+### Pattern 2 — Webhooks (server push)
 
 Polling wastes requests when completion is rare or slow. **Webhooks** push terminal state to a client URL. See [HMAC webhooks](04-auth-model.md#hmac-webhooks) for inbound verification; apply the same pattern **outbound**.
 
-### Flow
+#### Flow
 
 ```mermaid
 sequenceDiagram
@@ -2144,7 +2145,7 @@ sequenceDiagram
     end
 ```
 
-### Webhook payload
+#### Webhook payload
 
 ```json
 {
@@ -2159,7 +2160,7 @@ sequenceDiagram
 }
 ```
 
-### Security controls
+#### Security controls
 
 ```mermaid
 flowchart TB
@@ -2177,7 +2178,7 @@ flowchart TB
 | HTTPS only | Transport security |
 | **SSRF(Server-Side Request Forgery) on `callback_url`** | Block private IPs, metadata endpoints (OWASP(Open Worldwide Application Security Project) API #7) |
 
-### Hybrid: webhook + poll fallback
+#### Hybrid: webhook + poll fallback
 
 ```mermaid
 flowchart TD
@@ -2192,7 +2193,7 @@ flowchart TD
 
 ---
 
-## Pattern 3 — Long polling
+### Pattern 3 — Long polling
 
 For **near-real-time** status without webhooks (mobile, firewalled clients):
 
@@ -2216,7 +2217,7 @@ sequenceDiagram
 
 ---
 
-## Pattern 4 — Server-Sent Events (SSE(Server-Sent Events))
+### Pattern 4 — Server-Sent Events (SSE)
 
 **One-way server → client stream** over HTTP. Good for progress logs, live feeds, LLM token streaming.
 
@@ -2256,7 +2257,7 @@ data: {"download_url": "https://…"}
 
 ---
 
-## Pattern 5 — Chunked streaming (NDJSON)
+### Pattern 5 — Chunked streaming (NDJSON)
 
 **Incremental results in a single request** — search results, large CSV rows, LLM output:
 
@@ -2282,7 +2283,7 @@ One JSON object per line. Client must stay connected; mid-stream retry is harder
 
 ---
 
-## Pattern 6 — Sync timeout fallback (avoid if possible)
+### Pattern 6 — Sync timeout fallback (avoid if possible)
 
 Gateway timeout can force a hybrid — prefer **always `202`** for known-slow endpoints:
 
@@ -2305,7 +2306,7 @@ sequenceDiagram
 
 ---
 
-## Pattern comparison
+### Pattern comparison
 
 | Pattern | Direction | Connection | Best for | Complexity |
 |---------|-----------|------------|----------|------------|
@@ -2316,7 +2317,7 @@ sequenceDiagram
 | **WebSockets** | Bidirectional | Long | Chat, live collaboration | High |
 | **NDJSON stream** | Server pushes in one request | Long | Search, incremental pipelines | Medium |
 
-### Decision flow
+#### Decision flow
 
 ```mermaid
 flowchart TD
@@ -2331,7 +2332,7 @@ flowchart TD
 
 ---
 
-## End-to-end architecture
+### End-to-end architecture
 
 How async work fits the [reference architecture](08-lifecycle-and-architecture.md):
 
@@ -2363,13 +2364,13 @@ flowchart TB
 | **Worker** | Idempotent processing; atomic job state updates |
 | **Storage** | Artifacts via signed URLs, not DB blobs |
 
-### Domain events and transactional outbox
+#### Domain events and transactional outbox
 
 Job queues handle **long work** (`202` + poll). **Transactional outbox** handles **reliable delivery** after a write: append domain events and outbox rows in one DB transaction; a relay publishes to Kafka or workers. Used heavily in [Event Sourcing & CQRS](../event-sourcing-and-cqrs/includes/05-async-integration.md) — combine with job resources when an event triggers minutes-long processing.
 
 ---
 
-## Idempotency across async
+### Idempotency across async
 
 ```mermaid
 sequenceDiagram
@@ -2389,7 +2390,7 @@ Without idempotency, retries create duplicate exports, charges, or notifications
 
 ---
 
-## OpenAPI modeling
+### OpenAPI modeling
 
 ```yaml
 paths:
@@ -2440,7 +2441,7 @@ See [OpenAPI / Swagger](07-openapi-swagger.md) for contract-first workflow.
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -2455,14 +2456,14 @@ See [OpenAPI / Swagger](07-openapi-swagger.md) for contract-first workflow.
 
 ---
 
-## Pros of async-first design
+### Pros of async-first design
 
 - Protects worker pools, connection limits, and rate-limit fairness
 - Clear UX for long operations with explicit progress
 - Retries and idempotency integrate naturally via job IDs
 - Webhooks reduce polling load for B2B partners
 
-## Cons
+### Cons
 
 - More API surface (`/jobs`, events, webhook registration)
 - Polling and SSE still consume limits and connections
@@ -2471,7 +2472,7 @@ See [OpenAPI / Swagger](07-openapi-swagger.md) for contract-first workflow.
 
 ---
 
-## HTTP status codes for async
+### HTTP status codes for async
 
 | Code | Use |
 |------|-----|
@@ -2485,7 +2486,7 @@ See [OpenAPI / Swagger](07-openapi-swagger.md) for contract-first workflow.
 
 ---
 
-# Stateless Architecture
+## Stateless Architecture
 
 Why stateless application tiers matter for APIs: how requests flow without server-side sessions, how state is externalized, and how this enables load balancing, scaling, and safe deployments.
 
@@ -2495,7 +2496,7 @@ Why stateless application tiers matter for APIs: how requests flow without serve
 
 ---
 
-## At a glance
+### At a glance
 
 | | **Stateless app tier** | **Stateful app tier** |
 |---|---|---|
@@ -2510,7 +2511,7 @@ Why stateless application tiers matter for APIs: how requests flow without serve
 
 ---
 
-## What it is
+### What it is
 
 **Stateless architecture** means each HTTP(Hypertext Transfer Protocol) request is handled **independently**. The server does not rely on in-memory data from prior requests to decide what to do next. Any context needed to serve a request either:
 
@@ -2549,7 +2550,7 @@ Nothing in the app instance **must** survive after the response is sent.
 
 ---
 
-## Stateless vs stateful
+### Stateless vs stateful
 
 ```mermaid
 flowchart TB
@@ -2581,7 +2582,7 @@ flowchart TB
 
 ---
 
-## Request flow
+### Request flow
 
 How a stateless API call works end-to-end (extends the [overview sequence](00-overview.md#sequence-one-protected-api-call)):
 
@@ -2611,7 +2612,7 @@ sequenceDiagram
     A1-->>C: 200 OK
 ```
 
-### What each layer stores
+#### What each layer stores
 
 | Layer | Holds state? | What it stores |
 |-------|--------------|----------------|
@@ -2625,9 +2626,9 @@ sequenceDiagram
 
 ---
 
-## Key principles
+### Key principles
 
-### 1. Identity and authorization in the request
+#### 1. Identity and authorization in the request
 
 Use **JWT access tokens**, **API keys**, or signed headers so any instance can authenticate without a server-side session table lookup (or with a minimal, cacheable lookup).
 
@@ -2642,13 +2643,13 @@ flowchart LR
     Client --> API[Any API instance validates JWT locally]
 ```
 
-### 2. No session affinity at the load balancer
+#### 2. No session affinity at the load balancer
 
 Prefer **round-robin**, **least connections**, or **random** — not sticky cookies — unless a legacy stateful component requires it.
 
 Entry-layer details → [Load Balancer & API Gateway](03-api-gateway.md#request-flows).
 
-### 3. Externalize all durable state
+#### 3. Externalize all durable state
 
 | Data type | Store | Not |
 |-----------|-------|-----|
@@ -2658,15 +2659,15 @@ Entry-layer details → [Load Balancer & API Gateway](03-api-gateway.md#request-
 | Async jobs | DB + queue | Blocking request thread |
 | Rate-limit counters | Redis (shared) | Per-instance counters |
 
-### 4. Idempotent operations
+#### 4. Idempotent operations
 
 Retries and duplicate requests are common at scale. Design writes to be safe when repeated — idempotency keys, UPSERT, natural keys. See [Idempotency](13-idempotency.md).
 
-### 5. Configuration via environment
+#### 5. Configuration via environment
 
 Instances are interchangeable. Config comes from environment variables, secrets managers, or config services — not baked into local files on one machine.
 
-### 6. Workers are stateless too
+#### 6. Workers are stateless too
 
 Async [workers](10-async-patterns.md) pull jobs from a queue, read/write shared stores, and exit. Any worker can process any job.
 
@@ -2683,7 +2684,7 @@ flowchart TB
 
 ---
 
-## Stateless auth flow
+### Stateless auth flow
 
 Typical token-based flow for public APIs:
 
@@ -2717,7 +2718,7 @@ sequenceDiagram
 
 ---
 
-## Reference architecture (stateless app tier)
+### Reference architecture (stateless app tier)
 
 How stateless services fit the [reference stack](08-lifecycle-and-architecture.md#reference-architecture--public-saas-api):
 
@@ -2754,7 +2755,7 @@ flowchart TB
 
 ---
 
-## Benefits
+### Benefits
 
 | Benefit | Why it matters for APIs |
 |---------|-------------------------|
@@ -2769,7 +2770,7 @@ flowchart TB
 
 ---
 
-## Use cases
+### Use cases
 
 | Use case | Why stateless fits |
 |----------|-------------------|
@@ -2784,9 +2785,9 @@ flowchart TB
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Pros
+#### Pros
 
 - Elastic scaling — add replicas under load, remove them off-peak
 - Resilience — blast radius of a bad instance is one request, not many users
@@ -2795,7 +2796,7 @@ flowchart TB
 - Pairs naturally with API gateway + load balancer entry architecture
 - Enables safe [deployment strategies](../deployment-strategies/README.md) (rolling, blue/green)
 
-### Cons
+#### Cons
 
 - **Token management complexity** — expiry, refresh tokens, revocation lists, key rotation
 - **More network I/O** — context often fetched from DB/cache every request (mitigate with caching)
@@ -2808,7 +2809,7 @@ See [Strong consistency — promises and costs](../postgresql-performance/includ
 
 ---
 
-## Consistency and read routing
+### Consistency and read routing
 
 Stateless APIs often fetch context from a DB or cache on every request. That makes **read routing** a consistency decision, not just a performance one.
 
@@ -2829,7 +2830,7 @@ Stateless APIs often fetch context from a DB or cache on every request. That mak
 
 ---
 
-## When stateless is the wrong default
+### When stateless is the wrong default
 
 | Scenario | Better approach |
 |----------|-----------------|
@@ -2852,7 +2853,7 @@ flowchart LR
 
 ---
 
-## Migrating from stateful to stateless
+### Migrating from stateful to stateless
 
 ```mermaid
 flowchart TD
@@ -2871,7 +2872,7 @@ flowchart TD
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -2885,7 +2886,7 @@ flowchart TD
 
 ---
 
-## Checklist: is your app tier stateless?
+### Checklist: is your app tier stateless?
 
 | Check | Pass? |
 |-------|-------|
@@ -2900,7 +2901,7 @@ flowchart TD
 
 ---
 
-## Decision summary
+### Decision summary
 
 | Question | Default for public APIs |
 |----------|-------------------------|
@@ -2913,7 +2914,7 @@ flowchart TD
 
 ---
 
-# Identity: RBAC(Role-Based Access Control), IAM(Identity and Access Management) & Active Directory
+## Identity: RBAC, IAM & Active Directory
 
 Enterprise identity foundations for APIs: how IAM governs access, how RBAC assigns permissions through roles, and how Active Directory (and cloud IdPs) feed tokens and policies your gateway and services enforce.
 
@@ -2921,7 +2922,7 @@ Enterprise identity foundations for APIs: how IAM governs access, how RBAC assig
 
 ---
 
-## At a glance
+### At a glance
 
 | Concept | What it is | Primary question |
 |---------|------------|------------------|
@@ -2935,7 +2936,7 @@ For **how clients authenticate** (OAuth, API(Application Programming Interface) 
 
 ---
 
-## What IAM is
+### What IAM is
 
 **Identity and Access Management (IAM)** is the end-to-end lifecycle and enforcement of access across people, services, and resources.
 
@@ -2950,7 +2951,7 @@ For **how clients authenticate** (OAuth, API(Application Programming Interface) 
 
 Cloud **IAM** (AWS IAM, Azure RBAC, GCP IAM) applies the same ideas to cloud control planes: principals + policies + enforcement at the API layer.
 
-### IAM components
+#### IAM components
 
 ```mermaid
 flowchart TB
@@ -2986,7 +2987,7 @@ flowchart TB
     AuthZ --> Cloud
 ```
 
-### IAM lifecycle (joiner-mover-leaver)
+#### IAM lifecycle (joiner-mover-leaver)
 
 ```mermaid
 sequenceDiagram
@@ -3009,14 +3010,14 @@ sequenceDiagram
     IAM->>App: Revoke access immediately
 ```
 
-### Pros of a formal IAM program
+#### Pros of a formal IAM program
 
 - Single source of truth for who has access and why
 - Faster onboarding/offboarding with fewer orphaned accounts
 - Audit trail for compliance (SOC2, ISO 27001)
 - Consistent mapping from org structure → app permissions
 
-### Cons
+#### Cons
 
 - Tooling sprawl (AD, IdP, SCIM, cloud IAM, app-local roles)
 - Group-to-role mapping drift if not governed
@@ -3024,11 +3025,11 @@ sequenceDiagram
 
 ---
 
-## What RBAC is
+### What RBAC is
 
 **Role-Based Access Control (RBAC)** assigns permissions to **roles**, not directly to every user. Users get roles; roles get permissions.
 
-### RBAC model
+#### RBAC model
 
 ```mermaid
 flowchart LR
@@ -3062,7 +3063,7 @@ flowchart LR
     Ops -.-> D1
 ```
 
-### RBAC hierarchy (NIST-style)
+#### RBAC hierarchy (NIST-style)
 
 ```mermaid
 flowchart TB
@@ -3075,7 +3076,7 @@ flowchart TB
     R --> C[Constraints<br/>time, location, MFA]
 ```
 
-### RBAC vs other access models
+#### RBAC vs other access models
 
 | Model | Basis of access | Good for |
 |-------|-----------------|----------|
@@ -3084,7 +3085,7 @@ flowchart TB
 | **ACL** | Per-resource list of who can access | Small sets, file shares |
 | **PBAC / Policy** | Declarative policies (Rego, IAM JSON) | Cloud, APIs, zero-trust |
 
-### RBAC at the API layer
+#### RBAC at the API layer
 
 Map roles to **scopes** or **route policies** at the gateway and re-check in the app for object-level AuthZ ([Auth model — layered flow](04-auth-model.md#layered-auth-flow)).
 
@@ -3116,11 +3117,11 @@ Gateway checks **coarse** role/scope; the app still enforces **object ownership*
 
 ---
 
-## What Active Directory is
+### What Active Directory is
 
 **Active Directory (AD)** is Microsoft's directory service for Windows-centric enterprises. It is primarily an **identity store and authentication system**, not a full IAM product by itself — though **Microsoft Entra ID** (Azure AD) extends it for cloud and modern protocols.
 
-### AD logical structure
+#### AD logical structure
 
 ```mermaid
 flowchart TB
@@ -3140,7 +3141,7 @@ flowchart TB
     DC1 --> LDAP[LDAP / Kerberos]
 ```
 
-### Key AD concepts
+#### Key AD concepts
 
 | Term | Meaning |
 |------|---------|
@@ -3153,7 +3154,7 @@ flowchart TB
 | **Kerberos** | Default AD auth protocol (tickets, mutual auth) |
 | **LDAP** | Directory query protocol (read users, groups, attributes) |
 
-### AD authentication flow (Kerberos — simplified)
+#### AD authentication flow (Kerberos — simplified)
 
 ```mermaid
 sequenceDiagram
@@ -3175,7 +3176,7 @@ sequenceDiagram
 
 Modern APIs rarely terminate Kerberos at the gateway directly. Typical pattern: AD → Entra ID / IdP → **OIDC/SAML** → JWT with groups/roles → gateway + app.
 
-### AD vs Microsoft Entra ID
+#### AD vs Microsoft Entra ID
 
 | | **On-prem AD** | **Microsoft Entra ID** |
 |--|----------------|------------------------|
@@ -3186,7 +3187,7 @@ Modern APIs rarely terminate Kerberos at the gateway directly. Typical pattern: 
 
 ---
 
-## How RBAC, IAM, and AD work together
+### How RBAC, IAM, and AD work together
 
 End-to-end enterprise picture for API access:
 
@@ -3220,7 +3221,7 @@ flowchart TB
     Entra -->|JWT with roles/groups| GW
 ```
 
-### Concrete example
+#### Concrete example
 
 1. **AD:** Alice is in security group `Finance-Analysts`
 2. **IAM provisioning:** Sync maps `Finance-Analysts` → app role `finance-reader`
@@ -3238,7 +3239,7 @@ flowchart LR
 
 ---
 
-## Decision flow: can this user access this API?
+### Decision flow: can this user access this API?
 
 Unified authorization check (IAM + RBAC + token from AD-backed IdP):
 
@@ -3263,7 +3264,7 @@ Aligns with the [layered auth flow](04-auth-model.md#layered-auth-flow): gateway
 
 ---
 
-## Comparison summary
+### Comparison summary
 
 | | **IAM** | **RBAC** | **Active Directory** |
 |--|---------|----------|----------------------|
@@ -3275,7 +3276,7 @@ Aligns with the [layered auth flow](04-auth-model.md#layered-auth-flow): gateway
 
 ---
 
-## API design takeaways
+### API design takeaways
 
 | Practice | Why |
 |----------|-----|
@@ -3296,7 +3297,7 @@ Default stack for public SaaS APIs (extends [overview default](00-overview.md#de
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -3309,7 +3310,7 @@ Default stack for public SaaS APIs (extends [overview default](00-overview.md#de
 
 ---
 
-## Related reading
+### Related reading
 
 | Guide | Topics |
 |-------|--------|
@@ -3320,7 +3321,7 @@ Default stack for public SaaS APIs (extends [overview default](00-overview.md#de
 
 ---
 
-# Idempotency
+## Idempotency
 
 How to design writes that are safe to retry: HTTP(Hypertext Transfer Protocol) semantics, `Idempotency-Key` headers, storage patterns, and how idempotency fits async jobs, webhooks, and stateless app tiers.
 
@@ -3328,7 +3329,7 @@ How to design writes that are safe to retry: HTTP(Hypertext Transfer Protocol) s
 
 ---
 
-## At a glance
+### At a glance
 
 | Question | Answer |
 |----------|--------|
@@ -3343,7 +3344,7 @@ How to design writes that are safe to retry: HTTP(Hypertext Transfer Protocol) s
 
 ---
 
-## What it is
+### What it is
 
 **Idempotent** means calling an operation multiple times does not change state beyond the first successful application.
 
@@ -3352,7 +3353,7 @@ How to design writes that are safe to retry: HTTP(Hypertext Transfer Protocol) s
 | **Safe** | No side effects (reads) |
 | **Idempotent** | Side effects happen at most once; repeats are no-ops or return the same outcome |
 
-### HTTP methods (default semantics)
+#### HTTP methods (default semantics)
 
 | Method | Idempotent? | Safe? | Notes |
 |--------|-------------|-------|-------|
@@ -3370,9 +3371,9 @@ Examples:
 
 ---
 
-## When to use what
+### When to use what
 
-### Natural idempotency (no header)
+#### Natural idempotency (no header)
 
 Design these to be idempotent by HTTP semantics or resource identity:
 
@@ -3380,7 +3381,7 @@ Design these to be idempotent by HTTP semantics or resource identity:
 - **`PUT /resources/{id}`** — client-known ID; same body → same state
 - **`DELETE /resources/{id}`** — delete is naturally repeatable
 
-### `Idempotency-Key` header (explicit)
+#### `Idempotency-Key` header (explicit)
 
 Require on **`POST`** when the operation:
 
@@ -3397,7 +3398,7 @@ Idempotency-Key: 7c9e6679-7425-40de-944b-e07fc1f90ae7
 Content-Type: application/json
 ```
 
-### Optimistic concurrency (updates, not creates)
+#### Optimistic concurrency (updates, not creates)
 
 For **`PATCH`** / **`PUT`** on existing resources, prefer **`ETag`** / **`If-Match`**:
 
@@ -3409,7 +3410,7 @@ Content-Type: application/json
 
 Return **`409 Conflict`** on stale version. This prevents lost updates; it is complementary to idempotency keys, not a replacement.
 
-### When you can skip idempotency keys
+#### When you can skip idempotency keys
 
 - Pure reads
 - `PUT` / `DELETE` with stable resource IDs already designed for repeat calls
@@ -3418,15 +3419,15 @@ Return **`409 Conflict`** on stale version. This prevents lost updates; it is co
 
 ---
 
-## Client contract
+### Client contract
 
-### Key generation
+#### Key generation
 
 - Client generates a **UUID v4** (or similar) **once per user action**
 - **Reuse the same key** on retries of the *same* logical operation
 - **Never reuse** the key for a different operation (different amount, recipient, or payload)
 
-### Scope
+#### Scope
 
 The server must scope keys per caller and route:
 
@@ -3436,7 +3437,7 @@ The server must scope keys per caller and route:
 
 The same key from two different API keys or tenants must not collide.
 
-### Same key, different body → reject
+#### Same key, different body → reject
 
 If the client sends the same `Idempotency-Key` with a **different request body**, return **`422`** or **`409`**:
 
@@ -3452,7 +3453,7 @@ If the client sends the same `Idempotency-Key` with a **different request body**
 
 Store a hash of the normalized request body alongside the key to detect mismatches.
 
-### Response replay
+#### Response replay
 
 On retry, return the **same HTTP status and body** as the original — including errors.
 
@@ -3466,7 +3467,7 @@ Document whether you cache error responses for the full TTL (Stripe-style) or on
 
 ---
 
-## Server flow
+### Server flow
 
 ```mermaid
 sequenceDiagram
@@ -3498,7 +3499,7 @@ sequenceDiagram
     API-->>Client: 201 Created (no duplicate order)
 ```
 
-### Order of operations (critical)
+#### Order of operations (critical)
 
 1. Authenticate and authorize
 2. **Claim the idempotency key** (atomic)
@@ -3509,7 +3510,7 @@ sequenceDiagram
 
 **Never** charge a card, insert a row, or send email before the key is claimed.
 
-### Concurrent duplicates
+#### Concurrent duplicates
 
 Two identical requests arriving simultaneously:
 
@@ -3520,7 +3521,7 @@ Two identical requests arriving simultaneously:
 
 Avoid both requests executing business logic.
 
-### In-progress and crashed workers
+#### In-progress and crashed workers
 
 Use a short-lived **processing** state:
 
@@ -3534,7 +3535,7 @@ If the worker crashes mid-flight, the lock expires and a retry may safely re-att
 
 ---
 
-## Where to store idempotency keys
+### Where to store idempotency keys
 
 Enforcement lives in the **application**; storage must be **shared** across all app instances ([Stateless architecture](11-stateless-architecture.md)).
 
@@ -3546,7 +3547,7 @@ Enforcement lives in the **application**; storage must be **shared** across all 
 
 **Not here:** gateway, load balancer, or app instance memory.
 
-### Pattern A — Redis
+#### Pattern A — Redis
 
 ```text
 Key:   idem:{tenant}:{endpoint}:{idempotency_key}
@@ -3560,7 +3561,7 @@ SET key "processing" NX EX 300     → if fail, GET and return cached or 409
 SET key {response_json} XX EX 86400
 ```
 
-### Pattern B — PostgreSQL
+#### Pattern B — PostgreSQL
 
 ```sql
 CREATE TABLE idempotency_records (
@@ -3583,7 +3584,7 @@ INSERT ... ON CONFLICT DO NOTHING RETURNING *;
 
 Combine with the business write in one transaction when possible.
 
-### Pattern C — Natural domain key
+#### Pattern C — Natural domain key
 
 ```json
 {
@@ -3595,7 +3596,7 @@ Combine with the business write in one transaction when possible.
 
 Unique constraint on `(merchant_id, client_reference_id)`. Duplicate insert fails; return the existing payment. No separate idempotency table when the domain model already deduplicates.
 
-### TTL and cleanup
+#### TTL and cleanup
 
 | Setting | Typical value |
 |---------|---------------|
@@ -3607,7 +3608,7 @@ Expire with Redis TTL or a background job on DB rows.
 
 ---
 
-## Async jobs
+### Async jobs
 
 When `POST` returns **`202 Accepted`** with a job resource, the idempotency key prevents duplicate enqueue on client retry. Full flow → [Async patterns § Pattern 1 — Job resource + polling](10-async-patterns.md#pattern-1--job-resource--polling-default) and [§ Idempotency across async](10-async-patterns.md#idempotency-across-async).
 
@@ -3615,7 +3616,7 @@ Job **workers** must also deduplicate on `job_id` or message ID for at-least-onc
 
 ---
 
-## Webhook replay protection
+### Webhook replay protection
 
 Idempotency for **inbound** webhooks is replay protection — different header, same goal:
 
@@ -3628,7 +3629,7 @@ Details → [API protection §6](02-api-protection.md#6-idempotency-and-replay-p
 
 ---
 
-## Event-sourced commands
+### Event-sourced commands
 
 Command APIs (`POST /commands/PlaceOrder`) use the same `Idempotency-Key` header. Store `key → (aggregate_id, resulting_version)` with TTL so duplicate commands do not append duplicate events.
 
@@ -3636,7 +3637,7 @@ Details → [Event Sourcing & CQRS — API design](../event-sourcing-and-cqrs/in
 
 ---
 
-## OpenAPI modeling
+### OpenAPI modeling
 
 ```yaml
 paths:
@@ -3666,7 +3667,7 @@ OpenAPI documents the contract; **runtime enforcement remains in application cod
 
 ---
 
-## Observability
+### Observability
 
 Log safely:
 
@@ -3678,7 +3679,7 @@ Never log full payment payloads or PII unnecessarily. Idempotency replay metrics
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Risk |
 |---------|------|
@@ -3692,7 +3693,7 @@ Never log full payment payloads or PII unnecessarily. Idempotency replay metrics
 
 ---
 
-## Decision checklist
+### Decision checklist
 
 | Question | Action |
 |----------|--------|
@@ -3708,7 +3709,7 @@ Never log full payment payloads or PII unnecessarily. Idempotency replay metrics
 
 ---
 
-## Pre-launch checklist
+### Pre-launch checklist
 
 | Check | Pass? |
 |-------|-------|
@@ -3725,15 +3726,15 @@ Never log full payment payloads or PII unnecessarily. Idempotency replay metrics
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Pros of explicit idempotency keys
+#### Pros of explicit idempotency keys
 
 - Safe client retries on timeout without duplicate charges or orders
 - Predictable behavior for partners integrating over unreliable networks
 - Clear audit trail when combined with correlation IDs
 
-### Cons / trade-offs
+#### Cons / trade-offs
 
 - Extra storage and lookup on every write
 - Clients must generate and persist keys correctly
@@ -3742,7 +3743,7 @@ Never log full payment payloads or PII unnecessarily. Idempotency replay metrics
 
 ---
 
-# API(Application Programming Interface) Versioning and Deprecation
+## API Versioning and Deprecation
 
 Public APIs outlive clients. Versioning and deprecation policy is part of the contract — not an afterthought.
 
@@ -3750,7 +3751,7 @@ Public APIs outlive clients. Versioning and deprecation policy is part of the co
 
 ---
 
-## At a glance
+### At a glance
 
 | Approach | Visibility | Default for public REST(Representational State Transfer) |
 |----------|------------|-------------------------|
@@ -3762,7 +3763,7 @@ Public APIs outlive clients. Versioning and deprecation policy is part of the co
 
 ---
 
-## Breaking vs non-breaking changes
+### Breaking vs non-breaking changes
 
 | Non-breaking (same major version) | Breaking (new major version) |
 |-----------------------------------|------------------------------|
@@ -3776,7 +3777,7 @@ Document every release in changelog; run OpenAPI diff in CI → [§15 contract t
 
 ---
 
-## Deprecation flow
+### Deprecation flow
 
 ```mermaid
 flowchart LR
@@ -3801,7 +3802,7 @@ Link: </v2/orders>; rel="successor-version"
 
 ---
 
-## Version routing at the gateway
+### Version routing at the gateway
 
 | Layer | Role |
 |-------|------|
@@ -3813,7 +3814,7 @@ See [deployment-strategies §12](../deployment-strategies/includes/12-schema-mig
 
 ---
 
-## Client guidance (document in developer portal)
+### Client guidance (document in developer portal)
 
 - Pin to a major version in SDK base URL
 - Treat unknown JSON fields as ignorable
@@ -3822,7 +3823,7 @@ See [deployment-strategies §12](../deployment-strategies/includes/12-schema-mig
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -3833,15 +3834,15 @@ See [deployment-strategies §12](../deployment-strategies/includes/12-schema-mig
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### URL versioning
+#### URL versioning
 
 **Pros:** Explicit in logs, WAF(Web Application Firewall) rules, rate limits, and docs.
 
 **Cons:** URL proliferation; gateway routing required.
 
-### Indefinite v1 support
+#### Indefinite v1 support
 
 **Pros:** Happy legacy clients.
 
@@ -3849,7 +3850,7 @@ See [deployment-strategies §12](../deployment-strategies/includes/12-schema-mig
 
 ---
 
-# Contract and Schema Testing
+## Contract and Schema Testing
 
 OpenAPI is not documentation only — it is the **contract** CI should enforce before deploy.
 
@@ -3857,7 +3858,7 @@ OpenAPI is not documentation only — it is the **contract** CI should enforce b
 
 ---
 
-## At a glance
+### At a glance
 
 | Check | Tooling examples | When it runs |
 |-------|------------------|--------------|
@@ -3870,7 +3871,7 @@ OpenAPI is not documentation only — it is the **contract** CI should enforce b
 
 ---
 
-## CI pipeline (minimal)
+### CI pipeline (minimal)
 
 ```mermaid
 flowchart LR
@@ -3889,7 +3890,7 @@ flowchart LR
 
 ---
 
-## Breaking change examples (openapi-diff)
+### Breaking change examples (openapi-diff)
 
 | Change | Breaking? |
 |--------|-----------|
@@ -3904,7 +3905,7 @@ For intentional breaks: bump to `/v2` and update diff baseline.
 
 ---
 
-## Consumer-driven contracts (Pact)
+### Consumer-driven contracts (Pact)
 
 | Role | Responsibility |
 |------|----------------|
@@ -3916,7 +3917,7 @@ Use for **critical integrations** (billing, auth, partner APIs) — not every in
 
 ---
 
-## Pair with deployment
+### Pair with deployment
 
 - **Canary:** compare error rate on routes whose spec changed
 - **Feature flags:** ship code behind flag; spec documents both behaviors during transition
@@ -3924,7 +3925,7 @@ Use for **critical integrations** (billing, auth, partner APIs) — not every in
 
 ---
 
-## Checklist
+### Checklist
 
 - [ ] `openapi.yaml` in repo; single source of truth
 - [ ] Spectral ruleset committed (`.spectral.yaml`)
@@ -3934,13 +3935,13 @@ Use for **critical integrations** (billing, auth, partner APIs) — not every in
 
 ---
 
-## Pros and cons
+### Pros and cons
 
 **Pros:** Fewer production breakages; confident refactors; partners trust documented behavior.
 
 **Cons:** CI maintenance; pact drift if consumers don't update; discipline on spec-first changes.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -3952,7 +3953,7 @@ Use for **critical integrations** (billing, auth, partner APIs) — not every in
 
 ---
 
-# Multi-Tenant APIs
+## Multi-Tenant APIs
 
 SaaS APIs must isolate tenants in auth, data, rate limits, and operations — not only with a `tenant_id` column.
 
@@ -3960,7 +3961,7 @@ SaaS APIs must isolate tenants in auth, data, rate limits, and operations — no
 
 ---
 
-## At a glance
+### At a glance
 
 | Layer | Tenant concern |
 |-------|----------------|
@@ -3976,7 +3977,7 @@ SaaS APIs must isolate tenants in auth, data, rate limits, and operations — no
 
 ---
 
-## Isolation models
+### Isolation models
 
 ```mermaid
 flowchart TB
@@ -4004,7 +4005,7 @@ Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level 
 
 ---
 
-## API patterns
+### API patterns
 
 | Pattern | Detail |
 |---------|--------|
@@ -4016,7 +4017,7 @@ Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level 
 
 ---
 
-## Data residency and scale
+### Data residency and scale
 
 | Need | Approach |
 |------|----------|
@@ -4026,7 +4027,7 @@ Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level 
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -4037,9 +4038,9 @@ Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level 
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Shared DB multi-tenancy
+#### Shared DB multi-tenancy
 
 **Pros:** Cost-efficient; single migration path.
 
@@ -4047,7 +4048,7 @@ Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level 
 
 ---
 
-# GraphQL and gRPC
+## GraphQL and gRPC
 
 REST(Representational State Transfer) is the default in this corpus — use GraphQL or gRPC when the trade-offs are explicit, not because the name sounds modern.
 
@@ -4057,7 +4058,7 @@ REST(Representational State Transfer) is the default in this corpus — use Grap
 
 ---
 
-## At a glance
+### At a glance
 
 | Style | Best for | Weak for |
 |-------|----------|----------|
@@ -4069,7 +4070,7 @@ REST(Representational State Transfer) is the default in this corpus — use Grap
 
 ---
 
-## GraphQL
+### GraphQL
 
 ```mermaid
 flowchart LR
@@ -4094,7 +4095,7 @@ flowchart LR
 
 ---
 
-## gRPC
+### gRPC
 
 | Topic | Guidance |
 |-------|----------|
@@ -4111,7 +4112,7 @@ flowchart LR
 
 ---
 
-## Decision flow
+### Decision flow
 
 ```mermaid
 flowchart TD
@@ -4126,7 +4127,7 @@ flowchart TD
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -4137,15 +4138,15 @@ flowchart TD
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### GraphQL BFF
+#### GraphQL BFF
 
 **Pros:** Client flexibility; aggregates microservices.
 
 **Cons:** Another tier to secure, cache, and operate.
 
-### gRPC internal
+#### gRPC internal
 
 **Pros:** Performance and strong contracts between services.
 

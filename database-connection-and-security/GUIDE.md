@@ -1,16 +1,17 @@
 # Database Connection & Security (Full)
 
 > Combined view of all sections. Modular sources live in `includes/`.
+> On GitHub, use the guide **README** table of contents for direct section links.
 
 ---
 
-# Overview — Database Connection & Security
+## Overview — Database Connection & Security
 
 Production database access is **layered**: network isolation and TLS(Transport Layer Security) first, then authentication, secrets, pooling, and audit. Pick a connection pattern based on cloud, scale, and compliance — not on what is easiest in dev.
 
 > **Related:** Pool sizing and `max_connections` → [postgresql-performance §7](../postgresql-performance/includes/07-connection-management.md) · Service identity → [api-design §12 Identity](../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) · Pattern picker → [§13 Decision guide](13-decision-guide.md)
 
-## Security layers at a glance
+### Security layers at a glance
 
 | Layer | Focus | Sections |
 |-------|-------|----------|
@@ -22,7 +23,7 @@ Production database access is **layered**: network isolation and TLS(Transport L
 | **Identity** | IAM(Identity and Access Management) / workload identity instead of passwords | [§4](04-aws-iam-rds-proxy.md), [§6](06-direct-rds-iam.md), [§7](07-gcp-cloud-sql-identity.md), [§8](08-azure-database-identity.md) |
 | **Rotation & DR** | Rotate creds; test restores | [§12 Credential rotation and DR](12-credential-rotation-and-dr.md) |
 
-## Connection patterns at a glance
+### Connection patterns at a glance
 
 | Pattern | Short-lived creds? | Typical complexity | Best when |
 |---------|-------------------|-------------------|-----------|
@@ -37,7 +38,7 @@ Production database access is **layered**: network isolation and TLS(Transport L
 
 Full decision flow → **[§13 Decision guide](13-decision-guide.md)**.
 
-## Default recommendation
+### Default recommendation
 
 For most production services on a major cloud:
 
@@ -49,7 +50,7 @@ For most production services on a major cloud:
 
 Local dev uses [§1 Local credentials](01-local-db-credentials.md) — never copy `trust` auth or dashboard connection strings into production.
 
-## Document map
+### Document map
 
 | # | Topic | File |
 |---|-------|------|
@@ -59,7 +60,7 @@ Local dev uses [§1 Local credentials](01-local-db-credentials.md) — never cop
 | 12 | Credential rotation and DR | [12-credential-rotation-and-dr.md](12-credential-rotation-and-dr.md) |
 | 13 | Decision guide | [13-decision-guide.md](13-decision-guide.md) |
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -71,7 +72,7 @@ Local dev uses [§1 Local credentials](01-local-db-credentials.md) — never cop
 
 ---
 
-# Local Database Credentials
+## Local Database Credentials
 
 > **Note:** This section is a **local dev template** — host, username, and paths are machine-specific. Replace them for your environment. Production connection patterns start in [§2 Production security](02-prod-db-security.md).
 
@@ -80,7 +81,7 @@ Local dev uses [§1 Local credentials](01-local-db-credentials.md) — never cop
 > **Environment:** macOS · Homebrew · PostgreSQL 17  
 > **Last updated:** June 2026
 
-## Connection details
+### Connection details
 
 | Setting | Value |
 |---------|-------|
@@ -91,7 +92,7 @@ Local dev uses [§1 Local credentials](01-local-db-credentials.md) — never cop
 | **Password** | *(none — not required for local connections)* |
 | **SSL** | Not required locally |
 
-## Connection strings
+### Connection strings
 
 **URI format:**
 
@@ -112,10 +113,10 @@ export PGHOST=localhost
 export PGPORT=5432
 export PGDATABASE=postgres
 export PGUSER=steveduong
-# PGPASSWORD is not set — local auth uses trust
+## PGPASSWORD is not set — local auth uses trust
 ```
 
-## Quick connect
+### Quick connect
 
 ```bash
 pg-start          # start PostgreSQL (manual, on-demand)
@@ -123,7 +124,7 @@ psql postgres     # connect to default database
 pg-stop           # stop when done
 ```
 
-## Shell aliases
+### Shell aliases
 
 Defined in `~/.zshrc`:
 
@@ -133,7 +134,7 @@ Defined in `~/.zshrc`:
 | `pg-stop` | `pg_ctl -D /opt/homebrew/var/postgresql@17 stop` |
 | `pg-status` | `pg_ctl -D /opt/homebrew/var/postgresql@17 status` |
 
-## Install paths
+### Install paths
 
 | Item | Path |
 |------|------|
@@ -141,7 +142,7 @@ Defined in `~/.zshrc`:
 | Data directory | `/opt/homebrew/var/postgresql@17` |
 | Config | `/opt/homebrew/var/postgresql@17/pg_hba.conf` |
 
-## Authentication (local only)
+### Authentication (local only)
 
 Local connections use **`trust`** authentication — no password is required:
 
@@ -153,7 +154,7 @@ host    all   all   ::1/128         trust
 
 > **Note:** This setup is for **local development only**. Do not use `trust` auth in production.
 
-## Optional: set a password
+### Optional: set a password
 
 If a GUI tool requires a password field:
 
@@ -161,14 +162,14 @@ If a GUI tool requires a password field:
 psql postgres -c "ALTER USER steveduong PASSWORD 'your_password';"
 ```
 
-## Start behaviour
+### Start behaviour
 
 PostgreSQL is **not** set to auto-start on macOS boot.
 
 - Do **not** use `brew services start postgresql@17` (runs in background + auto-start on login).
 - Use `pg-start` / `pg-stop` manually when needed.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -179,7 +180,7 @@ PostgreSQL is **not** set to auto-start on macOS boot.
 
 ---
 
-# Production Database Security
+## Production Database Security
 
 > How to protect **service → database** connections in production.
 
@@ -189,7 +190,7 @@ Production database security is **layered** — no single control is enough. Sec
 
 ---
 
-## Security layers at a glance
+### Security layers at a glance
 
 | Layer | Focus |
 |-------|--------|
@@ -206,7 +207,7 @@ Production database security is **layered** — no single control is enough. Sec
 
 ---
 
-## 1. Network isolation
+### 1. Network isolation
 
 Keep the database off the public internet and reachable only from trusted hosts.
 
@@ -222,7 +223,7 @@ Keep the database off the public internet and reachable only from trusted hosts.
 
 ---
 
-## 2. Encryption in transit (TLS/SSL)
+### 2. Encryption in transit (TLS/SSL)
 
 | Approach | What it does |
 |----------|--------------|
@@ -239,7 +240,7 @@ postgresql://user:pass@db-host:5432/mydb?sslmode=verify-full
 
 ---
 
-## 3. Authentication
+### 3. Authentication
 
 | Approach | What it does |
 |----------|--------------|
@@ -255,7 +256,7 @@ postgresql://user:pass@db-host:5432/mydb?sslmode=verify-full
 
 ---
 
-## 4. Secrets management
+### 4. Secrets management
 
 | Approach | What it does |
 |----------|--------------|
@@ -306,7 +307,7 @@ See the dedicated guides for each production connection approach:
 
 ---
 
-## Choosing a connection approach
+### Choosing a connection approach
 
 Full decision flowchart, scenario table, migration path, and pattern comparison → **[§13 Decision guide](13-decision-guide.md)**.
 
@@ -322,7 +323,7 @@ Quick picks:
 
 ---
 
-## 5. Connection proxy / pooler
+### 5. Connection proxy / pooler
 
 | Tool | What it does |
 |------|--------------|
@@ -332,7 +333,7 @@ Quick picks:
 
 ---
 
-## 6. Workload / cloud identity
+### 6. Workload / cloud identity
 
 | Approach | What it does |
 |----------|--------------|
@@ -345,7 +346,7 @@ Quick picks:
 
 ---
 
-## 7. Application-level protections
+### 7. Application-level protections
 
 | Approach | What it does |
 |----------|--------------|
@@ -357,7 +358,7 @@ Quick picks:
 
 ---
 
-## 8. Encryption at rest
+### 8. Encryption at rest
 
 | Approach | What it does |
 |----------|--------------|
@@ -367,7 +368,7 @@ Quick picks:
 
 ---
 
-## 9. Monitoring and audit
+### 9. Monitoring and audit
 
 | Approach | What it does |
 |----------|--------------|
@@ -378,7 +379,7 @@ Quick picks:
 
 ---
 
-## 10. Admin vs app access
+### 10. Admin vs app access
 
 | Approach | What it does |
 |----------|--------------|
@@ -390,7 +391,7 @@ Apps and humans should **not** share the same DB credentials.
 
 ---
 
-## Recommended production baseline
+### Recommended production baseline
 
 1. DB in a **private subnet**, no public IP
 2. **Security group** allows only app servers on the DB port
@@ -421,7 +422,7 @@ Private subnet → TLS → IAM token → RDS Proxy → RDS
 
 ---
 
-## Quick reference
+### Quick reference
 
 | Method | Protects against |
 |--------|------------------|
@@ -438,7 +439,7 @@ Private subnet → TLS → IAM token → RDS Proxy → RDS
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -451,7 +452,7 @@ Private subnet → TLS → IAM token → RDS Proxy → RDS
 
 ---
 
-## Local dev vs production
+### Local dev vs production
 
 | | Local (Homebrew Postgres) | Production |
 |--|---------------------------|------------|
@@ -462,7 +463,7 @@ Private subnet → TLS → IAM token → RDS Proxy → RDS
 
 ---
 
-# HashiCorp Vault (HCV)
+## HashiCorp Vault (HCV)
 
 > **HCV** = **H**ashi**C**orp **V**ault — a secrets management platform for securing service-to-database connections in production.
 
@@ -479,9 +480,9 @@ Vault helps you:
 
 ---
 
-## Vault patterns for databases
+### Vault patterns for databases
 
-### 1. Static secrets (KV engine)
+#### 1. Static secrets (KV engine)
 
 Store a fixed connection string or password in Vault.
 
@@ -496,7 +497,7 @@ App → authenticates to Vault → reads secret → connects to DB
 
 ---
 
-### 2. Dynamic database credentials ⭐ (best Vault feature)
+#### 2. Dynamic database credentials ⭐ (best Vault feature)
 
 Vault's **Database Secrets Engine** creates a **temporary DB user** for each request.
 
@@ -533,13 +534,13 @@ Response:
 
 ---
 
-### 3. Credential rotation
+#### 3. Credential rotation
 
 Vault can rotate the **master/admin DB password** (used only by Vault to create dynamic users) without redeploying applications.
 
 ---
 
-## How apps authenticate to Vault
+### How apps authenticate to Vault
 
 Before Vault gives DB credentials, the service must prove its identity:
 
@@ -552,9 +553,9 @@ Before Vault gives DB credentials, the service must prove its identity:
 
 ---
 
-## Common Vault deployment patterns
+### Common Vault deployment patterns
 
-### Sidecar / Vault Agent
+#### Sidecar / Vault Agent
 
 ```
 [App container]  +  [Vault Agent sidecar]
@@ -562,17 +563,17 @@ Before Vault gives DB credentials, the service must prove its identity:
 
 Vault Agent authenticates to Vault, fetches/renews DB credentials, and writes them to a shared file for the app.
 
-### Init container (Kubernetes)
+#### Init container (Kubernetes)
 
 An init container fetches credentials before the main app container starts.
 
-### Direct SDK / API(Application Programming Interface)
+#### Direct SDK / API
 
 The app calls the Vault API at startup and again before credentials expire.
 
 ---
 
-## What Vault protects against
+### What Vault protects against
 
 | Threat | How Vault helps |
 |--------|-----------------|
@@ -584,7 +585,7 @@ The app calls the Vault API at startup and again before credentials expire.
 
 ---
 
-## Vault vs cloud secret managers
+### Vault vs cloud secret managers
 
 | | HashiCorp Vault | AWS Secrets Manager / similar |
 |--|-----------------|-------------------------------|
@@ -596,7 +597,7 @@ The app calls the Vault API at startup and again before credentials expire.
 
 ---
 
-## Example production setup with Vault
+### Example production setup with Vault
 
 ```
 ┌─────────────┐   K8s/IAM auth   ┌──────────────────┐
@@ -627,22 +628,22 @@ Steps:
 
 ---
 
-## When to use Vault
+### When to use Vault
 
-### ✅ Use Vault if
+#### ✅ Use Vault if
 
 - Many services connect to the same database
 - You want short-lived, auto-revoked DB credentials
 - You need strong audit trails and compliance
 - You run multi-cloud or hybrid infrastructure
 
-### ⏭️ Skip Vault (for now) if
+#### ⏭️ Skip Vault (for now) if
 
 - Small app with one service and one database
 - Fully on AWS and **IAM auth + RDS Proxy** is sufficient — see [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md)
 - Your team cannot operate Vault reliably (it requires ongoing care)
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -654,7 +655,7 @@ Steps:
 
 ---
 
-# AWS IAM(Identity and Access Management) auth + RDS Proxy
+## AWS IAM auth + RDS Proxy
 
 > AWS-native path for the same goals as Vault — no DB password in code, short-lived credentials, least privilege — without running HashiCorp Vault.
 
@@ -662,7 +663,7 @@ Steps:
 >
 > **Related:** Direct RDS without Proxy → [§6 Direct RDS IAM](06-direct-rds-iam.md) · Vault comparison → [§3 HashiCorp Vault](03-hcv-vault.md) · Pool tuning → [postgresql-performance §7](../postgresql-performance/includes/07-connection-management.md)
 
-## What it solves
+### What it solves
 
 - No DB password in `.env`, git, or container images
 - Short-lived credentials (IAM auth tokens expire in ~15 minutes)
@@ -673,7 +674,7 @@ It is **AWS-managed** — no Vault cluster to run — but **AWS-specific** and l
 
 ---
 
-## Architecture
+### Architecture
 
 ```
 App (EC2 / ECS / Lambda / EKS)
@@ -697,9 +698,9 @@ Private subnet → TLS → RDS Proxy → RDS
 
 ---
 
-## Two IAM + Proxy patterns
+### Two IAM + Proxy patterns
 
-### Pattern A: Standard IAM auth (most common)
+#### Pattern A: Standard IAM auth (most common)
 
 | Hop | Who authenticates | How |
 |-----|-------------------|-----|
@@ -732,7 +733,7 @@ aws rds generate-db-auth-token \
 
 ---
 
-### Pattern B: End-to-end IAM auth
+#### Pattern B: End-to-end IAM auth
 
 | Hop | Who authenticates | How |
 |-----|-------------------|-----|
@@ -746,7 +747,7 @@ aws rds generate-db-auth-token \
 
 ---
 
-## Key components
+### Key components
 
 1. **RDS** — PostgreSQL or MySQL/Aurora; IAM auth enabled; private subnet; no public IP; TLS required.
 2. **Database user** — Dedicated per service; granted `rds_iam` (Postgres) or equivalent; least-privilege on schemas/tables.
@@ -778,7 +779,7 @@ psql "host=my-proxy.proxy-abc123.us-east-1.rds.amazonaws.com port=5432 dbname=my
 
 ---
 
-## How this maps to security layers
+### How this maps to security layers
 
 | Layer | IAM + RDS Proxy coverage |
 |-------|--------------------------|
@@ -792,7 +793,7 @@ psql "host=my-proxy.proxy-abc123.us-east-1.rds.amazonaws.com port=5432 dbname=my
 
 ---
 
-## IAM + RDS Proxy vs HashiCorp Vault
+### IAM + RDS Proxy vs HashiCorp Vault
 
 | | IAM + RDS Proxy | Vault dynamic DB creds |
 |--|-----------------|------------------------|
@@ -806,7 +807,7 @@ See [03-hcv-vault.md](03-hcv-vault.md) for the Vault approach.
 
 ---
 
-## When IAM + RDS Proxy is sufficient
+### When IAM + RDS Proxy is sufficient
 
 Use this instead of Vault when:
 
@@ -823,7 +824,7 @@ Consider Vault (or Pattern B + stricter IAM) when:
 - You want centralized secrets across non-AWS systems
 - You need Vault-style dynamic user revocation independent of IAM token TTL
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -835,7 +836,7 @@ Consider Vault (or Pattern B + stricter IAM) when:
 
 ---
 
-# Secret manager + static password
+## Secret manager + static password
 
 > The most common production baseline — store a DB username/password in a cloud secret manager and inject it at runtime. No credentials in git or container images.
 
@@ -843,14 +844,14 @@ Consider Vault (or Pattern B + stricter IAM) when:
 >
 > **Related:** Upgrade path → [§4 IAM + RDS Proxy](04-aws-iam-rds-proxy.md) · Self-hosted pooling → [§9 PgBouncer + secret](09-pgbouncer-proxy-password.md) · Rotation runbook → [§12 Credential rotation and DR](12-credential-rotation-and-dr.md)
 
-## What it solves
+### What it solves
 
 - Removes passwords from source code, `.env` files committed to git, and Docker image layers
 - Central place to rotate and audit database credentials
 - Works with **any** database engine and **any** cloud or on-prem deployment
 - Simple for teams starting production without Vault or IAM(Identity and Access Management) auth
 
-## What it does not solve
+### What it does not solve
 
 - Credentials are still **long-lived** (until rotated) — not per-request dynamic users
 - If a secret leaks, it works until rotation
@@ -858,7 +859,7 @@ Consider Vault (or Pattern B + stricter IAM) when:
 
 ---
 
-## Architecture
+### Architecture
 
 ```
 App (EC2 / ECS / Lambda / K8s / VM)
@@ -878,7 +879,7 @@ Private subnet → TLS → least-privilege DB user → password from secret mana
 
 ---
 
-## Cloud secret managers
+### Cloud secret managers
 
 | Platform | Service | Typical fetch |
 |----------|---------|---------------|
@@ -889,7 +890,7 @@ Private subnet → TLS → least-privilege DB user → password from secret mana
 
 ---
 
-## Setup steps
+### Setup steps
 
 1. **RDS / managed DB** in a private subnet; TLS(Transport Layer Security) required; no public IP.
 2. **Dedicated DB user** per service with least privilege (not `postgres` admin).
@@ -911,13 +912,13 @@ Private subnet → TLS → least-privilege DB user → password from secret mana
 
 ---
 
-## Deployment patterns
+### Deployment patterns
 
-### ECS / Lambda (AWS)
+#### ECS / Lambda (AWS)
 
 Task definition or Lambda env references Secrets Manager ARN; AWS injects at launch.
 
-### Kubernetes (External Secrets Operator)
+#### Kubernetes (External Secrets Operator)
 
 ```
 External Secrets Operator → syncs from AWS/GCP/Azure → K8s Secret → pod env
@@ -925,30 +926,30 @@ External Secrets Operator → syncs from AWS/GCP/Azure → K8s Secret → pod en
 
 Pod never embeds the password in the Deployment YAML — only references the K8s Secret name.
 
-### VM / bare metal
+#### VM / bare metal
 
 App calls secret manager API at startup using instance profile or service account.
 
 ---
 
-## Example: fetch and connect (AWS)
+### Example: fetch and connect (AWS)
 
 ```bash
-# CLI example — apps use SDK in production
+## CLI example — apps use SDK in production
 aws secretsmanager get-secret-value \
   --secret-id prod/myapp/db \
   --query SecretString --output text
 ```
 
 ```bash
-# Connect after parsing username/password
+## Connect after parsing username/password
 psql "host=$DB_HOST port=5432 dbname=myapp user=$DB_USER sslmode=verify-full"
-# PGPASSWORD set from secret, never hardcoded
+## PGPASSWORD set from secret, never hardcoded
 ```
 
 ---
 
-## How this maps to security layers
+### How this maps to security layers
 
 | Layer | Coverage |
 |-------|----------|
@@ -960,7 +961,7 @@ psql "host=$DB_HOST port=5432 dbname=myapp user=$DB_USER sslmode=verify-full"
 
 ---
 
-## Comparison with other approaches
+### Comparison with other approaches
 
 | | Secret manager + password | Vault dynamic | AWS IAM + RDS Proxy |
 |--|---------------------------|---------------|---------------------|
@@ -970,7 +971,7 @@ psql "host=$DB_HOST port=5432 dbname=myapp user=$DB_USER sslmode=verify-full"
 
 ---
 
-## When to use
+### When to use
 
 **Use when:**
 
@@ -983,7 +984,7 @@ psql "host=$DB_HOST port=5432 dbname=myapp user=$DB_USER sslmode=verify-full"
 - You need short-lived credentials → [03-hcv-vault.md](03-hcv-vault.md) or [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md)
 - Connection storms at scale → add [09-pgbouncer-proxy-password.md](09-pgbouncer-proxy-password.md)
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -995,20 +996,20 @@ psql "host=$DB_HOST port=5432 dbname=myapp user=$DB_USER sslmode=verify-full"
 
 ---
 
-# Direct RDS IAM(Identity and Access Management) auth (no RDS Proxy)
+## Direct RDS IAM auth (no RDS Proxy)
 
 > App connects to RDS using an IAM auth token as the password — same token model as [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md), but **without** RDS Proxy in the path.
 
 > **Related:** When to add Proxy → [§4 AWS IAM + RDS Proxy](04-aws-iam-rds-proxy.md) · App-side pooling → [§9 PgBouncer + secret](09-pgbouncer-proxy-password.md) · `max_connections` → [postgresql-performance §7](../postgresql-performance/includes/07-connection-management.md)
 
-## What it solves
+### What it solves
 
 - No long-lived DB password in the application
 - Short-lived IAM auth tokens (~15 minute expiry)
 - Least privilege via `rds-db:connect` IAM policies
 - Fewer components than Proxy — good for smaller AWS workloads
 
-## What it does not solve
+### What it does not solve
 
 - **No managed connection pooling** — you handle pool limits (app pool, PgBouncer, or accept RDS connection limits)
 - AWS-only
@@ -1016,7 +1017,7 @@ psql "host=$DB_HOST port=5432 dbname=myapp user=$DB_USER sslmode=verify-full"
 
 ---
 
-## Architecture
+### Architecture
 
 ```
 App (EC2 / ECS / Lambda / EKS)
@@ -1042,7 +1043,7 @@ Private subnet → TLS → IAM token → RDS Proxy → RDS   (see 04-aws-iam-rds
 
 ---
 
-## Setup steps
+### Setup steps
 
 1. **Enable IAM auth** on the RDS instance or Aurora cluster:
 
@@ -1088,7 +1089,7 @@ psql "host=mydb.abc123.us-east-1.rds.amazonaws.com port=5432 dbname=myapp user=a
 
 ---
 
-## Direct IAM vs RDS Proxy
+### Direct IAM vs RDS Proxy
 
 | | Direct RDS IAM | IAM + RDS Proxy |
 |--|----------------|-----------------|
@@ -1100,7 +1101,7 @@ psql "host=mydb.abc123.us-east-1.rds.amazonaws.com port=5432 dbname=myapp user=a
 
 ---
 
-## How this maps to security layers
+### How this maps to security layers
 
 | Layer | Coverage |
 |-------|----------|
@@ -1112,7 +1113,7 @@ psql "host=mydb.abc123.us-east-1.rds.amazonaws.com port=5432 dbname=myapp user=a
 
 ---
 
-## When to use
+### When to use
 
 **Use direct IAM when:**
 
@@ -1130,7 +1131,7 @@ psql "host=mydb.abc123.us-east-1.rds.amazonaws.com port=5432 dbname=myapp user=a
 
 - Multi-cloud or unique temp DB users per lease — see [03-hcv-vault.md](03-hcv-vault.md)
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1142,13 +1143,13 @@ psql "host=mydb.abc123.us-east-1.rds.amazonaws.com port=5432 dbname=myapp user=a
 
 ---
 
-# GCP Cloud SQL(Structured Query Language) identity
+## GCP Cloud SQL identity
 
 > Connect to Cloud SQL (PostgreSQL / MySQL) using GCP-native identity, proxies, and Secret Manager — the GCP equivalent of AWS IAM(Identity and Access Management) + RDS patterns.
 
 > **Related:** AWS equivalents → [§4 IAM + RDS Proxy](04-aws-iam-rds-proxy.md), [§6 Direct RDS IAM](06-direct-rds-iam.md) · Static secret baseline → [§5 Secret manager](05-secret-manager-password.md) · Decision guide → [§13 Decision guide](13-decision-guide.md)
 
-## What it solves
+### What it solves
 
 - No DB password in application code (when using IAM / Workload Identity)
 - Encrypted connections via Cloud SQL Auth Proxy or connector libraries
@@ -1157,9 +1158,9 @@ psql "host=mydb.abc123.us-east-1.rds.amazonaws.com port=5432 dbname=myapp user=a
 
 ---
 
-## Three main patterns
+### Three main patterns
 
-### Pattern A: Cloud SQL Auth Proxy (sidecar or daemon)
+#### Pattern A: Cloud SQL Auth Proxy (sidecar or daemon)
 
 ```
 App → localhost:5432 → Auth Proxy → Cloud SQL instance
@@ -1190,7 +1191,7 @@ cloud-sql-proxy project:region:my-instance --port 5432
 
 ---
 
-### Pattern B: IAM database authentication
+#### Pattern B: IAM database authentication
 
 Cloud SQL supports **IAM users** as database principals (PostgreSQL and MySQL).
 
@@ -1210,7 +1211,7 @@ GKE pod → Workload Identity → GCP SA → IAM token → Cloud SQL
 
 ---
 
-### Pattern C: Secret Manager + static password
+#### Pattern C: Secret Manager + static password
 
 Same as [05-secret-manager-password.md](05-secret-manager-password.md), using **GCP Secret Manager**:
 
@@ -1222,7 +1223,7 @@ Common when IAM DB auth is not enabled or for legacy apps.
 
 ---
 
-## Architecture comparison
+### Architecture comparison
 
 | Pattern | Short-lived creds | Pooling | Complexity |
 |---------|-------------------|---------|------------|
@@ -1232,7 +1233,7 @@ Common when IAM DB auth is not enabled or for legacy apps.
 
 ---
 
-## How this maps to security layers
+### How this maps to security layers
 
 | Layer | Coverage |
 |-------|----------|
@@ -1244,7 +1245,7 @@ Common when IAM DB auth is not enabled or for legacy apps.
 
 ---
 
-## GCP vs AWS equivalents
+### GCP vs AWS equivalents
 
 | GCP | AWS equivalent |
 |-----|----------------|
@@ -1257,7 +1258,7 @@ See [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) and [06-direct-rds-iam.md
 
 ---
 
-## When to use
+### When to use
 
 **Use Cloud SQL Auth Proxy when:**
 
@@ -1272,7 +1273,7 @@ See [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) and [06-direct-rds-iam.md
 
 - Simplest migration path from dev — see [05-secret-manager-password.md](05-secret-manager-password.md)
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1284,13 +1285,13 @@ See [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) and [06-direct-rds-iam.md
 
 ---
 
-# Azure Database identity
+## Azure Database identity
 
 > Connect to Azure Database for PostgreSQL / MySQL using Managed Identity and Azure AD(Active Directory) — no DB password stored in the application.
 
 > **Related:** Static secrets via Key Vault → [§5 Secret manager + password](05-secret-manager-password.md) · AWS comparison → [§4](04-aws-iam-rds-proxy.md), [§6](06-direct-rds-iam.md) · Decision guide → [§13 Decision guide](13-decision-guide.md)
 
-## What it solves
+### What it solves
 
 - Passwordless or centrally managed authentication for Azure-hosted apps
 - Integration with **Azure App Service**, **AKS**, **Azure Functions**, and VMs
@@ -1299,9 +1300,9 @@ See [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) and [06-direct-rds-iam.md
 
 ---
 
-## Three main patterns
+### Three main patterns
 
-### Pattern A: Azure AD authentication (Microsoft Entra ID)
+#### Pattern A: Azure AD authentication (Microsoft Entra ID)
 
 Azure Database for PostgreSQL (Flexible Server) supports **Azure AD authentication** — the database accepts tokens from Azure AD principals.
 
@@ -1321,7 +1322,7 @@ App Service / AKS pod → Managed Identity → Azure AD token → Azure PostgreS
 
 ---
 
-### Pattern B: Managed Identity + Key Vault (static secret)
+#### Pattern B: Managed Identity + Key Vault (static secret)
 
 ```
 App → Managed Identity → Key Vault → username/password → TLS → Azure Database
@@ -1337,7 +1338,7 @@ Same model as [05-secret-manager-password.md](05-secret-manager-password.md):
 
 ---
 
-### Pattern C: AKS + workload identity
+#### Pattern C: AKS + workload identity
 
 For Kubernetes on Azure (**AKS**):
 
@@ -1350,7 +1351,7 @@ Pod → Workload Identity → Azure AD / Key Vault → Database
 
 ---
 
-## Architecture
+### Architecture
 
 ```
 ┌─────────────────┐     token or secret     ┌──────────────────┐
@@ -1370,7 +1371,7 @@ Private VNet → TLS → Azure AD auth or Key Vault secret → Azure Database
 
 ---
 
-## How this maps to security layers
+### How this maps to security layers
 
 | Layer | Coverage |
 |-------|----------|
@@ -1382,7 +1383,7 @@ Private VNet → TLS → Azure AD auth or Key Vault secret → Azure Database
 
 ---
 
-## Azure vs AWS equivalents
+### Azure vs AWS equivalents
 
 | Azure | AWS equivalent |
 |-------|----------------|
@@ -1395,7 +1396,7 @@ See [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) and [06-direct-rds-iam.md
 
 ---
 
-## When to use
+### When to use
 
 **Use Azure AD authentication when:**
 
@@ -1410,7 +1411,7 @@ See [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) and [06-direct-rds-iam.md
 
 - Multi-cloud secrets and dynamic DB users — see [03-hcv-vault.md](03-hcv-vault.md)
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1422,20 +1423,20 @@ See [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) and [06-direct-rds-iam.md
 
 ---
 
-# PgBouncer + secret (proxy + password)
+## PgBouncer + secret (proxy + password)
 
 > Connection pooling in front of the database using **PgBouncer** (or similar), with credentials from a secret manager — no IAM(Identity and Access Management) or Vault required.
 
 > **Related:** Secret source → [§5 Secret manager + password](05-secret-manager-password.md) · AWS managed proxy → [§4 RDS Proxy](04-aws-iam-rds-proxy.md) · Pool modes and sizing → [postgresql-performance §7](../postgresql-performance/includes/07-connection-management.md)
 
-## What it solves
+### What it solves
 
 - **Connection pooling** — many app instances share a small pool of real DB connections
 - Prevents exhausting `max_connections` on Postgres under load (especially serverless/Lambda-style bursts)
 - Credentials still come from a secret manager, not from code — see [05-secret-manager-password.md](05-secret-manager-password.md)
 - Works on **any** cloud and **self-hosted** Postgres
 
-## What it does not solve
+### What it does not solve
 
 - Password is still **long-lived** (unless rotated via secret manager)
 - PgBouncer is **another component** to deploy, monitor, and patch
@@ -1443,7 +1444,7 @@ See [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) and [06-direct-rds-iam.md
 
 ---
 
-## Architecture
+### Architecture
 
 ```
 App 1 ──┐
@@ -1465,7 +1466,7 @@ Private subnet → TLS → PgBouncer → Postgres
 
 ---
 
-## PgBouncer auth modes
+### PgBouncer auth modes
 
 | Mode | How it works |
 |------|--------------|
@@ -1481,7 +1482,7 @@ Private subnet → TLS → PgBouncer → Postgres
 
 ---
 
-## Setup steps
+### Setup steps
 
 1. **Postgres** in private subnet; TLS(Transport Layer Security); dedicated app users with least privilege.
 2. **Store credentials** in secret manager — [05-secret-manager-password.md](05-secret-manager-password.md).
@@ -1511,7 +1512,7 @@ postgresql://app_user:SECRET@pgbouncer.internal:6432/myapp?sslmode=require
 
 ---
 
-## When to combine with other approaches
+### When to combine with other approaches
 
 | Combination | Purpose |
 |-------------|---------|
@@ -1523,7 +1524,7 @@ For AWS IAM tokens, **RDS Proxy** is usually preferred over PgBouncer + IAM.
 
 ---
 
-## How this maps to security layers
+### How this maps to security layers
 
 | Layer | Coverage |
 |-------|----------|
@@ -1535,7 +1536,7 @@ For AWS IAM tokens, **RDS Proxy** is usually preferred over PgBouncer + IAM.
 
 ---
 
-## Comparison
+### Comparison
 
 | | PgBouncer + secret | RDS Proxy | Direct to DB |
 |--|-------------------|-----------|--------------|
@@ -1546,7 +1547,7 @@ For AWS IAM tokens, **RDS Proxy** is usually preferred over PgBouncer + IAM.
 
 ---
 
-## When to use
+### When to use
 
 **Use when:**
 
@@ -1558,7 +1559,7 @@ For AWS IAM tokens, **RDS Proxy** is usually preferred over PgBouncer + IAM.
 
 - On AWS and want managed pooling + IAM — [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md)
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1570,20 +1571,20 @@ For AWS IAM tokens, **RDS Proxy** is usually preferred over PgBouncer + IAM.
 
 ---
 
-# mTLS (client certificate auth)
+## mTLS (client certificate auth)
 
 > The database verifies a **client TLS(Transport Layer Security) certificate** instead of (or in addition to) a password — strong binding between identity and connection.
 
 > **Related:** TLS baseline → [§2 Production security](02-prod-db-security.md) · Cert lifecycle in Vault → [§3 HashiCorp Vault](03-hcv-vault.md) · Simpler baseline → [§5 Secret manager](05-secret-manager-password.md)
 
-## What it solves
+### What it solves
 
 - No password in the application — the **certificate private key** is the credential
 - **Mutual TLS (mTLS)** — both client and server present certs; prevents MITM and stolen-password reuse from wrong hosts
 - Useful in zero-trust networks and service-mesh environments
 - Works with self-hosted Postgres and cloud DBs that support client cert auth
 
-## What it does not solve
+### What it does not solve
 
 - **Certificate lifecycle** — issue, rotate, revoke, and store private keys securely
 - Operational complexity higher than secret manager + password
@@ -1591,7 +1592,7 @@ For AWS IAM tokens, **RDS Proxy** is usually preferred over PgBouncer + IAM.
 
 ---
 
-## Architecture
+### Architecture
 
 ```
 App                          PostgreSQL
@@ -1614,13 +1615,13 @@ Private subnet → mTLS (client + server certs) → Postgres
 
 ---
 
-## PostgreSQL setup
+### PostgreSQL setup
 
-### 1. Server TLS
+#### 1. Server TLS
 
 Configure Postgres with server certificate (`ssl = on`, `ssl_cert_file`, `ssl_key_file`).
 
-### 2. pg_hba.conf — cert auth
+#### 2. pg_hba.conf — cert auth
 
 ```
 hostssl  all  app_user  10.0.0.0/8  cert
@@ -1628,12 +1629,12 @@ hostssl  all  app_user  10.0.0.0/8  cert
 
 Or `cert` with `map=` to map certificate CN to database user.
 
-### 3. Client certificate
+#### 3. Client certificate
 
 Issue a client cert (CN or SAN maps to DB role):
 
 ```bash
-# Connect with client cert — no password
+## Connect with client cert — no password
 psql "host=db.internal port=5432 dbname=myapp user=app_user \
   sslmode=verify-full \
   sslcert=/path/to/client.crt \
@@ -1641,7 +1642,7 @@ psql "host=db.internal port=5432 dbname=myapp user=app_user \
   sslrootcert=/path/to/ca.crt"
 ```
 
-### 4. Store private key securely
+#### 4. Store private key securely
 
 - K8s Secret (encrypted at rest)
 - Vault PKI / cert manager (cert-manager, AWS ACM PCA)
@@ -1649,7 +1650,7 @@ psql "host=db.internal port=5432 dbname=myapp user=app_user \
 
 ---
 
-## Certificate management options
+### Certificate management options
 
 | Tool | Role |
 |------|------|
@@ -1662,7 +1663,7 @@ Short-lived client certs (hours/days) reduce impact of key compromise — simila
 
 ---
 
-## mTLS vs password vs IAM
+### mTLS vs password vs IAM
 
 | | mTLS | Password + secret manager | IAM auth |
 |--|------|---------------------------|----------|
@@ -1673,7 +1674,7 @@ Short-lived client certs (hours/days) reduce impact of key compromise — simila
 
 ---
 
-## How this maps to security layers
+### How this maps to security layers
 
 | Layer | Coverage |
 |-------|----------|
@@ -1684,7 +1685,7 @@ Short-lived client certs (hours/days) reduce impact of key compromise — simila
 
 ---
 
-## When to use
+### When to use
 
 **Use mTLS when:**
 
@@ -1698,7 +1699,7 @@ Short-lived client certs (hours/days) reduce impact of key compromise — simila
 - Managed DB does not support client cert auth well
 - [05-secret-manager-password.md](05-secret-manager-password.md) or [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) meets requirements with less ops burden
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1710,20 +1711,20 @@ Short-lived client certs (hours/days) reduce impact of key compromise — simila
 
 ---
 
-# PaaS / platform-managed database
+## PaaS / platform-managed database
 
 > The platform (Supabase, Neon, Railway, Heroku, PlanetScale, etc.) hosts the database and gives you a **connection string** — credentials managed in the provider dashboard or CI, not in application source code.
 
 > **Related:** Production hardening path → [§5 Secret manager](05-secret-manager-password.md) · When to leave PaaS → [§13 Decision guide](13-decision-guide.md) · Security layers gap → [§2 Production security](02-prod-db-security.md)
 
-## What it solves
+### What it solves
 
 - Fastest path from dev to production — no RDS/Vault/proxy setup
 - Provider handles backups, patches, scaling, and often TLS(Transport Layer Security)
 - Connection strings rotatable from the provider UI or API(Application Programming Interface)
 - Good for MVPs, side projects, and small teams
 
-## What it does not solve
+### What it does not solve
 
 - Less control over network isolation (often public endpoint + IP allowlist or SSL only)
 - Shared connection string per environment is common — not per-service IAM(Identity and Access Management)
@@ -1732,7 +1733,7 @@ Short-lived client certs (hours/days) reduce impact of key compromise — simila
 
 ---
 
-## Architecture
+### Architecture
 
 ```
 App (Vercel / Railway / Fly / local)
@@ -1753,7 +1754,7 @@ Platform dashboard → copy DATABASE_URL → set in deployment env → app conne
 
 ---
 
-## Common providers
+### Common providers
 
 | Provider | Notes |
 |----------|-------|
@@ -1766,7 +1767,7 @@ Platform dashboard → copy DATABASE_URL → set in deployment env → app conne
 
 ---
 
-## Security practices (still required)
+### Security practices (still required)
 
 Even with PaaS, follow production basics from [02-prod-db-security.md](02-prod-db-security.md):
 
@@ -1779,10 +1780,10 @@ Even with PaaS, follow production basics from [02-prod-db-security.md](02-prod-d
 
 ---
 
-## Example
+### Example
 
 ```bash
-# Set in platform secrets (not .env committed to git)
+## Set in platform secrets (not .env committed to git)
 export DATABASE_URL="postgresql://user:pass@ep-xxx.region.provider.co:5432/dbname?sslmode=require"
 ```
 
@@ -1793,7 +1794,7 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 ---
 
-## PaaS vs self-managed production
+### PaaS vs self-managed production
 
 | | PaaS connection string | Self-managed + secret manager |
 |--|------------------------|-------------------------------|
@@ -1805,7 +1806,7 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 ---
 
-## How this maps to security layers
+### How this maps to security layers
 
 | Layer | PaaS typical coverage |
 |-------|------------------------|
@@ -1818,7 +1819,7 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 ---
 
-## When to use
+### When to use
 
 **Use PaaS when:**
 
@@ -1832,7 +1833,7 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 - Connection pooling and identity per service matter at scale
 - Start with [05-secret-manager-password.md](05-secret-manager-password.md), then [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) or [03-hcv-vault.md](03-hcv-vault.md)
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1844,7 +1845,7 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 ---
 
-# Credential Rotation and Disaster Recovery
+## Credential Rotation and Disaster Recovery
 
 Production database security does not end at **first connection** — credentials rotate, backups fail silently, and restores are untested until you need them.
 
@@ -1852,7 +1853,7 @@ Production database security does not end at **first connection** — credential
 
 ---
 
-## At a glance
+### At a glance
 
 | Practice | Frequency | Owner |
 |----------|-----------|-------|
@@ -1865,7 +1866,7 @@ Production database security does not end at **first connection** — credential
 
 ---
 
-## Credential rotation runbook
+### Credential rotation runbook
 
 ```mermaid
 flowchart TD
@@ -1888,7 +1889,7 @@ Coordinate with [deployment-strategies](../deployment-strategies/README.md) — 
 
 ---
 
-## Rotation by pattern
+### Rotation by pattern
 
 | Pattern | Rotation approach |
 |---------|-------------------|
@@ -1900,7 +1901,7 @@ Coordinate with [deployment-strategies](../deployment-strategies/README.md) — 
 
 ---
 
-## Backup and PITR fundamentals
+### Backup and PITR fundamentals
 
 | Term | Meaning |
 |------|---------|
@@ -1914,7 +1915,7 @@ Typical managed PostgreSQL (RDS, Cloud SQL(Structured Query Language), Azure): e
 
 ---
 
-## DR drill flow
+### DR drill flow
 
 ```mermaid
 flowchart LR
@@ -1935,7 +1936,7 @@ Record **actual RTO** from drill — update on-call runbook.
 
 ---
 
-## What to backup beyond the database
+### What to backup beyond the database
 
 | Asset | Why |
 |-------|-----|
@@ -1946,7 +1947,7 @@ Record **actual RTO** from drill — update on-call runbook.
 
 ---
 
-## Checklist
+### Checklist
 
 - [ ] Automated daily backups enabled with retention ≥ compliance requirement
 - [ ] PITR window documented (e.g. 7–35 days)
@@ -1958,7 +1959,7 @@ Record **actual RTO** from drill — update on-call runbook.
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1970,9 +1971,9 @@ Record **actual RTO** from drill — update on-call runbook.
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Regular rotation + tested restore
+#### Regular rotation + tested restore
 
 **Pros:** Limits blast radius of leaked creds; proven RTO/RPO; audit-friendly.
 
@@ -1980,7 +1981,7 @@ Record **actual RTO** from drill — update on-call runbook.
 
 ---
 
-# Decision Guide — Connection Patterns
+## Decision Guide — Connection Patterns
 
 Eleven connection patterns exist in this guide. Use this flow to pick a starting point, then read the linked section for implementation detail.
 
@@ -1988,7 +1989,7 @@ Eleven connection patterns exist in this guide. Use this flow to pick a starting
 
 ---
 
-## Master decision flow
+### Master decision flow
 
 ```mermaid
 flowchart TD
@@ -2014,7 +2015,7 @@ flowchart TD
 
 ---
 
-## Quick pick table
+### Quick pick table
 
 | Situation | Section | Pattern |
 |-----------|---------|---------|
@@ -2029,7 +2030,7 @@ flowchart TD
 
 ---
 
-## Security layers (every pattern)
+### Security layers (every pattern)
 
 | # | Layer | All patterns must |
 |---|-------|-------------------|
@@ -2043,7 +2044,7 @@ Full table → [02-prod-db-security.md](02-prod-db-security.md).
 
 ---
 
-## Migration path (typical)
+### Migration path (typical)
 
 | Stage | Pattern |
 |-------|---------|
@@ -2054,7 +2055,7 @@ Full table → [02-prod-db-security.md](02-prod-db-security.md).
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -2065,7 +2066,7 @@ Full table → [02-prod-db-security.md](02-prod-db-security.md).
 
 ---
 
-## See also
+### See also
 
 - [deployment-strategies §12](../deployment-strategies/includes/12-schema-migrations-and-deploy.md) — deploy during credential rotation
 - [api-design §12 identity](../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) — map service identity to DB role

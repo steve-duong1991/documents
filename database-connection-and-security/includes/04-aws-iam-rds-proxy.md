@@ -1,4 +1,4 @@
-# AWS IAM(Identity and Access Management) auth + RDS Proxy
+# AWS IAM auth + RDS Proxy
 
 > AWS-native path for the same goals as Vault — no DB password in code, short-lived credentials, least privilege — without running HashiCorp Vault.
 

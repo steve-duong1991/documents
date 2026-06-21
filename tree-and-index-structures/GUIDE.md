@@ -1,10 +1,11 @@
 # Trees and Index Structures Guide (Full)
 
 > Combined view of all sections. Modular sources live in `includes/`.
+> On GitHub, use the guide **README** table of contents for direct section links.
 
 ---
 
-# Overview — Trees and Index Structures
+## Overview — Trees and Index Structures
 
 Trees organize data hierarchically. The right structure depends on **access pattern**, **memory hierarchy**, **mutation rate**, and **query types** — not on which name sounds most impressive.
 
@@ -12,7 +13,7 @@ Trees organize data hierarchically. The right structure depends on **access patt
 > - PostgreSQL index types (B-tree, GIN(Generalized Inverted Index), GiST, BRIN(Block-Range Index)) → [postgresql-performance/includes/02-indexing.md](../postgresql-performance/includes/02-indexing.md)
 > - Amplification, complexity, glossary → [06-amplification-and-related-topics.md](06-amplification-and-related-topics.md)
 
-## Tree families at a glance
+### Tree families at a glance
 
 | Tree family | Core idea | Sweet spot |
 |-------------|-----------|------------|
@@ -24,7 +25,7 @@ Trees organize data hierarchically. The right structure depends on **access patt
 | **Segment / Fenwick** | Range aggregates | Range sum/min on arrays |
 | **R-Tree / KD-Tree** | Spatial partitioning | Maps, nearest neighbor |
 
-## Two big storage-engine camps
+### Two big storage-engine camps
 
 Most production storage falls into one of two designs:
 
@@ -35,7 +36,7 @@ Most production storage falls into one of two designs:
 | **Range scans** | Excellent (linked leaves) | Good with leveled compaction; weaker at L0 |
 | **Typical home** | PostgreSQL, InnoDB, SQLite | RocksDB, Cassandra, Scylla, HBase |
 
-## Default recommendations
+### Default recommendations
 
 | Need | Start here |
 |------|------------|
@@ -50,7 +51,7 @@ Most production storage falls into one of two designs:
 | Verify content without full download | **Merkle tree** |
 | Write-heavy logs, metrics, KV at scale | **LSM Tree** |
 
-## Document map
+### Document map
 
 | # | Topic | File |
 |---|-------|------|
@@ -61,7 +62,7 @@ Most production storage falls into one of two designs:
 | 5 | Decision guides and cheat sheets | [05-decision-guides.md](05-decision-guides.md) |
 | 6 | Amplification, complexity, related topics | [06-amplification-and-related-topics.md](06-amplification-and-related-topics.md) |
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -73,7 +74,7 @@ Most production storage falls into one of two designs:
 
 ---
 
-# B-Trees and B+ Trees
+## B-Trees and B+ Trees
 
 B-Trees (and especially **B+ Trees**) are the default index structure for on-disk and page-oriented storage. They optimize for **minimal I/O** and **ordered range access**.
 
@@ -83,13 +84,13 @@ B-Trees (and especially **B+ Trees**) are the default index structure for on-dis
 
 ---
 
-## B-Tree
+### B-Tree
 
 - Each node holds **keys + child pointers** (and often values in leaf/internal nodes).
 - All leaves at the same depth; nodes are **wide** (hundreds/thousands of keys) to match **page size** (4–16 KB).
 - Minimum fill ~50% after splits; height stays **O(log n)** with a **large branching factor**.
 
-## B+ Tree (what most databases use)
+### B+ Tree (what most databases use)
 
 - **Keys only in internal nodes**; **all data in leaves**.
 - Leaves linked in a **doubly linked list** → efficient range scans.
@@ -114,7 +115,7 @@ flowchart TB
 
 ---
 
-## Pros
+### Pros
 
 | Advantage | Why it matters |
 |-----------|----------------|
@@ -123,7 +124,7 @@ flowchart TB
 | **Range scans (B+)** | Walk leaf chain instead of re-descending the tree |
 | **Cache-friendly** | Node size aligned with page/block size |
 
-## Cons
+### Cons
 
 | Disadvantage | Why it matters |
 |--------------|----------------|
@@ -134,7 +135,7 @@ flowchart TB
 
 ---
 
-## When to use
+### When to use
 
 - **On-disk or page-oriented storage**: PostgreSQL, MySQL InnoDB, SQLite, MongoDB indexes.
 - **Ordered data + range queries**: `WHERE id BETWEEN ...`, `ORDER BY`, pagination.
@@ -142,7 +143,7 @@ flowchart TB
 
 ---
 
-## B+ Tree vs hash index
+### B+ Tree vs hash index
 
 | | B+ Tree | Hash |
 |--|---------|------|
@@ -155,7 +156,7 @@ flowchart TB
 
 ---
 
-## Why B+ trees dominate databases
+### Why B+ trees dominate databases
 
 Disks and SSDs read in **blocks/pages**, not single keys. A B+ tree with fanout 500 and height 3 can index **~125 million keys** with at most **3 random I/Os** per lookup. A binary tree would need ~27 levels for the same count — unusable on disk. Linking leaves makes **range scans** (reports, indexes on `(timestamp, id)`) cheap.
 
@@ -163,7 +164,7 @@ Disks and SSDs read in **blocks/pages**, not single keys. A B+ tree with fanout 
 
 ---
 
-## Clustered vs secondary index
+### Clustered vs secondary index
 
 In engines like **InnoDB**, the **clustered index** leaf stores the full row; **secondary indexes** store index keys plus a pointer to the clustered key — often **two tree lookups** per read.
 
@@ -171,7 +172,7 @@ In engines like **InnoDB**, the **clustered index** leaf stores the full row; **
 - Prefer **covering indexes** when a secondary index serves hot read queries.
 - Avoid many wide secondary indexes on write-heavy tables.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -185,7 +186,7 @@ Full detail → [06-amplification-and-related-topics.md](06-amplification-and-re
 
 ---
 
-# In-Memory Balanced Trees
+## In-Memory Balanced Trees
 
 When data lives entirely in RAM and you need ordered maps or sets, binary tree variants — not B-Trees — are the usual choice. They optimize for **CPU cache** and **pointer navigation**, not disk pages.
 
@@ -193,7 +194,7 @@ When data lives entirely in RAM and you need ordered maps or sets, binary tree v
 
 ---
 
-## Binary Search Tree (BST)
+### Binary Search Tree (BST)
 
 | | |
 |--|--|
@@ -203,7 +204,7 @@ When data lives entirely in RAM and you need ordered maps or sets, binary tree v
 
 ---
 
-## AVL Tree
+### AVL Tree
 
 | | |
 |--|--|
@@ -213,7 +214,7 @@ When data lives entirely in RAM and you need ordered maps or sets, binary tree v
 
 ---
 
-## Red-Black Tree
+### Red-Black Tree
 
 | | |
 |--|--|
@@ -223,7 +224,7 @@ When data lives entirely in RAM and you need ordered maps or sets, binary tree v
 
 ---
 
-## Splay Tree
+### Splay Tree
 
 | | |
 |--|--|
@@ -233,7 +234,7 @@ When data lives entirely in RAM and you need ordered maps or sets, binary tree v
 
 ---
 
-## Skip List
+### Skip List
 
 | | |
 |--|--|
@@ -245,7 +246,7 @@ See complexity table → [06-amplification-and-related-topics.md](06-amplificati
 
 ---
 
-## B+ Tree vs in-memory balanced BST
+### B+ Tree vs in-memory balanced BST
 
 | Aspect | B-Tree / B+ | Red-Black / AVL |
 |--------|-------------|-----------------|
@@ -258,7 +259,7 @@ See complexity table → [06-amplification-and-related-topics.md](06-amplificati
 
 **Rule of thumb:** Everything in RAM and you need `map`/`set` → **Red-Black or AVL**.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -270,7 +271,7 @@ See complexity table → [06-amplification-and-related-topics.md](06-amplificati
 
 ---
 
-# Specialized Trees
+## Specialized Trees
 
 Not every problem is “sorted key lookup.” These structures optimize for prefixes, priorities, ranges, space, or integrity proofs.
 
@@ -278,7 +279,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ---
 
-## Trie (Prefix Tree)
+### Trie (Prefix Tree)
 
 | | |
 |--|--|
@@ -288,7 +289,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ---
 
-## Radix Tree / Patricia Trie
+### Radix Tree / Patricia Trie
 
 | | |
 |--|--|
@@ -298,7 +299,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ---
 
-## Heap (Binary / Binomial / Fibonacci)
+### Heap (Binary / Binomial / Fibonacci)
 
 | | |
 |--|--|
@@ -308,7 +309,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ---
 
-## Segment Tree / Fenwick Tree (BIT)
+### Segment Tree / Fenwick Tree (BIT)
 
 | | |
 |--|--|
@@ -318,7 +319,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ---
 
-## R-Tree (and variants)
+### R-Tree (and variants)
 
 | | |
 |--|--|
@@ -328,7 +329,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ---
 
-## KD-Tree / Ball Tree
+### KD-Tree / Ball Tree
 
 | | |
 |--|--|
@@ -338,7 +339,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ---
 
-## Merkle Tree
+### Merkle Tree
 
 | | |
 |--|--|
@@ -348,7 +349,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ---
 
-## Quick reference
+### Quick reference
 
 | Operation dominates | Structure |
 |---------------------|-----------|
@@ -358,7 +359,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 | Integrity proofs | Merkle tree |
 | String prefix / longest match | Trie / Radix |
 
-## Production signals (when to pick this)
+### Production signals (when to pick this)
 
 | Structure | Typical production use | Usually not in your DB layer |
 |-----------|------------------------|------------------------------|
@@ -371,7 +372,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 **Rule of thumb:** Default to **B+ (PostgreSQL)** or **LSM (Cassandra, RocksDB)** for persistence. Specialized trees appear in **libraries, gateways, or search/ML services** — see [§5 Decision guides](05-decision-guides.md).
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -383,7 +384,7 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ---
 
-# LSM(Log-Structured Merge) Trees (Log-Structured Merge Trees)
+## LSM Trees
 
 LSM trees are the main alternative to **B+ trees** for **write-heavy, append-friendly** storage. They trade **write amplification and read complexity** for **fast sequential writes** and high **ingest throughput**.
 
@@ -393,7 +394,7 @@ LSM trees are the main alternative to **B+ trees** for **write-heavy, append-fri
 
 ---
 
-## What an LSM tree is
+### What an LSM tree is
 
 An LSM tree is not one tree in memory — it is a **tiered system**:
 
@@ -402,7 +403,7 @@ An LSM tree is not one tree in memory — it is a **tiered system**:
 3. **Immutable SSTables** — sorted **S**orted **S**tring **Table** files on disk, organized in **levels**
 4. **Compaction** — background merge of SSTables to limit file count and reclaim space
 
-### Write path
+#### Write path
 
 ```mermaid
 flowchart LR
@@ -413,13 +414,13 @@ flowchart LR
     C --> L1[L1 ... Ln SSTables]
 ```
 
-### Read path
+#### Read path
 
 Check memtable → older memtables → L0 SSTables → deeper levels. **Bloom filters** and **sparse indexes** skip files that cannot contain the key.
 
 ---
 
-## Core components
+### Core components
 
 | Component | Role |
 |-----------|------|
@@ -431,7 +432,7 @@ Check memtable → older memtables → L0 SSTables → deeper levels. **Bloom fi
 
 ---
 
-## Updates and deletes
+### Updates and deletes
 
 LSM stores are **append-only**:
 
@@ -442,7 +443,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 
 ---
 
-## Compaction strategies
+### Compaction strategies
 
 | Strategy | Idea | Tradeoff |
 |----------|------|----------|
@@ -452,7 +453,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 
 ---
 
-## Pros
+### Pros
 
 | Advantage | Why |
 |-----------|-----|
@@ -462,7 +463,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 | **Natural versioning** | Same key, multiple versions (MVCC(Multi-Version Concurrency Control)-style stores) |
 | **Horizontal scale** | Immutable SSTables replicate and ship cleanly |
 
-## Cons
+### Cons
 
 | Disadvantage | Why |
 |--------------|-----|
@@ -476,7 +477,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 
 ---
 
-## LSM vs B+ Tree
+### LSM vs B+ Tree
 
 | Dimension | B+ Tree (InnoDB, Postgres) | LSM Tree (RocksDB, Cassandra) |
 |-----------|----------------------------|--------------------------------|
@@ -491,7 +492,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 
 ---
 
-## When to use LSM
+### When to use LSM
 
 **Good fits:**
 
@@ -510,7 +511,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 
 ---
 
-## Where you see LSM in the wild
+### Where you see LSM in the wild
 
 | System | Role |
 |--------|------|
@@ -525,7 +526,7 @@ B+ tree systems: **PostgreSQL**, **MySQL InnoDB**, **SQLite**, most traditional 
 
 ---
 
-## Mental model: B+ vs LSM
+### Mental model: B+ vs LSM
 
 ```mermaid
 flowchart LR
@@ -544,7 +545,7 @@ flowchart LR
 
 ---
 
-## Tuning levers
+### Tuning levers
 
 - Memtable size and count
 - Compaction strategy (leveled vs size-tiered)
@@ -553,7 +554,7 @@ flowchart LR
 - Time partitioning for TTL (drop whole SSTables)
 - Rate limits on compaction to avoid latency spikes
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -565,7 +566,7 @@ flowchart LR
 
 ---
 
-# Decision Guides and Cheat Sheets
+## Decision Guides and Cheat Sheets
 
 Practical flows for choosing tree and index structures by workload.
 
@@ -573,7 +574,7 @@ Practical flows for choosing tree and index structures by workload.
 
 ---
 
-## Scenario cheat sheet
+### Scenario cheat sheet
 
 | Scenario | Recommended structure |
 |----------|----------------------|
@@ -592,7 +593,7 @@ Practical flows for choosing tree and index structures by workload.
 
 ---
 
-## Flow 1 — Storage layer (disk / database index)
+### Flow 1 — Storage layer (disk / database index)
 
 ```mermaid
 flowchart TD
@@ -610,7 +611,7 @@ flowchart TD
 
 ---
 
-## Flow 2 — In-memory ordered map
+### Flow 2 — In-memory ordered map
 
 ```mermaid
 flowchart TD
@@ -627,7 +628,7 @@ flowchart TD
 
 ---
 
-## Flow 3 — Query type (specialized structures)
+### Flow 3 — Query type (specialized structures)
 
 ```mermaid
 flowchart TD
@@ -644,7 +645,7 @@ flowchart TD
 
 ---
 
-## Flow 4 — LSM vs B+ Tree (storage engine)
+### Flow 4 — LSM vs B+ Tree (storage engine)
 
 ```mermaid
 flowchart TD
@@ -665,7 +666,7 @@ flowchart TD
 
 ---
 
-## Master comparison — storage indexes
+### Master comparison — storage indexes
 
 | Dimension | B+ Tree | LSM Tree | Hash |
 |-----------|---------|----------|------|
@@ -678,7 +679,7 @@ flowchart TD
 
 ---
 
-## Rule-of-thumb summary
+### Rule-of-thumb summary
 
 1. **One node ≈ one I/O unit** → B+ Tree
 2. **Everything in RAM, need ordered map** → Red-Black or AVL
@@ -688,7 +689,7 @@ flowchart TD
 6. **Spatial bounding boxes** → R-Tree
 7. **Min/max or scheduling** → Heap
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -700,14 +701,14 @@ flowchart TD
 
 ---
 
-## See also
+### See also
 
 - Common mistakes and when NOT to use → [06-amplification-and-related-topics.md](06-amplification-and-related-topics.md)
 - PostgreSQL-specific index types → [postgresql-performance/includes/02-indexing.md](../postgresql-performance/includes/02-indexing.md)
 
 ---
 
-# Amplification, Complexity, and Related Topics
+## Amplification, Complexity, and Related Topics
 
 Storage-engine metrics, clustered indexes, complexity reference, common mistakes, and links to deeper guides elsewhere in this repo.
 
@@ -720,7 +721,7 @@ Storage-engine metrics, clustered indexes, complexity reference, common mistakes
 
 ---
 
-## Amplification framework (B+ vs LSM)
+### Amplification framework (B+ vs LSM)
 
 Storage engineers compare engines with three metrics. Lower is better for each — but you rarely get all three low at once.
 
@@ -736,7 +737,7 @@ See also → [04-lsm-trees.md](04-lsm-trees.md) (LSM pros/cons), [01-b-trees-and
 
 ---
 
-## Clustered vs secondary index (B+ tree engines)
+### Clustered vs secondary index (B+ tree engines)
 
 In **InnoDB**, **SQL(Structured Query Language) Server clustered index**, and similar engines:
 
@@ -753,7 +754,7 @@ In **InnoDB**, **SQL(Structured Query Language) Server clustered index**, and si
 
 ---
 
-## Complexity cheat sheet
+### Complexity cheat sheet
 
 | Structure | Search | Insert | Delete | Range scan |
 |-----------|--------|--------|--------|------------|
@@ -768,7 +769,7 @@ In **InnoDB**, **SQL(Structured Query Language) Server clustered index**, and si
 
 ---
 
-## When NOT to use
+### When NOT to use
 
 | Structure | Skip when |
 |-----------|-----------|
@@ -782,7 +783,7 @@ In **InnoDB**, **SQL(Structured Query Language) Server clustered index**, and si
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Why it fails | Do instead |
 |--------------|--------------|------------|
@@ -798,7 +799,7 @@ In **InnoDB**, **SQL(Structured Query Language) Server clustered index**, and si
 
 ---
 
-## PostgreSQL index type map (tree-adjacent)
+### PostgreSQL index type map (tree-adjacent)
 
 PostgreSQL uses several index access methods. Not all are B-trees:
 
@@ -814,7 +815,7 @@ Full detail → [postgresql-performance/includes/02-indexing.md](../postgresql-p
 
 ---
 
-## Priority checklist
+### Priority checklist
 
 If you only remember five things:
 
@@ -826,7 +827,7 @@ If you only remember five things:
 
 ---
 
-## Glossary
+### Glossary
 
 | Term | Meaning |
 |------|---------|
@@ -842,7 +843,7 @@ If you only remember five things:
 
 ---
 
-## Master decision overview
+### Master decision overview
 
 ```mermaid
 flowchart TD

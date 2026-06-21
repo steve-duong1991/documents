@@ -80,7 +80,7 @@ Strong writes often require waiting for:
 | Sync multi-AZ | +5–20 ms |
 | Cross-region sync | +50–200+ ms |
 
-### Availability (CAP(Consistency, Availability, Partition Tolerance))
+### Availability (CAP)
 
 Under network partition, a strongly consistent system often **refuses** reads or writes rather than serve stale data.
 

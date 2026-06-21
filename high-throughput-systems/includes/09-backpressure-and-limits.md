@@ -41,7 +41,7 @@ Full layer comparison → [api-rate-limiting/includes/07-deployment-layers.md](.
 
 ---
 
-## HTTP(Hypertext Transfer Protocol) 429 and Retry-After
+## HTTP 429 and Retry-After
 
 When limiting, return proper semantics so clients backoff:
 

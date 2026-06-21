@@ -1,4 +1,4 @@
-# Overview — API(Application Programming Interface) Design, Protection & Full Flow
+# Overview — API Design, Protection & Full Flow
 
 This guide covers how to **design** public and internal APIs, **protect** them in production, and wire the pieces together: gateway, auth, rate limits, threat modeling, and OpenAPI/Swagger.
 

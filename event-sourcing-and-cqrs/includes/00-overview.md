@@ -1,4 +1,4 @@
-# Overview — Event Sourcing & CQRS(Command Query Responsibility Segregation)
+# Overview — Event Sourcing & CQRS
 
 **Event Sourcing** persists state as an **append-only sequence of domain events** instead of updating rows in place. **CQRS** (Command Query Responsibility Segregation) splits **writes** (commands → event store) from **reads** (queries → optimized projections). The two patterns are often used together but are independent.
 

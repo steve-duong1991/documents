@@ -1,4 +1,4 @@
-# Load Balancer, API(Application Programming Interface) Gateway & Entry Architecture
+# Load Balancer, API Gateway & Entry Architecture
 
 How traffic enters your API stack: what load balancers and API gateways each do, how they work together, and which products to pick by scenario.
 

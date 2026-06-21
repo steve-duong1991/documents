@@ -1,4 +1,4 @@
-# API(Application Programming Interface) Design Implications
+# API Design Implications
 
 How Event Sourcing and CQRS(Command Query Responsibility Segregation) shape HTTP(Hypertext Transfer Protocol) APIs: command vs query routes, status codes, idempotency, and gateway routing.
 

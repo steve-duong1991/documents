@@ -1,4 +1,4 @@
-# Batch and ETL(Extract, Transform, Load)
+# Batch and ETL
 
 Bulk ingest and backfills belong **off the API(Application Programming Interface) hot path** — use staging tables, `COPY`, chunked commits, and idempotent merges for throughput without locking production traffic.
 

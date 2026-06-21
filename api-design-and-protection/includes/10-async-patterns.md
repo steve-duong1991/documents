@@ -1,4 +1,4 @@
-# Async Patterns in API(Application Programming Interface) Design
+# Async Patterns in API Design
 
 How to design APIs for work that outlasts connection timeouts: job resources, polling, webhooks, streaming, and how each layer (gateway, queue, workers) participates.
 
@@ -295,7 +295,7 @@ sequenceDiagram
 
 ---
 
-## Pattern 4 — Server-Sent Events (SSE(Server-Sent Events))
+## Pattern 4 — Server-Sent Events (SSE)
 
 **One-way server → client stream** over HTTP. Good for progress logs, live feeds, LLM token streaming.
 

@@ -93,7 +93,7 @@ flowchart TB
 | **Mitigation** | Redis Cluster with persistence; conservative local cap during failover; monitor `429` spike |
 | **Prevention** | Document fail-open policy; run failover game day |
 
-### OAuth(Open Authorization) token refresh burst
+### OAuth token refresh burst
 
 | Symptom | `/oauth/token` hammers rate limit; legitimate apps get `429` |
 |---------|----------------------------------------------------------------|

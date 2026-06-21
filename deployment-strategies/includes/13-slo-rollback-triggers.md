@@ -1,4 +1,4 @@
-# SLO(Service Level Objective)-Based Rollback Triggers
+# SLO-Based Rollback Triggers
 
 Automated rollback beats human judgment under incident pressure — but only when triggers are **defined before deploy**, tied to **version/build ID**, and tested in staging.
 

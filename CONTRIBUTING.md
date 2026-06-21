@@ -18,12 +18,23 @@ documents/
 ├── CONTRIBUTING.md     ← this file
 └── scripts/
     ├── build-guide.py
+    ├── expand-acronyms.py
+    ├── github-format.py
     ├── validate-doc-links.py
     ├── validate-doc-readme.py
     └── validate-doc-prose.py
 ```
 
 Start from `README.md` for browsing. Use `GUIDE.md` for single-file reading or export.
+
+### GitHub navigation
+
+Readers on GitHub should use **guide README tables** — each topic links directly to `includes/NN-topic.md`. Skim summaries on the README are optional; the include file is the full section.
+
+- **README TOC:** one column, topic → include path (run `python3 scripts/github-format.py` after bulk TOC edits).
+- **GUIDE.md:** `build-guide.py` demotes section headings one level so the combined doc has a sane outline.
+- **Headings:** no acronym expansions in `#` titles — body text keeps first-use `ACRONYM(Full Text)`.
+- **GLOSSARY:** `See also` column uses markdown links to guides or sections.
 
 ---
 
@@ -102,7 +113,7 @@ make build-all
 make build GUIDE=postgresql-performance
 ```
 
-`build-guide.py` concatenates includes in sorted order, rewrites `../../` cross-links to `../` for the guide root, and appends the `## See also` block from `README.md`.
+`build-guide.py` concatenates includes in sorted order, rewrites `../../` cross-links to `../` for the guide root, demotes section headings one level, and appends the `## See also` block from `README.md`.
 
 ---
 
@@ -139,7 +150,9 @@ cd documents && mkdocs serve -f mkdocs.yml
 ### Acronym expansions
 
 - On **first use per file**, expand registered acronyms inline: `ACRONYM(Full Text)` — no space before `(` (e.g. `CDC(Change Data Capture)`).
+- **Headings** stay short — no `(Full Text)` in `#` titles; acronyms in headings are marked seen without expansion.
 - Registry: [acronyms.json](acronyms.json). Refresh expansions after adding terms: `python3 scripts/expand-acronyms.py`.
+- After bulk edits, run `python3 scripts/github-format.py` to normalize README TOC links and GLOSSARY.
 - Do not hand-edit `GUIDE.md` for acronyms — edit `includes/` and run `make build-all`.
 - CI runs `python3 scripts/expand-acronyms.py --check` to catch drift.
 

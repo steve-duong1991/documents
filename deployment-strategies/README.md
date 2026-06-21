@@ -8,24 +8,24 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (st
 
 ## Table of contents
 
-| # | Strategy | Include file |
+| # | Strategy |
 |---|----------|--------------|
-| — | [Quick comparison](#quick-comparison) | [includes/00-overview.md](includes/00-overview.md) |
-| 1 | [Recreate (Big Bang)](#1-recreate-big-bang) | [includes/01-recreate.md](includes/01-recreate.md) |
-| 2 | [Rolling deployment](#2-rolling-deployment) | [includes/02-rolling.md](includes/02-rolling.md) |
-| 3 | [Blue-Green deployment](#3-blue-green-deployment) | [includes/03-blue-green.md](includes/03-blue-green.md) |
-| 4 | [Canary deployment](#4-canary-deployment) | [includes/04-canary.md](includes/04-canary.md) |
-| 5 | [A/B testing](#5-ab-testing) | [includes/05-ab-testing.md](includes/05-ab-testing.md) |
-| 6 | [Shadow / mirror / dark launch](#6-shadow--mirror--dark-launch) | [includes/06-shadow.md](includes/06-shadow.md) |
-| 7 | [Feature flags](#7-feature-flags) | [includes/07-feature-flags.md](includes/07-feature-flags.md) |
-| 8 | [Immutable deployment](#8-immutable-deployment) | [includes/08-immutable.md](includes/08-immutable.md) |
-| 9 | [GitOps](#9-gitops) | [includes/09-gitops.md](includes/09-gitops.md) |
-| 10 | [Progressive delivery](#10-progressive-delivery) | [includes/10-progressive-delivery.md](includes/10-progressive-delivery.md) |
-| 11 | [Choosing a strategy & best practices](#11-choosing-a-strategy--best-practices) | [includes/11-choosing-and-practices.md](includes/11-choosing-and-practices.md) |
-| 12 | [Schema migrations and deploy coupling](#12-schema-migrations-and-deploy-coupling) | [includes/12-schema-migrations-and-deploy.md](includes/12-schema-migrations-and-deploy.md) |
-| 13 | [SLO-based rollback triggers](#13-slo-based-rollback-triggers) | [includes/13-slo-rollback-triggers.md](includes/13-slo-rollback-triggers.md) |
+| — | [Quick comparison](includes/00-overview.md) |
+| 1 | [Recreate (Big Bang)](includes/01-recreate.md) |
+| 2 | [Rolling deployment](includes/02-rolling.md) |
+| 3 | [Blue-Green deployment](includes/03-blue-green.md) |
+| 4 | [Canary deployment](includes/04-canary.md) |
+| 5 | [A/B testing](includes/05-ab-testing.md) |
+| 6 | [Shadow / mirror / dark launch](includes/06-shadow.md) |
+| 7 | [Feature flags](includes/07-feature-flags.md) |
+| 8 | [Immutable deployment](includes/08-immutable.md) |
+| 9 | [GitOps](includes/09-gitops.md) |
+| 10 | [Progressive delivery](includes/10-progressive-delivery.md) |
+| 11 | [Choosing a strategy & best practices](includes/11-choosing-and-practices.md) |
+| 12 | [Schema migrations and deploy coupling](includes/12-schema-migrations-and-deploy.md) |
+| 13 | [SLO-based rollback triggers](includes/13-slo-rollback-triggers.md) |
 
-> **Tip:** Open [GUIDE.md](GUIDE.md) for the full combined document in one file.
+> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
 
 ---
 
@@ -99,7 +99,7 @@ See full details → [includes/08-immutable.md](includes/08-immutable.md)
 
 ---
 
-## 9. GitOps(Git Operations)
+## 9. GitOps
 
 Git is the source of truth; a controller reconciles live state to match the repo.
 
@@ -131,7 +131,7 @@ See full details → [includes/12-schema-migrations-and-deploy.md](includes/12-s
 
 ---
 
-## 13. SLO(Service Level Objective)-based rollback triggers
+## 13. SLO-based rollback triggers
 
 Error-budget burn, version-tagged metrics, and automated halt/rollback by deploy strategy.
 

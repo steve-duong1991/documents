@@ -1,10 +1,11 @@
 # High Throughput Systems Guide (Full)
 
 > Combined view of all sections. Modular sources live in `includes/`.
+> On GitHub, use the guide **README** table of contents for direct section links.
 
 ---
 
-# Overview — High Throughput Systems
+## Overview — High Throughput Systems
 
 High throughput means handling **many useful operations per second** — HTTP(Hypertext Transfer Protocol) requests, events, or writes — without breaking SLOs on latency, error rate, or data consistency.
 
@@ -19,7 +20,7 @@ High throughput means handling **many useful operations per second** — HTTP(Hy
 
 ---
 
-## At a glance
+### At a glance
 
 | Concept | Definition | Example |
 |---------|------------|---------|
@@ -32,7 +33,7 @@ Throughput, latency, and concurrency are related — not interchangeable.
 
 ---
 
-## Throughput vs latency vs concurrency
+### Throughput vs latency vs concurrency
 
 | | **Throughput** | **Latency** | **Concurrency** |
 |--|----------------|---------------|-----------------|
@@ -40,7 +41,7 @@ Throughput, latency, and concurrency are related — not interchangeable.
 | **Improve by** | Cheaper ops, more parallelism | Faster hot path, fewer hops | More instances, async I/O |
 | **Tradeoff** | Batch/async may add latency | Aggressive caching → staleness | High concurrency → queueing delay |
 
-### Little's Law
+#### Little's Law
 
 **L = λ × W**
 
@@ -50,7 +51,7 @@ Throughput, latency, and concurrency are related — not interchangeable.
 
 At fixed concurrency, **lower latency → higher throughput**. At fixed latency, **more concurrency → higher throughput** — until a shared resource saturates.
 
-### The throughput equation
+#### The throughput equation
 
 ```
 Sustainable throughput ≈ (instances × concurrency per instance) / average operation cost
@@ -60,7 +61,7 @@ Bounded by the **slowest shared resource** — usually the database, cache hot k
 
 ---
 
-## Layers at a glance
+### Layers at a glance
 
 | Layer | Throughput lever | Deep dive |
 |-------|------------------|-----------|
@@ -77,7 +78,7 @@ Bounded by the **slowest shared resource** — usually the database, cache hot k
 
 ---
 
-## Reference architecture
+### Reference architecture
 
 ```mermaid
 flowchart TB
@@ -98,7 +99,7 @@ flowchart TB
 
 ---
 
-## Build order (non-negotiable sequence)
+### Build order (non-negotiable sequence)
 
 ```mermaid
 flowchart TD
@@ -126,7 +127,7 @@ flowchart TD
 
 ---
 
-## Default recommendations by scenario
+### Default recommendations by scenario
 
 | Scenario | First 3 actions |
 |----------|-----------------|
@@ -139,7 +140,7 @@ flowchart TD
 
 ---
 
-## Document map
+### Document map
 
 | # | Topic | File |
 |---|-------|------|
@@ -156,7 +157,7 @@ flowchart TD
 | 11 | Observability | [11-observability.md](11-observability.md) |
 | 12 | Decision guide and common mistakes | [12-decision-guide-and-common-mistakes.md](12-decision-guide-and-common-mistakes.md) |
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -168,7 +169,7 @@ flowchart TD
 
 ---
 
-# Measurement and SLOs
+## Measurement and SLOs
 
 You cannot optimize throughput blind. Define targets, load test realistic paths, profile each layer, and find the actual bottleneck before scaling.
 
@@ -178,7 +179,7 @@ You cannot optimize throughput blind. Define targets, load test realistic paths,
 
 ---
 
-## At a glance
+### At a glance
 
 | Metric | What it tells you | Typical SLO(Service Level Objective) example |
 |--------|-------------------|---------------------|
@@ -193,7 +194,7 @@ You cannot optimize throughput blind. Define targets, load test realistic paths,
 
 ---
 
-## Define SLOs first
+### Define SLOs first
 
 | SLO type | Include |
 |----------|---------|
@@ -207,7 +208,7 @@ Document which endpoints require **strong consistency** (primary DB) vs **eventu
 
 ---
 
-## Capacity and cost planning
+### Capacity and cost planning
 
 Throughput work has a **bill** — model before you scale.
 
@@ -232,9 +233,9 @@ Pair with product **rate tiers** — [api-design §5](../api-design-and-protecti
 
 ---
 
-## Load testing
+### Load testing
 
-### What to test
+#### What to test
 
 | Path | Why |
 |------|-----|
@@ -244,7 +245,7 @@ Pair with product **rate tiers** — [api-design §5](../api-design-and-protecti
 | **Mixed realistic ratio** | Match production read/write mix |
 | **Expensive async trigger** | Export, report, bulk search enqueue rate |
 
-### How to test well
+#### How to test well
 
 1. **Warm up** — JIT, connection pools, cache population
 2. **Ramp gradually** — find knee of the curve, not instant cliff
@@ -252,7 +253,7 @@ Pair with product **rate tiers** — [api-design §5](../api-design-and-protecti
 4. **Run long enough** — catch memory leaks, GC pauses, replication lag
 5. **Test from near production** — same region, similar network path
 
-### Tools and regression workflow
+#### Tools and regression workflow
 
 | Tool | Best for |
 |------|----------|
@@ -281,13 +282,13 @@ export const options = {
 
 Pair with deploy rollback → [deployment-strategies §13](../deployment-strategies/includes/13-slo-rollback-triggers.md).
 
-### Anti-pattern
+#### Anti-pattern
 
 Load-testing **`/health` or `/ready` only** — these skip auth, DB, and business logic. They tell you nothing about real throughput capacity.
 
 ---
 
-## Find the bottleneck
+### Find the bottleneck
 
 ```mermaid
 flowchart TD
@@ -316,7 +317,7 @@ flowchart TD
 
 ---
 
-## Profile each layer
+### Profile each layer
 
 | Layer | What to measure | Tools |
 |-------|-----------------|-------|
@@ -333,7 +334,7 @@ Link → [postgresql-performance/includes/01-measurement.md](../postgresql-perfo
 
 ---
 
-## Little's Law in practice
+### Little's Law in practice
 
 **L = λ × W**
 
@@ -347,7 +348,7 @@ If average request takes **W = 200ms** and you want **λ = 5,000 RPS**, you need
 
 ---
 
-## Baseline checklist
+### Baseline checklist
 
 Before any optimization:
 
@@ -360,21 +361,21 @@ Before any optimization:
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Measuring first
+#### Measuring first
 
 **Pros:** Avoid wasted scaling spend; find real ceiling; regression baseline for changes.
 
 **Cons:** Takes time; load tests can miss production traffic patterns if payloads are wrong.
 
-### Aggressive SLOs without measurement
+#### Aggressive SLOs without measurement
 
 **Pros:** None for throughput work.
 
 **Cons:** Over-engineering or under-provisioning; optimizing wrong layer.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -386,7 +387,7 @@ Before any optimization:
 
 ---
 
-# Entry and Edge
+## Entry and Edge
 
 Absorb traffic **before it hits origin** — CDN(Content Delivery Network) cache, WAF(Web Application Firewall), edge rate limits, then API(Application Programming Interface) gateway and load balancer for policy and distribution.
 
@@ -396,7 +397,7 @@ Absorb traffic **before it hits origin** — CDN(Content Delivery Network) cache
 
 ---
 
-## At a glance
+### At a glance
 
 | Layer | Throughput job |
 |-------|----------------|
@@ -409,7 +410,7 @@ Absorb traffic **before it hits origin** — CDN(Content Delivery Network) cache
 
 ---
 
-## Traffic flow
+### Traffic flow
 
 ```mermaid
 flowchart TB
@@ -425,7 +426,7 @@ This extends the diagram in [03-api-gateway.md](../api-design-and-protection/inc
 
 ---
 
-## Absorb traffic early
+### Absorb traffic early
 
 | Technique | Throughput effect |
 |-----------|-------------------|
@@ -438,7 +439,7 @@ Block garbage at the **edge** — cheapest place to say no.
 
 ---
 
-## Gateway + load balancer together
+### Gateway + load balancer together
 
 | Component | Role |
 |-----------|------|
@@ -456,7 +457,7 @@ See [Flow 3 — Both together](../api-design-and-protection/includes/03-api-gate
 
 ---
 
-## Minimize hops on hot path
+### Minimize hops on hot path
 
 | Situation | Consider |
 |-----------|----------|
@@ -469,7 +470,7 @@ Do not duplicate the same rate limit at every layer without reason — **edge (c
 
 ---
 
-## TLS termination placement
+### TLS termination placement
 
 | Where | Pros | Cons |
 |-------|------|------|
@@ -482,7 +483,7 @@ Do not duplicate the same rate limit at every layer without reason — **edge (c
 
 ---
 
-## When to use what
+### When to use what
 
 | Scenario | Stack |
 |----------|-------|
@@ -494,7 +495,7 @@ Full stack tables → [03-api-gateway.md — Tech stacks by scenario](../api-des
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -505,7 +506,7 @@ Full stack tables → [03-api-gateway.md — Tech stacks by scenario](../api-des
 
 ---
 
-# Stateless App Tier
+## Stateless App Tier
 
 Horizontal throughput requires **interchangeable app instances** — no sticky sessions, bounded concurrency, pooled connections, and minimal work per request.
 
@@ -515,7 +516,7 @@ Horizontal throughput requires **interchangeable app instances** — no sticky s
 
 ---
 
-## At a glance
+### At a glance
 
 | Requirement | Why it matters for throughput |
 |-------------|-------------------------------|
@@ -528,7 +529,7 @@ Horizontal throughput requires **interchangeable app instances** — no sticky s
 
 ---
 
-## Horizontal scale prerequisites
+### Horizontal scale prerequisites
 
 Stateless app tier is required before horizontal scale pays off. Architecture, auth flows, migration steps, and full checklist → [api-design §11 Stateless architecture](../api-design-and-protection/includes/11-stateless-architecture.md).
 
@@ -540,7 +541,7 @@ Stateless app tier is required before horizontal scale pays off. Architecture, a
 
 ---
 
-## Request cost breakdown
+### Request cost breakdown
 
 ```mermaid
 flowchart LR
@@ -564,7 +565,7 @@ Profile which phase dominates before adding instances.
 
 ---
 
-## Bounded concurrency
+### Bounded concurrency
 
 | Resource | Limit |
 |----------|-------|
@@ -575,7 +576,7 @@ Profile which phase dominates before adding instances.
 
 **Unbounded concurrency** → memory growth, pool exhaustion, cascading timeouts.
 
-### Pool sizing example
+#### Pool sizing example
 
 ```
 10 app instances × 20 pool connections = 200 DB connections
@@ -586,7 +587,7 @@ See [postgresql-performance/includes/07-connection-management.md](../postgresql-
 
 ---
 
-## I/O model
+### I/O model
 
 | Workload | Typical approach |
 |----------|------------------|
@@ -598,7 +599,7 @@ Match model to profile — async does not help CPU-bound hot loops.
 
 ---
 
-## Reduce per-request cost
+### Reduce per-request cost
 
 | Technique | Throughput impact |
 |-----------|-------------------|
@@ -612,7 +613,7 @@ API design details → [01-api-design.md](../api-design-and-protection/includes/
 
 ---
 
-## Workers are stateless too
+### Workers are stateless too
 
 Async workers follow the same rules — pull from queue, read/write shared stores, exit. Scale worker count on **queue depth**, not CPU alone.
 
@@ -620,7 +621,7 @@ See [06-async-queues-workers.md](06-async-queues-workers.md).
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -632,7 +633,7 @@ See [06-async-queues-workers.md](06-async-queues-workers.md).
 
 ---
 
-## Checklist (throughput)
+### Checklist (throughput)
 
 | Check | Pass? |
 |-------|-------|
@@ -645,7 +646,7 @@ Full stateless checklist (identity, externalized state, deploy safety) → [api-
 
 ---
 
-# Caching Layers
+## Caching Layers
 
 Caching is often the largest throughput multiplier for read-heavy systems — if you accept defined staleness and invalidate correctly.
 
@@ -653,7 +654,7 @@ Caching is often the largest throughput multiplier for read-heavy systems — if
 
 ---
 
-## At a glance
+### At a glance
 
 | Layer | Latency | Throughput gain | Staleness |
 |-------|---------|-----------------|-----------|
@@ -666,7 +667,7 @@ Caching is often the largest throughput multiplier for read-heavy systems — if
 
 ---
 
-## Layered read path
+### Layered read path
 
 ```mermaid
 flowchart LR
@@ -691,7 +692,7 @@ flowchart LR
 
 ---
 
-## Cache-aside vs write-through
+### Cache-aside vs write-through
 
 | Pattern | Flow | When to use |
 |---------|------|-------------|
@@ -699,14 +700,14 @@ flowchart LR
 | **Write-through** | App writes DB and cache together | Strong need for fresh cache after write |
 | **Write-behind** | App writes cache; async flush to DB | Extreme write throughput; complexity high |
 
-### Cache-aside (typical)
+#### Cache-aside (typical)
 
 ```
 GET:  cache.get(key) → miss → db.query → cache.set(key, ttl)
 POST: db.write → cache.delete(key)   // or update
 ```
 
-### Invalidation strategies
+#### Invalidation strategies
 
 | Strategy | Pros | Cons |
 |----------|------|------|
@@ -717,7 +718,7 @@ POST: db.write → cache.delete(key)   // or update
 
 ---
 
-## Hot key problem
+### Hot key problem
 
 A single Redis key (global counter, viral product page) becomes a **throughput ceiling** — one shard, one CPU core.
 
@@ -730,7 +731,7 @@ A single Redis key (global counter, viral product page) becomes a **throughput c
 
 ---
 
-## CDN for public GET APIs
+### CDN for public GET APIs
 
 | Concern | Guidance |
 |---------|----------|
@@ -741,7 +742,7 @@ A single Redis key (global counter, viral product page) becomes a **throughput c
 
 ---
 
-## Consistency matrix
+### Consistency matrix
 
 | Endpoint type | Read from | After write |
 |---------------|-----------|-------------|
@@ -754,7 +755,7 @@ Document per endpoint in your API contract which consistency tier applies.
 
 ---
 
-## When to use what
+### When to use what
 
 | Scenario | Recommendation |
 |----------|----------------|
@@ -766,7 +767,7 @@ Document per endpoint in your API contract which consistency tier applies.
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -779,7 +780,7 @@ Document per endpoint in your API contract which consistency tier applies.
 
 ---
 
-## Cache stampede and thundering herd
+### Cache stampede and thundering herd
 
 When a popular key expires (or cold start after deploy), many requests miss at once and hammer the database.
 
@@ -803,7 +804,7 @@ flowchart TD
 
 ---
 
-## TTL tiers by data class
+### TTL tiers by data class
 
 | Data class | Typical TTL | Invalidation |
 |------------|-------------|--------------|
@@ -817,15 +818,15 @@ Document TTL and invalidation in the API or data dictionary — clients infer st
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Application cache (Redis)
+#### Application cache (Redis)
 
 **Pros:** Huge read throughput; sub-ms latency; shared across app instances.
 
 **Cons:** Another system to operate; invalidation complexity; hot key risk.
 
-### CDN
+#### CDN
 
 **Pros:** Absorbs global read spikes at edge; reduces origin load dramatically.
 
@@ -833,7 +834,7 @@ Document TTL and invalidation in the API or data dictionary — clients infer st
 
 ---
 
-# Database Throughput
+## Database Throughput
 
 The database is usually the **throughput ceiling**. Fix measurement, queries, indexes, and pooling on the primary before replicas, caching, or sharding.
 
@@ -843,7 +844,7 @@ The database is usually the **throughput ceiling**. Fix measurement, queries, in
 
 ---
 
-## Priority order
+### Priority order
 
 Follow this sequence — same as [postgresql-performance/includes/00-overview.md](../postgresql-performance/includes/00-overview.md):
 
@@ -862,7 +863,7 @@ Follow this sequence — same as [postgresql-performance/includes/00-overview.md
 
 ---
 
-## Throughput decision flow
+### Throughput decision flow
 
 ```mermaid
 flowchart TD
@@ -886,7 +887,7 @@ Adapted from [postgresql-performance/includes/13-decision-guide-and-common-mista
 
 ---
 
-## Scenario → first move
+### Scenario → first move
 
 Database-layer first moves below. System-wide scenarios (cache + scale + async + edge) → [§12 Decision guide](12-decision-guide-and-common-mistakes.md#scenario-recommendations). Full PG scenario table → [postgresql-performance §13](../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md#scenario-recommendations).
 
@@ -902,7 +903,7 @@ Database-layer first moves below. System-wide scenarios (cache + scale + async +
 
 ---
 
-## When PostgreSQL is not enough
+### When PostgreSQL is not enough
 
 | Signal | Consider |
 |--------|----------|
@@ -920,7 +921,7 @@ LSM tradeoffs → [tree-and-index-structures/includes/04-lsm-trees.md](../tree-a
 
 ---
 
-## Connection math
+### Connection math
 
 ```
 Total app connections = instances × pool_size_per_instance
@@ -935,7 +936,7 @@ Must fit within PostgreSQL capacity (often via PgBouncer)
 
 ---
 
-## Read vs write throughput
+### Read vs write throughput
 
 | Pattern | Guidance |
 |---------|----------|
@@ -947,7 +948,7 @@ See [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) for read mod
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -961,7 +962,7 @@ Full database decision guide → [postgresql-performance/includes/13-decision-gu
 
 ---
 
-# Async, Queues, and Workers
+## Async, Queues, and Workers
 
 Decouple **accept rate** from **process rate** — the API(Application Programming Interface) enqueues quickly; workers drain at sustainable throughput.
 
@@ -971,7 +972,7 @@ Decouple **accept rate** from **process rate** — the API(Application Programmi
 
 ---
 
-## At a glance
+### At a glance
 
 | | **Synchronous** | **Asynchronous** |
 |--|-----------------|------------------|
@@ -984,7 +985,7 @@ Decouple **accept rate** from **process rate** — the API(Application Programmi
 
 ---
 
-## When to go async
+### When to go async
 
 | Operation | Async? |
 |-----------|--------|
@@ -999,7 +1000,7 @@ Full patterns → [10-async-patterns.md](../api-design-and-protection/includes/1
 
 ---
 
-## Queue as shock absorber
+### Queue as shock absorber
 
 ```mermaid
 flowchart LR
@@ -1023,7 +1024,7 @@ flowchart LR
 
 ---
 
-## Typical async flow
+### Typical async flow
 
 ```mermaid
 sequenceDiagram
@@ -1050,7 +1051,7 @@ Job state machine and polling vs webhook → [10-async-patterns.md](../api-desig
 
 ---
 
-## Idempotency at throughput
+### Idempotency at throughput
 
 Retries are guaranteed at scale:
 
@@ -1063,7 +1064,7 @@ Retries are guaranteed at scale:
 
 ---
 
-## Worker scaling
+### Worker scaling
 
 | Trigger | Action |
 |---------|--------|
@@ -1076,7 +1077,7 @@ Workers are **stateless** — any worker processes any job. Job state in DB + re
 
 ---
 
-## Queue technology pick
+### Queue technology pick
 
 | Need | Options |
 |------|---------|
@@ -1090,7 +1091,7 @@ Outbox pattern → [event-sourcing-and-cqrs/includes/05-async-integration.md](..
 
 ---
 
-## Dead letter queue (DLQ)
+### Dead letter queue (DLQ)
 
 Messages that fail after max retries must not block the queue forever.
 
@@ -1111,7 +1112,7 @@ flowchart LR
 
 ---
 
-## Queue vs stream — when to pick which
+### Queue vs stream — when to pick which
 
 | Need | Queue (SQS, RabbitMQ, Redis) | Stream (Kafka, Kinesis) |
 |------|------------------------------|-------------------------|
@@ -1125,7 +1126,7 @@ Job queues → this section. High-volume fan-out → [07-streaming-pipelines.md]
 
 ---
 
-## Delivery semantics
+### Delivery semantics
 
 | Guarantee | Behavior | Worker requirement |
 |-----------|----------|------------------|
@@ -1137,7 +1138,7 @@ Most production systems: **at-least-once** + idempotency keys + dedup store.
 
 ---
 
-## Rate limits and async
+### Rate limits and async
 
 Expensive sync endpoints burn throughput slots. Pattern from [05-rate-limit-tiers.md](../api-design-and-protection/includes/05-rate-limit-tiers.md):
 
@@ -1147,7 +1148,7 @@ Expensive sync endpoints burn throughput slots. Pattern from [05-rate-limit-tier
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1159,9 +1160,9 @@ Expensive sync endpoints burn throughput slots. Pattern from [05-rate-limit-tier
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Async queue
+#### Async queue
 
 **Pros:** API throughput decoupled from slow work; absorbs spikes; independent worker scaling.
 
@@ -1169,7 +1170,7 @@ Expensive sync endpoints burn throughput slots. Pattern from [05-rate-limit-tier
 
 ---
 
-# Streaming Pipelines
+## Streaming Pipelines
 
 When request/response cannot keep up with event volume, fan-out, or audit requirements, move to **event streaming** — append-only logs with partitioned parallel consumption.
 
@@ -1177,7 +1178,7 @@ When request/response cannot keep up with event volume, fan-out, or audit requir
 
 ---
 
-## At a glance
+### At a glance
 
 | | **Sync API(Application Programming Interface)** | **Event stream** |
 |--|--------------|------------------|
@@ -1191,7 +1192,7 @@ When request/response cannot keep up with event volume, fan-out, or audit requir
 
 ---
 
-## When streaming beats request/response
+### When streaming beats request/response
 
 | Use case | Why stream |
 |----------|------------|
@@ -1203,7 +1204,7 @@ When request/response cannot keep up with event volume, fan-out, or audit requir
 
 ---
 
-## Core concepts
+### Core concepts
 
 ```mermaid
 flowchart LR
@@ -1231,7 +1232,7 @@ Common implementations: Apache Kafka, Amazon Kinesis, Google Pub/Sub, Azure Even
 
 ---
 
-## Throughput levers
+### Throughput levers
 
 | Lever | Effect |
 |-------|--------|
@@ -1245,7 +1246,7 @@ Common implementations: Apache Kafka, Amazon Kinesis, Google Pub/Sub, Azure Even
 
 ---
 
-## Partition key and ordering
+### Partition key and ordering
 
 Events with the **same partition key** are strictly ordered within that partition.
 
@@ -1260,7 +1261,7 @@ Events with the **same partition key** are strictly ordered within that partitio
 
 ---
 
-## Consumer groups and parallelism
+### Consumer groups and parallelism
 
 | Rule | Detail |
 |------|--------|
@@ -1273,7 +1274,7 @@ Scale consumers until lag stabilizes; adding consumers beyond partition count do
 
 ---
 
-## Kafka-oriented patterns
+### Kafka-oriented patterns
 
 | Pattern | Use |
 |---------|-----|
@@ -1287,7 +1288,7 @@ Store payload references (S3 URL, row ID) when messages exceed ~1 MB.
 
 ---
 
-## Stream DLQ(Dead Letter Queue) and poison messages
+### Stream DLQ and poison messages
 
 | Approach | When |
 |----------|------|
@@ -1300,7 +1301,7 @@ Alert on **consumer lag growth rate**, not only absolute lag.
 
 ---
 
-## Backpressure
+### Backpressure
 
 **Consumer lag** — difference between latest offset and consumer offset — is the key health metric.
 
@@ -1318,7 +1319,7 @@ Alert on **consumer lag growth rate**, not only absolute lag.
 
 ---
 
-## Integration with API tier
+### Integration with API tier
 
 Typical pattern:
 
@@ -1347,7 +1348,7 @@ sequenceDiagram
 
 ---
 
-## When to use what
+### When to use what
 
 | Scenario | Recommendation |
 |----------|----------------|
@@ -1359,7 +1360,7 @@ sequenceDiagram
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1371,9 +1372,9 @@ sequenceDiagram
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Event streaming
+#### Event streaming
 
 **Pros:** Massive throughput; decoupled consumers; replay for recovery and new projections.
 
@@ -1381,7 +1382,7 @@ sequenceDiagram
 
 ---
 
-# Batch and ETL(Extract, Transform, Load)
+## Batch and ETL
 
 Bulk ingest and backfills belong **off the API(Application Programming Interface) hot path** — use staging tables, `COPY`, chunked commits, and idempotent merges for throughput without locking production traffic.
 
@@ -1389,7 +1390,7 @@ Bulk ingest and backfills belong **off the API(Application Programming Interface
 
 ---
 
-## At a glance
+### At a glance
 
 | Method | Speed | Use when |
 |--------|-------|----------|
@@ -1402,7 +1403,7 @@ Bulk ingest and backfills belong **off the API(Application Programming Interface
 
 ---
 
-## Staging table pattern
+### Staging table pattern
 
 ```mermaid
 flowchart LR
@@ -1434,7 +1435,7 @@ ANALYZE orders;
 
 ---
 
-## COPY vs row INSERT
+### COPY vs row INSERT
 
 From [postgresql-performance/includes/12-bulk-operations-and-concurrency.md](../postgresql-performance/includes/12-bulk-operations-and-concurrency.md):
 
@@ -1445,7 +1446,7 @@ From [postgresql-performance/includes/12-bulk-operations-and-concurrency.md](../
 | **Error handling** | Fails row or batch | Per-batch rollback |
 | **Typical use** | Nightly ETL, migrations | App batch API |
 
-### Large load tips
+#### Large load tips
 
 - Drop nonessential indexes before load, recreate **`CONCURRENTLY`** after (very large loads only)
 - Increase **`maintenance_work_mem`** for index build session
@@ -1453,7 +1454,7 @@ From [postgresql-performance/includes/12-bulk-operations-and-concurrency.md](../
 
 ---
 
-## Chunked backfills
+### Chunked backfills
 
 For updating or inserting millions of rows on a live system:
 
@@ -1474,7 +1475,7 @@ WHERE id BETWEEN 1000000 AND 1009999
 
 ---
 
-## Scheduled vs triggered batch
+### Scheduled vs triggered batch
 
 | Type | Trigger | Example |
 |------|---------|---------|
@@ -1486,7 +1487,7 @@ WHERE id BETWEEN 1000000 AND 1009999
 
 ---
 
-## Idempotent batch jobs
+### Idempotent batch jobs
 
 | Pattern | How |
 |---------|-----|
@@ -1504,7 +1505,7 @@ SET qty = inventory.qty + EXCLUDED.qty;
 
 ---
 
-## Batch vs streaming vs API
+### Batch vs streaming vs API
 
 | Volume / pattern | Choose |
 |------------------|--------|
@@ -1515,7 +1516,7 @@ SET qty = inventory.qty + EXCLUDED.qty;
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1527,9 +1528,9 @@ SET qty = inventory.qty + EXCLUDED.qty;
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Batch ETL off hot path
+#### Batch ETL off hot path
 
 **Pros:** Maximum write throughput; predictable load window; simpler error recovery per chunk.
 
@@ -1537,7 +1538,7 @@ SET qty = inventory.qty + EXCLUDED.qty;
 
 ---
 
-# Backpressure and Limits
+## Backpressure and Limits
 
 High throughput systems must **reject, queue, or shed load** when at capacity — not queue unbounded work until they collapse.
 
@@ -1545,7 +1546,7 @@ High throughput systems must **reject, queue, or shed load** when at capacity �
 
 ---
 
-## At a glance
+### At a glance
 
 | Mechanism | What it limits | Typical layer |
 |-----------|----------------|---------------|
@@ -1559,7 +1560,7 @@ High throughput systems must **reject, queue, or shed load** when at capacity �
 
 ---
 
-## Layered limits
+### Layered limits
 
 ```mermaid
 flowchart LR
@@ -1580,7 +1581,7 @@ Full layer comparison → [api-rate-limiting/includes/07-deployment-layers.md](.
 
 ---
 
-## HTTP(Hypertext Transfer Protocol) 429 and Retry-After
+### HTTP 429 and Retry-After
 
 When limiting, return proper semantics so clients backoff:
 
@@ -1600,7 +1601,7 @@ X-RateLimit-Reset: 1718380800
 
 ---
 
-## Concurrency semaphores
+### Concurrency semaphores
 
 Rate limits cap **requests per second**; semaphores cap **in-flight expensive work**.
 
@@ -1619,7 +1620,7 @@ else → 429 or 503 with Retry-After
 
 ---
 
-## Circuit breakers
+### Circuit breakers
 
 When downstream (payment API, search cluster) fails or slows:
 
@@ -1633,7 +1634,7 @@ When downstream (payment API, search cluster) fails or slows:
 
 ---
 
-## Fail-open vs fail-closed
+### Fail-open vs fail-closed
 
 If the rate-limit store (Redis) is unavailable:
 
@@ -1648,7 +1649,7 @@ See [api-rate-limiting/includes/07-deployment-layers.md](../api-rate-limiting/in
 
 ---
 
-## Distributed rate limiting
+### Distributed rate limiting
 
 | Type | Pros | Cons | When |
 |------|------|------|------|
@@ -1660,7 +1661,7 @@ See [api-rate-limiting/includes/07-deployment-layers.md](../api-rate-limiting/in
 
 ---
 
-## Algorithm quick pick
+### Algorithm quick pick
 
 | Scenario | Algorithm |
 |----------|-----------|
@@ -1673,7 +1674,7 @@ Full decision flow → [api-rate-limiting/includes/10-decision-guide.md](../api-
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1685,15 +1686,15 @@ Full decision flow → [api-rate-limiting/includes/10-decision-guide.md](../api-
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Aggressive backpressure
+#### Aggressive backpressure
 
 **Pros:** Stable p99 under spike; protects DB and workers; predictable capacity.
 
 **Cons:** Some requests rejected; client retry storms if `Retry-After` omitted.
 
-### No backpressure
+#### No backpressure
 
 **Pros:** Accepts all traffic until collapse.
 
@@ -1701,7 +1702,7 @@ Full decision flow → [api-rate-limiting/includes/10-decision-guide.md](../api-
 
 ---
 
-# Scale and Deploy
+## Scale and Deploy
 
 Throughput requires **adding capacity without downtime** — horizontal autoscaling, safe deploy strategies, and multi-region read paths.
 
@@ -1709,7 +1710,7 @@ Throughput requires **adding capacity without downtime** — horizontal autoscal
 
 ---
 
-## At a glance
+### At a glance
 
 | Concern | Throughput approach |
 |---------|---------------------|
@@ -1723,7 +1724,7 @@ Throughput requires **adding capacity without downtime** — horizontal autoscal
 
 ---
 
-## Horizontal autoscaling
+### Horizontal autoscaling
 
 | Signal | Scale what |
 |--------|------------|
@@ -1745,7 +1746,7 @@ flowchart TD
 
 ---
 
-## Autoscaling cautions
+### Autoscaling cautions
 
 | Pitfall | Mitigation |
 |---------|------------|
@@ -1756,7 +1757,7 @@ flowchart TD
 
 ---
 
-## Deploy without losing capacity
+### Deploy without losing capacity
 
 | Strategy | Throughput impact | Guide |
 |----------|-------------------|-------|
@@ -1769,7 +1770,7 @@ Stateless app tier enables rolling and blue/green without session migration → 
 
 ---
 
-## Multi-region throughput
+### Multi-region throughput
 
 ```mermaid
 flowchart TB
@@ -1794,7 +1795,7 @@ Document **read-your-writes** endpoints — route to primary after mutation.
 
 ---
 
-## Capacity planning loop
+### Capacity planning loop
 
 1. Load test to find **RPS ceiling** at SLO ([01-measurement-and-slo.md](01-measurement-and-slo.md))
 2. Identify bottleneck layer
@@ -1804,7 +1805,7 @@ Document **read-your-writes** endpoints — route to primary after mutation.
 
 ---
 
-## Feature flags and progressive delivery
+### Feature flags and progressive delivery
 
 Reduce deploy risk without killing throughput:
 
@@ -1815,7 +1816,7 @@ Bad deploy detected → roll back canary before full fleet affected.
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1827,15 +1828,15 @@ Bad deploy detected → roll back canary before full fleet affected.
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Horizontal scale (stateless)
+#### Horizontal scale (stateless)
 
 **Pros:** Linear RPS gains until shared resource limits; fault isolation per instance.
 
 **Cons:** Cost; complexity; requires stateless design and pool discipline.
 
-### Multi-region
+#### Multi-region
 
 **Pros:** Lower latency; regional fault tolerance for reads.
 
@@ -1843,7 +1844,7 @@ Bad deploy detected → roll back canary before full fleet affected.
 
 ---
 
-# Observability
+## Observability
 
 Throughput work fails in production when you watch **CPU only**. Alert on **saturation** — pool wait, queue depth, replication lag, cache miss storms — before users notice.
 
@@ -1851,7 +1852,7 @@ Throughput work fails in production when you watch **CPU only**. Alert on **satu
 
 ---
 
-## At a glance
+### At a glance
 
 | Signal | Indicates | Alert when |
 |--------|-----------|------------|
@@ -1869,7 +1870,7 @@ Throughput work fails in production when you watch **CPU only**. Alert on **satu
 
 ---
 
-## Golden signals for throughput
+### Golden signals for throughput
 
 Adapted from the four golden signals with throughput focus:
 
@@ -1882,7 +1883,7 @@ Adapted from the four golden signals with throughput focus:
 
 ---
 
-## Layer-by-layer metrics
+### Layer-by-layer metrics
 
 ```mermaid
 flowchart TB
@@ -1922,7 +1923,7 @@ flowchart TB
 
 ---
 
-## Structured logging
+### Structured logging
 
 Log JSON with correlation across hops:
 
@@ -1953,7 +1954,7 @@ Propagate `request_id` from gateway → app → DB comments or logs.
 
 ---
 
-## Distributed tracing
+### Distributed tracing
 
 Trace a single request across:
 
@@ -1969,7 +1970,7 @@ Client → Edge → Gateway → LB → App → Redis → PostgreSQL
 
 ---
 
-## Dashboards worth having
+### Dashboards worth having
 
 | Dashboard | Panels |
 |-----------|--------|
@@ -1982,7 +1983,7 @@ Client → Edge → Gateway → LB → App → Redis → PostgreSQL
 
 ---
 
-## Alerting philosophy
+### Alerting philosophy
 
 | Alert on | Avoid alerting on |
 |----------|-------------------|
@@ -1995,7 +1996,7 @@ Client → Edge → Gateway → LB → App → Redis → PostgreSQL
 
 ---
 
-## Load test regression
+### Load test regression
 
 After throughput changes:
 
@@ -2008,11 +2009,11 @@ Store results in CI or runbook for comparison.
 
 ---
 
-## RED(Rate, Errors, Duration) and USE(Utilization, Saturation, Errors) methods
+### RED and USE methods
 
 Two frameworks for choosing what to monitor:
 
-### RED (request-driven services)
+#### RED (request-driven services)
 
 | Letter | Metric | Throughput question |
 |--------|--------|---------------------|
@@ -2022,7 +2023,7 @@ Two frameworks for choosing what to monitor:
 
 Apply **per route** and per tier — not only global aggregates.
 
-### USE (resources)
+#### USE (resources)
 
 | Letter | Metric | Throughput question |
 |--------|--------|---------------------|
@@ -2034,7 +2035,7 @@ Apply **per route** and per tier — not only global aggregates.
 
 ---
 
-## SLOs and error budget burn
+### SLOs and error budget burn
 
 | Concept | Definition |
 |---------|------------|
@@ -2055,7 +2056,7 @@ Tie deploy rollback triggers → [deployment-strategies §13](../deployment-stra
 
 ---
 
-## Distributed tracing (OpenTelemetry)
+### Distributed tracing (OpenTelemetry)
 
 Metrics show **what** is slow; traces show **where** in the chain.
 
@@ -2084,7 +2085,7 @@ Saga debugging → propagate `saga_id` — [ES §7](../event-sourcing-and-cqrs/i
 
 ---
 
-## On-call triage order
+### On-call triage order
 
 When throughput degrades:
 
@@ -2096,7 +2097,7 @@ When throughput degrades:
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -2108,9 +2109,9 @@ When throughput degrades:
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Saturation-first observability
+#### Saturation-first observability
 
 **Pros:** Early warning; faster incident triage; data-driven capacity planning.
 
@@ -2118,7 +2119,7 @@ When throughput degrades:
 
 ---
 
-# Decision Guide, Checklist, and Common Mistakes
+## Decision Guide, Checklist, and Common Mistakes
 
 A practical capstone for choosing throughput strategies and avoiding common mistakes.
 
@@ -2128,7 +2129,7 @@ A practical capstone for choosing throughput strategies and avoiding common mist
 
 ---
 
-## Master decision flow
+### Master decision flow
 
 ```mermaid
 flowchart TD
@@ -2156,7 +2157,7 @@ flowchart TD
 
 ---
 
-## Scenario recommendations
+### Scenario recommendations
 
 System-wide scenarios (cache, scale, async, overload). Database-only tuning → [postgresql-performance §13](../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md).
 
@@ -2180,7 +2181,7 @@ System-wide scenarios (cache, scale, async, overload). Database-only tuning → 
 
 ---
 
-## Priority checklist
+### Priority checklist
 
 Use this order — skipping steps wastes effort and money:
 
@@ -2200,7 +2201,7 @@ Use this order — skipping steps wastes effort and money:
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Why it hurts | Fix |
 |-------|--------------|-----|
@@ -2221,7 +2222,7 @@ Use this order — skipping steps wastes effort and money:
 
 ---
 
-## Quick decision summary
+### Quick decision summary
 
 | Question | Default answer |
 |----------|----------------|
@@ -2239,7 +2240,7 @@ Use this order — skipping steps wastes effort and money:
 
 ---
 
-## See also
+### See also
 
 | Guide | Topics |
 |-------|--------|
@@ -2252,7 +2253,7 @@ Use this order — skipping steps wastes effort and money:
 
 ---
 
-# Multi-Region Read Routing
+## Multi-Region Read Routing
 
 Multi-region adds throughput and availability — at the cost of **consistency complexity**. Design the write path first; reads follow.
 
@@ -2260,7 +2261,7 @@ Multi-region adds throughput and availability — at the cost of **consistency c
 
 ---
 
-## At a glance
+### At a glance
 
 | Pattern | Writes | Reads | Complexity |
 |---------|--------|-------|------------|
@@ -2273,7 +2274,7 @@ Multi-region adds throughput and availability — at the cost of **consistency c
 
 ---
 
-## Active-passive (DR)
+### Active-passive (DR)
 
 ```mermaid
 flowchart LR
@@ -2291,7 +2292,7 @@ Run DR drill quarterly → [database-connection-and-security §12](../database-c
 
 ---
 
-## Read-local, write-global
+### Read-local, write-global
 
 | Request type | Route to |
 |--------------|----------|
@@ -2304,7 +2305,7 @@ API contract must document per-endpoint consistency → [api-design §1](../api-
 
 ---
 
-## Latency and routing
+### Latency and routing
 
 | Mechanism | Use |
 |-----------|-----|
@@ -2317,7 +2318,7 @@ Avoid cross-region DB round trips on hot paths — cache in region.
 
 ---
 
-## Data plane options
+### Data plane options
 
 | Stack | Multi-region story |
 |-------|-------------------|
@@ -2330,7 +2331,7 @@ PostgreSQL details → [postgresql-performance §11](../postgresql-performance/i
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -2341,7 +2342,7 @@ PostgreSQL details → [postgresql-performance §11](../postgresql-performance/i
 
 ---
 
-## Pros and cons
+### Pros and cons
 
 **Pros:** Lower read latency globally; regional failure isolation.
 
@@ -2349,7 +2350,7 @@ PostgreSQL details → [postgresql-performance §11](../postgresql-performance/i
 
 ---
 
-# Message Brokers and Queues
+## Message Brokers and Queues
 
 Pick the integration pattern before you pick the product — task queue, log, or outbox relay each solve different throughput problems.
 
@@ -2357,7 +2358,7 @@ Pick the integration pattern before you pick the product — task queue, log, or
 
 ---
 
-## At a glance
+### At a glance
 
 | Pattern | Best for | Ordering | Replay | Typical products |
 |---------|----------|----------|--------|------------------|
@@ -2371,7 +2372,7 @@ Pick the integration pattern before you pick the product — task queue, log, or
 
 ---
 
-## Decision flow
+### Decision flow
 
 ```mermaid
 flowchart TD
@@ -2392,7 +2393,7 @@ Full outbox patterns → [ES §5](../event-sourcing-and-cqrs/includes/05-async-i
 
 ---
 
-## Queue vs stream (when both seem to work)
+### Queue vs stream (when both seem to work)
 
 | Need | Queue (SQS, RabbitMQ) | Stream (Kafka, Kinesis) |
 |------|-------------------------|-------------------------|
@@ -2407,7 +2408,7 @@ See [06-async-queues-workers.md — Queue vs stream](06-async-queues-workers.md#
 
 ---
 
-## Product signals
+### Product signals
 
 | Situation | Lean toward |
 |-----------|-------------|
@@ -2420,7 +2421,7 @@ See [06-async-queues-workers.md — Queue vs stream](06-async-queues-workers.md#
 
 ---
 
-## Ordering and idempotency
+### Ordering and idempotency
 
 | Broker | Ordering guarantee | Your responsibility |
 |--------|------------------|-------------------|
@@ -2433,7 +2434,7 @@ Cross-service sagas → partition by `saga_id` — [ES §7 Sagas](../event-sourc
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -2445,15 +2446,15 @@ Cross-service sagas → partition by `saga_id` — [ES §7 Sagas](../event-sourc
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Managed queue (SQS)
+#### Managed queue (SQS)
 
 **Pros:** Low ops, integrates with AWS, DLQ built-in.
 
 **Cons:** No native fan-out replay; cross-cloud portability lower.
 
-### Kafka
+#### Kafka
 
 **Pros:** Replay, fan-out, ecosystem (Connect, Streams).
 
@@ -2461,7 +2462,7 @@ Cross-service sagas → partition by `saga_id` — [ES §7 Sagas](../event-sourc
 
 ---
 
-# CDC and Search Indexing
+## CDC and Search Indexing
 
 Full-text and faceted search at scale usually lives outside PostgreSQL — sync via CDC or outbox, and plan for reindex and staleness.
 
@@ -2469,7 +2470,7 @@ Full-text and faceted search at scale usually lives outside PostgreSQL — sync 
 
 ---
 
-## At a glance
+### At a glance
 
 | Approach | How it works | When to use |
 |----------|--------------|-------------|
@@ -2482,7 +2483,7 @@ Full-text and faceted search at scale usually lives outside PostgreSQL — sync 
 
 ---
 
-## Pipeline pattern
+### Pipeline pattern
 
 ```mermaid
 flowchart LR
@@ -2503,7 +2504,7 @@ flowchart LR
 
 ---
 
-## Consistency and UX
+### Consistency and UX
 
 | User expectation | Pattern |
 |------------------|---------|
@@ -2515,7 +2516,7 @@ See [PG §14 Strong consistency](../postgresql-performance/includes/14-consisten
 
 ---
 
-## Reindex runbook
+### Reindex runbook
 
 | Step | Action |
 |------|--------|
@@ -2529,7 +2530,7 @@ Pair with [deployment §12 schema migrations](../deployment-strategies/includes/
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -2540,9 +2541,9 @@ Pair with [deployment §12 schema migrations](../deployment-strategies/includes/
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### CDC + OpenSearch
+#### CDC + OpenSearch
 
 **Pros:** Scales search independently; rich query features.
 

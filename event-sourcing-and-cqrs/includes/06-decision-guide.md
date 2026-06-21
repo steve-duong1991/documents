@@ -121,7 +121,7 @@ Details → [Storage & projections](03-storage-and-projections.md).
 
 ---
 
-## API(Application Programming Interface) quick pick
+## API quick pick
 
 | Scenario | API shape |
 |----------|-----------|

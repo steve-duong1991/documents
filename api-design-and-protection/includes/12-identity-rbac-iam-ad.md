@@ -1,4 +1,4 @@
-# Identity: RBAC(Role-Based Access Control), IAM(Identity and Access Management) & Active Directory
+# Identity: RBAC, IAM & Active Directory
 
 Enterprise identity foundations for APIs: how IAM governs access, how RBAC assigns permissions through roles, and how Active Directory (and cloud IdPs) feed tokens and policies your gateway and services enforce.
 

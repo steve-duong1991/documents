@@ -1,4 +1,4 @@
-# API(Application Programming Interface) Design Best Practices
+# API Design Best Practices
 
 > **Scope:** **General REST(Representational State Transfer)/HTTP(Hypertext Transfer Protocol) API design** — resources, errors, pagination, contracts. Event-sourced command/query APIs → [ES §4 API design implications](../../event-sourcing-and-cqrs/includes/04-api-design-implications.md).
 

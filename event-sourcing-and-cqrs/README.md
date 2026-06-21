@@ -1,4 +1,4 @@
-# Event Sourcing & CQRS(Command Query Responsibility Segregation) Guide
+# Event Sourcing & CQRS Guide
 
 A practical reference for Event Sourcing and CQRS — append-only event stores, aggregates, read projections, storage choices, API(Application Programming Interface) design, async integration (outbox), sagas, and when to adopt vs stay with CRUD.
 
@@ -8,20 +8,20 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [P
 
 ## Table of contents
 
-| # | Topic | Include file |
-|---|-------|--------------|
-| — | [Overview](#overview) | [includes/00-overview.md](includes/00-overview.md) |
-| 1 | [Core concepts](#1-core-concepts) | [includes/01-core-concepts.md](includes/01-core-concepts.md) |
-| 2 | [CQRS and read models](#2-cqrs-and-read-models) | [includes/02-cqrs-and-read-models.md](includes/02-cqrs-and-read-models.md) |
-| 3 | [Storage and projections](#3-storage-and-projections) | [includes/03-storage-and-projections.md](includes/03-storage-and-projections.md) |
-| 4 | [API design implications](#4-api-design-implications) | [includes/04-api-design-implications.md](includes/04-api-design-implications.md) |
-| 5 | [Async integration](#5-async-integration) | [includes/05-async-integration.md](includes/05-async-integration.md) |
-| 6 | [Decision guide](#6-decision-guide) | [includes/06-decision-guide.md](includes/06-decision-guide.md) |
-| 7 | [Sagas and distributed workflows](#7-sagas-and-distributed-workflows) | [includes/07-sagas-and-distributed-workflows.md](includes/07-sagas-and-distributed-workflows.md) |
-| 8 | [Event schema evolution](#8-event-schema-evolution) | [includes/08-event-schema-evolution.md](includes/08-event-schema-evolution.md) |
-| 9 | [Testing and verification](#9-testing-and-verification) | [includes/09-testing-and-verification.md](includes/09-testing-and-verification.md) |
+| # | Topic |
+|---|-------|
+| — | [Overview](includes/00-overview.md) |
+| 1 | [Core concepts](includes/01-core-concepts.md) |
+| 2 | [CQRS and read models](includes/02-cqrs-and-read-models.md) |
+| 3 | [Storage and projections](includes/03-storage-and-projections.md) |
+| 4 | [API design implications](includes/04-api-design-implications.md) |
+| 5 | [Async integration](includes/05-async-integration.md) |
+| 6 | [Decision guide](includes/06-decision-guide.md) |
+| 7 | [Sagas and distributed workflows](includes/07-sagas-and-distributed-workflows.md) |
+| 8 | [Event schema evolution](includes/08-event-schema-evolution.md) |
+| 9 | [Testing and verification](includes/09-testing-and-verification.md) |
 
-> **Tip:** Open [GUIDE.md](GUIDE.md) for the full combined document in one file.
+> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
 
 ---
 

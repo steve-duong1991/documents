@@ -1,4 +1,4 @@
-# CQRS(Command Query Responsibility Segregation) and Read Models
+# CQRS and Read Models
 
 **CQRS** separates the **write model** (commands, aggregates, event store) from **read models** (queries optimized for specific screens or reports). Event Sourcing often pairs with CQRS because replaying the full log on every HTTP(Hypertext Transfer Protocol) GET does not scale.
 

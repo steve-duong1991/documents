@@ -1,4 +1,4 @@
-# API(Application Programming Interface) Design & Protection Guide
+# API Design & Protection Guide
 
 A practical reference for designing HTTP(Hypertext Transfer Protocol) APIs and protecting them in production — full request flow, load balancer vs API gateway, stack choices, auth models, rate-limit tiers, threat modeling, and OpenAPI/Swagger's role in the lifecycle.
 
@@ -8,28 +8,28 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 
 ## Table of contents
 
-| # | Topic | Include file |
-|---|-------|--------------|
-| — | [Overview & full flow](#overview--full-flow) | [includes/00-overview.md](includes/00-overview.md) |
-| 1 | [API design best practices](#1-api-design-best-practices) | [includes/01-api-design.md](includes/01-api-design.md) |
-| 2 | [API protection](#2-api-protection) | [includes/02-api-protection.md](includes/02-api-protection.md) |
-| 3 | [Load balancer, API gateway & entry architecture](#3-load-balancer-api-gateway--entry-architecture) | [includes/03-api-gateway.md](includes/03-api-gateway.md) |
-| 4 | [Auth model](#4-auth-model) | [includes/04-auth-model.md](includes/04-auth-model.md) |
-| 5 | [Rate-limit tiers](#5-rate-limit-tiers) | [includes/05-rate-limit-tiers.md](includes/05-rate-limit-tiers.md) |
-| 6 | [Threat model](#6-threat-model) | [includes/06-threat-model.md](includes/06-threat-model.md) |
-| 7 | [OpenAPI / Swagger](#7-openapi--swagger) | [includes/07-openapi-swagger.md](includes/07-openapi-swagger.md) |
-| 8 | [Lifecycle & reference architecture](#8-lifecycle--reference-architecture) | [includes/08-lifecycle-and-architecture.md](includes/08-lifecycle-and-architecture.md) |
-| 9 | [Checklist & best practices](#9-checklist--best-practices) | [includes/09-checklist-and-practices.md](includes/09-checklist-and-practices.md) |
-| 10 | [Async patterns](#10-async-patterns) | [includes/10-async-patterns.md](includes/10-async-patterns.md) |
-| 11 | [Stateless architecture](#11-stateless-architecture) | [includes/11-stateless-architecture.md](includes/11-stateless-architecture.md) |
-| 12 | [Identity: RBAC, IAM & Active Directory](#12-identity-rbac-iam--active-directory) | [includes/12-identity-rbac-iam-ad.md](includes/12-identity-rbac-iam-ad.md) |
-| 13 | [Idempotency](#13-idempotency) | [includes/13-idempotency.md](includes/13-idempotency.md) |
-| 14 | [API versioning & deprecation](#14-api-versioning--deprecation) | [includes/14-api-versioning-and-deprecation.md](includes/14-api-versioning-and-deprecation.md) |
-| 15 | [Contract & schema testing](#15-contract--schema-testing) | [includes/15-contract-and-schema-testing.md](includes/15-contract-and-schema-testing.md) |
-| 16 | [Multi-tenant APIs](#16-multi-tenant-apis) | [includes/16-multi-tenant-apis.md](includes/16-multi-tenant-apis.md) |
-| 17 | [GraphQL and gRPC](#17-graphql-and-grpc) | [includes/17-graphql-and-grpc.md](includes/17-graphql-and-grpc.md) |
+| # | Topic |
+|---|-------|
+| — | [Overview & full flow](includes/00-overview.md) |
+| 1 | [API design best practices](includes/01-api-design.md) |
+| 2 | [API protection](includes/02-api-protection.md) |
+| 3 | [Load balancer, API gateway & entry architecture](includes/03-api-gateway.md) |
+| 4 | [Auth model](includes/04-auth-model.md) |
+| 5 | [Rate-limit tiers](includes/05-rate-limit-tiers.md) |
+| 6 | [Threat model](includes/06-threat-model.md) |
+| 7 | [OpenAPI / Swagger](includes/07-openapi-swagger.md) |
+| 8 | [Lifecycle & reference architecture](includes/08-lifecycle-and-architecture.md) |
+| 9 | [Checklist & best practices](includes/09-checklist-and-practices.md) |
+| 10 | [Async patterns](includes/10-async-patterns.md) |
+| 11 | [Stateless architecture](includes/11-stateless-architecture.md) |
+| 12 | [Identity: RBAC, IAM & Active Directory](includes/12-identity-rbac-iam-ad.md) |
+| 13 | [Idempotency](includes/13-idempotency.md) |
+| 14 | [API versioning & deprecation](includes/14-api-versioning-and-deprecation.md) |
+| 15 | [Contract & schema testing](includes/15-contract-and-schema-testing.md) |
+| 16 | [Multi-tenant APIs](includes/16-multi-tenant-apis.md) |
+| 17 | [GraphQL and gRPC](includes/17-graphql-and-grpc.md) |
 
-> **Tip:** Open [GUIDE.md](GUIDE.md) for the full combined document in one file.
+> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
 
 ---
 
@@ -137,7 +137,7 @@ See full details → [includes/11-stateless-architecture.md](includes/11-statele
 
 ---
 
-## 12. Identity: RBAC(Role-Based Access Control), IAM & Active Directory
+## 12. Identity: RBAC, IAM & Active Directory
 
 Enterprise identity foundations: IAM lifecycle, RBAC role mapping, Active Directory structure, AD/Entra → JWT → gateway enforcement, and decision flows for API access.
 

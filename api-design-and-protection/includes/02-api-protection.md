@@ -1,4 +1,4 @@
-# API(Application Programming Interface) Protection
+# API Protection
 
 > **Related:** Entry architecture → [§3 Gateway](03-api-gateway.md) · Auth model → [§4 Auth model](04-auth-model.md) · Threat model → [§6 Threat model](06-threat-model.md) · Rate limits → [api-rate-limiting](../../api-rate-limiting/README.md)
 

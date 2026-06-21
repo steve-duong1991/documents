@@ -1,4 +1,4 @@
-# LSM(Log-Structured Merge) Trees (Log-Structured Merge Trees)
+# LSM Trees
 
 LSM trees are the main alternative to **B+ trees** for **write-heavy, append-friendly** storage. They trade **write amplification and read complexity** for **fast sequential writes** and high **ingest throughput**.
 

@@ -1,10 +1,10 @@
-.PHONY: validate validate-external build build-all check help
+.PHONY: validate validate-external build build-all check github-format help
 
 help:
 	@echo "make validate          — check internal markdown links + anchors + README TOC + prose lint"
 	@echo "make validate-external — also check https:// links (slow; optional)"
 	@echo "make check             — validate, acronym check, build-all, GUIDE.md drift check"
-	@echo "make build-all         — rebuild all GUIDE.md from includes/"
+	@echo "make github-format     — clean headings, README TOC links, GLOSSARY links for GitHub"
 	@echo "make build GUIDE=name  — rebuild one guide (e.g. GUIDE=api-design-and-protection)"
 
 validate:
@@ -22,6 +22,9 @@ check: validate
 
 build-all:
 	python3 scripts/build-guide.py
+
+github-format:
+	python3 scripts/github-format.py
 
 build:
 	python3 scripts/build-guide.py $(GUIDE)

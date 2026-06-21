@@ -1,10 +1,11 @@
 # Deployment Strategies Guide (Full)
 
 > Combined view of all sections. Modular sources live in `includes/`.
+> On GitHub, use the guide **README** table of contents for direct section links.
 
 ---
 
-# Overview — Quick Comparison
+## Overview — Quick Comparison
 
 > **Scope:** **Strategy comparison** — downtime, rollback speed, risk, and fit at a glance. Per-strategy mechanics → §1–§8; choosing and practices → [§11 Choosing a strategy](11-choosing-and-practices.md).
 >
@@ -20,7 +21,7 @@
 | **Shadow / Mirror** | None | N/A | Low (infra cost) | High | Validation before cutover |
 | **Feature flags** | None | Instant (toggle) | Low | Medium | Decouple deploy from release |
 
-## At a glance
+### At a glance
 
 - **Recreate** — simplest, accepts downtime
 - **Rolling** — default for most services
@@ -30,7 +31,7 @@
 - **Shadow** — validate rewrites safely before cutover
 - **GitOps(Git Operations)** — declarative, auditable delivery (common on Kubernetes)
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -40,7 +41,7 @@
 | No build ID on metrics during canary | Tag version on traces and dashboards |
 | Feature flags left on forever | Delete flag after 100% rollout |
 
-## See also
+### See also
 
 | Guide | Topics |
 |-------|--------|
@@ -50,15 +51,15 @@
 
 ---
 
-# Recreate (Big Bang)
+## Recreate (Big Bang)
 
 > **Related:** Safer alternatives → [§2 Rolling](02-rolling.md), [§3 Blue/green](03-blue-green.md) · Schema + deploy → [§12 Schema migrations](12-schema-migrations-and-deploy.md) · Choosing guide → [§11](11-choosing-and-practices.md)
 
-## What it is
+### What it is
 
 Stop the old version entirely, deploy the new version, then start.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart LR
@@ -67,31 +68,31 @@ flowchart LR
     C --> D[Start v2]
 ```
 
-## Pros
+### Pros
 
 - Simplest to implement and reason about
 - No version coexistence issues
 - Clean state (no mixed versions)
 
-## Cons
+### Cons
 
 - Downtime during the switch
 - Slow or painful rollback (redeploy old version)
 - All users hit the new version at once
 
-## When to use
+### When to use
 
 - Dev, staging, and internal tools
 - Low-traffic apps or maintenance-window deployments
 - Stateless batch jobs where downtime is acceptable
 
-## Best practices
+### Best practices
 
 - Schedule maintenance windows and communicate clearly
 - Keep the previous artifact/image tagged and ready to redeploy
 - Run database migrations with a backward-compatible plan if a DB is involved
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -101,17 +102,17 @@ flowchart LR
 
 ---
 
-# Rolling Deployment
+## Rolling Deployment
 
 > **Scope:** **Incremental instance replacement** — mixed versions during rollout; capacity and health-check math. Fast full-environment rollback → [§3 Blue-green](03-blue-green.md). Automated ramps and analysis → [§10 Progressive delivery](10-progressive-delivery.md).
 >
 > **Related:** SLO(Service Level Objective) rollback triggers → [§13](13-slo-rollback-triggers.md) · Schema coupling → [§12](12-schema-migrations-and-deploy.md) · Stateless prerequisite → [api-design §11](../api-design-and-protection/includes/11-stateless-architecture.md)
 
-## What it is
+### What it is
 
 Replace instances gradually (e.g., one of N at a time) while traffic keeps flowing.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart TB
@@ -132,24 +133,24 @@ flowchart TB
     end
 ```
 
-## Pros
+### Pros
 
 - No full outage (usually)
 - Uses existing infrastructure (no duplicate environment)
 - Standard in Kubernetes, ECS, and VM fleets
 
-## Cons
+### Cons
 
 - Two versions run at once — schema and API(Application Programming Interface) compatibility required
 - Rollback is slower (roll back instance by instance)
 - A bad release can affect a subset of users before you stop
 
-## When to use
+### When to use
 
 - Default choice for most web APIs and microservices
 - Container orchestration (Kubernetes `RollingUpdate`, ECS rolling updates)
 
-## Best practices
+### Best practices
 
 - Set `maxUnavailable` / `maxSurge` conservatively
 - Use health checks and readiness probes before receiving traffic
@@ -158,7 +159,7 @@ flowchart TB
 
 ---
 
-## Failure modes
+### Failure modes
 
 | Failure | Symptom | Mitigation |
 |---------|---------|------------|
@@ -170,7 +171,7 @@ flowchart TB
 
 ---
 
-## Kubernetes example
+### Kubernetes example
 
 ```yaml
 strategy:
@@ -190,7 +191,7 @@ Pair with **PodDisruptionBudget** so node drains don't take all replicas.
 
 ---
 
-## Abort and rollback
+### Abort and rollback
 
 1. `kubectl rollout pause deployment/my-api`
 2. Confirm error rate stabilizes on remaining v1 pods
@@ -199,7 +200,7 @@ Pair with **PodDisruptionBudget** so node drains don't take all replicas.
 
 Schema note: rollback app only works if **contract** migrations were not applied → [12-schema-migrations-and-deploy.md](12-schema-migrations-and-deploy.md).
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -211,17 +212,17 @@ Schema note: rollback app only works if **contract** migrations were not applied
 
 ---
 
-# Blue-Green Deployment
+## Blue-Green Deployment
 
 > **Scope:** **Full-environment swap** — two complete stacks; deploy to idle Green, validate, switch traffic; Blue stays warm for rollback. Gradual % rollout → [§4 Canary](04-canary.md).
 >
 > **Related:** Canary alternative → [§4 Canary](04-canary.md) · Rollback triggers → [§13](13-slo-rollback-triggers.md) · Schema compatibility → [§12](12-schema-migrations-and-deploy.md)
 
-## What it is
+### What it is
 
 Two full environments: **Blue** (live) and **Green** (idle). Deploy to Green, validate, switch traffic, keep Blue for rollback.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart LR
@@ -234,32 +235,32 @@ flowchart LR
     Switch --> Standby[Blue v1 - STANDBY]
 ```
 
-## Pros
+### Pros
 
 - Near-instant rollback (flip the load balancer back to Blue)
 - Test the full stack in a production-like environment before cutover
 - Clear cutover moment
 
-## Cons
+### Cons
 
 - Double infrastructure cost (or capacity reservation)
 - Database and state sync is hard if the app is not stateless
 - The switch must be atomic at the edge (load balancer, DNS, service mesh)
 
-## When to use
+### When to use
 
 - High availability requirements
 - Releases where rollback must be seconds, not minutes
 - Stateless apps or apps with shared external state (RDS, Redis, etc.)
 
-## Best practices
+### Best practices
 
 - Run smoke tests on Green before switching
 - Use connection draining on the old pool
 - For databases: prefer backward-compatible migrations; avoid two write paths
 - Automate switch and rollback — manual DNS flips are error-prone
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -271,17 +272,17 @@ flowchart LR
 
 ---
 
-# Canary Deployment
+## Canary Deployment
 
 > **Scope:** **Gradual traffic shift** — route a small % to the new version, ramp on metrics, rollback by routing traffic back. Instant full-stack swap → [§3 Blue-green](03-blue-green.md). Flags + automation → [§10 Progressive delivery](10-progressive-delivery.md).
 >
 > **Related:** Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO(Service Level Objective) rollback → [§13](13-slo-rollback-triggers.md) · Progressive delivery → [§10](10-progressive-delivery.md)
 
-## What it is
+### What it is
 
 Route a small percentage of traffic to the new version; increase gradually if metrics look good.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart TB
@@ -294,25 +295,25 @@ flowchart TB
     Metrics -->|Bad| Rollback[Route 0% to v2]
 ```
 
-## Pros
+### Pros
 
 - Limits blast radius
 - Validates real user traffic and production load
 - Natural fit for progressive delivery
 
-## Cons
+### Cons
 
 - Requires traffic splitting (service mesh, load balancer, CDN(Content Delivery Network), API(Application Programming Interface) gateway)
 - Two versions plus compatible schemas and APIs
 - Observability and SLOs must be solid
 
-## When to use
+### When to use
 
 - Production services with measurable risk
 - Payment, auth, checkout, search ranking changes
 - Teams with good metrics and alerting in place
 
-## Best practices
+### Best practices
 
 - Start small (1–5%); automate promotion steps
 - Define rollback triggers (error rate, p99 latency, conversion drop)
@@ -321,7 +322,7 @@ flowchart TB
 
 ---
 
-## Failure modes
+### Failure modes
 
 | Failure | Symptom | Action |
 |---------|---------|--------|
@@ -332,7 +333,7 @@ flowchart TB
 
 ---
 
-## Automated promotion example
+### Automated promotion example
 
 | Step | Traffic to v2 | Bake time | Rollback if |
 |------|---------------|-----------|-------------|
@@ -345,7 +346,7 @@ Tools: Argo Rollouts, Flagger, AWS CodeDeploy, custom LB weights.
 
 ---
 
-## ECS / ALB canary (sketch)
+### ECS / ALB canary (sketch)
 
 - Target group A (stable) + B (canary)
 - Listener rule: weighted forward 95/5
@@ -353,7 +354,7 @@ Tools: Argo Rollouts, Flagger, AWS CodeDeploy, custom LB weights.
 
 Full rollback triggers → [13-slo-rollback-triggers.md](13-slo-rollback-triggers.md).
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -365,15 +366,15 @@ Full rollback triggers → [13-slo-rollback-triggers.md](13-slo-rollback-trigger
 
 ---
 
-# A/B Testing (Experiment Deployment)
+## A/B Testing (Experiment Deployment)
 
 > **Related:** Traffic splitting → [§4 Canary](04-canary.md) · Feature flags → [§7 Feature flags](07-feature-flags.md) · Not a safety net alone → [§11 Choosing a strategy](11-choosing-and-practices.md)
 
-## What it is
+### What it is
 
 Similar to canary, but the goal is to **compare behavior** (conversion, engagement) — not just release safety.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart LR
@@ -384,29 +385,29 @@ flowchart LR
     B --> Analytics
 ```
 
-## Pros
+### Pros
 
 - Data-driven product decisions
 - Can test UX, algorithms, and pricing
 
-## Cons
+### Cons
 
 - Not primarily a safety or ops pattern
 - Needs experiment design, statistics, and privacy review
 - Can conflict with a "one stable production" ops mindset
 
-## When to use
+### When to use
 
 - Product experiments (UI, funnel, recommendations)
 - **Not** as your only deployment safety net
 
-## Best practices
+### Best practices
 
 - Use feature flags plus an experiment SDK (LaunchDarkly, Optimizely, GrowthBook, etc.)
 - Separate "deploy code" from "enable experiment"
 - Define success metrics and sample size upfront
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -416,15 +417,15 @@ flowchart LR
 
 ---
 
-# Shadow / Mirror / Dark Launch
+## Shadow / Mirror / Dark Launch
 
 > **Related:** Idempotent writes → [api-design §13 Idempotency](../api-design-and-protection/includes/13-idempotency.md) · Read-only validation first → [§11 Choosing](11-choosing-and-practices.md) · Before canary → [§4 Canary](04-canary.md)
 
-## What it is
+### What it is
 
 Copy production traffic to the new system **without** serving responses to users (or process but discard the response).
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart TB
@@ -433,28 +434,28 @@ flowchart TB
     Shadow --> Compare[Compare latency, correctness, logs]
 ```
 
-## Pros
+### Pros
 
 - Validates the new system under real load with zero user impact
 - Great for rewrites, new search backends, and ML models
 
-## Cons
+### Cons
 
 - Extra compute; duplicated side effects if not careful
 - Hard with writes (need idempotency, read-only shadow, or synthetic traffic)
 
-## When to use
+### When to use
 
 - Major re-architecture
 - Validating performance before any user-facing cutover
 
-## Best practices
+### Best practices
 
 - Shadow **reads** first; treat writes with extreme care
 - Compare outputs (diff, sampling) automatically
 - Cap shadow traffic to control cost
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -464,15 +465,15 @@ flowchart TB
 
 ---
 
-# Feature Flags (Toggle-Based Release)
+## Feature Flags (Toggle-Based Release)
 
 > **Related:** Canary routing → [§4 Canary](04-canary.md) · Progressive delivery → [§10](10-progressive-delivery.md) · Rollback → [§13](13-slo-rollback-triggers.md)
 
-## What it is
+### What it is
 
 Deploy new code **disabled**; enable for users or segments when ready.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart LR
@@ -482,24 +483,24 @@ flowchart LR
     Flag -->|Kill switch| OldPath
 ```
 
-## Pros
+### Pros
 
 - Decouple **deployment** (code on servers) from **release** (feature live)
 - Instant rollback without redeploy
 - Enables canary, A/B testing, and trunk-based development
 
-## Cons
+### Cons
 
 - Flag debt (dead code paths)
 - Requires discipline: cleanup and testing both paths
 - Another system to operate and secure
 
-## When to use
+### When to use
 
 - User-facing product teams at scale
 - Long-running branches you want to merge early
 
-## Best practices
+### Best practices
 
 - Keep flags short-lived; delete after full rollout
 - Avoid flags deep in hot paths without performance testing
@@ -508,7 +509,7 @@ flowchart LR
 
 ---
 
-## Failure modes
+### Failure modes
 
 | Failure | Symptom | Fix |
 |---------|---------|-----|
@@ -519,7 +520,7 @@ flowchart LR
 
 ---
 
-## Flag types
+### Flag types
 
 | Type | Use | Lifetime |
 |------|-----|----------|
@@ -530,7 +531,7 @@ flowchart LR
 
 ---
 
-## LaunchDarkly / Unleash / custom
+### LaunchDarkly / Unleash / custom
 
 | Concern | Practice |
 |---------|----------|
@@ -541,7 +542,7 @@ flowchart LR
 
 Decouple from deploy: ship code at 0% → canary via flag → 100% → remove flag → [04-canary.md](04-canary.md).
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -553,15 +554,15 @@ Decouple from deploy: ship code at 0% → canary via flag → 100% → remove fl
 
 ---
 
-# Immutable Deployment
+## Immutable Deployment
 
 > **Related:** Blue/green cutover → [§3 Blue/green](03-blue-green.md) · Rolling replacement → [§2 Rolling](02-rolling.md) · Same artifact promotion → [§11 Best practices](11-choosing-and-practices.md)
 
-## What it is
+### What it is
 
 Never patch running servers — replace entire artifacts (AMI, container image, VM).
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart LR
@@ -570,27 +571,27 @@ flowchart LR
     Old --> New[All instances run v2]
 ```
 
-## Pros
+### Pros
 
 - Reproducible, auditable releases
 - No configuration drift
 - Pairs well with blue-green and rolling strategies
 
-## Cons
+### Cons
 
 - Requires a solid image/build pipeline
 - Slower if images are huge or builds are slow
 
-## When to use
+### When to use
 
 - Containers, cloud-native apps, regulated environments
 
-## Best practices
+### Best practices
 
 - Tag images with git SHA; promote the same artifact across environments
 - No SSH-and-fix in production — fix forward via a new image
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -600,15 +601,15 @@ flowchart LR
 
 ---
 
-# GitOps(Git Operations)
+## GitOps
 
 > **Related:** Progressive delivery controllers → [§10 Progressive delivery](10-progressive-delivery.md) · Rollback triggers → [§13 SLO rollback](13-slo-rollback-triggers.md) · Scope note in [root README](../../README.md#scope)
 
-## What it is
+### What it is
 
 Git is the source of truth; a controller (Argo CD, Flux) reconciles cluster state to match the repo.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart LR
@@ -620,29 +621,29 @@ flowchart LR
     GitOps -->|drift| Reconcile[Auto-reconcile or alert]
 ```
 
-## Pros
+### Pros
 
 - Auditable, declarative, repeatable
 - Easy rollback = revert commit
 - Clear separation: app repo vs infrastructure repo
 
-## Cons
+### Cons
 
 - Learning curve; needs disciplined repo structure
 - Sync delays; secrets management needs care
 
-## When to use
+### When to use
 
 - Kubernetes-heavy organizations
 - Teams wanting PR-reviewed infrastructure changes
 
-## Best practices
+### Best practices
 
 - Separate environment branches or folders (dev / staging / prod)
 - Use progressive sync (dev auto, prod manual approval)
 - Never store secrets in plain Git
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -652,17 +653,17 @@ flowchart LR
 
 ---
 
-# Progressive Delivery
+## Progressive Delivery
 
 > **Scope:** **Orchestration layer** — combines canary ramps, feature flags, and automated analysis (e.g. Argo Rollouts, Flagger). Canary mechanics alone → [§4 Canary](04-canary.md). Toggle patterns without traffic split → [§7 Feature flags](07-feature-flags.md).
 >
 > **Related:** Canary basics → [§4 Canary](04-canary.md) · Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO(Service Level Objective) gates → [§13 SLO rollback](13-slo-rollback-triggers.md) · Observability → [HTS §11](../high-throughput-systems/includes/11-observability.md)
 
-## What it is
+### What it is
 
 Combines rolling deployment, canary releases, feature flags, and automated analysis (e.g., Argo Rollouts, Flagger).
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart TB
@@ -673,27 +674,27 @@ flowchart TB
     Promote --> Flags[Enable feature flags by segment]
 ```
 
-## Pros
+### Pros
 
 - Strongest safety for high-stakes systems
 - Reduces human error during promotion
 
-## Cons
+### Cons
 
 - Highest operational and tooling complexity
 
-## When to use
+### When to use
 
 - Large-scale SaaS, fintech, healthcare
 - Teams with mature SRE and observability practices
 
-## Best practices
+### Best practices
 
 - Define SLO-based promotion and rollback gates
 - Automate the full pipeline — manual canary steps don't scale
 - Combine with feature flags for logic that can't be split by traffic alone
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -703,11 +704,11 @@ flowchart TB
 
 ---
 
-# Choosing a Strategy & Best Practices
+## Choosing a Strategy & Best Practices
 
 > **Related:** Overview comparison → [§00 Overview](00-overview.md) · Schema migrations → [§12](12-schema-migrations-and-deploy.md) · SLO(Service Level Objective) rollback → [§13](13-slo-rollback-triggers.md)
 
-## Decision flow
+### Decision flow
 
 ```mermaid
 flowchart TD
@@ -724,7 +725,7 @@ flowchart TD
     BlueGreen --> Flags
 ```
 
-## Rule of thumb
+### Rule of thumb
 
 | Stage | Recommendation |
 |-------|----------------|
@@ -734,7 +735,7 @@ flowchart TD
 | **Add when rollback time is SLA-critical** | Blue-green |
 | **Add for major rewrites** | Shadow traffic |
 
-## Cross-cutting best practices
+### Cross-cutting best practices
 
 1. **Backward-compatible changes** — Assume two versions run during rolling, canary, and blue-green.
 2. **Database migrations** — Expand → deploy → contract; never break schema and code in one step.
@@ -747,7 +748,7 @@ flowchart TD
 9. **Blast radius** — Deploy during low traffic when possible; use maintenance windows for recreate.
 10. **Security** — Signed images, least-privilege deploy pipelines, secrets outside Git.
 
-## Common combinations by stack
+### Common combinations by stack
 
 | Stack | Typical pattern |
 |-------|-----------------|
@@ -757,7 +758,7 @@ flowchart TD
 | **VMs + load balancer** | Rolling pool replace or blue-green ASG swap |
 | **Mobile** | Phased store rollout (similar to canary, store-controlled) |
 
-## Summary
+### Summary
 
 - **Recreate** — simple, downtime OK
 - **Rolling** — default for most services
@@ -769,7 +770,7 @@ flowchart TD
 
 Deep dives → [12-schema-migrations-and-deploy.md](12-schema-migrations-and-deploy.md) · [13-slo-rollback-triggers.md](13-slo-rollback-triggers.md)
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -781,7 +782,7 @@ Deep dives → [12-schema-migrations-and-deploy.md](12-schema-migrations-and-dep
 
 ---
 
-# Schema Migrations and Deploy Coupling
+## Schema Migrations and Deploy Coupling
 
 Application deploys and database schema changes must be **compatible across two code versions** whenever you use rolling, canary, or blue/green. Treat migrations as part of the release — not a separate step after deploy.
 
@@ -789,7 +790,7 @@ Application deploys and database schema changes must be **compatible across two 
 
 ---
 
-## At a glance
+### At a glance
 
 | Phase | Safe change | Risky change |
 |-------|-------------|--------------|
@@ -801,7 +802,7 @@ Application deploys and database schema changes must be **compatible across two 
 
 ---
 
-## Expand / deploy / contract flow
+### Expand / deploy / contract flow
 
 ```mermaid
 flowchart LR
@@ -828,7 +829,7 @@ flowchart LR
 
 ---
 
-## Deploy strategy × migration matrix
+### Deploy strategy × migration matrix
 
 | Strategy | Migration constraint |
 |----------|---------------------|
@@ -839,7 +840,7 @@ flowchart LR
 
 ---
 
-## Event-sourced and CQRS(Command Query Responsibility Segregation) systems
+### Event-sourced and CQRS systems
 
 | Component | Deploy concern |
 |-----------|----------------|
@@ -851,7 +852,7 @@ Deploy projectors **before** or **with** API(Application Programming Interface) 
 
 ---
 
-## Online vs blocking DDL (PostgreSQL)
+### Online vs blocking DDL (PostgreSQL)
 
 | Operation | Blocking? | Prefer |
 |-----------|-----------|--------|
@@ -865,7 +866,7 @@ Details → [postgresql-performance §15](../postgresql-performance/includes/15-
 
 ---
 
-## Release checklist (schema + deploy)
+### Release checklist (schema + deploy)
 
 - [ ] Migration is backward compatible with **previous** app version
 - [ ] Expand migration applied and verified **before** traffic on new code (or in same pipeline stage)
@@ -877,7 +878,7 @@ Details → [postgresql-performance §15](../postgresql-performance/includes/15-
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -889,9 +890,9 @@ Details → [postgresql-performance §15](../postgresql-performance/includes/15-
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Expand / contract discipline
+#### Expand / contract discipline
 
 **Pros:** Zero-downtime rolling deploys; safe rollback to previous binary; works with canary and blue/green.
 
@@ -899,7 +900,7 @@ Details → [postgresql-performance §15](../postgresql-performance/includes/15-
 
 ---
 
-# SLO(Service Level Objective)-Based Rollback Triggers
+## SLO-Based Rollback Triggers
 
 Automated rollback beats human judgment under incident pressure — but only when triggers are **defined before deploy**, tied to **version/build ID**, and tested in staging.
 
@@ -907,7 +908,7 @@ Automated rollback beats human judgment under incident pressure — but only whe
 
 ---
 
-## At a glance
+### At a glance
 
 | Trigger type | Example | Action |
 |--------------|---------|--------|
@@ -921,7 +922,7 @@ Automated rollback beats human judgment under incident pressure — but only whe
 
 ---
 
-## Rollback decision flow
+### Rollback decision flow
 
 ```mermaid
 flowchart TD
@@ -938,7 +939,7 @@ flowchart TD
 
 ---
 
-## Metrics to wire per deploy
+### Metrics to wire per deploy
 
 | Metric | Baseline window | Typical threshold |
 |--------|-----------------|-------------------|
@@ -953,7 +954,7 @@ Tag all series with **`version`** or **`build_id`** so canary analysis isolates 
 
 ---
 
-## Rollback mechanics by strategy
+### Rollback mechanics by strategy
 
 | Strategy | Fast rollback |
 |----------|---------------|
@@ -967,7 +968,7 @@ Schema note: if only **expand** migrations ran, app rollback is usually enough. 
 
 ---
 
-## Feature flags vs deploy rollback
+### Feature flags vs deploy rollback
 
 | Situation | Prefer |
 |-----------|--------|
@@ -979,7 +980,7 @@ Use flags for **release**; use deploy rollback for **broken artifact**.
 
 ---
 
-## Pre-deploy checklist
+### Pre-deploy checklist
 
 - [ ] Rollback triggers documented in runbook with thresholds
 - [ ] Dashboard filtered by `build_id` / canary slice
@@ -990,7 +991,7 @@ Use flags for **release**; use deploy rollback for **broken artifact**.
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1002,9 +1003,9 @@ Use flags for **release**; use deploy rollback for **broken artifact**.
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Automated SLO rollback
+#### Automated SLO rollback
 
 **Pros:** Limits blast radius; faster recovery; objective criteria reduce debate.
 

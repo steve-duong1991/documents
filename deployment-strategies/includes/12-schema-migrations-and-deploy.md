@@ -56,7 +56,7 @@ flowchart LR
 
 ---
 
-## Event-sourced and CQRS(Command Query Responsibility Segregation) systems
+## Event-sourced and CQRS systems
 
 | Component | Deploy concern |
 |-----------|----------------|

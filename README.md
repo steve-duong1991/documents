@@ -1,8 +1,8 @@
 # Engineering Guides
 
-Practical reference docs for building and operating production APIs and data systems. Each guide has a modular `README.md` (table of contents + section links), a combined `GUIDE.md` (full document), and `includes/*.md` (reusable sections).
+Practical reference docs for building and operating production APIs and data systems. Each guide has a **README** (table of contents with direct section links), **`includes/*.md`** (full sections), and **`GUIDE.md`** (all sections in one file).
 
-> **Tip:** Browse by topic below, or follow a [learning path](#learning-paths). Open any guide's `GUIDE.md` when you want everything in one file.
+> **Reading on GitHub:** Start from [learning paths](#learning-paths) or a guide README — **click a topic in the table** to open the full section file. Use [GUIDE.md](api-design-and-protection/GUIDE.md) only when you want one long page. Acronym expansions appear on first use in each file (`CDC(Change Data Capture)`).
 
 ---
 
@@ -182,6 +182,7 @@ documents/
 ├── scripts/
 │   ├── build-guide.py
 │   ├── expand-acronyms.py
+│   ├── github-format.py
 │   ├── validate-doc-links.py
 │   ├── validate-doc-readme.py
 │   └── validate-doc-prose.py

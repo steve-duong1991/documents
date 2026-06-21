@@ -1,16 +1,17 @@
 # PostgreSQL Performance Guide (Full)
 
 > Combined view of all sections. Modular sources live in `includes/`.
+> On GitHub, use the guide **README** table of contents for direct section links.
 
 ---
 
-# Overview — PostgreSQL Performance
+## Overview — PostgreSQL Performance
 
 PostgreSQL performance work follows a predictable order: **measure first**, then fix queries and schema, tune the server, and scale out only when a single node is truly exhausted.
 
 > **Related:** System-wide throughput order → [HTS README](../high-throughput-systems/README.md) · B+ vs LSM(Log-Structured Merge) storage → [tree-and-index-structures](../tree-and-index-structures/README.md) · Production credentials → [database-connection-and-security](../database-connection-and-security/README.md)
 
-## Layers at a glance
+### Layers at a glance
 
 | Layer | Focus | Typical tools |
 |-------|-------|---------------|
@@ -22,7 +23,7 @@ PostgreSQL performance work follows a predictable order: **measure first**, then
 | **Scale-out** | Read load, large tables, retention | Replicas, partitioning, caching |
 | **Backup / PITR(Point-in-Time Recovery)** | Recovery drills, WAL(Write-Ahead Log) restore | Managed backups, [§16](16-backup-restore-and-pitr.md) |
 
-## Strategy quick comparison
+### Strategy quick comparison
 
 | Strategy | Effort | Impact | When to use first |
 |----------|--------|--------|-------------------|
@@ -36,7 +37,7 @@ PostgreSQL performance work follows a predictable order: **measure first**, then
 | Read replicas | Medium | Medium | Read-heavy after query optimization |
 | App caching | Medium | High | Repeated identical hot reads |
 
-## Default recommendation
+### Default recommendation
 
 For most OLTP workloads:
 
@@ -48,7 +49,7 @@ For most OLTP workloads:
 6. Read **[§9 scale-out terminology](09-views-functions-and-scale-out-terminology.md)** before choosing partitioning, replicas, or sharding
 7. Only then consider **partitioning**, **replicas**, or **caching**
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -58,11 +59,11 @@ For most OLTP workloads:
 | Raise `max_connections` instead of pooling | PgBouncer or RDS Proxy |
 | Tune many config knobs at once | One change; re-measure each time |
 
-## Performance decision flow
+### Performance decision flow
 
 Full decision flowchart, scenario table, and common mistakes → **[§13 Decision guide and common mistakes](13-decision-guide-and-common-mistakes.md)**.
 
-## Priority order
+### Priority order
 
 1. **Measure** — never optimize blind
 2. **Index correctly** — partial, composite, covering where needed
@@ -76,7 +77,7 @@ Full decision flowchart, scenario table, and common mistakes → **[§13 Decisio
 
 ---
 
-# Measurement — Start Here
+## Measurement — Start Here
 
 Always measure before adding indexes, changing config, or scaling hardware. Most performance problems are visible in query plans and statistics.
 
@@ -84,7 +85,7 @@ Always measure before adding indexes, changing config, or scaling hardware. Most
 >
 > **Related:** Load testing under concurrency → [HTS §1 Measurement and SLO](../high-throughput-systems/includes/01-measurement-and-slo.md) · Full decision flow → [§13 Decision guide](13-decision-guide-and-common-mistakes.md)
 
-## EXPLAIN ANALYZE
+### EXPLAIN ANALYZE
 
 Run on any slow or suspicious query:
 
@@ -93,7 +94,7 @@ EXPLAIN (ANALYZE, BUFFERS, VERBOSE)
 SELECT ...
 ```
 
-### What to look for
+#### What to look for
 
 | Signal | Likely cause | Next step |
 |--------|--------------|-----------|
@@ -104,7 +105,7 @@ SELECT ...
 | High **shared/local hit ratio** in BUFFERS | Cache working well | — |
 | High **read=** (disk reads) in BUFFERS | Data not in cache | Index, reduce scanned rows, more RAM |
 
-## pg_stat_statements
+### pg_stat_statements
 
 The most important extension for production tuning. Tracks cumulative time per normalized query.
 
@@ -124,7 +125,7 @@ LIMIT 20;
 
 **Focus on:** queries with high **total time** (not just high mean time with few calls).
 
-## Other useful views
+### Other useful views
 
 | View | Use for |
 |------|---------|
@@ -134,7 +135,7 @@ LIMIT 20;
 | `pg_locks` | Blocking and blocked sessions |
 | `pg_stat_database` | Cache hit ratio, commits, conflicts |
 
-## Cache hit ratio
+### Cache hit ratio
 
 ```sql
 SELECT
@@ -146,7 +147,7 @@ WHERE datname = current_database();
 
 Aim for **> 99%** on OLTP workloads. Lower values may indicate working set larger than RAM or missing indexes causing excess reads.
 
-## When to use
+### When to use
 
 | Situation | Tool |
 |-----------|------|
@@ -156,14 +157,14 @@ Aim for **> 99%** on OLTP workloads. Lower values may indicate working set large
 | Throughput collapsed | `pg_stat_activity` + `pg_locks` |
 | After schema or data changes | Re-run EXPLAIN; compare plans |
 
-## Best practices
+### Best practices
 
 - Capture plans on **production-like data volumes** — plans differ on empty tables
 - Compare **before and after** when making changes
 - Reset `pg_stat_statements` only when you need a clean window — not routinely
 - Log slow queries (`log_min_duration_statement`) as a safety net, not a substitute for `pg_stat_statements`
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -175,13 +176,13 @@ Aim for **> 99%** on OLTP workloads. Lower values may indicate working set large
 
 ---
 
-# Indexing
+## Indexing
 
 Indexing is usually the **highest-ROI** optimization for read-heavy workloads. A well-chosen index turns a sequential scan of millions of rows into a few index lookups.
 
 > **Related:** General tree and index structures (B+, LSM(Log-Structured Merge), when to use each) → [tree-and-index-structures/GUIDE.md](../tree-and-index-structures/GUIDE.md) · Query shape → [§3 Query design](03-query-design.md) · Online index builds → [§15 Schema migration checklist](15-schema-migration-checklist.md)
 
-## Index types
+### Index types
 
 | Type | When to use | Example |
 |------|-------------|---------|
@@ -193,7 +194,7 @@ Indexing is usually the **highest-ROI** optimization for read-heavy workloads. A
 | **GiST / SP-GiST** | Geospatial, range types, nearest-neighbor | PostGIS, `tsrange` |
 | **BRIN(Block-Range Index)** | Very large, naturally ordered data | Time-series timestamps, monotonic IDs |
 
-## Column order in composite indexes
+### Column order in composite indexes
 
 Put columns in this order:
 
@@ -207,7 +208,7 @@ CREATE INDEX idx_orders_tenant_status_created
   ON orders (tenant_id, status, created_at DESC);
 ```
 
-## Partial indexes
+### Partial indexes
 
 Index only the rows your query needs — smaller, faster, cheaper to maintain.
 
@@ -219,7 +220,7 @@ CREATE INDEX idx_users_active_email
 
 **When to use:** Soft deletes, status filters, "active only" queries that dominate traffic.
 
-## Covering indexes (index-only scans)
+### Covering indexes (index-only scans)
 
 When the index contains all columns the query needs, PostgreSQL can skip the heap:
 
@@ -231,7 +232,7 @@ CREATE INDEX idx_orders_covering
 
 Requires an up-to-date visibility map (healthy autovacuum).
 
-## Pros and cons
+### Pros and cons
 
 | Pros | Cons |
 |------|------|
@@ -240,7 +241,7 @@ Requires an up-to-date visibility map (healthy autovacuum).
 | Supports unique constraints | Wrong indexes waste resources |
 | Partial indexes reduce write cost | Too many indexes confuse the planner |
 
-## When to use
+### When to use
 
 - `EXPLAIN` shows **Seq Scan** on a large table with a selective `WHERE`
 - Foreign key columns used in **JOINs**
@@ -248,14 +249,14 @@ Requires an up-to-date visibility map (healthy autovacuum).
 - JSONB fields queried with `@>`, `?`, `?&` → **GIN**
 - Tables with **100M+** time-ordered rows and range queries → consider **BRIN**
 
-## When NOT to use
+### When NOT to use
 
 - **Small tables** — sequential scan is often faster
 - **Low-selectivity columns alone** — e.g. boolean `is_active` on its own
 - **Write-heavy tables** where the indexed query is rare
 - **Duplicating indexes** — `(a)` and `(a, b)` may make `(a)` redundant
 
-## Best practices
+### Best practices
 
 - Index columns in `WHERE`, `JOIN`, and often `ORDER BY`
 - Drop unused indexes: `pg_stat_user_indexes` where `idx_scan = 0`
@@ -263,7 +264,7 @@ Requires an up-to-date visibility map (healthy autovacuum).
 - Validate with `EXPLAIN ANALYZE` after creation
 - Don't index every column "just in case"
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -274,7 +275,7 @@ Requires an up-to-date visibility map (healthy autovacuum).
 | `CREATE INDEX` (not CONCURRENTLY) in prod | Blocks writes | `CREATE INDEX CONCURRENTLY` |
 | Never drop unused indexes | Wasted write cost | `pg_stat_user_indexes` where `idx_scan = 0` |
 
-## Production example
+### Production example
 
 ```sql
 -- Before: Seq Scan on 5M rows
@@ -289,13 +290,13 @@ CREATE INDEX CONCURRENTLY idx_events_org_created
 
 ---
 
-# Query Design
+## Query Design
 
 Even perfect indexes cannot fix a fundamentally expensive query shape. Query design reduces work before it hits the storage layer.
 
 > **Related:** Index support for filters and sorts → [§2 Indexing](02-indexing.md) · Measurement first → [§1 Measurement](01-measurement.md) · System-wide latency → [HTS §5 Database throughput](../high-throughput-systems/includes/05-database-throughput.md)
 
-## Core strategies
+### Core strategies
 
 | Strategy | Why it helps | Example |
 |----------|--------------|---------|
@@ -306,7 +307,7 @@ Even perfect indexes cannot fix a fundamentally expensive query shape. Query des
 | **Batch writes** | Fewer round trips | Multi-row `INSERT`, `COPY` |
 | **Eliminate N+1** | One round trip vs hundreds | JOIN or `WHERE id = ANY($1)` |
 
-## N+1 problem
+### N+1 problem
 
 **Bad — one query per row:**
 
@@ -324,7 +325,7 @@ SELECT * FROM orders WHERE user_id = ANY($1::int[]);
 SELECT o.* FROM orders o JOIN users u ON u.id = o.user_id WHERE u.org_id = $1;
 ```
 
-## Pagination
+### Pagination
 
 **Offset pagination** (`LIMIT 20 OFFSET 100000`) gets slower as offset grows — PostgreSQL must scan and discard rows.
 
@@ -340,19 +341,19 @@ LIMIT 20;
 
 Requires an index on `(created_at DESC, id DESC)`.
 
-## Aggregations
+### Aggregations
 
 - Pre-filter with `WHERE` before `GROUP BY`
 - Use **`HAVING`** only when filtering aggregates — not as a substitute for `WHERE`
 - For repeated expensive aggregates, consider **materialized views**
 
-## JOINs
+### JOINs
 
 - Join on **indexed columns** (usually PK/FK)
 - Avoid joining wide tables when only a few columns are needed — select early or use covering indexes
 - `LEFT JOIN` where you filter the right table in `WHERE` often behaves like an inner join — put filters in `ON` when appropriate
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -364,14 +365,14 @@ Requires an index on `(created_at DESC, id DESC)`.
 | Offset pagination on large tables | Linear slowdown as offset grows | Keyset / cursor pagination |
 | ORM N+1 on hot paths | Hundreds of round trips | JOIN, batch `ANY()`, or eager load |
 
-## When to use
+### When to use
 
 - After `EXPLAIN` shows the plan is structurally expensive (large sorts, hash joins on huge sets)
 - When ORMs generate inefficient SQL(Structured Query Language)
 - When API(Application Programming Interface) latency scales with row count linearly
 - When write amplification is high from many small statements
 
-## Best practices
+### Best practices
 
 - Review ORM-generated SQL for hot paths
 - Use **prepared statements** for repeated queries (plan caching)
@@ -380,13 +381,13 @@ Requires an index on `(created_at DESC, id DESC)`.
 
 ---
 
-# Schema Design
+## Schema Design
 
 Good schema design prevents expensive fixes later. Normalize first; denormalize only when measurement shows a real bottleneck.
 
 > **Related:** Index choices for schema shape → [§2 Indexing](02-indexing.md) · Query patterns → [§3 Query design](03-query-design.md) · Online migrations → [§15 Schema migration checklist](15-schema-migration-checklist.md)
 
-## Core principles
+### Core principles
 
 | Principle | Guidance |
 |-----------|----------|
@@ -396,7 +397,7 @@ Good schema design prevents expensive fixes later. Normalize first; denormalize 
 | **Use constraints** | PK, FK, `NOT NULL`, `CHECK` — help planner and data quality |
 | **Avoid hot wide rows** | Split rarely accessed columns into separate tables |
 
-## Data type choices
+### Data type choices
 
 | Use | Instead of | Why |
 |-----|------------|-----|
@@ -406,7 +407,7 @@ Good schema design prevents expensive fixes later. Normalize first; denormalize 
 | `numeric` | `float` for money | Exact decimal arithmetic |
 | `uuid` / `bigint` | Random string PKs | Smaller indexes; better locality with sequential IDs |
 
-## JSONB
+### JSONB
 
 Good for semi-structured or evolving attributes. **Not** a replacement for columns you filter and join on constantly.
 
@@ -423,13 +424,13 @@ SELECT * FROM events WHERE payload @> '{"type": "purchase"}';
 | Schema that changes often | Foreign keys |
 | Nested documents | Sorting and range queries at scale |
 
-## Primary keys and indexing
+### Primary keys and indexing
 
 - Every table should have a **primary key**
 - **Sequential IDs** (`bigint` identity) give better index locality than random UUIDs
 - If using UUIDs, consider **`uuidv7`** or **`gen_random_uuid()`** with awareness of index bloat vs sequential inserts
 
-## Foreign keys
+### Foreign keys
 
 Always index the **referencing column** (child side):
 
@@ -444,7 +445,7 @@ CREATE INDEX idx_order_items_order_id ON order_items (order_id);
 
 Without this index, deletes/updates on the parent table lock and scan the child.
 
-## Soft deletes
+### Soft deletes
 
 If most queries filter `WHERE deleted_at IS NULL`, use a **partial index**:
 
@@ -452,7 +453,7 @@ If most queries filter `WHERE deleted_at IS NULL`, use a **partial index**:
 CREATE INDEX idx_users_email_active ON users (email) WHERE deleted_at IS NULL;
 ```
 
-## When to denormalize
+### When to denormalize
 
 - Read-heavy dashboards that aggregate across many joins
 - Counters updated frequently (consider careful concurrency handling)
@@ -460,7 +461,7 @@ CREATE INDEX idx_users_email_active ON users (email) WHERE deleted_at IS NULL;
 
 Always measure join cost before denormalizing.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -471,7 +472,7 @@ Always measure join cost before denormalizing.
 | `varchar(255)` everywhere | Arbitrary limits, no benefit in PG | Use `text` unless length constraint needed |
 | Soft delete without partial index | Index includes deleted rows | `WHERE deleted_at IS NULL` partial index |
 
-## Best practices
+### Best practices
 
 - Design for **query patterns**, not just entity diagrams
 - Add constraints in migrations — not only in application code
@@ -480,19 +481,19 @@ Always measure join cost before denormalizing.
 
 ---
 
-# Statistics and the Query Planner
+## Statistics and the Query Planner
 
 PostgreSQL's planner chooses join order, scan types, and parallel workers based on **table statistics**. Bad statistics lead to bad plans.
 
 > **Related:** When plans go wrong after bulk load → [§6 Vacuum and bloat](06-vacuum-and-bloat.md) · SSD planner costs → [§8 Memory and configuration](08-memory-and-config.md) · Measurement workflow → [§1 Measurement](01-measurement.md)
 
-## How statistics work
+### How statistics work
 
 - **`ANALYZE`** samples rows and stores histograms, null fractions, and distinct counts in `pg_stats`
 - **Autovacuum** runs `ANALYZE` automatically when enough rows change
 - The planner compares **estimated rows** vs what you see as **actual rows** in `EXPLAIN ANALYZE`
 
-## When estimates are wrong
+### When estimates are wrong
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
@@ -501,7 +502,7 @@ PostgreSQL's planner chooses join order, scan types, and parallel workers based 
 | Bad join order | Correlated columns not captured | Extended statistics |
 | Plan changed after bulk load | Stale stats | `ANALYZE` after load |
 
-## default_statistics_target
+### default_statistics_target
 
 Default is **100**. Increase for columns where the planner makes poor choices:
 
@@ -512,7 +513,7 @@ ANALYZE orders;
 
 Higher values = better estimates but slower `ANALYZE` and slightly more planner time.
 
-## Extended statistics
+### Extended statistics
 
 For correlated columns the planner treats as independent:
 
@@ -525,7 +526,7 @@ ANALYZE orders;
 
 Types: `dependencies`, `ndistinct`, `mcv` (most common values).
 
-## When to use
+### When to use
 
 | Situation | Action |
 |-----------|--------|
@@ -534,7 +535,7 @@ Types: `dependencies`, `ndistinct`, `mcv` (most common values).
 | Multi-column filters with skew | Extended statistics or partial indexes |
 | New index not being used | `ANALYZE`; verify selectivity with `EXPLAIN` |
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -544,14 +545,14 @@ Types: `dependencies`, `ndistinct`, `mcv` (most common values).
 | Assume correlated columns are independent | Wrong join order | Extended statistics or partial indexes |
 | Disable autovacuum on busy tables | Stats never refresh | Tune per-table autovacuum, don't disable |
 
-## Best practices
+### Best practices
 
 - Trust autovacuum for steady-state OLTP — manual `ANALYZE` mainly after bulk changes
 - Compare estimated vs actual rows in every `EXPLAIN ANALYZE`
 - Don't raise statistics target globally — per-column is enough
 - On PostgreSQL 14+, consider **`pg_stat_statements`** + auto-explain for plan regression detection
 
-## Check current stats
+### Check current stats
 
 ```sql
 SELECT schemaname, tablename, last_analyze, last_autoanalyze, n_live_tup, n_dead_tup
@@ -561,13 +562,13 @@ ORDER BY n_dead_tup DESC;
 
 ---
 
-# Vacuum, Bloat, and Maintenance
+## Vacuum, Bloat, and Maintenance
 
 PostgreSQL uses MVCC(Multi-Version Concurrency Control) — updated and deleted rows leave **dead tuples** until vacuum reclaims space. Neglected maintenance causes bloat, slower scans, and blocked index-only scans.
 
 > **Related:** Statistics refresh after vacuum → [§5 Statistics and the planner](05-statistics-and-planner.md) · Retention without mass DELETE → [§10 Partitioning](10-partitioning.md) · Online maintenance → [§15 Schema migration checklist](15-schema-migration-checklist.md)
 
-## What autovacuum does
+### What autovacuum does
 
 | Task | Purpose |
 |------|---------|
@@ -576,7 +577,7 @@ PostgreSQL uses MVCC(Multi-Version Concurrency Control) — updated and deleted 
 | **Visibility map update** | Enable index-only scans |
 | **Statistics update** | Runs `ANALYZE` when enough rows change |
 
-## Signs you need attention
+### Signs you need attention
 
 | Signal | Where to look |
 |--------|---------------|
@@ -586,7 +587,7 @@ PostgreSQL uses MVCC(Multi-Version Concurrency Control) — updated and deleted 
 | `autovacuum` constantly behind | High-churn tables; long transactions |
 | `xid_wraparound` warnings | Critical — vacuum not keeping up |
 
-## Monitoring
+### Monitoring
 
 ```sql
 SELECT
@@ -601,7 +602,7 @@ ORDER BY n_dead_tup DESC
 LIMIT 20;
 ```
 
-## Tuning autovacuum (per table)
+### Tuning autovacuum (per table)
 
 For high-churn tables:
 
@@ -614,7 +615,7 @@ ALTER TABLE events SET (
 
 Lower scale factor = vacuum triggers sooner (more aggressive).
 
-## Long-running transactions
+### Long-running transactions
 
 Idle or long transactions **block vacuum** from reclaiming tuples they can still "see."
 
@@ -627,7 +628,7 @@ WHERE state != 'idle'
 
 Fix at the application layer: short transactions, connection pool timeouts, kill idle-in-transaction sessions.
 
-## Manual maintenance
+### Manual maintenance
 
 ```sql
 VACUUM (ANALYZE) orders;          -- routine after large deletes
@@ -635,11 +636,11 @@ VACUUM FULL orders;               -- rewrites table — locks exclusively; avoid
 REINDEX INDEX CONCURRENTLY idx_orders_user_id;
 ```
 
-## pg_repack
+### pg_repack
 
 For large tables with heavy bloat without long `VACUUM FULL` locks — rewrites the table online (extension).
 
-## When to use
+### When to use
 
 | Situation | Action |
 |-----------|--------|
@@ -648,7 +649,7 @@ For large tables with heavy bloat without long `VACUUM FULL` locks — rewrites 
 | Table 2× expected size | Investigate bloat; consider `pg_repack` |
 | Index-only scans never appear | Ensure autovacuum is running; check visibility map |
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -658,7 +659,7 @@ For large tables with heavy bloat without long `VACUUM FULL` locks — rewrites 
 | Mass `DELETE` for retention | Bloat and long vacuum cycles | Drop partitions instead |
 | Ignore dead tuple ratio alerts | Queries degrade gradually | Monitor `n_dead_tup` on churny tables |
 
-## Best practices
+### Best practices
 
 - Never disable autovacuum globally
 - Prefer **partition drops** over mass `DELETE` for retention
@@ -667,13 +668,13 @@ For large tables with heavy bloat without long `VACUUM FULL` locks — rewrites 
 
 ---
 
-# Connection Management
+## Connection Management
 
 > **Related:** Production credentials and PgBouncer patterns → [database-connection-and-security](../database-connection-and-security/README.md) · [§9 PgBouncer + secret](../database-connection-and-security/includes/09-pgbouncer-proxy-password.md)
 
 PostgreSQL creates **one process per connection**. Beyond a few hundred active connections, context switching and memory overhead hurt performance even when queries are idle.
 
-## The problem
+### The problem
 
 | Factor | Impact |
 |--------|--------|
@@ -682,7 +683,7 @@ PostgreSQL creates **one process per connection**. Beyond a few hundred active c
 | Idle connections | Still consume RAM and file descriptors |
 | Connection storms | New connections are expensive to establish |
 
-## Solution: connection pooling
+### Solution: connection pooling
 
 Use a pooler between apps and PostgreSQL:
 
@@ -693,7 +694,7 @@ Use a pooler between apps and PostgreSQL:
 | **Supabase pooler** | Built on PgBouncer |
 | **Pgpool-II** | Pooling + load balancing + replication |
 
-## PgBouncer pooling modes
+### PgBouncer pooling modes
 
 | Mode | Behavior | Best for |
 |------|----------|----------|
@@ -701,7 +702,7 @@ Use a pooler between apps and PostgreSQL:
 | **Session** | Connection held for entire client session | Prepared statements, temp tables, `SET` |
 | **Statement** | Connection returned after each statement | Rare; breaks multi-statement transactions |
 
-## Recommended settings
+### Recommended settings
 
 ```text
 PostgreSQL:  max_connections = 100–300 (not 1000+)
@@ -711,7 +712,7 @@ App servers: pool size = (expected concurrent queries) not (thread count)
 
 Rule of thumb: **total app pool connections < PostgreSQL max_connections**, with headroom for admin and migrations.
 
-## Prepared statements and transaction pooling
+### Prepared statements and transaction pooling
 
 With **transaction pooling**, prepared statements don't persist across transactions. Options:
 
@@ -719,7 +720,7 @@ With **transaction pooling**, prepared statements don't persist across transacti
 - Use **session pooling** if you need persistent prepared statements
 - PgBouncer 1.21+ has improved prepared statement support — verify your stack
 
-## When to use
+### When to use
 
 | Situation | Action |
 |-----------|--------|
@@ -728,14 +729,14 @@ With **transaction pooling**, prepared statements don't persist across transacti
 | Server RAM high with idle clients | Transaction pooling |
 | Lambda / serverless | External pooler (RDS Proxy, PgBouncer sidecar) |
 
-## Best practices
+### Best practices
 
 - Set **`idle_in_transaction_session_timeout`** to kill stuck transactions
 - Set **`statement_timeout`** on application roles
 - One pool per service — not one giant shared pool with no limits
 - Monitor: `pg_stat_activity` connection count by `application_name`
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -747,13 +748,13 @@ With **transaction pooling**, prepared statements don't persist across transacti
 
 ---
 
-# Memory and Configuration Tuning
+## Memory and Configuration Tuning
 
 PostgreSQL performance depends heavily on memory settings and planner cost constants. Tune once at deploy, then adjust based on workload evidence.
 
 > **Related:** Measure before tuning → [§1 Measurement](01-measurement.md) · Wrong plans on SSD → [§5 Statistics and the planner](05-statistics-and-planner.md) · Connection limits vs memory → [§7 Connection management](07-connection-management.md)
 
-## Key parameters
+### Key parameters
 
 | Parameter | Rule of thumb | Purpose |
 |-----------|---------------|---------|
@@ -765,7 +766,7 @@ PostgreSQL performance depends heavily on memory settings and planner cost const
 | **`effective_io_concurrency`** | 200+ on NVMe | Concurrent read prefetch |
 | **`max_parallel_workers_per_gather`** | 2–4 | Parallel sequential scans/aggregates |
 
-## work_mem warning
+### work_mem warning
 
 `work_mem` is **per sort/hash operation per connection**, not global.
 
@@ -779,7 +780,7 @@ Set conservatively globally; raise per-session for reporting:
 SET work_mem = '256MB';  -- reporting session only
 ```
 
-## Example production baseline (16 GB RAM, SSD)
+### Example production baseline (16 GB RAM, SSD)
 
 ```text
 shared_buffers = 4GB
@@ -794,7 +795,7 @@ max_connections = 200
 
 Adjust for your RAM and workload — these are starting points, not gospel.
 
-## WAL(Write-Ahead Log) and checkpoint (write-heavy)
+### WAL and checkpoint (write-heavy)
 
 | Parameter | Notes |
 |-----------|-------|
@@ -804,7 +805,7 @@ Adjust for your RAM and workload — these are starting points, not gospel.
 
 Spiky write latency during checkpoints? Increase `max_wal_size` and tune checkpoint settings.
 
-## When to tune
+### When to tune
 
 | Workload signal | Parameter to adjust |
 |-----------------|---------------------|
@@ -814,7 +815,7 @@ Spiky write latency during checkpoints? Increase `max_wal_size` and tune checkpo
 | Large table scans on analytics | Raise `max_parallel_workers_per_gather` |
 | OOM under load | Lower `work_mem`; add pooling |
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -824,17 +825,17 @@ Spiky write latency during checkpoints? Increase `max_wal_size` and tune checkpo
 | Max parallelism on OLTP | Contention on short queries | Low `max_parallel_workers_per_gather` for OLTP |
 | Ignore temp file spikes | Sorts spilling to disk unnoticed | Monitor temp files; tune `work_mem` for heavy queries |
 
-## When NOT to tune blindly
+### When NOT to tune blindly
 
 - Don't set `shared_buffers` to 80% of RAM — OS cache matters
 - Don't max out parallelism on OLTP — hurts concurrent short queries
 - Don't change many parameters at once — measure one change at a time
 
-## Managed databases
+### Managed databases
 
 RDS, Cloud SQL(Structured Query Language), Supabase, and Azure expose these via parameter groups. Some require reboot; others are dynamic. Check provider docs for limits.
 
-## Best practices
+### Best practices
 
 - Document your baseline and why each value was chosen
 - Use **`pg_tune`** or similar calculators as a starting point only
@@ -843,7 +844,7 @@ RDS, Cloud SQL(Structured Query Language), Supabase, and Azure expose these via 
 
 ---
 
-# Views, Functions, and Scale-Out Terminology
+## Views, Functions, and Scale-Out Terminology
 
 PostgreSQL offers several ways to abstract queries (views), encapsulate logic (functions and procedures), and scale beyond one node (partitioning, replication, sharding). These tools overlap in name but solve different problems — mixing them up leads to wrong architecture choices.
 
@@ -858,7 +859,7 @@ PostgreSQL offers several ways to abstract queries (views), encapsulate logic (f
 
 ---
 
-## At a glance
+### At a glance
 
 | Tool | Stored data? | Performance role | Primary use |
 |------|--------------|------------------|-------------|
@@ -872,9 +873,9 @@ PostgreSQL offers several ways to abstract queries (views), encapsulate logic (f
 
 ---
 
-## Views
+### Views
 
-### View types
+#### View types
 
 | Type | Definition stored? | Data stored? | Always fresh? |
 |------|-------------------|--------------|---------------|
@@ -883,7 +884,7 @@ PostgreSQL offers several ways to abstract queries (views), encapsulate logic (f
 | **Recursive view** | Yes (CTE) | No | Yes |
 | **Updatable view** | Yes | No (uses base tables) | Yes |
 
-### Standard views
+#### Standard views
 
 A standard view is a named query. PostgreSQL rewrites queries against the view into the underlying SQL each time.
 
@@ -904,7 +905,7 @@ WHERE deleted_at IS NULL;
 
 **When NOT to use:** As a substitute for an index or materialized view on expensive aggregations.
 
-#### Security barrier views
+##### Security barrier views
 
 For views that enforce security predicates, use `security_barrier` so the planner cannot push untrusted user filters below the barrier and leak rows:
 
@@ -914,7 +915,7 @@ WITH (security_barrier) AS
 SELECT * FROM orders WHERE tenant_id = current_setting('app.tenant_id')::int;
 ```
 
-### Materialized views
+#### Materialized views
 
 Materialized views store query results physically. Reads are fast; freshness depends on refresh schedule.
 
@@ -941,7 +942,7 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY daily_revenue;
 
 See also [Read scaling and caching](11-read-scaling-and-caching.md) for refresh patterns and consistency trade-offs.
 
-### Recursive views
+#### Recursive views
 
 Use recursive views (or recursive CTEs) for hierarchies — org charts, category trees, bill-of-materials:
 
@@ -958,13 +959,13 @@ CREATE RECURSIVE VIEW org_tree AS
 
 **Performance note:** Deep or wide trees can be expensive. Index `(manager_id)` and consider materializing if the hierarchy is read-heavy and changes infrequently.
 
-### Updatable views
+#### Updatable views
 
 Simple views on a single table with no aggregates can be updatable via `INSERT`/`UPDATE`/`DELETE`. Complex views need `INSTEAD OF` triggers.
 
 **Rule of thumb:** Prefer updating base tables in hot OLTP paths. Views are fine for admin tools and controlled APIs.
 
-### Choosing a view type
+#### Choosing a view type
 
 ```mermaid
 flowchart TD
@@ -977,9 +978,9 @@ flowchart TD
 
 ---
 
-## Functions and procedures
+### Functions and procedures
 
-### Functions vs procedures
+#### Functions vs procedures
 
 | | **Function** | **Procedure** (PostgreSQL 11+) |
 |--|--------------|----------------------------------|
@@ -1011,7 +1012,7 @@ END;
 $$;
 ```
 
-### Volatility and the planner
+#### Volatility and the planner
 
 Function volatility tells PostgreSQL whether the planner can optimize through the function:
 
@@ -1033,7 +1034,7 @@ WHERE created_at >= '2024-01-01'
 
 Mark functions accurately. Incorrect `IMMUTABLE` on a function that reads the database can produce wrong results.
 
-### Language choice
+#### Language choice
 
 | Language | Best for | Performance note |
 |----------|----------|------------------|
@@ -1041,7 +1042,7 @@ Mark functions accurately. Incorrect `IMMUTABLE` on a function that reads the da
 | **plpgsql** | Control flow, exception handling, batch loops | Overhead per call; avoid row-by-row loops |
 | **plpython / others** | Specialized integrations | Higher call overhead; use for batch, not per-row |
 
-### When functions and procedures help performance
+#### When functions and procedures help performance
 
 | Do | Don't |
 |----|-------|
@@ -1054,11 +1055,11 @@ See [Query design](03-query-design.md) — **avoid functions on indexed columns*
 
 ---
 
-## Partitioning vs replication vs sharding vs clustering
+### Partitioning vs replication vs sharding vs clustering
 
 These terms are often used interchangeably. In PostgreSQL they mean different things.
 
-### Side-by-side comparison
+#### Side-by-side comparison
 
 | Concept | Where data lives | Write path | Read path | Built into PostgreSQL? |
 |---------|------------------|------------|-----------|------------------------|
@@ -1067,7 +1068,7 @@ These terms are often used interchangeably. In PostgreSQL they mean different th
 | **Sharding** | Subset of rows per server | Distributed across shards | Route to correct shard(s) | No native — Citus, app routing, FDW |
 | **Clustering** | Ambiguous — see below | Varies | Varies | Partially |
 
-### Partitioning (single-node split)
+#### Partitioning (single-node split)
 
 Partitioning divides one logical table into physical child tables on **one PostgreSQL instance**. Queries that filter on the **partition key** skip irrelevant partitions (**partition pruning**).
 
@@ -1093,7 +1094,7 @@ CREATE TABLE events_2026_06 PARTITION OF events
 
 Full details → [Partitioning](10-partitioning.md).
 
-### Replication (full copy per node)
+#### Replication (full copy per node)
 
 Streaming replication ships WAL(Write-Ahead Log) from primary to one or more standbys. Each standby holds a **complete copy** of the database.
 
@@ -1109,7 +1110,7 @@ Streaming replication ships WAL(Write-Ahead Log) from primary to one or more sta
 
 Full details → [Read scaling and caching](11-read-scaling-and-caching.md) and [Strong consistency](14-consistency-promises-and-costs.md).
 
-### Sharding (horizontal split across servers)
+#### Sharding (horizontal split across servers)
 
 Sharding splits data **across multiple independent database servers**. Each shard holds a subset of rows; no single node has all data.
 
@@ -1133,7 +1134,7 @@ user_id % 3 = 2 ──►│   Shard C    │
 
 **Costs:** Cross-shard joins, transactions, and aggregations become hard. Resharding is a major project.
 
-### "Clustering" — three different meanings
+#### "Clustering" — three different meanings
 
 | Meaning | What it is | PostgreSQL example |
 |---------|------------|-------------------|
@@ -1143,7 +1144,7 @@ user_id % 3 = 2 ──►│   Shard C    │
 
 When someone says "PostgreSQL cluster," clarify which they mean before designing.
 
-### Scale-out decision flow
+#### Scale-out decision flow
 
 ```mermaid
 flowchart TD
@@ -1160,7 +1161,7 @@ flowchart TD
     Rep --> Lag[Monitor replication lag; route critical reads to primary]
 ```
 
-### Cheat sheet — pick the right scale-out tool
+#### Cheat sheet — pick the right scale-out tool
 
 | Problem | Tool |
 |---------|------|
@@ -1174,7 +1175,7 @@ flowchart TD
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Why it fails | Do instead |
 |---------|--------------|------------|
@@ -1188,7 +1189,7 @@ flowchart TD
 
 ---
 
-## See also
+### See also
 
 - [Indexing](02-indexing.md) — B-tree, partial, GIN(Generalized Inverted Index), BRIN(Block-Range Index), and covering indexes
 - [Query design](03-query-design.md) — pagination, N+1, functions on indexed columns
@@ -1199,13 +1200,13 @@ flowchart TD
 
 ---
 
-# Partitioning
+## Partitioning
 
 Partitioning splits one logical table into smaller physical pieces. Queries that filter on the **partition key** can skip irrelevant partitions (**partition pruning**).
 
 > **Related:** Partitioning vs sharding vs replication vs clustering → [09-views-functions-and-scale-out-terminology.md](09-views-functions-and-scale-out-terminology.md)
 
-## Partition strategies
+### Partition strategies
 
 | Strategy | Key type | Example |
 |----------|----------|---------|
@@ -1227,7 +1228,7 @@ CREATE TABLE events_2026_06 PARTITION OF events
   FOR VALUES FROM ('2026-06-01') TO ('2026-07-01');
 ```
 
-## Pros and cons
+### Pros and cons
 
 | Pros | Cons |
 |------|------|
@@ -1236,20 +1237,20 @@ CREATE TABLE events_2026_06 PARTITION OF events
 | Smaller indexes per partition | Unique constraints must include partition key |
 | Targeted vacuum/maintenance | Wrong key choice is hard to fix |
 
-## When to use
+### When to use
 
 - Tables with **millions+ rows** where queries **always filter** on the partition key
 - **Time-series** data with retention policies
 - Need to **drop** old data regularly (compliance, cost)
 - Maintenance windows — vacuum/reindex one partition at a time
 
-## When NOT to use
+### When NOT to use
 
 - Small or medium tables
 - Queries that don't filter on the partition key
 - "Might need it someday" without a pruning-friendly access pattern
 
-## Retention pattern
+### Retention pattern
 
 ```sql
 -- Drop June 2025 data instantly (vs DELETE millions of rows)
@@ -1258,7 +1259,7 @@ DROP TABLE events_2025_06;
 
 Schedule partition creation ahead of time (cron, pg_partman extension).
 
-## Verify pruning
+### Verify pruning
 
 ```sql
 EXPLAIN SELECT * FROM events
@@ -1267,7 +1268,7 @@ WHERE created_at >= '2026-06-01' AND created_at < '2026-06-15';
 
 Look for **`Partition Prune`** or scans on a single child table only — not all partitions.
 
-## Index strategy
+### Index strategy
 
 Index each partition the same way, or use partitioned indexes:
 
@@ -1276,14 +1277,14 @@ CREATE INDEX ON events (org_id, created_at DESC);
 -- Creates matching indexes on all partitions
 ```
 
-## Best practices
+### Best practices
 
 - Choose partition granularity so each partition is **manageable** (often monthly or weekly for events)
 - Automate partition creation and old partition drops
 - Include partition key in unique constraints and PKs
 - Combine with **BRIN(Block-Range Index)** on time column inside very large partitions if appropriate
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -1295,13 +1296,13 @@ CREATE INDEX ON events (org_id, created_at DESC);
 
 ---
 
-# Read Scaling, Replication, and Caching
+## Read Scaling, Replication, and Caching
 
 When query optimization and indexing aren't enough for read load, scale reads horizontally — but only **after** fixing slow queries on the primary.
 
 > **Related:** Replication vs sharding vs partitioning → [09-views-functions-and-scale-out-terminology.md](09-views-functions-and-scale-out-terminology.md) · What strong consistency promises, what it costs, and when to require it → [Strong consistency — promises and costs](14-consistency-promises-and-costs.md)
 
-## Read replicas
+### Read replicas
 
 Streaming replication sends WAL(Write-Ahead Log) changes to one or more standby servers.
 
@@ -1311,19 +1312,19 @@ Streaming replication sends WAL(Write-Ahead Log) changes to one or more standby 
 | Simple mental model | Replicas don't fix bad queries |
 | Managed on all major clouds | No automatic query routing |
 
-### When to use
+#### When to use
 
 - Read-heavy workloads: dashboards, search, reporting
 - Primary CPU or IO saturated by **SELECT** after optimization
 - Geographic read locality (read replica in another region)
 
-### Caveats
+#### Caveats
 
 - **Read-your-writes:** after an INSERT, a read from replica may be stale — route session-critical reads to primary
 - Replicas replay writes too — very write-heavy primaries can lag replicas
 - Run the same `EXPLAIN ANALYZE` on replica — bad plans are bad everywhere
 
-## Caching layers
+### Caching layers
 
 | Layer | Tool | When to use |
 |-------|------|-------------|
@@ -1332,7 +1333,7 @@ Streaming replication sends WAL(Write-Ahead Log) changes to one or more standby 
 | **Query result cache** | ORM / CDN(Content Delivery Network) | Identical repeated API(Application Programming Interface) responses |
 | **Unlogged tables** | PostgreSQL | Staging/bulk temp data (not crash-safe) |
 
-### Materialized views
+#### Materialized views
 
 ```sql
 CREATE MATERIALIZED VIEW daily_revenue AS
@@ -1347,7 +1348,7 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY daily_revenue;
 
 **When to use:** Dashboards tolerating minutes of staleness; heavy aggregations over millions of rows.
 
-### Application cache (Redis)
+#### Application cache (Redis)
 
 **When to use:**
 
@@ -1357,11 +1358,11 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY daily_revenue;
 
 **Cache invalidation patterns:** TTL, delete-on-write, and event-driven invalidation — full patterns, CDN layer, cache-aside vs write-through, and stampede mitigation → [high-throughput-systems §4 Caching layers](../high-throughput-systems/includes/04-caching-layers.md).
 
-## Layered read path
+### Layered read path
 
 End-to-end flow (Redis → primary vs replica routing, plus CDN for public GETs) lives in [high-throughput-systems §4 — Layered read path](../high-throughput-systems/includes/04-caching-layers.md#layered-read-path). This section focuses on **PostgreSQL-specific** pieces: replicas, materialized views, and `pg_stat_replication`.
 
-## When to use what
+### When to use what
 
 | Scenario | Recommendation |
 |----------|----------------|
@@ -1371,14 +1372,14 @@ End-to-end flow (Redis → primary vs replica routing, plus CDN for public GETs)
 | Search autocomplete | Dedicated index (GIN(Generalized Inverted Index)) + cache; not replica alone |
 | Global low-latency reads | Replicas per region + CDN for static API responses |
 
-## Best practices
+### Best practices
 
 - Optimize on primary first — replicas multiply cost of bad queries
 - Monitor **replication lag** (`pg_stat_replication` on primary)
 - Document which endpoints require strong consistency
 - Set cache TTLs based on business tolerance for staleness
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -1390,13 +1391,13 @@ End-to-end flow (Redis → primary vs replica routing, plus CDN for public GETs)
 
 ---
 
-# Bulk Operations, Locking, and Concurrency
+## Bulk Operations, Locking, and Concurrency
 
 Write-heavy workloads and concurrent access need different strategies than tuning individual SELECT statements.
 
 > **Related:** Stats after bulk load → [§5 Statistics and the planner](05-statistics-and-planner.md) · Online index builds → [§15 Schema migration checklist](15-schema-migration-checklist.md) · Job queues at scale → [HTS §6 Async queues](../high-throughput-systems/includes/06-async-queues-workers.md)
 
-## Bulk load and backfill
+### Bulk load and backfill
 
 | Method | Speed | Notes |
 |--------|-------|-------|
@@ -1410,14 +1411,14 @@ INSERT INTO orders SELECT ... FROM staging_orders;
 ANALYZE orders;
 ```
 
-### Large load tips
+#### Large load tips
 
 - Load into **unlogged staging table** first
 - Drop nonessential indexes before load, recreate **`CONCURRENTLY`** after (only for very large loads)
 - Run **`ANALYZE`** after load completes
 - Increase **`maintenance_work_mem`** for index creation session
 
-## Upserts at scale
+### Upserts at scale
 
 ```sql
 INSERT INTO inventory (sku, qty)
@@ -1427,7 +1428,7 @@ ON CONFLICT (sku) DO UPDATE SET qty = inventory.qty + EXCLUDED.qty;
 
 Requires a **unique index** on the conflict target (`sku`).
 
-## Locking
+### Locking
 
 PostgreSQL row-level locks are fine-grained, but long transactions and table-level locks still hurt.
 
@@ -1438,7 +1439,7 @@ PostgreSQL row-level locks are fine-grained, but long transactions and table-lev
 | Access exclusive | `ALTER TABLE`, `VACUUM FULL` | Use `CONCURRENTLY` variants |
 | Idle in transaction | App bug | Timeouts; fix ORM session handling |
 
-### Job queue pattern
+#### Job queue pattern
 
 ```sql
 SELECT * FROM jobs
@@ -1450,13 +1451,13 @@ LIMIT 1;
 
 Workers skip rows already locked — no thundering herd.
 
-## Transaction isolation
+### Transaction isolation
 
 Default **`READ COMMITTED`** is right for most OLTP.
 
 Use **`REPEATABLE READ`** or **`SERIALIZABLE`** only when you have proven race conditions that application logic can't handle.
 
-## Hardware and storage
+### Hardware and storage
 
 | Factor | OLTP guidance |
 |--------|---------------|
@@ -1465,7 +1466,7 @@ Use **`REPEATABLE READ`** or **`SERIALIZABLE`** only when you have proven race c
 | **CPU** | More cores help parallel queries; OLTP needs fast single-core too |
 | **Separate WAL(Write-Ahead Log) disk** | High-write bare metal; rarely needed on cloud managed |
 
-## When to use
+### When to use
 
 | Situation | Strategy |
 |-----------|----------|
@@ -1475,7 +1476,7 @@ Use **`REPEATABLE READ`** or **`SERIALIZABLE`** only when you have proven race c
 | Migration in production | `CREATE INDEX CONCURRENTLY`; online schema tools |
 | Hot row updates (counters) | Advisory lock, atomic UPDATE, or async aggregation |
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Problem | Fix |
 |---------|---------|-----|
@@ -1486,7 +1487,7 @@ Use **`REPEATABLE READ`** or **`SERIALIZABLE`** only when you have proven race c
 | `SELECT … FOR UPDATE` without SKIP LOCKED | Workers block each other | `FOR UPDATE SKIP LOCKED` for job queues |
 | `SERIALIZABLE` by default | Avoidable aborts and retries | `READ COMMITTED` unless proven race |
 
-## Best practices
+### Best practices
 
 - Keep transactions **short** — especially those holding locks
 - Batch writes; don't send 1000 single-row INSERTs from the app
@@ -1496,7 +1497,7 @@ Use **`REPEATABLE READ`** or **`SERIALIZABLE`** only when you have proven race c
 
 ---
 
-# Decision Guide, Checklist, and Common Mistakes
+## Decision Guide, Checklist, and Common Mistakes
 
 A practical reference for choosing strategies and avoiding common mistakes.
 
@@ -1504,7 +1505,7 @@ A practical reference for choosing strategies and avoiding common mistakes.
 >
 > **Related:** Start here → [§1 Measurement](01-measurement.md) · Scale-out terms → [§9](09-views-functions-and-scale-out-terminology.md) · Consistency trade-offs → [§14](14-consistency-promises-and-costs.md)
 
-## Scenario recommendations
+### Scenario recommendations
 
 | Scenario | Recommended approach |
 |----------|---------------------|
@@ -1519,7 +1520,7 @@ A practical reference for choosing strategies and avoiding common mistakes.
 | Login brute force (many writes) | Short transactions; partial index on active sessions |
 | JSONB attribute search | GIN(Generalized Inverted Index) index; don't replace relational filters |
 
-## Full decision flow
+### Full decision flow
 
 ```mermaid
 flowchart TD
@@ -1541,7 +1542,7 @@ flowchart TD
     P -->|No| CFG[Memory / planner tuning]
 ```
 
-## Priority checklist
+### Priority checklist
 
 Use this order — skipping steps wastes effort:
 
@@ -1556,7 +1557,7 @@ Use this order — skipping steps wastes effort:
 - [ ] Consider **partitioning** for time-series at scale
 - [ ] Add **read replicas** and **caching** last
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Why it fails | Do instead |
 |-------|--------------|------------|
@@ -1571,7 +1572,7 @@ Use this order — skipping steps wastes effort:
 | Optimize on empty dev DB | Plans don't match production | Test on realistic data volume |
 | Buy bigger hardware first | Masks root cause | Measure and fix queries |
 
-## Before/after validation
+### Before/after validation
 
 For every change:
 
@@ -1580,7 +1581,7 @@ For every change:
 3. Re-measure under similar load
 4. Document what worked
 
-## See also
+### See also
 
 - [Database Connection & Security](../database-connection-and-security/README.md) — credentials, PgBouncer, production connection patterns
 - [Database Security](../database-connection-and-security/includes/02-prod-db-security.md) — production hardening
@@ -1592,7 +1593,7 @@ For every change:
 
 ---
 
-# Strong Consistency — Promises and Costs
+## Strong Consistency — Promises and Costs
 
 What strong consistency guarantees, what it costs in latency and scale, and how to apply it when you add replicas, caches, and multi-region deployments.
 
@@ -1600,7 +1601,7 @@ What strong consistency guarantees, what it costs in latency and scale, and how 
 
 ---
 
-## At a glance
+### At a glance
 
 | Term | Promise | Typical context |
 |------|---------|-----------------|
@@ -1614,7 +1615,7 @@ What strong consistency guarantees, what it costs in latency and scale, and how 
 
 ---
 
-## What strong consistency promises
+### What strong consistency promises
 
 After a write succeeds, a subsequent read (by the same or another client, depending on the model) will **not** return pre-write data unless you explicitly choose a weaker read path.
 
@@ -1628,7 +1629,7 @@ Without it, applications must handle stale state: retries, version checks, compe
 
 ---
 
-## Where consistency breaks
+### Where consistency breaks
 
 ```mermaid
 flowchart TB
@@ -1657,9 +1658,9 @@ Strong consistency is an **end-to-end** property — not a checkbox on one datab
 
 ---
 
-## The costs
+### The costs
 
-### Latency
+#### Latency
 
 Strong writes often require waiting for:
 
@@ -1674,19 +1675,19 @@ Strong writes often require waiting for:
 | Sync multi-AZ | +5–20 ms |
 | Cross-region sync | +50–200+ ms |
 
-### Availability (CAP(Consistency, Availability, Partition Tolerance))
+#### Availability (CAP)
 
 Under network partition, a strongly consistent system often **refuses** reads or writes rather than serve stale data.
 
 **Cost:** Errors during partial outages instead of degraded-but-available service. Correctness over liveness.
 
-### Write throughput
+#### Write throughput
 
 Consensus and synchronous replication limit how fast the system accepts writes. A single leader (or small quorum group) becomes a bottleneck.
 
 **Cost:** Scale writes vertically or shard — not by adding async read replicas alone.
 
-### Read scaling friction
+#### Read scaling friction
 
 Read replicas and caches improve throughput but weaken consistency by default. Keeping strong reads means:
 
@@ -1696,7 +1697,7 @@ Read replicas and caches improve throughput but weaken consistency by default. K
 
 See [Read scaling and caching](11-read-scaling-and-caching.md) for routing patterns.
 
-### Operational complexity
+#### Operational complexity
 
 - Classify endpoints by consistency requirement
 - Read routing in app, ORM, or connection pooler
@@ -1704,13 +1705,13 @@ See [Read scaling and caching](11-read-scaling-and-caching.md) for routing patte
 - Failover testing — what happens to in-flight writes and lagging replicas
 - Monitoring replication lag and cache hit/miss invalidation
 
-### Infrastructure cost
+#### Infrastructure cost
 
 Sync multi-AZ setups, larger primaries, bypassing cache on critical paths, and fewer cheap async replicas on hot read paths all increase spend.
 
 ---
 
-## Promises vs costs
+### Promises vs costs
 
 | You get | You pay |
 |---------|---------|
@@ -1722,7 +1723,7 @@ Sync multi-AZ setups, larger primaries, bypassing cache on critical paths, and f
 
 ---
 
-## When strong consistency is required
+### When strong consistency is required
 
 | Domain | Why |
 |--------|-----|
@@ -1732,7 +1733,7 @@ Sync multi-AZ setups, larger primaries, bypassing cache on critical paths, and f
 | **Unique constraints at scale** | Duplicate rows if reads are stale |
 | **Idempotency enforcement** | Retry must see prior write |
 
-## When eventual consistency is acceptable
+### When eventual consistency is acceptable
 
 | Domain | Typical staleness tolerance |
 |--------|----------------------------|
@@ -1746,15 +1747,15 @@ If a user could **lose money, access, or trust** from stale data for even a few 
 
 ---
 
-## PostgreSQL-specific patterns
+### PostgreSQL-specific patterns
 
-### Single primary (default)
+#### Single primary (default)
 
 Reads and writes against the primary are **strongly consistent** within PostgreSQL's isolation level (default `READ COMMITTED`).
 
 Use **`SERIALIZABLE`** or **`REPEATABLE READ`** only when proven race conditions require it — see [Bulk operations and concurrency](12-bulk-operations-and-concurrency.md).
 
-### Async streaming replication
+#### Async streaming replication
 
 Default on managed PostgreSQL (RDS, Cloud SQL(Structured Query Language), Azure). Replicas lag by milliseconds to seconds under load.
 
@@ -1767,7 +1768,7 @@ FROM pg_stat_replication;
 
 **Mitigation:** Route session-critical reads to primary; use replicas for reports and list views.
 
-### Synchronous replication
+#### Synchronous replication
 
 ```sql
 -- Example: wait for at least one standby (use with care)
@@ -1779,7 +1780,7 @@ SELECT pg_reload_conf();
 
 **Cost:** Write latency tied to slowest sync standby; availability hit if standby is down (writes block or fail).
 
-### Read-your-writes without sync replicas
+#### Read-your-writes without sync replicas
 
 After a write, pin that user's reads to primary for a short window, or pass a **consistency token** (LSN or timestamp) and retry on replica until caught up.
 
@@ -1789,13 +1790,13 @@ After a write, pin that user's reads to primary for a short window, or pass a **
 | **Sticky session + primary** | Same connection pool target post-write |
 | **LSN catch-up check** | App compares replica `pg_last_wal_replay_lsn()` to write LSN; retry or fall back to primary |
 
-### Materialized views and caches
+#### Materialized views and caches
 
 Strong consistency and periodic refresh **conflict by design**. Use materialized views only where staleness is documented and acceptable.
 
 ---
 
-## Practical architecture
+### Practical architecture
 
 ```mermaid
 flowchart LR
@@ -1811,7 +1812,7 @@ flowchart LR
     end
 ```
 
-### Tiered reads checklist
+#### Tiered reads checklist
 
 - [ ] List which API endpoints require **strong** vs **eventual** reads
 - [ ] Default new endpoints to **primary** until classified
@@ -1822,7 +1823,7 @@ flowchart LR
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Result | Do instead |
 |---------|--------|------------|
@@ -1834,7 +1835,7 @@ flowchart LR
 
 ---
 
-## See also
+### See also
 
 - [Read scaling and caching](11-read-scaling-and-caching.md) — replicas, Redis, materialized views, layered read path
 - [Stateless architecture — consistency and read routing](../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) — API-level implications
@@ -1843,7 +1844,7 @@ flowchart LR
 
 ---
 
-# Schema Migration Checklist
+## Schema Migration Checklist
 
 Production PostgreSQL migrations should be **online**, **backward compatible**, and **measurable** — especially when the app rolls out with old and new code running together.
 
@@ -1851,7 +1852,7 @@ Production PostgreSQL migrations should be **online**, **backward compatible**, 
 
 ---
 
-## At a glance
+### At a glance
 
 | Migration type | Production approach |
 |----------------|---------------------|
@@ -1866,9 +1867,9 @@ Production PostgreSQL migrations should be **online**, **backward compatible**, 
 
 ---
 
-## Expand / contract examples
+### Expand / contract examples
 
-### Add required column safely
+#### Add required column safely
 
 ```sql
 -- Expand (release N)
@@ -1881,7 +1882,7 @@ UPDATE orders SET priority = 'normal' WHERE priority IS NULL AND id BETWEEN $1 A
 ALTER TABLE orders ALTER COLUMN priority SET NOT NULL;
 ```
 
-### Add index without blocking writes
+#### Add index without blocking writes
 
 ```sql
 CREATE INDEX CONCURRENTLY idx_orders_tenant_created
@@ -1892,7 +1893,7 @@ Monitor: `pg_stat_progress_create_index` for progress; failed concurrent index l
 
 ---
 
-## Lock and duration risks
+### Lock and duration risks
 
 | DDL | Lock level | Mitigation |
 |-----|------------|------------|
@@ -1906,7 +1907,7 @@ Check active queries before long DDL: `pg_stat_activity`, cancel or wait for idl
 
 ---
 
-## Backfill patterns
+### Backfill patterns
 
 | Pattern | When |
 |---------|------|
@@ -1919,7 +1920,7 @@ Backfills must be **idempotent** and **resumable** (track watermark in a table o
 
 ---
 
-## Verification before and after
+### Verification before and after
 
 ```sql
 -- Row count sanity
@@ -1937,7 +1938,7 @@ SELECT * FROM orders WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT 20;
 
 ---
 
-## Migration checklist
+### Migration checklist
 
 - [ ] Backward compatible with **previous** application version
 - [ ] Expand and contract split across releases if needed
@@ -1950,7 +1951,7 @@ SELECT * FROM orders WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT 20;
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -1962,14 +1963,14 @@ SELECT * FROM orders WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT 20;
 
 ---
 
-## See also
+### See also
 
 - [deployment-strategies §12](../deployment-strategies/includes/12-schema-migrations-and-deploy.md) — release order with rolling/canary
 - [04-schema-design.md](04-schema-design.md) — upfront schema choices that ease migrations
 
 ---
 
-# Backup, Restore, and PITR
+## Backup, Restore, and PITR
 
 Operational PostgreSQL recovery — backups, WAL(Write-Ahead Log), point-in-time restore, and verification drills. Pair with org DR policy in [database-connection §12](../database-connection-and-security/includes/12-credential-rotation-and-dr.md).
 
@@ -1977,7 +1978,7 @@ Operational PostgreSQL recovery — backups, WAL(Write-Ahead Log), point-in-time
 
 ---
 
-## At a glance
+### At a glance
 
 | Concept | Meaning |
 |---------|---------|
@@ -1991,7 +1992,7 @@ Operational PostgreSQL recovery — backups, WAL(Write-Ahead Log), point-in-time
 
 ---
 
-## What to enable (managed PostgreSQL)
+### What to enable (managed PostgreSQL)
 
 | Setting | Typical value | Notes |
 |---------|---------------|-------|
@@ -2004,7 +2005,7 @@ Self-hosted: `archive_mode = on`, `archive_command` to S3/GCS, base backups via 
 
 ---
 
-## Restore flow (PITR)
+### Restore flow (PITR)
 
 ```mermaid
 flowchart TD
@@ -2027,7 +2028,7 @@ Document provider-specific CLI in your runbook — RDS `restore-db-instance-to-p
 
 ---
 
-## Logical vs physical backup
+### Logical vs physical backup
 
 | Type | Tool | Use when |
 |------|------|----------|
@@ -2044,7 +2045,7 @@ Bulk export patterns → [§12 Bulk operations](12-bulk-operations-and-concurren
 
 ---
 
-## Verification checklist
+### Verification checklist
 
 - [ ] Automated backup job success alert (not only email on failure)
 - [ ] Monthly restore to **staging** with app smoke test
@@ -2055,7 +2056,7 @@ Bulk export patterns → [§12 Bulk operations](12-bulk-operations-and-concurren
 
 ---
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -2066,9 +2067,9 @@ Bulk export patterns → [§12 Bulk operations](12-bulk-operations-and-concurren
 
 ---
 
-## Pros and cons
+### Pros and cons
 
-### Managed PITR
+#### Managed PITR
 
 **Pros:** One-click restore; WAL handled by provider.
 

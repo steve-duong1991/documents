@@ -1,4 +1,4 @@
-# GCP Cloud SQL(Structured Query Language) identity
+# GCP Cloud SQL identity
 
 > Connect to Cloud SQL (PostgreSQL / MySQL) using GCP-native identity, proxies, and Secret Manager — the GCP equivalent of AWS IAM(Identity and Access Management) + RDS patterns.
 

@@ -8,24 +8,24 @@ Related: [postgresql-performance](../postgresql-performance/README.md) (connecti
 
 ## Table of contents
 
-| # | Section | Include file |
+| # | Section |
 |---|---------|--------------|
-| — | [Overview](#overview) | [includes/00-overview.md](includes/00-overview.md) |
+| — | [Overview](includes/00-overview.md) |
 | 1 | [Local credentials](#1-local-credentials) *(dev template)* | [includes/01-local-db-credentials.md](includes/01-local-db-credentials.md) |
-| 2 | [Production security](#2-production-security) | [includes/02-prod-db-security.md](includes/02-prod-db-security.md) |
-| 3 | [HashiCorp Vault (HCV)](#3-hashicorp-vault-hcv) | [includes/03-hcv-vault.md](includes/03-hcv-vault.md) |
-| 4 | [AWS IAM + RDS Proxy](#4-aws-iam--rds-proxy) | [includes/04-aws-iam-rds-proxy.md](includes/04-aws-iam-rds-proxy.md) |
-| 5 | [Secret manager + password](#5-secret-manager--password) | [includes/05-secret-manager-password.md](includes/05-secret-manager-password.md) |
-| 6 | [Direct RDS IAM](#6-direct-rds-iam) | [includes/06-direct-rds-iam.md](includes/06-direct-rds-iam.md) |
-| 7 | [GCP Cloud SQL identity](#7-gcp-cloud-sql-identity) | [includes/07-gcp-cloud-sql-identity.md](includes/07-gcp-cloud-sql-identity.md) |
-| 8 | [Azure Database identity](#8-azure-database-identity) | [includes/08-azure-database-identity.md](includes/08-azure-database-identity.md) |
-| 9 | [PgBouncer + secret](#9-pgbouncer--secret) | [includes/09-pgbouncer-proxy-password.md](includes/09-pgbouncer-proxy-password.md) |
-| 10 | [mTLS client certificates](#10-mtls-client-certificates) | [includes/10-mtls-client-certs.md](includes/10-mtls-client-certs.md) |
-| 11 | [PaaS / platform-managed DB](#11-paas--platform-managed-db) | [includes/11-paas-managed-db.md](includes/11-paas-managed-db.md) |
-| 12 | [Credential rotation and DR](#12-credential-rotation-and-dr) | [includes/12-credential-rotation-and-dr.md](includes/12-credential-rotation-and-dr.md) |
-| 13 | [Decision guide — connection patterns](#13-decision-guide--connection-patterns) | [includes/13-decision-guide.md](includes/13-decision-guide.md) |
+| 2 | [Production security](includes/02-prod-db-security.md) |
+| 3 | [HashiCorp Vault (HCV)](includes/03-hcv-vault.md) |
+| 4 | [AWS IAM + RDS Proxy](includes/04-aws-iam-rds-proxy.md) |
+| 5 | [Secret manager + password](includes/05-secret-manager-password.md) |
+| 6 | [Direct RDS IAM](includes/06-direct-rds-iam.md) |
+| 7 | [GCP Cloud SQL identity](includes/07-gcp-cloud-sql-identity.md) |
+| 8 | [Azure Database identity](includes/08-azure-database-identity.md) |
+| 9 | [PgBouncer + secret](includes/09-pgbouncer-proxy-password.md) |
+| 10 | [mTLS client certificates](includes/10-mtls-client-certs.md) |
+| 11 | [PaaS / platform-managed DB](includes/11-paas-managed-db.md) |
+| 12 | [Credential rotation and DR](includes/12-credential-rotation-and-dr.md) |
+| 13 | [Decision guide — connection patterns](includes/13-decision-guide.md) |
 
-> **Tip:** Open [GUIDE.md](GUIDE.md) for the full combined document in one file.
+> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
 
 ---
 
@@ -85,7 +85,7 @@ See full details → [includes/06-direct-rds-iam.md](includes/06-direct-rds-iam.
 
 ---
 
-## 7. GCP Cloud SQL(Structured Query Language) identity
+## 7. GCP Cloud SQL identity
 
 Cloud SQL Auth Proxy, IAM DB auth, and Workload Identity on GCP.
 
@@ -109,7 +109,7 @@ See full details → [includes/09-pgbouncer-proxy-password.md](includes/09-pgbou
 
 ---
 
-## 10. mTLS(Mutual Transport Layer Security) client certificates
+## 10. mTLS client certificates
 
 Certificate-based client authentication — no password in the app.
 

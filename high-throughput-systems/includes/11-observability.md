@@ -163,7 +163,7 @@ Store results in CI or runbook for comparison.
 
 ---
 
-## RED(Rate, Errors, Duration) and USE(Utilization, Saturation, Errors) methods
+## RED and USE methods
 
 Two frameworks for choosing what to monitor:
 

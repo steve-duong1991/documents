@@ -1,10 +1,11 @@
 # API Rate Limiting Guide (Full)
 
 > Combined view of all sections. Modular sources live in `includes/`.
+> On GitHub, use the guide **README** table of contents for direct section links.
 
 ---
 
-# Overview — What Rate Limiting Is
+## Overview — What Rate Limiting Is
 
 Rate limiting controls **how many requests** a client can make in a given time window. It protects **availability**, **cost**, and **fairness** — but it is **not** authentication or authorization on its own.
 
@@ -12,7 +13,7 @@ Rate limiting controls **how many requests** a client can make in a given time w
 
 Use it together with auth, WAF(Web Application Firewall) rules, and abuse detection.
 
-## Types at a glance
+### Types at a glance
 
 | Category | Examples |
 |----------|----------|
@@ -21,7 +22,7 @@ Use it together with auth, WAF(Web Application Firewall) rules, and abuse detect
 | **Deployment** | CDN(Content Delivery Network)/edge, API gateway, reverse proxy, app middleware |
 | **Specialized** | Concurrent limits, quotas, cost-based, adaptive |
 
-## Algorithm quick comparison
+### Algorithm quick comparison
 
 | Algorithm | Memory | Burst handling | Accuracy | Complexity |
 |-----------|--------|----------------|----------|------------|
@@ -31,7 +32,7 @@ Use it together with auth, WAF(Web Application Firewall) rules, and abuse detect
 | Token Bucket | Low | **Best** | Medium | ★★☆ |
 | Leaky Bucket | Medium | Poor (queues) | High | ★★★ |
 
-## Default recommendation
+### Default recommendation
 
 For most public APIs:
 
@@ -39,7 +40,7 @@ For most public APIs:
 2. Layered checks: **global → per-IP → per API key/user → per expensive endpoint**
 3. Add **Token Bucket** where controlled bursts are a product requirement
 
-## Request flow (layered protection)
+### Request flow (layered protection)
 
 ```mermaid
 flowchart TD
@@ -57,7 +58,7 @@ flowchart TD
     EP -->|Fail| X
 ```
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -67,7 +68,7 @@ flowchart TD
 | No `Retry-After` on 429 | Document backoff; return header |
 | Limits tuned without load test data | Measure normal traffic before setting ceilings |
 
-## See also
+### See also
 
 | Guide | Topics |
 |-------|--------|
@@ -77,15 +78,15 @@ flowchart TD
 
 ---
 
-# Fixed Window Counter
+## Fixed Window Counter
 
 > **Related:** Product tiers → [api-design §5 Rate-limit tiers](../api-design-and-protection/includes/05-rate-limit-tiers.md) · Decision guide → [§10](10-decision-guide.md) · Gateway enforcement → [§7 Deployment layers](07-deployment-layers.md)
 
-## What it is
+### What it is
 
 Counts requests in **fixed time buckets** (e.g. per minute). The counter resets when the window boundary is reached.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart LR
@@ -96,26 +97,26 @@ flowchart LR
     F[Clock hits window boundary] --> G[Reset counter to 0]
 ```
 
-## Pros
+### Pros
 
 - Simple, fast, low memory
 - Easy to implement in Redis (`INCR` + TTL)
 - Good for coarse quotas (daily/monthly limits)
 
-## Cons
+### Cons
 
 - **Boundary burst problem** — e.g. 100 requests at `12:00:59` + 100 at `12:01:00` = 200 in 2 seconds
 - Uneven traffic distribution at window edges
 - Poor for strict per-second fairness
 
-## When to use
+### When to use
 
 - Daily or monthly API(Application Programming Interface) quotas
 - Coarse API tier limits (free vs paid)
 - Internal services where edge bursts are acceptable
 - Billing/usage metering where exact per-second fairness is not required
 
-## Implementation note
+### Implementation note
 
 ```text
 Key:   ratelimit:{client_id}:{window_start}
@@ -123,7 +124,7 @@ Value: request count
 TTL:   window duration
 ```
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -133,15 +134,15 @@ TTL:   window duration
 
 ---
 
-# Sliding Window Log
+## Sliding Window Log
 
 > **Related:** Default hybrid alternative → [§3 Sliding window counter](03-sliding-window-counter.md) · Sensitive endpoints → [api-design §5](../api-design-and-protection/includes/05-rate-limit-tiers.md) · Common mistakes → [§11](11-common-mistakes-and-architecture.md)
 
-## What it is
+### What it is
 
 Stores a **timestamp for every request**. On each new request, count only timestamps within the last N seconds.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart TD
@@ -152,25 +153,25 @@ flowchart TD
     C -->|No| F[Reject 429]
 ```
 
-## Pros
+### Pros
 
 - Accurate — true sliding window behavior
 - No boundary burst problem
 - Fair per-client limits
 
-## Cons
+### Cons
 
 - **Memory-heavy** — one timestamp per request
 - Expensive at high request rates (RPS)
 - Hard to scale without pruning or sampling strategies
 
-## When to use
+### When to use
 
 - Low-to-medium traffic APIs
 - Strict fairness requirements
 - Sensitive endpoints: login, password reset, OTP verification, account recovery
 
-## Implementation note
+### Implementation note
 
 ```text
 Key:   ratelimit:{client_id}:log
@@ -179,7 +180,7 @@ Value: sorted set of timestamps (or list with pruning)
 
 Prune entries older than `now - window_size` on each request.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -189,15 +190,15 @@ Prune entries older than `now - window_size` on each request.
 
 ---
 
-# Sliding Window Counter (Hybrid)
+## Sliding Window Counter (Hybrid)
 
 > **Related:** Product tiers → [api-design §5](../api-design-and-protection/includes/05-rate-limit-tiers.md) · Gateway stack → [§7 Deployment layers](07-deployment-layers.md) · Overload coupling → [HTS §9 Backpressure](../high-throughput-systems/includes/09-backpressure-and-limits.md)
 
-## What it is
+### What it is
 
 Combines the **previous window** and **current window** with weighted overlap. The most common production choice for public APIs.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart TD
@@ -210,27 +211,27 @@ flowchart TD
     E -->|No| H[Reject 429]
 ```
 
-## Pros
+### Pros
 
 - Smooths fixed-window boundary bursts
 - Memory-efficient (only 2 counters per client)
 - **Best general-purpose choice** for most APIs
 - Works well with Redis atomic operations
 
-## Cons
+### Cons
 
 - Slightly more complex than fixed window
 - Approximation — not mathematically perfect (but close enough in practice)
 - Requires a distributed store for multi-instance deployments
 
-## When to use
+### When to use
 
 - Public REST(Representational State Transfer) or GraphQL APIs
 - SaaS products with per-plan limits
 - API(Application Programming Interface) gateways (Kong, AWS API Gateway, Envoy)
 - Any production API where fairness matters but log-based storage is too costly
 
-## Implementation note
+### Implementation note
 
 ```text
 weighted_count = prev_window_count × (1 - elapsed_in_current_window)
@@ -240,7 +241,7 @@ if weighted_count < limit → allow and increment current window
 else → reject 429
 ```
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -250,15 +251,15 @@ else → reject 429
 
 ---
 
-# Token Bucket
+## Token Bucket
 
 > **Related:** vs leaky bucket → [§5 Leaky bucket](05-leaky-bucket.md) · Product burst tiers → [api-design §5](../api-design-and-protection/includes/05-rate-limit-tiers.md) · Partner traffic → [HTS §12](../high-throughput-systems/includes/12-decision-guide-and-common-mistakes.md)
 
-## What it is
+### What it is
 
 A bucket holds **tokens** that refill at a steady rate. Each request consumes one or more tokens. Unused tokens accumulate up to a **maximum capacity**, allowing controlled bursts.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart TD
@@ -269,20 +270,20 @@ flowchart TD
     C -->|No| F[Reject 429 or queue]
 ```
 
-## Pros
+### Pros
 
 - **Allows bursts** up to bucket capacity
 - Smooth average rate over time
 - Natural fit for variable workloads (mobile apps, batch jobs)
 - Easy to explain: "100 requests/minute with burst up to 20"
 
-## Cons
+### Cons
 
 - Large bursts can still stress backends if capacity is set too high
 - Tuning `refill_rate` and `capacity` requires thought
 - Stateless refill math can drift across nodes without shared state
 
-## When to use
+### When to use
 
 - APIs where occasional bursts are acceptable
 - Mobile app backends
@@ -290,7 +291,7 @@ flowchart TD
 - Background job consumers
 - Streaming or long-polling APIs
 
-## Key parameters
+### Key parameters
 
 | Parameter | Meaning | Example |
 |-----------|---------|---------|
@@ -298,7 +299,7 @@ flowchart TD
 | `capacity` | Max tokens in bucket (burst size) | 50 |
 | `cost` | Tokens per request | 1 (or higher for expensive ops) |
 
-## vs Leaky Bucket
+### vs Leaky Bucket
 
 | | Token Bucket | Leaky Bucket |
 |---|-------------|--------------|
@@ -306,7 +307,7 @@ flowchart TD
 | Output | Immediate if tokens available | Fixed steady output rate |
 | Use case | Variable client traffic | Protect slow downstream |
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -316,15 +317,15 @@ flowchart TD
 
 ---
 
-# Leaky Bucket
+## Leaky Bucket
 
 > **Related:** vs token bucket → [§4 Token bucket](04-token-bucket.md) · DB write protection → [PG §12 bulk](../postgresql-performance/includes/12-bulk-operations-and-concurrency.md) · Backpressure → [HTS §9](../high-throughput-systems/includes/09-backpressure-and-limits.md)
 
-## What it is
+### What it is
 
 Requests enter a **queue**. They "leak" out to the backend at a **fixed rate**. Excess requests are dropped or delayed.
 
-## Flow
+### Flow
 
 ```mermaid
 flowchart TD
@@ -335,19 +336,19 @@ flowchart TD
     E --> F[Forward to backend]
 ```
 
-## Pros
+### Pros
 
 - **Strict output rate** to downstream systems
 - Protects fragile backends from overload
 - Smooth, predictable load on databases and third-party APIs
 
-## Cons
+### Cons
 
 - Adds **latency** (requests wait in queue)
 - Queue overflow causes drops or timeouts
 - More complex to operate (queue depth, worker sizing)
 
-## When to use
+### When to use
 
 - Protecting databases from write storms
 - Legacy systems with hard throughput caps
@@ -355,13 +356,13 @@ flowchart TD
 - Message processors and async job ingestion
 - Any downstream that cannot handle burst traffic
 
-## vs Token Bucket
+### vs Token Bucket
 
 Use **Leaky Bucket** when you need a **steady output rate** regardless of input bursts.
 
 Use **Token Bucket** when you want to **allow bursts** but cap the average rate over time.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -371,13 +372,13 @@ Use **Token Bucket** when you want to **allow bursts** but cap the average rate 
 
 ---
 
-# Scope & Identity-Based Limiters
+## Scope & Identity-Based Limiters
 
 > **Related:** Product tier definitions → [api-design §5 Rate-limit tiers](../api-design-and-protection/includes/05-rate-limit-tiers.md) · Gateway identity → [api-design §3 Gateway](../api-design-and-protection/includes/03-api-gateway.md) · Layer order → [§7 Deployment layers](07-deployment-layers.md)
 
 Rate limits can be keyed by different dimensions. Layer them from cheapest to most specific.
 
-## Comparison
+### Comparison
 
 | Type | Key | Pros | Cons | When to use |
 |------|-----|------|------|-------------|
@@ -389,7 +390,7 @@ Rate limits can be keyed by different dimensions. Layer them from cheapest to mo
 | **Per Endpoint** | `method + path` | Protects expensive ops only | Many rules to maintain | Search, export, ML inference |
 | **Per Resource** | `user:123:project:456` | Fine-grained abuse control | Key explosion, storage cost | File uploads, object CRUD |
 
-## Layered check order
+### Layered check order
 
 Run cheapest checks first:
 
@@ -400,14 +401,14 @@ Run cheapest checks first:
 4. Per-endpoint limit  → protect expensive operations
 ```
 
-## Best practices
+### Best practices
 
 - **Combine IP + identity** — per-IP alone punishes corporate NAT and mobile carriers
 - **Different limits per tier** — free vs paid vs enterprise
 - **Stricter limits on auth endpoints** — login, password reset, OTP
 - **Looser limits on read, tighter on write** — `GET` vs `POST`/`DELETE`
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -417,7 +418,7 @@ Run cheapest checks first:
 
 ---
 
-# Deployment Layers
+## Deployment Layers
 
 > **Scope:** **Technical lens** — which infrastructure layer enforces limits (edge, gateway, app, Redis). Product tier quotas and header contract → [api-design §5 Rate-limit tiers](../api-design-and-protection/includes/05-rate-limit-tiers.md).
 >
@@ -425,7 +426,7 @@ Run cheapest checks first:
 
 Where you enforce rate limits matters as much as which algorithm you choose.
 
-## Comparison
+### Comparison
 
 | Layer | Examples | Pros | Cons | When to use |
 |-------|----------|------|------|-------------|
@@ -435,7 +436,7 @@ Where you enforce rate limits matters as much as which algorithm you choose.
 | **App Middleware** | Express, Spring, Django | Business-aware limits (plan tier) | Duplicated across services | Plan-based quotas, cost-aware limits |
 | **Service Mesh** | Istio, Linkerd | Per-service, mTLS(Mutual Transport Layer Security)-aware | Operational complexity | Large Kubernetes estates |
 
-## Traffic flow
+### Traffic flow
 
 ```mermaid
 flowchart LR
@@ -446,7 +447,7 @@ flowchart LR
     App --> DB[(Database)]
 ```
 
-## Rule of thumb
+### Rule of thumb
 
 | Concern | Best layer |
 |---------|------------|
@@ -455,7 +456,7 @@ flowchart LR
 | Per-plan business quotas | App middleware |
 | Protect database writes | App middleware or leaky bucket near DB |
 
-## Distributed vs local storage
+### Distributed vs local storage
 
 | Type | Pros | Cons | When to use |
 |------|------|------|-------------|
@@ -465,13 +466,13 @@ flowchart LR
 
 **Production pattern:** Redis with atomic `INCR` or Lua scripts; optional local shadow cache to reduce round-trips.
 
-## Fail-open vs fail-closed
+### Fail-open vs fail-closed
 
 If Redis (or your limit store) is down, choose per endpoint class. Full tradeoffs, war stories, and production checklist → [§11 Common mistakes & production architecture](11-common-mistakes-and-architecture.md#5-fail-open-vs-fail-closed).
 
 **Rule of thumb:** fail-open with a conservative local cap for reads; fail-closed on auth and expensive writes.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -481,7 +482,7 @@ If Redis (or your limit store) is down, choose per endpoint class. Full tradeoff
 
 ---
 
-# Specialized Limiters
+## Specialized Limiters
 
 > **Related:** Expensive endpoint multipliers → [api-design §5](../api-design-and-protection/includes/05-rate-limit-tiers.md#per-endpoint-multipliers) · Async long jobs → [api-design §10 Async](../api-design-and-protection/includes/10-async-patterns.md) · Decision guide → [§10](10-decision-guide.md)
 
@@ -489,7 +490,7 @@ Beyond standard request-per-second algorithms.
 
 ---
 
-## Concurrent Request Limiter
+### Concurrent Request Limiter
 
 Limits **in-flight** requests, not requests per second.
 
@@ -502,7 +503,7 @@ Limits **in-flight** requests, not requests per second.
 
 ---
 
-## Quota / Credit System
+### Quota / Credit System
 
 Time-based budgets: e.g. 10,000 calls/month. Endpoints can have different credit costs.
 
@@ -515,7 +516,7 @@ Time-based budgets: e.g. 10,000 calls/month. Endpoints can have different credit
 
 ---
 
-## Cost-Based / Weighted Limiting
+### Cost-Based / Weighted Limiting
 
 Different endpoints consume different "weight" from the same bucket.
 
@@ -541,7 +542,7 @@ Different endpoints consume different "weight" from the same bucket.
 
 ---
 
-## Adaptive / Dynamic Rate Limiting
+### Adaptive / Dynamic Rate Limiting
 
 Limits change based on server load, error rate, or client reputation.
 
@@ -565,13 +566,13 @@ flowchart TD
 
 ---
 
-## Bandwidth / Throughput Limiter
+### Bandwidth / Throughput Limiter
 
 Limits bytes per second, not request count.
 
 **When to use:** File upload/download APIs, streaming endpoints, CDN(Content Delivery Network) origin protection.
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -581,7 +582,7 @@ Limits bytes per second, not request count.
 
 ---
 
-# Response Strategies
+## Response Strategies
 
 > **Scope:** **Behavior lens** — hard reject vs throttle vs queue, retry-storm prevention. Canonical `429` headers and tier contract → [api-design §5 Response headers](../api-design-and-protection/includes/05-rate-limit-tiers.md#response-headers).
 >
@@ -589,7 +590,7 @@ Limits bytes per second, not request count.
 
 How you respond when a limit is hit is as important as the algorithm itself.
 
-## Comparison
+### Comparison
 
 | Strategy | Behavior | Pros | Cons | When to use |
 |----------|----------|------|------|-------------|
@@ -599,7 +600,7 @@ How you respond when a limit is hit is as important as the algorithm itself.
 | **Graduated** | Warn → throttle → block | Better UX for good users | More logic to maintain | Enterprise SaaS |
 | **Priority tiers** | Premium bypasses limits | Revenue-aligned | Complexity, fairness debates | Paid vs free tiers |
 
-## Standard response headers
+### Standard response headers
 
 Canonical `429` example and header names for product tiers → [api-design §5 Response headers](../api-design-and-protection/includes/05-rate-limit-tiers.md#response-headers).
 
@@ -610,7 +611,7 @@ Canonical `429` example and header names for product tiers → [api-design §5 R
 | `X-RateLimit-Remaining` | Requests left in current window |
 | `X-RateLimit-Reset` | Unix timestamp when the window resets |
 
-## Retry storm prevention
+### Retry storm prevention
 
 Clients that retry aggressively on `429` amplify load. Mitigate with:
 
@@ -619,7 +620,7 @@ Clients that retry aggressively on `429` amplify load. Mitigate with:
 3. Use jitter in client SDKs
 4. Consider a separate, stricter limit for rapid retries from the same client
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -629,11 +630,11 @@ Clients that retry aggressively on `429` amplify load. Mitigate with:
 
 ---
 
-# Decision Guide — Choosing a Limiter
+## Decision Guide — Choosing a Limiter
 
 > **Related:** Algorithm sections §1–§5 · Deployment layers → [§7](07-deployment-layers.md) · Common mistakes → [§11](11-common-mistakes-and-architecture.md) · Product tiers → [api-design §5](../api-design-and-protection/includes/05-rate-limit-tiers.md)
 
-## Algorithm decision flow
+### Algorithm decision flow
 
 ```mermaid
 flowchart TD
@@ -653,7 +654,7 @@ flowchart TD
     Q4 -->|No| Mem[In-memory OK for dev/single node]
 ```
 
-## Scenario recommendations
+### Scenario recommendations
 
 | Scenario | Recommended stack |
 |----------|-------------------|
@@ -667,27 +668,27 @@ flowchart TD
 | DDoS / volumetric attack | Edge/CDN(Content Delivery Network) rate limit + WAF(Web Application Firewall) before app logic |
 | Paid API with tiers | Quota system + per API key + graduated response |
 
-## Common stack combinations
+### Common stack combinations
 
-### Starter (single service)
+#### Starter (single service)
 
 ```text
 Nginx limit_req (per-IP) → App middleware (per user) → Handler
 ```
 
-### Production SaaS
+#### Production SaaS
 
 ```text
 Cloudflare (edge) → Kong (per API key, sliding window) → App (per-endpoint weights) → Redis
 ```
 
-### High-stakes / attack-prone
+#### High-stakes / attack-prone
 
 ```text
 CDN + WAF → API Gateway → Adaptive limits → Redis → App concurrency semaphore
 ```
 
-## Common mistakes
+### Common mistakes
 
 | Mistake | Fix |
 |---------|-----|
@@ -699,29 +700,29 @@ CDN + WAF → API Gateway → Adaptive limits → Redis → App concurrency sema
 
 ---
 
-# Common Mistakes & Production Architecture
+## Common Mistakes & Production Architecture
 
 > **Related:** Decision guide → [§10](10-decision-guide.md) · Response headers → [§9](09-response-strategies.md) · Gateway enforcement → [§7](07-deployment-layers.md)
 
-## Common mistakes
+### Common mistakes
 
-### 1. Rate limiting is not security
+#### 1. Rate limiting is not security
 
 Attackers rotate IPs, API(Application Programming Interface) keys, and accounts. Rate limiting reduces abuse volume — it does not stop determined attackers.
 
-### 2. Clock skew
+#### 2. Clock skew
 
 Distributed window counters need synchronized time or TTL-based buckets. Avoid relying on wall-clock alignment across nodes.
 
-### 3. Retry storms
+#### 3. Retry storms
 
 Clients that retry on every `429` amplify load. Always return `Retry-After` and document backoff in your API reference.
 
-### 4. Shared IPs
+#### 4. Shared IPs
 
 Corporate NAT, VPNs, and mobile carriers punish strict per-IP limits. Combine with authenticated identity limits when possible.
 
-### 5. Fail-open vs fail-closed
+#### 5. Fail-open vs fail-closed
 
 If your rate limit store (Redis) is down:
 
@@ -730,7 +731,7 @@ If your rate limit store (Redis) is down:
 
 Most teams choose **fail-open with a conservative local emergency cap**.
 
-### 6. No observability
+#### 6. No observability
 
 Without metrics per limiter rule, you cannot tune thresholds. Track:
 
@@ -741,7 +742,7 @@ Without metrics per limiter rule, you cannot tune thresholds. Track:
 
 ---
 
-## Minimal production architecture
+### Minimal production architecture
 
 ```mermaid
 flowchart TB
@@ -772,7 +773,7 @@ flowchart TB
     RL5 --> Redis
 ```
 
-## Checklist before going live
+### Checklist before going live
 
 - [ ] Limits defined per tier (free, paid, enterprise)
 - [ ] `429` response includes `Retry-After` and rate limit headers
@@ -784,9 +785,9 @@ flowchart TB
 
 ---
 
-## Production war stories
+### Production war stories
 
-### Redis primary fails over
+#### Redis primary fails over
 
 | Symptom | All counters reset or split-brain limits |
 |---------|------------------------------------------|
@@ -794,7 +795,7 @@ flowchart TB
 | **Mitigation** | Redis Cluster with persistence; conservative local cap during failover; monitor `429` spike |
 | **Prevention** | Document fail-open policy; run failover game day |
 
-### OAuth(Open Authorization) token refresh burst
+#### OAuth token refresh burst
 
 | Symptom | `/oauth/token` hammers rate limit; legitimate apps get `429` |
 |---------|----------------------------------------------------------------|
@@ -802,7 +803,7 @@ flowchart TB
 | **Mitigation** | Per-client_id limit; separate bucket for token endpoint; jitter refresh in SDK docs |
 | **Prevention** | Load test token path separately from API path |
 
-### Global vs regional counters
+#### Global vs regional counters
 
 | Symptom | Limit exceeded in EU but US idle |
 |---------|-----------------------------------|
@@ -810,7 +811,7 @@ flowchart TB
 | **Mitigation** | Regional limit keys + global cap; or geo-sharded Redis |
 | **Prevention** | Define whether quota is per-account global or per-region |
 
-### Partner on corporate NAT
+#### Partner on corporate NAT
 
 | Symptom | One `429` blocks entire enterprise |
 |---------|-------------------------------------|
@@ -818,7 +819,7 @@ flowchart TB
 | **Mitigation** | Require API key; rate limit by `client_id` not IP |
 | **Prevention** | Never IP-only limits for B2B authenticated APIs |
 
-### Retry storm after partial outage
+#### Retry storm after partial outage
 
 | Symptom | Recovery slower than outage — clients retry into `429` |
 |---------|--------------------------------------------------------|

@@ -116,7 +116,7 @@ Store payload references (S3 URL, row ID) when messages exceed ~1 MB.
 
 ---
 
-## Stream DLQ(Dead Letter Queue) and poison messages
+## Stream DLQ and poison messages
 
 | Approach | When |
 |----------|------|

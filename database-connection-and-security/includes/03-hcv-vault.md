@@ -102,7 +102,7 @@ Vault Agent authenticates to Vault, fetches/renews DB credentials, and writes th
 
 An init container fetches credentials before the main app container starts.
 
-### Direct SDK / API(Application Programming Interface)
+### Direct SDK / API
 
 The app calls the Vault API at startup and again before credentials expire.
 

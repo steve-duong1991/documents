@@ -176,5 +176,8 @@ markdown_extensions:
   - toc:
       permalink: true
 
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+
 plugins:
   - search

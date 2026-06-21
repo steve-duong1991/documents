@@ -45,7 +45,7 @@ max_connections = 200
 
 Adjust for your RAM and workload — these are starting points, not gospel.
 
-## WAL(Write-Ahead Log) and checkpoint (write-heavy)
+## WAL and checkpoint (write-heavy)
 
 | Parameter | Notes |
 |-----------|-------|

@@ -29,7 +29,7 @@
 | **Ops** | Alerts on 401/403/429 spikes and 5xx error rate |
 | **Ops** | Runbook for key rotation and incident response |
 
-## HTTP(Hypertext Transfer Protocol) status code quick reference
+## HTTP status code quick reference
 
 | Code | Use | Do not use for |
 |------|-----|----------------|

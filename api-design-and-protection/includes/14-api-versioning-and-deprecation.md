@@ -1,4 +1,4 @@
-# API(Application Programming Interface) Versioning and Deprecation
+# API Versioning and Deprecation
 
 Public APIs outlive clients. Versioning and deprecation policy is part of the contract — not an afterthought.
 

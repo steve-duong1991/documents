@@ -113,6 +113,14 @@ def expand_prose_block(text: str, pattern: re.Pattern[str], acronyms: dict[str, 
     return "".join(expanded_parts)
 
 
+def strip_heading_expansions(line: str, acronyms: dict[str, str]) -> str:
+    keys = sorted(acronyms.keys(), key=len, reverse=True)
+    strip_re = re.compile(
+        r"\b(" + "|".join(re.escape(k) for k in keys) + r")\([^)]*\)"
+    )
+    return strip_re.sub(r"\1", line)
+
+
 def expand_without_links(text: str, pattern: re.Pattern[str], acronyms: dict[str, str], seen: set[str]) -> str:
     if not text:
         return text
@@ -121,9 +129,10 @@ def expand_without_links(text: str, pattern: re.Pattern[str], acronyms: dict[str
     expanded_lines: list[str] = []
     for line in lines:
         if re.match(r"^\s*#{1,6}\s", line):
-            for match in pattern.finditer(line):
+            cleaned = strip_heading_expansions(line, acronyms)
+            for match in pattern.finditer(cleaned):
                 seen.add(match.group(1))
-            expanded_lines.append(line)
+            expanded_lines.append(cleaned)
             continue
         expanded_lines.append(expand_line_without_links(line, pattern, acronyms, seen))
     return "\n".join(expanded_lines)
