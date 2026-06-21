@@ -36,6 +36,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Idempotency key** | Client header for safe retry of writes | [api-design §13](api-design-and-protection/includes/13-idempotency.md) |
 | **Inbox pattern** | Consumer dedup table — same TX as side effect; pairs with outbox | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md), [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
 | **LSM(Log-Structured Merge) tree** | Log-structured merge; write-optimized storage | [tree-and-index-structures §4](tree-and-index-structures/includes/04-lsm-trees.md) |
+| **Memtable** | In-memory sorted buffer in LSM; absorbs writes before flush to disk | [tree §4](tree-and-index-structures/includes/04-lsm-trees.md) |
 | **Optimistic concurrency** | Detect conflicting writes via version/check; retry on conflict | [ES §1](event-sourcing-and-cqrs/includes/01-core-concepts.md), [PG §12](postgresql-performance/includes/12-bulk-operations-and-concurrency.md) |
 | **Outbox pattern** | DB table + relay for reliable event publish | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md), [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
 | **Partitioning** | Split one logical table across child tables on a single PostgreSQL server | [PG §10](postgresql-performance/includes/10-partitioning.md) |
@@ -56,6 +57,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **RED(Rate, Errors, Duration) method** | Rate, errors, duration — monitor request-driven services | [HTS §11](high-throughput-systems/includes/11-observability.md) |
 | **SLO(Service Level Objective)** | Service level objective (target reliability/latency) | [HTS §1](high-throughput-systems/includes/01-measurement-and-slo.md), [§11](high-throughput-systems/includes/11-observability.md) |
 | **SLI(Service Level Indicator)** | Service level indicator — measured metric for an SLO | [HTS §1](high-throughput-systems/includes/01-measurement-and-slo.md), [§11](high-throughput-systems/includes/11-observability.md) |
+| **SSTable** | Immutable on-disk sorted file in LSM; merged during compaction | [tree §4](tree-and-index-structures/includes/04-lsm-trees.md) |
 | **SSRF(Server-Side Request Forgery)** | Server-side request forgery — unsafe outbound fetches (e.g. webhook URL) | [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
 | **Snapshot (ES)** | Cached aggregate state at version N; not source of truth | [ES §3](event-sourcing-and-cqrs/includes/03-storage-and-projections.md) |
 | **Stateless app tier** | No session in process memory; horizontal scale | [api-design §11](api-design-and-protection/includes/11-stateless-architecture.md) |

@@ -2,7 +2,7 @@
 
 What strong consistency guarantees, what it costs in latency and scale, and how to apply it when you add replicas, caches, and multi-region deployments.
 
-> **Related:** Operational routing → [Read scaling and caching](11-read-scaling-and-caching.md) · API(Application Programming Interface) implications → [Stateless architecture](../../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) · CQRS(Command Query Responsibility Segregation) lag → [Eventual consistency in read models](../../event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md#eventual-consistency)
+> **Related:** Operational routing → [Read scaling and caching](11-read-scaling-and-caching.md) · API(Application Programming Interface) implications → [Stateless architecture](../../api-design-and-protection/includes/11-stateless-auth-operations.md#consistency-and-read-routing) · CQRS(Command Query Responsibility Segregation) lag → [Eventual consistency in read models](../../event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md#eventual-consistency)
 
 ---
 
@@ -243,6 +243,6 @@ flowchart LR
 ## See also
 
 - [Read scaling and caching](11-read-scaling-and-caching.md) — replicas, Redis, materialized views, layered read path
-- [Stateless architecture — consistency and read routing](../../api-design-and-protection/includes/11-stateless-architecture.md#consistency-and-read-routing) — API-level implications
+- [Stateless architecture — consistency and read routing](../../api-design-and-protection/includes/11-stateless-auth-operations.md#consistency-and-read-routing) — API-level implications
 - [CQRS read models — eventual consistency](../../event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md#eventual-consistency) — projector lag and UX patterns
 - [Async patterns](../../api-design-and-protection/includes/10-async-patterns.md) — job results vs immediate read consistency

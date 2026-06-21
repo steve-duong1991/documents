@@ -42,3 +42,16 @@ flowchart LR
 | Huge images slow every deploy | Slim base images; layer caching in CI |
 | Immutable VMs but mutable config on disk | Config via env/secrets at boot — not manual edits |
 | New image with non-backward-compatible DB migration | [§12](12-schema-migrations-and-deploy.md) expand/contract order |
+
+---
+
+## Production signals
+
+| Stack | Immutable artifact flow |
+|-------|-------------------------|
+| **Docker / K8s** | Build image `app:git-sha` → push → update Deployment image — never `kubectl exec` patch |
+| **EC2 + AMI** | Packer build → new AMI → ASG instance refresh |
+| **Lambda** | Publish new version + alias; old version retained for rollback |
+| **GitOps (Argo/Flux)** | Git commit changes image tag; controller replaces pods |
+
+Same **git SHA** promoted dev → staging → prod — not rebuilt per environment.

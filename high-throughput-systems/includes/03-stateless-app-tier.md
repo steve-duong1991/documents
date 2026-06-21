@@ -134,4 +134,4 @@ See [06-async-queues-workers.md](06-async-queues-workers.md).
 | Heavy work enqueued — not blocking request thread | |
 | Per-request cost profiled before adding replicas | |
 
-Full stateless checklist (identity, externalized state, deploy safety) → [api-design §11](../../api-design-and-protection/includes/11-stateless-architecture.md#checklist-is-your-app-tier-stateless).
+Full stateless checklist (identity, externalized state, deploy safety) → [api-design §11](../../api-design-and-protection/includes/11-stateless-auth-operations.md#checklist-is-your-app-tier-stateless).

@@ -2,7 +2,7 @@
 
 How to design writes that are safe to retry: HTTP(Hypertext Transfer Protocol) semantics, `Idempotency-Key` headers, storage patterns, and how idempotency fits async jobs, webhooks, and stateless app tiers.
 
-> **Related:** Write safety contract → [API design §7](01-api-design.md#7-write-safety) · Webhook replay → [API protection §6](02-api-protection.md#6-idempotency-and-replay-protection) · Async job retries → [Async patterns](10-async-patterns.md) · Shared stores → [Stateless architecture](11-stateless-architecture.md) · Event-sourced commands → [Event Sourcing & CQRS](../../event-sourcing-and-cqrs/includes/04-api-design-implications.md) · Multi-step sagas → [Sagas and distributed workflows](../../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md#idempotency-patterns-specific-to-sagas)
+> **Related:** Write safety contract → [API design §7](01-api-design.md#7-write-safety) · Webhook replay → [API protection §6](02-api-protection.md#6-idempotency-and-replay-protection) · Async job retries → [Async patterns](10-async-patterns.md) · Shared stores → [Stateless architecture](11-stateless-architecture.md) · Event-sourced commands → [Event Sourcing & CQRS](../../event-sourcing-and-cqrs/includes/04-api-design-implications.md) · Multi-step sagas → [Sagas and distributed workflows](../../event-sourcing-and-cqrs/includes/07-sagas-compensation-idempotency.md#idempotency-patterns-specific-to-sagas)
 
 ---
 
@@ -13,7 +13,7 @@ How to design writes that are safe to retry: HTTP(Hypertext Transfer Protocol) s
 | **What is it?** | Repeating the same operation has the same effect as doing it once |
 | **Who enforces it?** | **Application layer** — not gateway or load balancer ([entry architecture](03-api-gateway.md#what-the-gateway-should-do)) |
 | **When is a key required?** | `POST` (and some `PATCH`) with side effects: payments, orders, provisioning, external calls |
-| **Where to store keys?** | Shared **Redis** or **PostgreSQL** — never per-instance memory ([stateless checklist](11-stateless-architecture.md#checklist-is-your-app-tier-stateless)) |
+| **Where to store keys?** | Shared **Redis** or **PostgreSQL** — never per-instance memory ([stateless checklist](11-stateless-auth-operations.md#checklist-is-your-app-tier-stateless)) |
 | **Updates to existing resources?** | Use `ETag` / `If-Match`, not idempotency keys |
 | **Inbound webhooks?** | HMAC(Hash-based Message Authentication Code) + timestamp + dedup by event ID — see [API protection §6](02-api-protection.md#6-idempotency-and-replay-protection) |
 
@@ -287,7 +287,7 @@ Expire with Redis TTL or a background job on DB rows.
 
 ## Async jobs
 
-When `POST` returns **`202 Accepted`** with a job resource, the idempotency key prevents duplicate enqueue on client retry. Full flow → [Async patterns § Pattern 1 — Job resource + polling](10-async-patterns.md#pattern-1--job-resource--polling-default) and [§ Idempotency across async](10-async-patterns.md#idempotency-across-async).
+When `POST` returns **`202 Accepted`** with a job resource, the idempotency key prevents duplicate enqueue on client retry. Full flow → [Async patterns § Pattern 1 — Job resource + polling](10-async-jobs-polling.md#pattern-1--job-resource--polling-default) and [§ Idempotency across async](10-async-patterns.md#idempotency-across-async).
 
 Job **workers** must also deduplicate on `job_id` or message ID for at-least-once queue delivery.
 
@@ -380,7 +380,7 @@ Never log full payment payloads or PII unnecessarily. Idempotency replay metrics
 | Can the client retry on timeout? | Idempotency is mandatory |
 | Is it an update to existing resource? | Use `ETag` / `If-Match` |
 | Is it async (`202` + job)? | Key dedupes enqueue; worker dedupes processing |
-| Is it a multi-step saga across services? | Per-step idempotency keys + saga state — see [Sagas §7](../../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md#idempotency-patterns-specific-to-sagas) |
+| Is it a multi-step saga across services? | Per-step idempotency keys + saga state — see [Sagas §7](../../event-sourcing-and-cqrs/includes/07-sagas-compensation-idempotency.md#idempotency-patterns-specific-to-sagas) |
 | Is it an inbound webhook? | HMAC + timestamp + event ID dedup |
 | Multiple app instances? | Shared Redis or DB store |
 

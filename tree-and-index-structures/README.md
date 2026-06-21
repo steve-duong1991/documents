@@ -20,64 +20,6 @@ Related: [postgresql-performance](../postgresql-performance/README.md) (PostgreS
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
----
-
-## Overview
-
-Tree families, B+ vs LSM storage camps, and default recommendations by use case.
-
-See full details → [includes/00-overview.md](includes/00-overview.md)
-
----
-
-## 1. B-Trees and B+ Trees
-
-On-disk indexes, pros/cons, hash comparison, and why databases use B+ trees.
-
-See full details → [includes/01-b-trees-and-b-plus.md](includes/01-b-trees-and-b-plus.md)
-
----
-
-## 2. In-Memory Balanced Trees
-
-BST, AVL, Red-Black, Splay — when to use each in RAM.
-
-See full details → [includes/02-in-memory-trees.md](includes/02-in-memory-trees.md)
-
----
-
-## 3. Specialized Trees
-
-Trie, heap, segment tree, R-Tree, KD-Tree, Merkle tree, and more.
-
-See full details → [includes/03-specialized-trees.md](includes/03-specialized-trees.md)
-
----
-
-## 4. LSM Trees
-
-Log-structured merge trees — write path, compaction, LSM vs B+, real-world systems.
-
-See full details → [includes/04-lsm-trees.md](includes/04-lsm-trees.md)
-
----
-
-## 5. Decision Guides and Cheat Sheets
-
-Mermaid decision flows for storage, in-memory maps, specialized queries, and LSM vs B+.
-
-See full details → [includes/05-decision-guides.md](includes/05-decision-guides.md)
-
----
-
-## 6. Amplification, Complexity, and Related Topics
-
-Amplification metrics, clustered vs secondary indexes, complexity table, when NOT to use, glossary, and cross-links to PostgreSQL guides.
-
-See full details → [includes/06-amplification-and-related-topics.md](includes/06-amplification-and-related-topics.md)
-
----
-
 ## See also
 
 | Guide | Topics |

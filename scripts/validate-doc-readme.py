@@ -98,17 +98,8 @@ def main() -> int:
                 f"{guide.name}/README.md: TOC references missing file — includes/{name}"
             )
 
-        # Each include should have a "See full details" link (except 00-overview optional)
         readme_text = readme.read_text(encoding="utf-8")
         errors.extend(validate_toc_table(readme_text, guide.name))
-
-        for name in disk:
-            if name == "00-overview.md":
-                continue
-            if f"includes/{name}" not in readme_text:
-                errors.append(
-                    f"{guide.name}/README.md: no link to includes/{name} in body"
-                )
 
     if errors:
         print(f"README/include mismatches: {len(errors)}", file=sys.stderr)

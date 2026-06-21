@@ -1,6 +1,6 @@
 # Decision Guide — Choosing a Limiter
 
-> **Related:** Algorithm sections §1–§5 · Deployment layers → [§7](07-deployment-layers.md) · Common mistakes → [§11](11-common-mistakes-and-architecture.md) · Product tiers → [api-design §5](../../api-design-and-protection/includes/05-rate-limit-tiers.md)
+> **Related:** Algorithm sections §1–§5 · Deployment layers → [§7](07-deployment-layers.md) · Distributed store → [§12](12-distributed-rate-limiting.md) · Common mistakes → [§11](11-common-mistakes-and-architecture.md) · Product tiers → [api-design §5](../../api-design-and-protection/includes/05-rate-limit-tiers.md)
 
 ## Algorithm decision flow
 

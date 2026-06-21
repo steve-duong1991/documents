@@ -4,6 +4,43 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ---
 
+## 2026-06-21 (GitHub navigation — slim READMEs, article splits)
+
+### Corpus
+- **README Option A:** guide READMEs are TOC + `Reading paths` / `See also` only — removed duplicate skim sections
+- `validate-doc-readme.py` — TOC sync only (no body link requirement per include)
+- CONTRIBUTING updated for TOC-primary navigation and sub-article naming (`10a` labels, `10-async-webhooks.md` files)
+- README TOC table fix — two-column separators normalized; column-count validation added
+
+### api-rate-limiting
+- §12 Distributed rate limiting — Redis cluster, hot keys, clock skew, global vs regional quotas
+
+### postgresql-performance
+- §7 Scope block — pool tuning vs database-connection credentials/IAM
+
+### event-sourcing-and-cqrs
+- §9 Golden event fixture example (JSON + test sketch)
+
+### deployment-strategies
+- §1, §6, §8 Production signals tables (stack-specific tooling)
+
+### Corpus
+- GLOSSARY: memtable, SSTable rows
+
+### api-design-and-protection
+- Split §10 Async patterns → hub + `10-async-jobs-polling`, `10-async-webhooks`, `10-async-streaming`
+- Split §11 Stateless → hub + `11-stateless-auth-operations`
+- Split §12 Identity → hub + `12-identity-active-directory`, `12-identity-enterprise-api`
+
+### event-sourcing-and-cqrs
+- Split §7 Sagas → hub + `07-sagas-choreography-orchestration`, `07-sagas-compensation-idempotency`, `07-sagas-operations`
+
+### Removed (prior commit on branch)
+- All `GUIDE.md` combined files, `mkdocs.yml`, `build-guide.py`, pre-commit, external-link CI workflow
+- GitHub reading path: guide README TOC → `includes/*.md`
+
+---
+
 ## 2026-06-21 (acronym expansions)
 
 ### Corpus

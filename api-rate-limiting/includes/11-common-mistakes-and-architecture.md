@@ -1,6 +1,6 @@
 # Common Mistakes & Production Architecture
 
-> **Related:** Decision guide → [§10](10-decision-guide.md) · Response headers → [§9](09-response-strategies.md) · Gateway enforcement → [§7](07-deployment-layers.md)
+> **Related:** Decision guide → [§10](10-decision-guide.md) · Distributed counters → [§12](12-distributed-rate-limiting.md) · Response headers → [§9](09-response-strategies.md) · Gateway enforcement → [§7](07-deployment-layers.md)
 
 ## Common mistakes
 
@@ -108,6 +108,8 @@ flowchart TB
 | **Cause** | Global Redis key; viral traffic in one region |
 | **Mitigation** | Regional limit keys + global cap; or geo-sharded Redis |
 | **Prevention** | Define whether quota is per-account global or per-region |
+
+Full key design and regional topology → [§12 Distributed rate limiting](12-distributed-rate-limiting.md).
 
 ### Partner on corporate NAT
 

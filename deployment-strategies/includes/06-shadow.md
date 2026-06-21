@@ -43,3 +43,16 @@ flowchart TB
 | Shadowing write paths without dedup | Read-only shadow first; idempotency keys for any write mirror |
 | Shadow triggers duplicate side effects (email, billing) | Discard responses; never call external providers from shadow |
 | 100% shadow of production load on day one | Cap traffic; ramp shadow percentage |
+
+---
+
+## Production signals
+
+| Stack | How shadow traffic is routed |
+|-------|------------------------------|
+| **Envoy / service mesh** | `mirror` cluster — duplicate request, ignore response |
+| **API(Application Programming Interface) gateway** | Shadow route or traffic mirror to secondary upstream |
+| **Load balancer** | ALB weighted target group at 0% user response (mirror TG) |
+| **App-level** | Async fan-out to shadow handler; primary path returns to user |
+
+Start with **read-only** endpoints (`GET /search`) before mirroring `POST` writes.

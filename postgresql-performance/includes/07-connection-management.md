@@ -1,6 +1,8 @@
 # Connection Management
 
-> **Related:** Production credentials and PgBouncer patterns → [database-connection-and-security](../../database-connection-and-security/README.md) · [§9 PgBouncer + secret](../../database-connection-and-security/includes/09-pgbouncer-proxy-password.md)
+> **Scope:** **PostgreSQL tuning lens** — `max_connections`, pool sizing, PgBouncer modes, prepared statements with transaction pooling. Production **credentials, IAM(Identity and Access Management), TLS(Transport Layer Security), Vault, and cloud identity patterns** → [database-connection-and-security](../../database-connection-and-security/README.md) · [§9 PgBouncer + secret](../../database-connection-and-security/includes/09-pgbouncer-proxy-password.md).
+>
+> **Related:** Pool sizing math and monitoring → below · RDS Proxy / IAM auth → [database-connection §4](../../database-connection-and-security/includes/04-aws-iam-rds-proxy.md)
 
 PostgreSQL creates **one process per connection**. Beyond a few hundred active connections, context switching and memory overhead hurt performance even when queries are idle.
 

@@ -27,9 +27,9 @@ Start from each guide **README** table of contents — topics link directly to `
 
 ### GitHub navigation
 
-Readers on GitHub should use **guide README tables** — each topic links directly to `includes/NN-topic.md`. Skim summaries on the README are optional; the include file is the full section.
+Readers on GitHub should use **guide README tables** — each topic links directly to `includes/NN-topic.md`. The TOC is the navigation surface; do not duplicate full section summaries in the README body.
 
-- **README TOC:** one column, topic → include path (run `python3 scripts/github-format.py` after bulk TOC edits).
+- **README TOC:** one column, topic → include path (run `python3 scripts/github-format.py` after bulk TOC edits). Skim summaries below the TOC are optional — the table is the primary GitHub navigation.
 - **Headings:** no acronym expansions in `#` titles — body text keeps first-use `ACRONYM(Full Text)`.
 - **GLOSSARY:** `See also` column uses markdown links to guides or sections.
 
@@ -53,6 +53,7 @@ Prefer **expanding existing includes** over new top-level folders.
 |------|------------|---------|
 | Folder | `kebab-case` | `database-connection-and-security` |
 | Include files | `NN-kebab-case.md` (zero-padded) | `15-schema-migration-checklist.md` |
+| Sub-articles (split section) | Same `NN-` prefix + suffix | `10-async-webhooks.md`, `07-sagas-operations.md` |
 | Title | Plain English with `&` where needed | Database Connection & Security |
 
 Folder name and display title should tell the same story.
@@ -126,8 +127,7 @@ GitHub Actions: `.github/workflows/documents.yml` — link/anchor validation, RE
 
 ## Checklist before finishing
 
-- [ ] README TOC updated with new section
-- [ ] Short summary + "See full details → includes/…" in README body
+- [ ] README TOC updated with new section (sub-articles use labels like `10a` under parent `10`)
 - [ ] Cross-links use correct `../` vs `../../`
 - [ ] `make validate` passes (or equivalent scripts)
 - [ ] Root [README.md](README.md) updated if adding a new top-level guide or learning path
