@@ -71,30 +71,14 @@ SELECT * FROM orders WHERE tenant_id = current_setting('app.tenant_id')::int;
 
 ### Materialized views
 
-Materialized views store query results physically. Reads are fast; freshness depends on refresh schedule.
+Pre-computed snapshot of a query — fast reads, stale until `REFRESH`. Use for dashboards and heavy aggregations that tolerate lag; **not** for read-your-writes after a write.
 
-```sql
-CREATE MATERIALIZED VIEW daily_revenue AS
-SELECT date_trunc('day', created_at) AS day, sum(amount) AS total
-FROM orders
-GROUP BY 1;
+| When to use | When not to use |
+|-------------|-----------------|
+| Expensive aggregation read repeatedly | Real-time UI after writes |
+| Minutes of staleness OK | Session-critical consistency |
 
-CREATE UNIQUE INDEX ON daily_revenue (day);
-
-REFRESH MATERIALIZED VIEW CONCURRENTLY daily_revenue;
-```
-
-| Pros | Cons |
-|------|------|
-| Dramatically faster reads for heavy aggregations | Stale until refreshed |
-| Native PostgreSQL — no extra infrastructure | Storage and maintenance cost |
-| `REFRESH CONCURRENTLY` avoids read locks (needs unique index) | Not suitable for real-time data |
-
-**When to use:** Dashboards tolerating minutes of lag; reports that scan millions of rows repeatedly.
-
-**When NOT to use:** Session-critical reads after a write — use base tables or route to primary.
-
-See also [Read scaling and caching](11-read-scaling-and-caching.md) for refresh patterns and consistency trade-offs.
+`REFRESH MATERIALIZED VIEW CONCURRENTLY` requires a unique index on the view. Refresh schedules, layered read path, and consistency trade-offs → [Read scaling and caching](11-read-scaling-and-caching.md).
 
 ### Recursive views
 

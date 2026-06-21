@@ -4,365 +4,112 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ---
 
-## 2026-06-21 (minor navigation polish)
-
-### Corpus
-- Root README learning paths — deep-links to `NNA` sub-articles (`10A` jobs, `13A` client flow, `3A` gateway flows)
-- api-design README reading paths — same deep-links for contract design, hardening, long-running endpoints
-
-### api-design-and-protection
-- Trimmed `10-async-patterns` hub — moved job OpenAPI YAML to `10A-async-jobs-polling`; idempotency async diagram to `13C-idempotency-integrations`
-- Fixed duplicate `---` separators in async hub
-
-### CHANGELOG
-- Historical split entries updated to current `NNA-topic.md` filenames
-
----
-
-## 2026-06-21 (sub-article letter suffixes)
-
-### Corpus
-- Renamed 14 hub-split sub-articles to `NNA-topic.md` (e.g. `10A-async-jobs-polling.md`); hub files unchanged
-- README TOC labels uppercase (`3A`, `10A`, `7C`); cross-repo link sweep (~32 files)
-- `validate-doc-readme.py` — TOC regex accepts `\d{2}[A-Z]?-` includes
-- `github-format.py` — section map maps hub files only (not `NNA-` sub-articles)
-
----
-
-## 2026-06-21 (optional corpus polish)
-
-### Corpus
-- GLOSSARY: **Compaction (LSM)** row
-- Root README learning paths — explicit [api-rate-limiting §12 distributed](api-rate-limiting/includes/12-distributed-rate-limiting.md) in Ship a public API and Production hardening paths
-
-### api-design-and-protection
-- Split §3 Gateway → hub + `03A-api-gateway-request-flows`, `03B-api-gateway-stacks-and-selection` (README TOC `3A`, `3B`)
-- Split §13 Idempotency → hub + `13A-idempotency-client-and-server-flow`, `13B-idempotency-storage`, `13C-idempotency-integrations` (README TOC `13A`–`13C`)
-- Cross-link anchor updates (HTS §2, ES §4, stateless §11, GraphQL §17)
-
-### CONTRIBUTING
-- Sub-article examples extended to §3 Gateway and §13 Idempotency hub splits
-
----
-
-## 2026-06-21 (GitHub navigation — slim READMEs, article splits)
-
-### Corpus
-- **README Option A:** guide READMEs are TOC + `Reading paths` / `See also` only — removed duplicate skim sections
-- `validate-doc-readme.py` — TOC sync only (no body link requirement per include)
-- CONTRIBUTING updated for TOC-primary navigation and sub-article naming (`10A` labels, `10B-async-webhooks.md` files)
-- README TOC table fix — two-column separators normalized; column-count validation added
-
-### api-rate-limiting
-- §12 Distributed rate limiting — Redis cluster, hot keys, clock skew, global vs regional quotas
-
-### postgresql-performance
-- §7 Scope block — pool tuning vs database-connection credentials/IAM
-
-### event-sourcing-and-cqrs
-- §9 Golden event fixture example (JSON + test sketch)
-
-### deployment-strategies
-- §1, §6, §8 Production signals tables (stack-specific tooling)
-
-### Corpus
-- GLOSSARY: memtable, SSTable rows
-
-### api-design-and-protection
-- Split §10 Async patterns → hub + `10A-async-jobs-polling`, `10B-async-webhooks`, `10C-async-streaming`
-- Split §11 Stateless → hub + `11A-stateless-auth-operations`
-- Split §12 Identity → hub + `12A-identity-active-directory`, `12B-identity-enterprise-api`
-
-### event-sourcing-and-cqrs
-- Split §7 Sagas → hub + `07A-sagas-choreography-orchestration`, `07B-sagas-compensation-idempotency`, `07C-sagas-operations`
-
-### Removed (prior commit on branch)
-- All `GUIDE.md` combined files, `mkdocs.yml`, `build-guide.py`, pre-commit, external-link CI workflow
-- GitHub reading path: guide README TOC → `includes/*.md`
-
----
-
-## 2026-06-21 (acronym expansions)
-
-### Corpus
-- `acronyms.json` registry + `scripts/expand-acronyms.py` — first-use-per-file inline expansions (`CDC(Change Data Capture)`)
-- GLOSSARY Term column aligned with inline style; added SLI, RED, SSRF rows
-- CONTRIBUTING: acronym convention; CI `expand-acronyms.py --check`; `make check` includes acronym drift
-- Headings left unexpanded for stable `#anchors`; shorthand in parentheses `(DLQ)`, `(2PC)` not doubled
-
----
-
-## 2026-06-21 (coverage expansion)
-
-### high-throughput-systems
-- §14 Message brokers and queues — queue vs stream vs outbox decision flow
-- §15 CDC and search indexing — OpenSearch pipelines, reindex
-- §1: capacity and cost planning
-- §4: Redis operations + Scope vs PG §11
-- §11: OpenTelemetry / distributed tracing
-- §12: quick links to §14–§15
-
-### event-sourcing-and-cqrs
-- §8 Event schema evolution — upcasting, projector compatibility
-- §9 Testing and verification — aggregates, projectors, sagas, CI
-- §7: cross-link to §9 testing
-
-### postgresql-performance
-- §16 Backup, restore, and PITR — operational recovery runbook
-- §11: Scope vs HTS §4 caching
-
-### api-design-and-protection
-- §16 Multi-tenant APIs — isolation, BOLA, tenant-scoped limits
-- §17 GraphQL and gRPC — when to use vs REST
-- §4 / §12: Scope blocks (auth protocols vs enterprise identity)
-
-### Corpus
-- GLOSSARY: BOLA, BRIN, GIN, CDC, choreography, RED/USE, SLI, SSRF, upcasting
-- Root README: on-call, B2B partner learning paths; DBA path includes PG §16
-- RUNBOOK-EXAMPLE-orders-api.md + RUNBOOK-TEMPLATE link
-- mkdocs.yml: new sections in nav
-
----
-
-## 2026-06-21 (polish — nav, scope, HTS §13)
-
-### high-throughput-systems
-- Renumbered §14 Multi-region read routing → **§13** (`13-multi-region-read-routing.md`)
-- §10: cross-link to §13 multi-region
-- §6: **Scope** block (throughput vs api-design §10 HTTP contract)
-
-### event-sourcing-and-cqrs
-- §4: **Scope** block (ES/CQRS API lens vs api-design §1)
-
-### api-design-and-protection
-- §1: **Scope** block (general REST vs ES §4)
-- §10: **Scope** block (HTTP contract vs HTS §6 / ES §5)
-
-### tree-and-index-structures
-- §3: **Production signals** table — when specialized trees appear in real systems
-
-### Corpus
-- Root README: **Global scale and consistency** learning path; HTS §13 + PG §14 in Make it fast
-- `mkdocs.yml`: per-guide TOC, full GUIDE, and individual `includes/` in nav
-- CI: weekly `documents-external.yml` for `make validate-external`
-- Moved CI/pre-commit into repo root (`documents/.github/`, `.pre-commit-config.yaml`); removed orphan `workflows/` folder
-
----
-
-## 2026-06-21 (saga ops gaps)
-
-### event-sourcing-and-cqrs
-- §7: when not to use, scope (one ES vs cross-service), retry vs compensate, observability/DLQ, message ordering, inbox pattern, deploy versioning, testing, orchestrator security
-- §5: cross-links to §7 (sagas, inbox)
-- §6: when to avoid — single service / one DB → ACID not saga
-
-### Corpus
-- GLOSSARY: **Inbox pattern**, **Two-phase commit (2PC)**
-- documents/README: Event-sourced domain learning path includes §5 outbox + §7 sagas
-
----
-
-## 2026-06-21 (saga transactions)
-
-### event-sourcing-and-cqrs
-- §7: **Transactions and distributed databases** — local ACID vs cross-service eventual consistency, per-step commit, microservices vs distributed SQL, comparison to 2PC/TCC
-
----
-
-## 2026-06-21 (saga style decision)
-
-### event-sourcing-and-cqrs
-- §7: **Which one to choose?** — choreography vs orchestration decision flow, checklist, and signals table
-
----
-
-## 2026-06-21 (sagas)
-
-### event-sourcing-and-cqrs
-- New §7 **Sagas and distributed workflows** — choreography vs orchestration, compensation, state machines, idempotency, order-fulfillment example
-- §1, §6: cross-links to §7; README TOC + microservice reading path
-
-### Corpus
-- GLOSSARY: **Saga**, **Compensating transaction**, **Process manager**
-- HTS §6, api-design §13: cross-links to ES §7
-
----
-
-## 2026-06-21 (scope blocks)
-
-### high-throughput-systems
-- §1, §3, §5, §12: added **Scope** blocks (system vs DB measurement, throughput vs architecture, scenario ownership)
-
-### postgresql-performance
-- §1: added **Scope** block (database lens vs HTS §1)
-
-### api-design-and-protection
-- §3, §5, §11: added **Scope** blocks (architecture vs throughput, product vs technical rate limits, architecture vs throughput stateless)
-
-### api-rate-limiting
-- §7, §9: added **Scope** blocks (technical vs product lens, behavior vs header contract)
-
-### Corpus
-- CONTRIBUTING: document **Scope** + **Related** pattern for overlapping sibling sections
-
----
-
-## 2026-06-21 (dedup + scope clarity)
-
-### api-rate-limiting
-- §9: removed duplicate `429` HTTP example → pointer to api-design §5 (kept header purpose table)
-
-### high-throughput-systems / api-design-and-protection
-- HTS §2: added **Scope** block clarifying throughput lens vs api-design §3 architecture guide
-- api-design §3: added cross-link to HTS §2 for throughput tips
-
-### Corpus
-- GLOSSARY: added **Fail open / fail closed (rate limit)** entries → api-rate-limiting §11
-
----
-
-## 2026-06-21 (filename consistency + overlap dedup)
-
-### Corpus
-- Renamed legacy include files: `*-anti-patterns*` / `*-pitfalls*` → `*-common-mistakes*` / `06-amplification-and-related-topics.md`
-- Standardized remaining "anti-patterns" / "pitfalls" display labels to **Common mistakes**
-- **api-design §5:** deduped layered limits and async diagrams → pointers to api-rate-limiting §7/§9/§11 and §10 async
-- **api-rate-limiting §7:** deduped fail-open section → pointer to §11
-- **HTS §3:** deduped stateless prerequisites/checklist → pointers to api-design §11 and api-rate-limiting §11
-- **HTS §5:** scenario table scoped with pointers to §12 and PG §13
-
----
-
-## 2026-06-21 (consistency pass 3)
-
-### api-design-and-protection
-- §0–§2, §4–§9, §15: added `Related` and/or `Common mistakes`; §1 renamed anti-patterns → Common mistakes
-
-### api-rate-limiting
-- §0, §10, §11: added `Related`; §11 renamed pitfalls heading; §0/§10 added mistake tables
-
-### deployment-strategies
-- §0, §2–§4, §7, §11: added `Related` and `Common mistakes`
-
-### high-throughput-systems
-- §0, §1: added `Common mistakes`
-
-### postgresql-performance / database-connection-and-security
-- §00 overviews: added `Common mistakes`
-
-### tree-and-index-structures
-- §0–§5: added `Related` and/or `Common mistakes`
-
-### high-throughput-systems
-- §12: renamed Anti-patterns → Common mistakes
-
-### Corpus
-- Editorial pass 3: **100/100** includes with `Related` + `Common mistakes`
-
----
-
-## 2026-06-21 (consistency pass 2)
-
-### postgresql-performance
-- §1, §2, §7, §10, §11: added Common mistakes tables
-- §2: expanded Related links
-- §13: added Related; renamed Anti-patterns → Common mistakes
-
-### database-connection-and-security
-- §2: deduplicated decision flow/tables → pointer to §13 (kept security layers + quick comparison)
-
-### event-sourcing-and-cqrs
-- §0–§6: standardized `Related` blockquotes; added Common mistakes to all sections
-
-### Corpus
-- CHANGELOG entry for pass 2
-
----
-
-## 2026-06-21 (consistency)
-
-### postgresql-performance
-- §00, §3–§6, §8, §12: added `Related` cross-links and `Common mistakes` tables
-
-### database-connection-and-security
-- Added §00 Overview (security layers, pattern map, default baseline)
-- §1–§11: added `Related` cross-links and `Common mistakes` tables
-- README: aligned with other guides (Overview TOC row, no inline credential embed)
-
-### Corpus
-- Pre-commit: added `GUIDE.md` drift check (matches CI)
-- CI: added MkDocs build step; fixed `site_dir` (output: `../.mkdocs-site/`)
-- CONTRIBUTING / root README: document pre-commit and MkDocs CI parity
-
----
-
-## 2026-06-21 (editorial)
-
-### postgresql-performance
-- §00: removed duplicate decision flowchart; links to §13; §9 in priority order
-- §13: scoped to database-layer scenarios; checklist references §9
-
-### high-throughput-systems
-- §12: scenario table scoped by layer; deduped PG-overlapping rows
-
-### api-design-and-protection
-- §13: removed duplicate async/idempotency sequence diagram; links to §10
-
-### api-rate-limiting
-- §1–§9: added Related cross-links and Common mistakes tables
-
-### deployment-strategies
-- §1, §5–§6, §8–§10: added Related cross-links and Common mistakes tables
-
-### Corpus
-- Root README: scripts list, Make it fast path includes PG §9
-- CONTRIBUTING: naming example, Related/Common mistakes style note
-
----
-
-## 2026-06-21 (maintenance)
-
-### postgresql-performance
-- Moved scale-out terminology to §9 (before partitioning and read scaling); renumbered §9–§14 → §10–§15
-- §11 read scaling: deduplicated layered-read-path diagram; defers to HTS §4
-
-### Corpus
-- Added `validate-doc-readme.py` (README TOC ↔ includes sync)
-- Extended `validate-doc-links.py` with `#anchor` checks and optional `--external`
-- Expanded GLOSSARY; CI now checks GUIDE.md drift
-
----
-
 ## 2026-06-21
 
-### api-design-and-protection
-- Added §14 API versioning and deprecation
-- Added §15 Contract and schema testing
+### Deferred polish
+- **Corpus:** consolidated same-day CHANGELOG entries under one `## 2026-06-21` header
+- **HTS §11:** merged duplicate distributed tracing sections into OpenTelemetry block
+- **PG §9:** trimmed materialized view subsection; defers refresh patterns to §11
 
-### high-throughput-systems
-- Added §14 Multi-region read routing
-- Expanded §1 load testing regression workflow
-- Expanded §4 cache stampede; §6 DLQ; §7 Kafka patterns; §11 RED/USE
+### Minor navigation polish
+- **Corpus:** root README learning paths deep-link to `NNA` sub-articles (`10A`, `13A`, `3A`); api-design README reading paths updated
+- **api-design-and-protection:** trimmed `10-async-patterns` hub (OpenAPI → `10A`, idempotency diagram → `13C`); fixed duplicate `---` separators
+- **CHANGELOG:** historical split entries updated to current `NNA-topic.md` filenames
 
-### deployment-strategies
-- Added §12 Schema migrations and deploy coupling
-- Added §13 SLO-based rollback triggers
-- Expanded §2 rolling, §4 canary, §7 feature flags (failure modes, examples)
+### Sub-article letter suffixes
+- **Corpus:** renamed 14 hub-split sub-articles to `NNA-topic.md`; README TOC labels uppercase (`3A`, `10A`, `7C`); ~32-file link sweep
+- **Scripts:** `validate-doc-readme.py` accepts `\d{2}[A-Z]?-` includes; `github-format.py` section map hub-only
 
-### postgresql-performance
-- Added schema migration checklist (now §15 after later renumber)
+### Optional corpus polish
+- **Corpus:** GLOSSARY **Compaction (LSM)** row; root README explicit §12 distributed limiting in learning paths
+- **api-design-and-protection:** split §3 Gateway → `03A`, `03B`; split §13 Idempotency → `13A`–`13C`; cross-link anchor updates
+- **CONTRIBUTING:** sub-article examples for §3 and §13 hub splits
 
-### database-connection-and-security
-- Renamed from `database-securities`; added §12 credential rotation and DR
-- Added §13 Connection pattern decision guide
+### GitHub navigation — slim READMEs, article splits
+- **Corpus:** README Option A (TOC-primary); TOC table fix; GLOSSARY memtable/SSTable rows
+- **api-rate-limiting:** §12 Distributed rate limiting
+- **postgresql-performance:** §7 Scope block (pool vs credentials/IAM)
+- **event-sourcing-and-cqrs:** §9 golden event fixture example
+- **deployment-strategies:** §1, §6, §8 production signals tables
+- **api-design-and-protection:** split §10 → `10A`–`10C`; §11 → `11A`; §12 → `12A`, `12B`
+- **event-sourcing-and-cqrs:** split §7 → `07A`–`07C`
+- **Removed:** `GUIDE.md`, `mkdocs.yml`, `build-guide.py`, pre-commit, external-link CI workflow
 
-### event-sourcing-and-cqrs
-- Expanded §3 snapshots, archival, GDPR, rebuild runbook
+### Acronym expansions
+- **Corpus:** `acronyms.json` + `expand-acronyms.py`; GLOSSARY SLI, RED, SSRF rows; `make check` acronym drift
 
-### api-rate-limiting
-- Expanded §11 production war stories
+### Coverage expansion
+- **high-throughput-systems:** §14 message brokers; §15 CDC/search indexing; §1 capacity planning; §4 Redis ops; §11 OpenTelemetry
+- **event-sourcing-and-cqrs:** §8 schema evolution; §9 testing and verification
+- **postgresql-performance:** §16 backup/PITR; §11 Scope vs HTS §4
+- **api-design-and-protection:** §16 multi-tenant; §17 GraphQL/gRPC; §4/§12 Scope blocks
+- **Corpus:** GLOSSARY BOLA, BRIN, GIN, CDC, choreography, RED/USE, upcasting; on-call and B2B learning paths; RUNBOOK example
 
-### Corpus
-- Added root README, CONTRIBUTING, GLOSSARY, RUNBOOK-TEMPLATE
-- Added `scripts/build-guide.py`, `scripts/validate-doc-links.py`, Makefile
-- Standardized See also footers; link validation at 0 broken
+### Polish — nav, scope, HTS §13
+- **high-throughput-systems:** §14 multi-region → §13; §6/§10 Scope blocks
+- **event-sourcing-and-cqrs:** §4 Scope block
+- **api-design-and-protection:** §1, §10 Scope blocks
+- **tree-and-index-structures:** §3 production signals table
+- **Corpus:** Global scale learning path; CI/pre-commit in repo root
+
+### Saga ops gaps
+- **event-sourcing-and-cqrs:** §7 when-not-to-use, retry vs compensate, inbox, deploy versioning, testing
+- **Corpus:** GLOSSARY Inbox pattern, 2PC; event-sourced learning path §5 + §7
+
+### Saga transactions
+- **event-sourcing-and-cqrs:** §7 transactions and distributed databases (local ACID vs cross-service)
+
+### Saga style decision
+- **event-sourcing-and-cqrs:** §7 choreography vs orchestration decision flow
+
+### Sagas
+- **event-sourcing-and-cqrs:** new §7 Sagas and distributed workflows
+- **Corpus:** GLOSSARY Saga, compensating transaction, process manager
+
+### Scope blocks
+- **high-throughput-systems:** §1, §3, §5, §12 Scope blocks
+- **postgresql-performance:** §1 Scope block
+- **api-design-and-protection:** §3, §5, §11 Scope blocks
+- **api-rate-limiting:** §7, §9 Scope blocks
+- **CONTRIBUTING:** Scope + Related pattern documented
+
+### Dedup + scope clarity
+- **api-rate-limiting:** §9 deduped `429` example → api-design §5
+- **HTS §2 / api-design §3:** Scope blocks and cross-links
+- **Corpus:** GLOSSARY fail open / fail closed
+
+### Filename consistency + overlap dedup
+- **Corpus:** `*-anti-patterns*` → `*-common-mistakes*`; api-design §5, api-rate-limiting §7, HTS §3/§5 dedup pointers
+
+### Consistency pass 3
+- **Corpus:** 100/100 includes with `Related` + `Common mistakes` across all guides
+
+### Consistency pass 2
+- **postgresql-performance:** §1, §2, §7, §10, §11 Common mistakes
+- **database-connection-and-security:** §2 deduped decision flow → §13
+- **event-sourcing-and-cqrs:** §0–§6 Related + Common mistakes
+
+### Consistency
+- **postgresql-performance / database-connection-and-security:** Related + Common mistakes on remaining sections; §00 overview for db-connection
+- **Corpus:** pre-commit GUIDE.md drift; MkDocs CI step
+
+### Editorial
+- **postgresql-performance:** §00/§13 decision flow dedup; §9 in priority order
+- **high-throughput-systems:** §12 scenario table scoped
+- **api-design-and-protection:** §13 deduped async diagram
+- **api-rate-limiting / deployment-strategies:** Related + Common mistakes on §1–§10
+- **Corpus:** root README scripts list; CONTRIBUTING style note
+
+### Maintenance
+- **postgresql-performance:** scale-out terminology → §9; renumbered §10–§15; §11 deduped read path
+- **Corpus:** `validate-doc-readme.py`; `#anchor` checks; GLOSSARY expansion
+
+### Initial section additions
+- **api-design-and-protection:** §14 versioning; §15 contract testing
+- **high-throughput-systems:** §14 multi-region (later §13); §1/§4/§6/§7/§11 expansions
+- **deployment-strategies:** §12 schema migrations; §13 SLO rollback; §2/§4/§7 expansions
+- **postgresql-performance:** schema migration checklist (§15)
+- **database-connection-and-security:** renamed from `database-securities`; §12 DR; §13 decision guide
+- **event-sourcing-and-cqrs:** §3 snapshots/archival/GDPR
+- **api-rate-limiting:** §11 war stories
+- **Corpus:** root README, CONTRIBUTING, GLOSSARY, RUNBOOK-TEMPLATE, Makefile, link validation

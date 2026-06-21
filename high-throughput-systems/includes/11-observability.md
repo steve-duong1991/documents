@@ -108,22 +108,6 @@ Propagate `request_id` from gateway → app → DB comments or logs.
 
 ---
 
-## Distributed tracing
-
-Trace a single request across:
-
-```
-Client → Edge → Gateway → LB → App → Redis → PostgreSQL
-```
-
-| Use | Benefit |
-|-----|---------|
-| Compare p99 before/after deploy | Catch regressions early |
-| Find slow span in chain | Target optimization layer |
-| Debug 429 vs 5xx | Separate gateway vs app vs DB |
-
----
-
 ## Dashboards worth having
 
 | Dashboard | Panels |
@@ -212,7 +196,7 @@ Tie deploy rollback triggers → [deployment-strategies §13](../../deployment-s
 
 ## Distributed tracing (OpenTelemetry)
 
-Metrics show **what** is slow; traces show **where** in the chain.
+Metrics show **what** is slow; traces show **where** in the chain (`Client → Edge → Gateway → LB → App → Redis → PostgreSQL`).
 
 ```mermaid
 flowchart LR
@@ -236,6 +220,8 @@ Saga debugging → propagate `saga_id` — [ES §7](../../event-sourcing-and-cqr
 | RED / USE | Tracing adds |
 |-----------|--------------|
 | Rate, errors, duration per route | Span waterfall for one slow request |
+| Deploy regression | Compare p99 before/after on the same trace path |
+| Incident triage | Find slow span; separate gateway 429 vs app 5xx vs DB wait |
 
 ---
 
