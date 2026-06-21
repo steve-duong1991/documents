@@ -42,5 +42,9 @@
   "WAF": "Web Application Firewall",
   "WAL": "Write-Ahead Log",
   "AD": "Active Directory",
-  "HCV": "HashiCorp Vault"
+  "HCV": "HashiCorp Vault",
+  "EOS": "Exactly-Once Semantics",
+  "ISR": "In-Sync Replicas",
+  "MM2": "MirrorMaker 2",
+  "SMT": "Single Message Transform"
 }

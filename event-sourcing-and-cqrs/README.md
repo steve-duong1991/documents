@@ -42,6 +42,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [P
 | Guide | Topics |
 |-------|--------|
 | [api-design-and-protection](../api-design-and-protection/README.md) | HTTP(Hypertext Transfer Protocol) contracts, async, idempotency, audit APIs |
+| [apache-kafka](../apache-kafka/README.md) | Outbox → Kafka, schema formats, saga partition keys, testing |
 | [high-throughput-systems](../high-throughput-systems/README.md) | Streaming, outbox at scale, read-model throughput |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Event store connection identity and secrets |
 | [deployment-strategies](../deployment-strategies/README.md) | Rolling deploys with projector compatibility |

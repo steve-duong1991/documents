@@ -2,6 +2,8 @@
 
 Full-text and faceted search at scale usually lives outside PostgreSQL — sync via CDC or outbox, and plan for reindex and staleness.
 
+> **Deep dive:** Kafka integration patterns (outbox, CDC) → [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md)
+>
 > **Related:** DB throughput lens → [05-database-throughput.md](05-database-throughput.md) · Outbox → [ES §5](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Brokers → [14-message-brokers-and-queues.md](14-message-brokers-and-queues.md) · PG GIN(Generalized Inverted Index) limits → [postgresql-performance §2](../../postgresql-performance/includes/02-indexing.md)
 
 ---

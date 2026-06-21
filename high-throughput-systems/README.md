@@ -36,5 +36,6 @@ A practical reference for building systems that handle high request, event, and 
 | [postgresql-performance](../postgresql-performance/README.md) | DB measurement, indexing, replicas, bulk writes |
 | [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM(Log-Structured Merge) storage engines |
 | [deployment-strategies](../deployment-strategies/README.md) | Rolling, canary, blue/green deploys |
+| [apache-kafka](../apache-kafka/README.md) | Kafka internals, schema, setup, producers/consumers, integration |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event log, outbox, projections |
 | [database-connection-and-security](../database-connection-and-security/README.md) | DB credentials, IAM(Identity and Access Management), PgBouncer |

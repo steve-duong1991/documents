@@ -10,6 +10,7 @@ Practical reference docs for building and operating production APIs and data sys
 
 | Guide | What it covers |
 |-------|----------------|
+| [apache-kafka](apache-kafka/README.md) | Distributed commit log: internals, schema formats, setup, producers/consumers, integration, DR, testing |
 | [api-design-and-protection](api-design-and-protection/README.md) | REST(Representational State Transfer) design, protection, gateway, auth, identity, async, idempotency, stateless architecture |
 | [api-rate-limiting](api-rate-limiting/README.md) | Limiter algorithms, scope, deployment layers, response strategies |
 | [database-connection-and-security](database-connection-and-security/README.md) | DB credentials, TLS(Transport Layer Security), Vault, cloud IAM(Identity and Access Management), PgBouncer, production connection patterns |
@@ -37,6 +38,7 @@ flowchart LR
     end
     subgraph advanced [Advanced patterns]
         E[event-sourcing-and-cqrs]
+        K[apache-kafka]
     end
     subgraph ops [Data layer security]
         S[database-connection-and-security]
@@ -46,6 +48,8 @@ flowchart LR
     H --> P
     P --> T
     A --> E
+    H --> K
+    E --> K
     P --> S
     A --> S
     H --> D
@@ -98,6 +102,16 @@ Append-only writes, read projections, and reliable async integration.
 6. [api-design-and-protection §10 async](api-design-and-protection/includes/10-async-patterns.md) — hub; [10A jobs + polling](api-design-and-protection/includes/10A-async-jobs-polling.md), [10B webhooks](api-design-and-protection/includes/10B-async-webhooks.md)
 7. [api-design-and-protection §13 idempotency](api-design-and-protection/includes/13-idempotency.md) — hub; [13A client and server flow](api-design-and-protection/includes/13A-idempotency-client-and-server-flow.md)
 8. [postgresql-performance §2 indexing](postgresql-performance/includes/02-indexing.md) — event table performance
+
+### Event streaming with Kafka
+
+Deep dive on Apache Kafka — setup, schema choice, semantics, and integration with outbox and CDC.
+
+1. [apache-kafka](apache-kafka/README.md) — overview → [§9 setup](apache-kafka/includes/09-cluster-setup-and-requirements.md) → [§6 schema formats](apache-kafka/includes/06-serialization-and-schema-evolution.md) → [§3 producers](apache-kafka/includes/03-producers-and-delivery-guarantees.md) / [§4 consumers](apache-kafka/includes/04-consumers-and-consumer-groups.md) → [§12 testing](apache-kafka/includes/12-testing-and-verification.md)
+2. [high-throughput-systems §14 message brokers](high-throughput-systems/includes/14-message-brokers-and-queues.md) + [§15 CDC](high-throughput-systems/includes/15-cdc-and-search-indexing.md) — when Kafka fits the system
+3. [event-sourcing-and-cqrs §5 async](event-sourcing-and-cqrs/includes/05-async-integration.md) — transactional outbox → Kafka
+4. [event-sourcing-and-cqrs §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) — partition keys and ordering
+5. [api-design-and-protection §13 idempotency](api-design-and-protection/includes/13-idempotency.md) — consumer dedup
 
 ### Production hardening
 

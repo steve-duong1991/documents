@@ -2,6 +2,8 @@
 
 How event-sourced systems integrate with queues, webhooks, and other services — transactional outbox, idempotent consumers, and overlap with async API(Application Programming Interface) patterns.
 
+> **Deep dive:** Kafka outbox and integration patterns → [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md)
+>
 > **Related:** [Async patterns in API design](../../api-design-and-protection/includes/10-async-patterns.md) · [Storage & outbox](03-storage-and-projections.md) · [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md)
 
 ---

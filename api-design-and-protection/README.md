@@ -62,6 +62,7 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | Guide | Topics |
 |-------|--------|
 | [api-rate-limiting](../api-rate-limiting/README.md) | Algorithms, deployment layers, common mistakes |
+| [apache-kafka](../apache-kafka/README.md) | Schema choice, multi-tenant topics, consumer idempotency with Kafka |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event store, CQRS(Command Query Responsibility Segregation), outbox, audit APIs |
 | [database-connection-and-security](../database-connection-and-security/README.md) | DB credentials, IAM(Identity and Access Management), vault patterns |
 | [deployment-strategies](../deployment-strategies/README.md) | Safe rollout of API changes |

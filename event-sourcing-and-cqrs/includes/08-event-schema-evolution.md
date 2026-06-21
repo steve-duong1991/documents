@@ -2,6 +2,8 @@
 
 Event logs are forever — schema changes are **read-path** transformations (upcasting), not `UPDATE` on historical rows.
 
+> **Deep dive:** Avro vs Protobuf vs JSON on Kafka → [apache-kafka §6](../../apache-kafka/includes/06-serialization-and-schema-evolution.md)
+>
 > **Related:** Immutability → [01-core-concepts.md#immutability-and-corrections](01-core-concepts.md#immutability-and-corrections) · Projector rebuild → [03-storage-and-projections.md](03-storage-and-projections.md) · API(Application Programming Interface) versioning → [api-design §14](../../api-design-and-protection/includes/14-api-versioning-and-deprecation.md) · Deploy coupling → [deployment §12](../../deployment-strategies/includes/12-schema-migrations-and-deploy.md)
 
 ---

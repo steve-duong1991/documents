@@ -2,6 +2,8 @@
 
 When request/response cannot keep up with event volume, fan-out, or audit requirements, move to **event streaming** — append-only logs with partitioned parallel consumption.
 
+> **Deep dive:** Kafka producers, consumers, and delivery semantics → [apache-kafka §3–§4](../../apache-kafka/includes/03-producers-and-delivery-guarantees.md)
+>
 > **Related:** Event sourcing and outbox → [event-sourcing-and-cqrs/includes/05-async-integration.md](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Async patterns → [api-design-and-protection/includes/10-async-patterns.md](../../api-design-and-protection/includes/10-async-patterns.md) · LSM(Log-Structured Merge) write path → [tree-and-index-structures/includes/04-lsm-trees.md](../../tree-and-index-structures/includes/04-lsm-trees.md)
 
 ---

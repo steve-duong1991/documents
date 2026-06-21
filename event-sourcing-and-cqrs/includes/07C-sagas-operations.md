@@ -1,5 +1,7 @@
 # Sagas — operations, inbox, and testing
 
+> **Deep dive:** Kafka partition keys for saga ordering → [apache-kafka §2](../../apache-kafka/includes/02-topics-partitions-and-replication.md)
+>
 > **Related:** Overview → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md) · Compensation → [07B-sagas-compensation-idempotency.md](07B-sagas-compensation-idempotency.md) · Testing → [09-testing-and-verification.md](09-testing-and-verification.md)
 
 ## Example: order → payment → inventory → shipping

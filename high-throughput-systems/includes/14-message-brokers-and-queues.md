@@ -2,6 +2,8 @@
 
 Pick the integration pattern before you pick the product — task queue, log, or outbox relay each solve different throughput problems.
 
+> **Deep dive:** Kafka decision guide and anti-patterns → [apache-kafka §11](../../apache-kafka/includes/11-decision-guide-and-common-mistakes.md)
+>
 > **Related:** Async workers → [06-async-queues-workers.md](06-async-queues-workers.md) · Streaming → [07-streaming-pipelines.md](07-streaming-pipelines.md) · Outbox → [ES §5 Async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Async jobs → [api-design §10](../../api-design-and-protection/includes/10-async-patterns.md)
 
 ---

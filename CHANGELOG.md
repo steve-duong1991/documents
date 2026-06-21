@@ -4,6 +4,14 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ---
 
+## 2026-06-22
+
+### apache-kafka (new guide)
+- **New guide:** 12 sections — commit log internals, topics/replication/multi-tenant, producers/consumers, retention, Avro/Protobuf/JSON schema choice, Connect/Streams, integration patterns, cluster setup, ops/DR/security, decision guide, testing
+- **Corpus:** root README guide row + learning path; GLOSSARY Kafka terms; deep-dive links from HTS §7/§14/§15, ES §5/§8/§9/§7C, api §15/§16
+
+---
+
 ## 2026-06-21
 
 ### api-design §12 hub trim + §7/§15 dedupe

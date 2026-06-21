@@ -2,6 +2,8 @@
 
 Event-sourced systems need tests at three layers: command handling, projection correctness, and integration paths (outbox, sagas).
 
+> **Deep dive:** Kafka testing pyramid and Testcontainers → [apache-kafka §12](../../apache-kafka/includes/12-testing-and-verification.md)
+>
 > **Related:** Sagas → [07-sagas-and-distributed-workflows.md](07-sagas-and-distributed-workflows.md) · Schema evolution → [08-event-schema-evolution.md](08-event-schema-evolution.md) · Contract CI → [api-design §15](../../api-design-and-protection/includes/15-contract-and-schema-testing.md)
 
 ---
