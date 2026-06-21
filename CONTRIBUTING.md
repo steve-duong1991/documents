@@ -8,16 +8,14 @@ How to add or change content in `documents/` without breaking navigation or link
 
 ```
 guide-name/
-├── README.md       ← TOC, section summaries, ## See also footer
-├── GUIDE.md        ← full combined doc (rebuild with scripts/build-guide.py)
+├── README.md       ← TOC (links to includes), section summaries, ## See also
 └── includes/
-    └── NN-topic.md ← one major section per file
+    └── NN-topic.md ← one major section per file (full article)
 
 documents/
 ├── README.md           ← master index + learning paths
 ├── CONTRIBUTING.md     ← this file
 └── scripts/
-    ├── build-guide.py
     ├── expand-acronyms.py
     ├── github-format.py
     ├── validate-doc-links.py
@@ -25,14 +23,13 @@ documents/
     └── validate-doc-prose.py
 ```
 
-Start from `README.md` for browsing. Use `GUIDE.md` for single-file reading or export.
+Start from each guide **README** table of contents — topics link directly to `includes/NN-topic.md` on GitHub.
 
 ### GitHub navigation
 
 Readers on GitHub should use **guide README tables** — each topic links directly to `includes/NN-topic.md`. Skim summaries on the README are optional; the include file is the full section.
 
 - **README TOC:** one column, topic → include path (run `python3 scripts/github-format.py` after bulk TOC edits).
-- **GUIDE.md:** `build-guide.py` demotes section headings one level so the combined doc has a sane outline.
 - **Headings:** no acronym expansions in `#` titles — body text keeps first-use `ACRONYM(Full Text)`.
 - **GLOSSARY:** `See also` column uses markdown links to guides or sections.
 
@@ -67,7 +64,7 @@ Folder name and display title should tell the same story.
 | Source | Path to sibling guide |
 |--------|------------------------|
 | `guide/includes/*.md` | `../../other-guide/...` |
-| `guide/README.md` or `guide/GUIDE.md` | `../other-guide/...` |
+| `guide/README.md` | `../other-guide/...` |
 
 After editing links, run:
 
@@ -81,13 +78,11 @@ cd documents && make validate
 - `validate-doc-readme.py` — every `includes/*.md` appears in the guide README TOC
 - `validate-doc-prose.py` — suspicious empty links or stripped inline text (regression guard for acronym runs)
 
-Optional external URL check (slow; not in pre-commit):
+Optional external URL check (slow):
 
 ```bash
 make validate-external   # HEAD/GET on https:// links
 ```
-
-Use external checks in a **weekly scheduled CI job** or before release — not on every PR (flaky, rate limits).
 
 ---
 
@@ -96,43 +91,15 @@ Use external checks in a **weekly scheduled CI job** or before release — not o
 | Location | Heading | Purpose |
 |----------|---------|---------|
 | End of every `README.md` | `## See also` | Repo-wide sibling guide table |
-| End of every `GUIDE.md` | `## See also` | Same (included when rebuilding) |
 | Mid-chapter (e.g. checklist) | `## Other guides in this repo` | Contextual links inside a section |
 
 Do not duplicate the full sibling table mid-document under `## See also`.
 
 ---
 
-## Rebuilding GUIDE.md
+## CI
 
-After changing `includes/`:
-
-```bash
-cd documents
-make build-all
-make build GUIDE=postgresql-performance
-```
-
-`build-guide.py` concatenates includes in sorted order, rewrites `../../` cross-links to `../` for the guide root, demotes section headings one level, and appends the `## See also` block from `README.md`.
-
----
-
-## CI and pre-commit
-
-- GitHub Actions: `.github/workflows/documents.yml` — link/anchor validation, README TOC sync, `GUIDE.md` drift check, MkDocs build
-- Weekly: `.github/workflows/documents-external.yml` — `make validate-external` (https links; may fail on transient outages)
-- Pre-commit: `.pre-commit-config.yaml` at repo root — link validation, README sync, and `GUIDE.md` drift check; run `pre-commit install`
-
-Both pre-commit and CI run the same checks as `make check` (without optional external URL validation).
-
----
-
-## Optional MkDocs site
-
-```bash
-pip install mkdocs-material
-cd documents && mkdocs serve -f mkdocs.yml
-```
+GitHub Actions: `.github/workflows/documents.yml` — link/anchor validation, README TOC sync, acronym check. Same as `make check` (without optional external URL validation).
 
 ---
 
@@ -153,7 +120,6 @@ cd documents && mkdocs serve -f mkdocs.yml
 - **Headings** stay short — no `(Full Text)` in `#` titles; acronyms in headings are marked seen without expansion.
 - Registry: [acronyms.json](acronyms.json). Refresh expansions after adding terms: `python3 scripts/expand-acronyms.py`.
 - After bulk edits, run `python3 scripts/github-format.py` to normalize README TOC links and GLOSSARY.
-- Do not hand-edit `GUIDE.md` for acronyms — edit `includes/` and run `make build-all`.
 - CI runs `python3 scripts/expand-acronyms.py --check` to catch drift.
 
 ---
@@ -163,5 +129,5 @@ cd documents && mkdocs serve -f mkdocs.yml
 - [ ] README TOC updated with new section
 - [ ] Short summary + "See full details → includes/…" in README body
 - [ ] Cross-links use correct `../` vs `../../`
-- [ ] `make validate` and `make build-all` pass (or equivalent scripts)
+- [ ] `make validate` passes (or equivalent scripts)
 - [ ] Root [README.md](README.md) updated if adding a new top-level guide or learning path

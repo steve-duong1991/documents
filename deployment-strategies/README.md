@@ -25,7 +25,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (st
 | 12 | [Schema migrations and deploy coupling](includes/12-schema-migrations-and-deploy.md) |
 | 13 | [SLO-based rollback triggers](includes/13-slo-rollback-triggers.md) |
 
-> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
+> **On GitHub:** Click a topic in the table above for the full section.
 
 ---
 

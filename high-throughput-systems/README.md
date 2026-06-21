@@ -25,7 +25,7 @@ A practical reference for building systems that handle high request, event, and 
 | 14 | [Message brokers and queues](includes/14-message-brokers-and-queues.md) |
 | 15 | [CDC and search indexing](includes/15-cdc-and-search-indexing.md) |
 
-> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
+> **On GitHub:** Click a topic in the table above for the full section.
 
 ---
 

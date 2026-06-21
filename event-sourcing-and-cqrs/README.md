@@ -21,7 +21,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [P
 | 8 | [Event schema evolution](includes/08-event-schema-evolution.md) |
 | 9 | [Testing and verification](includes/09-testing-and-verification.md) |
 
-> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
+> **On GitHub:** Click a topic in the table above for the full section.
 
 ---
 

@@ -1,8 +1,8 @@
 # Engineering Guides
 
-Practical reference docs for building and operating production APIs and data systems. Each guide has a **README** (table of contents with direct section links), **`includes/*.md`** (full sections), and **`GUIDE.md`** (all sections in one file).
+Practical reference docs for building and operating production APIs and data systems. Each guide has a **README** (table of contents linking to sections) and **`includes/*.md`** (full articles).
 
-> **Reading on GitHub:** Start from [learning paths](#learning-paths) or a guide README — **click a topic in the table** to open the full section file. Use [GUIDE.md](api-design-and-protection/GUIDE.md) only when you want one long page. Acronym expansions appear on first use in each file (`CDC(Change Data Capture)`).
+> **Reading on GitHub:** Start from [learning paths](#learning-paths) or a guide README — **click a topic in the table** to open the full section file. Acronym expansions appear on first use in each file (`CDC(Change Data Capture)`).
 
 ---
 
@@ -140,7 +140,7 @@ Partner auth, quotas, and abuse caps.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for layout, link conventions, and how to rebuild `GUIDE.md`.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for layout, link conventions, and validation.
 
 | Resource | Purpose |
 |----------|---------|
@@ -149,15 +149,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for layout, link conventions, and how to 
 | [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md) | Copy per service for incidents |
 | [RUNBOOK-EXAMPLE-orders-api.md](RUNBOOK-EXAMPLE-orders-api.md) | Filled example runbook |
 
-Validate and build:
+Validate:
 
 ```bash
-cd documents && make validate && make build-all
+cd documents && make validate
 ```
 
 `make validate` checks file links, cross-file `#anchors`, and README ↔ includes sync. Optional: `make validate-external` for https URLs (see CONTRIBUTING).
-
-Optional static site: `pip install mkdocs-material && mkdocs build -f mkdocs.yml` (from `documents/`; output in `../.mkdocs-site/`). Nav lists each guide's README, combined `GUIDE.md`, and individual `includes/` sections. CI verifies the site builds. Local preview: `mkdocs serve -f mkdocs.yml`.
 
 ---
 
@@ -178,9 +176,7 @@ documents/
 ├── RUNBOOK-TEMPLATE.md
 ├── acronyms.json          ← acronym registry for expand-acronyms.py
 ├── Makefile
-├── mkdocs.yml             ← optional static site
 ├── scripts/
-│   ├── build-guide.py
 │   ├── expand-acronyms.py
 │   ├── github-format.py
 │   ├── validate-doc-links.py
@@ -188,7 +184,6 @@ documents/
 │   └── validate-doc-prose.py
 └── guide-name/
     ├── README.md
-    ├── GUIDE.md
     └── includes/
 ```
 
@@ -199,8 +194,6 @@ documents/
 | Source | Path to sibling guide |
 |--------|------------------------|
 | `guide/includes/*.md` | `../../other-guide/...` |
-| `guide/README.md` or `guide/GUIDE.md` | `../other-guide/...` |
+| `guide/README.md` | `../other-guide/...` |
 
 Every guide ends with a **## See also** table (sibling guides). Section-level cross-links inside chapters may use **## See also** or **## Other guides in this repo** where context-specific.
-
-Intra-guide links in `GUIDE.md` use bare filenames (e.g. `03-api-gateway.md`); they resolve to `includes/` when reading the combined document.

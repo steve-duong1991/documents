@@ -17,13 +17,6 @@ LINK_RE = re.compile(r"\]\(([^)]+)\)")
 
 def resolve_target(md: Path, target: str) -> Path:
     path_part = target.split("#")[0]
-    if (
-        md.name == "GUIDE.md"
-        and not path_part.startswith(("../", "./"))
-        and "/" not in path_part
-        and path_part.endswith(".md")
-    ):
-        return (md.parent / "includes" / unquote(path_part)).resolve()
     return (md.parent / unquote(path_part)).resolve()
 
 
@@ -116,7 +109,7 @@ def main() -> int:
     broken: list[tuple[str, str, str]] = []
 
     for md in sorted(ROOT.rglob("*.md")):
-        if "scripts" in md.parts or md.name == "GUIDE.md":
+        if "scripts" in md.parts:
             continue
         text = md.read_text(encoding="utf-8")
         rel_src = str(md.relative_to(ROOT))

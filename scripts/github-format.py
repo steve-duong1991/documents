@@ -20,7 +20,7 @@ TARGET_GLOBS = [
     "RUNBOOK-EXAMPLE-orders-api.md",
 ]
 
-SKIP_NAMES = {"GUIDE.md", "CHANGELOG.md"}
+SKIP_NAMES = {"CHANGELOG.md"}
 
 GUIDE_ALIASES = {
     "pg": "postgresql-performance",
@@ -162,11 +162,8 @@ def fix_readme_toc(text: str) -> str:
         if m:
             lines.append(f"{m.group(1)} [{m.group(2)}]({m.group(3)}) |")
             continue
-        if line.startswith("> **Tip:** Open [GUIDE.md]"):
-            lines.append(
-                "> **On GitHub:** Click a topic in the table above for the full section. "
-                "[GUIDE.md](GUIDE.md) combines all sections in one file."
-            )
+        if line.startswith("> **On GitHub:** Click a topic"):
+            lines.append("> **On GitHub:** Click a topic in the table above for the full section.")
             continue
         lines.append(line)
     return "\n".join(lines)

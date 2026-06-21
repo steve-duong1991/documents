@@ -29,7 +29,7 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | 16 | [Multi-tenant APIs](includes/16-multi-tenant-apis.md) |
 | 17 | [GraphQL and gRPC](includes/17-graphql-and-grpc.md) |
 
-> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
+> **On GitHub:** Click a topic in the table above for the full section.
 
 ---
 

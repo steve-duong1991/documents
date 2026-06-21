@@ -7,7 +7,6 @@ on:
       - 'scripts/**'
       - 'acronyms.json'
       - 'Makefile'
-      - 'mkdocs.yml'
       - '.github/workflows/documents.yml'
   pull_request:
     paths:
@@ -15,7 +14,6 @@ on:
       - 'scripts/**'
       - 'acronyms.json'
       - 'Makefile'
-      - 'mkdocs.yml'
       - '.github/workflows/documents.yml'
   workflow_dispatch:
 
@@ -34,11 +32,3 @@ jobs:
           python3 scripts/validate-doc-prose.py
       - name: Verify acronym expansions up to date
         run: python3 scripts/expand-acronyms.py --check
-      - name: Verify GUIDE.md matches includes
-        run: |
-          python3 scripts/build-guide.py
-          git diff --exit-code -- '*.md'
-      - name: Verify MkDocs site builds
-        run: |
-          pip install mkdocs-material
-          mkdocs build -f mkdocs.yml

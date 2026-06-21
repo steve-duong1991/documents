@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ACRONYMS_PATH = ROOT / "acronyms.json"
 
-# Files to process (GUIDE.md is rebuilt from includes — do not edit directly)
+# Files to process (edit includes/ and README — not CHANGELOG)
 TARGET_GLOBS = [
     "**/includes/*.md",
     "**/README.md",
@@ -22,7 +22,7 @@ TARGET_GLOBS = [
     "RUNBOOK-EXAMPLE-orders-api.md",
 ]
 
-SKIP_NAMES = {"GUIDE.md", "CHANGELOG.md"}
+SKIP_NAMES = {"CHANGELOG.md"}
 
 FENCE_RE = re.compile(r"```[\w-]*\n.*?```", re.DOTALL)
 LINK_RE = re.compile(r"(\[[^\]]*\]\([^)]*\))")

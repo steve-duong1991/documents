@@ -7,7 +7,7 @@ Storage-engine metrics, clustered indexes, complexity reference, common mistakes
 > **Related:**
 > - PostgreSQL index types and when to use each → [postgresql-performance/includes/02-indexing.md](../../postgresql-performance/includes/02-indexing.md)
 > - PostgreSQL decision guide → [postgresql-performance/includes/13-decision-guide-and-common-mistakes.md](../../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md)
-> - Database access and credentials → [database-connection-and-security/GUIDE.md](../../database-connection-and-security/GUIDE.md)
+> - Database access and credentials → [database-connection-and-security/README.md](../../database-connection-and-security/README.md)
 
 ---
 

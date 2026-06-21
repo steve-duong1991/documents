@@ -26,7 +26,7 @@ A practical reference for PostgreSQL performance — measurement, indexing, quer
 | 15 | [Schema migration checklist](includes/15-schema-migration-checklist.md) |
 | 16 | [Backup, restore, and PITR](includes/16-backup-restore-and-pitr.md) |
 
-> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
+> **On GitHub:** Click a topic in the table above for the full section.
 
 ---
 

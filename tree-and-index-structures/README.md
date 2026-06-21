@@ -18,7 +18,7 @@ Related: [postgresql-performance](../postgresql-performance/README.md) (PostgreS
 | 5 | [Decision guides and cheat sheets](includes/05-decision-guides.md) |
 | 6 | [Amplification, complexity, and related topics](includes/06-amplification-and-related-topics.md) |
 
-> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
+> **On GitHub:** Click a topic in the table above for the full section.
 
 ---
 

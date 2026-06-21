@@ -23,7 +23,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (ga
 | 10 | [Decision guide](includes/10-decision-guide.md) |
 | 11 | [Common mistakes & production architecture](includes/11-common-mistakes-and-architecture.md) |
 
-> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
+> **On GitHub:** Click a topic in the table above for the full section.
 
 ---
 

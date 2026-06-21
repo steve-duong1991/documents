@@ -2,7 +2,7 @@
 
 Indexing is usually the **highest-ROI** optimization for read-heavy workloads. A well-chosen index turns a sequential scan of millions of rows into a few index lookups.
 
-> **Related:** General tree and index structures (B+, LSM(Log-Structured Merge), when to use each) → [tree-and-index-structures/GUIDE.md](../../tree-and-index-structures/GUIDE.md) · Query shape → [§3 Query design](03-query-design.md) · Online index builds → [§15 Schema migration checklist](15-schema-migration-checklist.md)
+> **Related:** General tree and index structures (B+, LSM(Log-Structured Merge), when to use each) → [tree-and-index-structures/README.md](../../tree-and-index-structures/README.md) · Query shape → [§3 Query design](03-query-design.md) · Online index builds → [§15 Schema migration checklist](15-schema-migration-checklist.md)
 
 ## Index types
 

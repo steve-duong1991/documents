@@ -25,7 +25,7 @@ Related: [postgresql-performance](../postgresql-performance/README.md) (connecti
 | 12 | [Credential rotation and DR](includes/12-credential-rotation-and-dr.md) |
 | 13 | [Decision guide — connection patterns](includes/13-decision-guide.md) |
 
-> **On GitHub:** Click a topic in the table above for the full section. [GUIDE.md](GUIDE.md) combines all sections in one file.
+> **On GitHub:** Click a topic in the table above for the full section.
 
 ---
 
