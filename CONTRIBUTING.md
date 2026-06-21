@@ -53,7 +53,7 @@ Prefer **expanding existing includes** over new top-level folders.
 |------|------------|---------|
 | Folder | `kebab-case` | `database-connection-and-security` |
 | Include files | `NN-kebab-case.md` (zero-padded) | `15-schema-migration-checklist.md` |
-| Sub-articles (split section) | Same `NN-` prefix + suffix | `10-async-webhooks.md`, `07-sagas-operations.md` |
+| Sub-articles (split section) | `NNA-` prefix + topic slug (`A`/`B`/`C` uppercase) | `10A-async-jobs-polling.md`, `07C-sagas-operations.md`, `03A-api-gateway-request-flows.md`, `13B-idempotency-storage.md` |
 | Title | Plain English with `&` where needed | Database Connection & Security |
 
 Folder name and display title should tell the same story.

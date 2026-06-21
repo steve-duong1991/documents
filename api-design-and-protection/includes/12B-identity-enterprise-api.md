@@ -1,6 +1,6 @@
 # Identity — API access decisions and practices
 
-> **Related:** IAM(Identity and Access Management) and RBAC(Role-Based Access Control) → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Active Directory → [12-identity-active-directory.md](12-identity-active-directory.md) · Multi-tenant → [16-multi-tenant-apis.md](16-multi-tenant-apis.md)
+> **Related:** IAM(Identity and Access Management) and RBAC(Role-Based Access Control) → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Active Directory → [12A-identity-active-directory.md](12A-identity-active-directory.md) · Multi-tenant → [16-multi-tenant-apis.md](16-multi-tenant-apis.md)
 
 
 ## API design takeaways

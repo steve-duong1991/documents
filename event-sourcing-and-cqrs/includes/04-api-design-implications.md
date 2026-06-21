@@ -178,7 +178,7 @@ Supports **Repudiation** controls in [threat modeling](../../api-design-and-prot
 | Caching | Never cache POST | CDN(Content Delivery Network)/cache safe on GET |
 | AuthZ | Scope + aggregate ownership | Same BOLA(Broken Object-Level Authorization) checks on read models |
 
-Route both through the same gateway; scale query tier independently behind separate upstream pools if needed — see [Load balancer & gateway](../../api-design-and-protection/includes/03-api-gateway.md#flow-3--both-together-common-at-scale).
+Route both through the same gateway; scale query tier independently behind separate upstream pools if needed — see [Load balancer & gateway — Flow 3](../../api-design-and-protection/includes/03A-api-gateway-request-flows.md#flow-3--both-together-common-at-scale).
 
 ---
 

@@ -62,8 +62,8 @@ def build_section_maps() -> dict[str, dict[int, str]]:
             continue
         section_map: dict[int, str] = {}
         for path in sorted(inc.glob("*.md")):
-            m = re.match(r"(\d+)-", path.name)
-            if m:
+            m = re.match(r"^(\d{2})-", path.name)
+            if m and not re.match(r"^\d{2}[A-Z]-", path.name):
                 section_map[int(m.group(1))] = f"{guide.name}/includes/{path.name}"
         maps[guide.name] = section_map
     return maps

@@ -2,7 +2,7 @@
 
 Multi-region adds throughput and availability — at the cost of **consistency complexity**. Design the write path first; reads follow.
 
-> **Related:** Consistency → [postgresql-performance/includes/14-consistency-promises-and-costs.md](../../postgresql-performance/includes/14-consistency-promises-and-costs.md) · Stateless API(Application Programming Interface) → [api-design-and-protection/includes/11-stateless-architecture.md](../../api-design-and-protection/includes/11-stateless-auth-operations.md#consistency-and-read-routing) · DR → [database-connection-and-security/includes/12-credential-rotation-and-dr.md](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md)
+> **Related:** Consistency → [postgresql-performance/includes/14-consistency-promises-and-costs.md](../../postgresql-performance/includes/14-consistency-promises-and-costs.md) · Stateless API(Application Programming Interface) → [api-design-and-protection/includes/11-stateless-architecture.md](../../api-design-and-protection/includes/11A-stateless-auth-operations.md#consistency-and-read-routing) · DR → [database-connection-and-security/includes/12-credential-rotation-and-dr.md](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md)
 
 ---
 

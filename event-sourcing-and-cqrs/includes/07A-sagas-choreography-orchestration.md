@@ -1,6 +1,6 @@
 # Sagas — choreography vs orchestration
 
-> **Related:** Overview → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md) · Compensation → [07-sagas-compensation-idempotency.md](07-sagas-compensation-idempotency.md) · Operations → [07-sagas-operations.md](07-sagas-operations.md)
+> **Related:** Overview → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md) · Compensation → [07B-sagas-compensation-idempotency.md](07B-sagas-compensation-idempotency.md) · Operations → [07C-sagas-operations.md](07C-sagas-operations.md)
 
 ## Choreography vs orchestration
 

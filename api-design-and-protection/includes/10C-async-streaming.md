@@ -1,6 +1,6 @@
 # Async patterns — streaming and long poll
 
-> **Related:** Overview → [Async patterns](10-async-patterns.md) · Jobs and polling → [10-async-jobs-polling.md](10-async-jobs-polling.md) · Webhooks → [10-async-webhooks.md](10-async-webhooks.md)
+> **Related:** Overview → [Async patterns](10-async-patterns.md) · Jobs and polling → [10A-async-jobs-polling.md](10A-async-jobs-polling.md) · Webhooks → [10B-async-webhooks.md](10B-async-webhooks.md)
 
 ## Pattern 3 — Long polling
 

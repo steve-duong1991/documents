@@ -11,7 +11,7 @@ Why stateless application tiers matter for APIs: how requests flow without serve
 
 | Article | Topics |
 |---------|--------|
-| [Auth, consistency, and operations](11-stateless-auth-operations.md) | Token flows, read routing, migration, checklist |
+| [Auth, consistency, and operations](11A-stateless-auth-operations.md) | Token flows, read routing, migration, checklist |
 
 ## At a glance
 
@@ -164,7 +164,7 @@ flowchart LR
 
 Prefer **round-robin**, **least connections**, or **random** — not sticky cookies — unless a legacy stateful component requires it.
 
-Entry-layer details → [Load Balancer & API Gateway](03-api-gateway.md#request-flows).
+Entry-layer details → [Load Balancer & API Gateway — request flows](03A-api-gateway-request-flows.md).
 
 ### 3. Externalize all durable state
 

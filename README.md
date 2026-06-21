@@ -60,8 +60,8 @@ flowchart LR
 
 Design the contract, protect the edge, connect to the database safely, and deploy without downtime.
 
-1. [api-design-and-protection](api-design-and-protection/README.md) — design, gateway, auth, checklist
-2. [api-rate-limiting](api-rate-limiting/README.md) — algorithms and where to enforce limits
+1. [api-design-and-protection](api-design-and-protection/README.md) — design, gateway ([§3 hub](api-design-and-protection/includes/03-api-gateway.md), [3A request flows](api-design-and-protection/includes/03A-api-gateway-request-flows.md)), auth, checklist
+2. [api-rate-limiting](api-rate-limiting/README.md) — algorithms and where to enforce limits; multi-instance → [§12 distributed](api-rate-limiting/includes/12-distributed-rate-limiting.md)
 3. [database-connection-and-security](database-connection-and-security/README.md) — production credentials and IAM
 4. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green
 
@@ -95,8 +95,8 @@ Append-only writes, read projections, and reliable async integration.
 3. [event-sourcing-and-cqrs §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) — cross-service workflows, compensation, ops
 4. [event-sourcing-and-cqrs §8 schema evolution](event-sourcing-and-cqrs/includes/08-event-schema-evolution.md) — upcasting, projector compatibility
 5. [event-sourcing-and-cqrs §9 testing](event-sourcing-and-cqrs/includes/09-testing-and-verification.md) — aggregate, projector, and saga tests
-6. [api-design-and-protection §10 async](api-design-and-protection/includes/10-async-patterns.md) — jobs, webhooks, polling
-7. [api-design-and-protection §13 idempotency](api-design-and-protection/includes/13-idempotency.md) — safe command retries
+6. [api-design-and-protection §10 async](api-design-and-protection/includes/10-async-patterns.md) — hub; [10A jobs + polling](api-design-and-protection/includes/10A-async-jobs-polling.md), [10B webhooks](api-design-and-protection/includes/10B-async-webhooks.md)
+7. [api-design-and-protection §13 idempotency](api-design-and-protection/includes/13-idempotency.md) — hub; [13A client and server flow](api-design-and-protection/includes/13A-idempotency-client-and-server-flow.md)
 8. [postgresql-performance §2 indexing](postgresql-performance/includes/02-indexing.md) — event table performance
 
 ### Production hardening
@@ -106,7 +106,7 @@ Security review, overload protection, and operational safety nets.
 1. [api-design-and-protection §2 protection](api-design-and-protection/includes/02-api-protection.md) + [§6 threat model](api-design-and-protection/includes/06-threat-model.md)
 2. [api-design-and-protection §12 identity](api-design-and-protection/includes/12-identity-rbac-iam-ad.md)
 3. [database-connection-and-security](database-connection-and-security/README.md) — network, TLS, secrets, cloud identity
-4. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting](api-rate-limiting/README.md)
+4. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting §12 distributed limiting](api-rate-limiting/includes/12-distributed-rate-limiting.md) (Redis topology, regional quotas, fail-open) + [api-rate-limiting](api-rate-limiting/README.md)
 
 ### DBA / platform engineer
 

@@ -231,7 +231,7 @@ flowchart LR
 | **Sampling** | Head-based 1–10% baseline; tail sampling for errors |
 | **DB** | Optional PG statement spans — watch overhead |
 
-Saga debugging → propagate `saga_id` — [ES §7](../../event-sourcing-and-cqrs/includes/07-sagas-operations.md#observability-and-operations).
+Saga debugging → propagate `saga_id` — [ES §7](../../event-sourcing-and-cqrs/includes/07C-sagas-operations.md#observability-and-operations).
 
 | RED / USE | Tracing adds |
 |-----------|--------------|

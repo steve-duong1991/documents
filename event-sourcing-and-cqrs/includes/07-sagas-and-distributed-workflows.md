@@ -13,10 +13,10 @@ Coordinate multi-service business processes with local transactions, compensatin
 | **What is it?** | A sequence of **local transactions** (one per service) coordinated so the process completes or is undone via **compensating actions** |
 | **When to use?** | Cross-service workflows (order → payment → inventory → shipping) where one ACID(Atomicity, Consistency, Isolation, Durability) transaction across DBs is impossible |
 | **How are transactions handled?** | **Local ACID** per service — no 2PC(Two-Phase Commit) across DBs; see [Transactions and distributed databases](#transactions-and-distributed-databases) |
-| **When not to use?** | Single service + one DB → normal ACID; see [When not to use a saga](07-sagas-operations.md#when-not-to-use-a-saga) |
-| **Retry vs compensate?** | Transient → retry with cap; permanent → compensate; see [Retry vs compensate](07-sagas-operations.md#retry-vs-compensate) |
-| **How to operate?** | Stuck-saga metrics, DLQ(Dead Letter Queue), `saga_id` in traces — see [Observability and operations](07-sagas-operations.md#observability-and-operations) |
-| **Choreography vs orchestration?** | Events-only vs central **process manager** — see [Which one to choose?](07-sagas-choreography-orchestration.md#which-one-to-choose) |
+| **When not to use?** | Single service + one DB → normal ACID; see [When not to use a saga](07C-sagas-operations.md#when-not-to-use-a-saga) |
+| **Retry vs compensate?** | Transient → retry with cap; permanent → compensate; see [Retry vs compensate](07C-sagas-operations.md#retry-vs-compensate) |
+| **How to operate?** | Stuck-saga metrics, DLQ(Dead Letter Queue), `saga_id` in traces — see [Observability and operations](07C-sagas-operations.md#observability-and-operations) |
+| **Choreography vs orchestration?** | Events-only vs central **process manager** — see [Which one to choose?](07A-sagas-choreography-orchestration.md#which-one-to-choose) |
 | **How to undo?** | Compensating transactions in **reverse order** (LIFO) — not a distributed `ROLLBACK` |
 | **Critical requirement?** | **Idempotent** steps + persisted saga state + correlation IDs |
 
@@ -27,9 +27,9 @@ Coordinate multi-service business processes with local transactions, compensatin
 
 | Article | Topics |
 |---------|--------|
-| [Choreography vs orchestration](07-sagas-choreography-orchestration.md) | Event-driven vs process manager, decision flow |
-| [Compensation and idempotency](07-sagas-compensation-idempotency.md) | LIFO compensation, saga state, step idempotency |
-| [Operations and testing](07-sagas-operations.md) | Observability, inbox, deploy versioning, test matrix |
+| [Choreography vs orchestration](07A-sagas-choreography-orchestration.md) | Event-driven vs process manager, decision flow |
+| [Compensation and idempotency](07B-sagas-compensation-idempotency.md) | LIFO compensation, saga state, step idempotency |
+| [Operations and testing](07C-sagas-operations.md) | Observability, inbox, deploy versioning, test matrix |
 
 ## What a saga is
 
@@ -92,7 +92,7 @@ sequenceDiagram
 Typical contents of that one `COMMIT`:
 
 1. **Business write** — e.g. `INSERT INTO payments …`
-2. **Idempotency record** — `saga_step_log` so retries do not double-charge — see [Idempotency patterns](07-sagas-compensation-idempotency.md#idempotency-patterns-specific-to-sagas)
+2. **Idempotency record** — `saga_step_log` so retries do not double-charge — see [Idempotency patterns](07B-sagas-compensation-idempotency.md#idempotency-patterns-specific-to-sagas)
 3. **Outbox row** (when publishing) — reliable event after commit — see [Transactional outbox](05-async-integration.md#transactional-outbox-pattern)
 
 If anything fails → `ROLLBACK` **only within that service**. Other databases are unaffected until the saga drives the next step or compensation.
@@ -128,7 +128,7 @@ If step 3 fails after steps 1–2 committed:
 | Roll back the whole saga like one DB transaction | Each completed step is a **fact** (payment was captured) |
 | `ROLLBACK` across services | New local TXs: **RefundPayment**, **CancelOrder**, **ReleaseInventory** |
 
-Each compensate call is again **one local ACID transaction** in that service's database. Details → [Compensation steps](07-sagas-compensation-idempotency.md#compensation-steps-and-rollback-flows).
+Each compensate call is again **one local ACID transaction** in that service's database. Details → [Compensation steps](07B-sagas-compensation-idempotency.md#compensation-steps-and-rollback-flows).
 
 ### Consistency you actually get
 

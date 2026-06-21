@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-INCLUDE_RE = re.compile(r"\]\((includes/\d{2}-[a-z0-9-]+\.md)\)")
+INCLUDE_RE = re.compile(r"\]\((includes/\d{2}[A-Z]?-[a-z0-9-]+\.md)\)")
 TOC_HEADER_RE = re.compile(r"^\| # \| (?:Topic|Strategy|Section) \|$")
 TOC_ROW_RE = re.compile(r"^\| (?:—|\d+) \| .+ \|$")
 

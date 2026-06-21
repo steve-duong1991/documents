@@ -18,9 +18,9 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [P
 | 5 | [Async integration](includes/05-async-integration.md) |
 | 6 | [Decision guide](includes/06-decision-guide.md) |
 | 7 | [Sagas and distributed workflows](includes/07-sagas-and-distributed-workflows.md) |
-| 7a | [Sagas — choreography vs orchestration](includes/07-sagas-choreography-orchestration.md) |
-| 7b | [Sagas — compensation and idempotency](includes/07-sagas-compensation-idempotency.md) |
-| 7c | [Sagas — operations and testing](includes/07-sagas-operations.md) |
+| 7A | [Sagas — choreography vs orchestration](includes/07A-sagas-choreography-orchestration.md) |
+| 7B | [Sagas — compensation and idempotency](includes/07B-sagas-compensation-idempotency.md) |
+| 7C | [Sagas — operations and testing](includes/07C-sagas-operations.md) |
 | 8 | [Event schema evolution](includes/08-event-schema-evolution.md) |
 | 9 | [Testing and verification](includes/09-testing-and-verification.md) |
 

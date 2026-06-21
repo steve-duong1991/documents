@@ -1,6 +1,6 @@
 # Sagas — operations, inbox, and testing
 
-> **Related:** Overview → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md) · Compensation → [07-sagas-compensation-idempotency.md](07-sagas-compensation-idempotency.md) · Testing → [09-testing-and-verification.md](09-testing-and-verification.md)
+> **Related:** Overview → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md) · Compensation → [07B-sagas-compensation-idempotency.md](07B-sagas-compensation-idempotency.md) · Testing → [09-testing-and-verification.md](09-testing-and-verification.md)
 
 ## Example: order → payment → inventory → shipping
 
@@ -121,7 +121,7 @@ Do **not** compensate on the first transient blip — you will undo work that wo
 | **Compensation rate** | Failures vs successes — compensation errors trending up |
 | **DLQ depth** | Non-zero for saga-related consumers |
 
-Propagate **`saga_id`** (and `correlation_id`) in structured logs and distributed traces — same IDs as [Idempotency patterns](07-sagas-compensation-idempotency.md#idempotency-patterns-specific-to-sagas). Support queries like “show me everything for checkout `saga-abc`”.
+Propagate **`saga_id`** (and `correlation_id`) in structured logs and distributed traces — same IDs as [Idempotency patterns](07B-sagas-compensation-idempotency.md#idempotency-patterns-specific-to-sagas). Support queries like “show me everything for checkout `saga-abc`”.
 
 ### DLQ and manual intervention
 

@@ -1,6 +1,6 @@
 # Async patterns — jobs and polling
 
-> **Related:** Overview → [Async patterns](10-async-patterns.md) · Webhooks → [10-async-webhooks.md](10-async-webhooks.md) · Streaming → [10-async-streaming.md](10-async-streaming.md)
+> **Related:** Overview → [Async patterns](10-async-patterns.md) · Webhooks → [10B-async-webhooks.md](10B-async-webhooks.md) · Streaming → [10C-async-streaming.md](10C-async-streaming.md)
 
 ## Pattern 1 — Job resource + polling (default)
 
@@ -143,3 +143,53 @@ flowchart LR
 - Return `Retry-After` so well-behaved clients back off.
 - Consider **ETag** / `If-None-Match` — return `304` when status unchanged.
 
+---
+
+## OpenAPI modeling
+
+```yaml
+paths:
+  /v1/reports/export:
+    post:
+      summary: Start async export
+      responses:
+        '202':
+          description: Job accepted
+          headers:
+            Location:
+              schema: { type: string }
+            Retry-After:
+              schema: { type: integer }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+
+  /v1/jobs/{job_id}:
+    get:
+      summary: Poll job status
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+
+components:
+  schemas:
+    Job:
+      type: object
+      properties:
+        id: { type: string, example: job_abc123 }
+        status:
+          type: string
+          enum: [queued, processing, completed, failed, cancelled]
+        progress:
+          type: object
+          properties:
+            percent: { type: integer, minimum: 0, maximum: 100 }
+        result: { type: object }
+        error: { $ref: '#/components/schemas/Error' }
+```
+
+Contract-first workflow → [OpenAPI / Swagger](07-openapi-swagger.md). Idempotency header modeling → [13C async, webhooks, and OpenAPI](13C-idempotency-integrations.md#openapi-modeling).

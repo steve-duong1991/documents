@@ -64,7 +64,7 @@ Client → Gateway (auth, /v1/users → Users service)
        → Users LB → User pod 1 | 2 | 3
 ```
 
-See [Flow 3 — Both together](../../api-design-and-protection/includes/03-api-gateway.md#flow-3--both-together-common-at-scale).
+See [Flow 3 — Both together](../../api-design-and-protection/includes/03A-api-gateway-request-flows.md#flow-3--both-together-common-at-scale).
 
 ---
 
@@ -102,7 +102,7 @@ Do not duplicate the same rate limit at every layer without reason — **edge (c
 | Internal microservices | Istio/Linkerd east-west; ingress for north-south |
 | Startup MVP | Cloudflare + single gateway; add LB per service at scale |
 
-Full stack tables → [03-api-gateway.md — Tech stacks by scenario](../../api-design-and-protection/includes/03-api-gateway.md#tech-stacks-by-scenario).
+Full stack tables → [03B-api-gateway-stacks-and-selection.md — Tech stacks by scenario](../../api-design-and-protection/includes/03B-api-gateway-stacks-and-selection.md#tech-stacks-by-scenario).
 
 ---
 

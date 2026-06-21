@@ -1,6 +1,6 @@
 # Identity — Active Directory and enterprise IdP
 
-> **Related:** IAM(Identity and Access Management) and RBAC(Role-Based Access Control) → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · API(Application Programming Interface) decisions → [12-identity-enterprise-api.md](12-identity-enterprise-api.md) · Auth protocols → [04-auth-model.md](04-auth-model.md)
+> **Related:** IAM(Identity and Access Management) and RBAC(Role-Based Access Control) → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · API(Application Programming Interface) decisions → [12B-identity-enterprise-api.md](12B-identity-enterprise-api.md) · Auth protocols → [04-auth-model.md](04-auth-model.md)
 
 ## What Active Directory is
 

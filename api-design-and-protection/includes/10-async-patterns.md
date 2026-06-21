@@ -11,9 +11,9 @@ How to design APIs for work that outlasts connection timeouts: job resources, po
 
 | Article | Topics |
 |---------|--------|
-| [Jobs and polling](10-async-jobs-polling.md) | `202` job resource, state machine, HTTP contract, polling limits |
-| [Webhooks](10-async-webhooks.md) | Server push, HMAC, SSRF(Server-Side Request Forgery) on `callback_url`, hybrid fallback |
-| [Streaming and long poll](10-async-streaming.md) | Long poll, SSE(Server-Sent Events), NDJSON, sync-timeout fallback |
+| [Jobs and polling](10A-async-jobs-polling.md) | `202` job resource, state machine, HTTP contract, polling limits |
+| [Webhooks](10B-async-webhooks.md) | Server push, HMAC, SSRF(Server-Side Request Forgery) on `callback_url`, hybrid fallback |
+| [Streaming and long poll](10C-async-streaming.md) | Long poll, SSE(Server-Sent Events), NDJSON, sync-timeout fallback |
 
 ## What it is
 
@@ -50,15 +50,10 @@ flowchart TB
 | Gateway/LB connection timeouts (30–60s typical) | Client disconnects after `202` |
 | Rate-limit slot held for minutes | Only enqueue costs a write slot |
 | Worker thread blocked on I/O | Workers pull from queue at their pace |
-| Client retries → duplicate work | Job ID + idempotency keys |
+| Client retries → duplicate work | Job ID + idempotency keys — [§13](13-idempotency.md), [13A client flow](13A-idempotency-client-and-server-flow.md) |
 | Unpredictable latency | Explicit job states |
 
 ---
-
----
-
----
-
 
 ## Pattern comparison
 
@@ -122,76 +117,7 @@ flowchart TB
 
 Job queues handle **long work** (`202` + poll). **Transactional outbox** handles **reliable delivery** after a write: append domain events and outbox rows in one DB transaction; a relay publishes to Kafka or workers. Used heavily in [Event Sourcing & CQRS](../../event-sourcing-and-cqrs/includes/05-async-integration.md) — combine with job resources when an event triggers minutes-long processing.
 
----
-
-## Idempotency across async
-
-```mermaid
-sequenceDiagram
-    participant C as Client
-    participant A as API
-
-    C->>A: POST /export Idempotency-Key: K1
-    A-->>C: 202 job_123
-
-    Note over C: Network timeout — client retries
-
-    C->>A: POST /export Idempotency-Key: K1
-    A-->>C: 202 job_123 (same job, no duplicate enqueue)
-```
-
-Without idempotency, retries create duplicate exports, charges, or notifications. See [Idempotency](13-idempotency.md).
-
----
-
-## OpenAPI modeling
-
-```yaml
-paths:
-  /v1/reports/export:
-    post:
-      summary: Start async export
-      responses:
-        '202':
-          description: Job accepted
-          headers:
-            Location:
-              schema: { type: string }
-            Retry-After:
-              schema: { type: integer }
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Job'
-
-  /v1/jobs/{job_id}:
-    get:
-      summary: Poll job status
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Job'
-
-components:
-  schemas:
-    Job:
-      type: object
-      properties:
-        id: { type: string, example: job_abc123 }
-        status:
-          type: string
-          enum: [queued, processing, completed, failed, cancelled]
-        progress:
-          type: object
-          properties:
-            percent: { type: integer, minimum: 0, maximum: 100 }
-        result: { type: object }
-        error: { $ref: '#/components/schemas/Error' }
-```
-
-See [OpenAPI / Swagger](07-openapi-swagger.md) for contract-first workflow.
+`POST` with `Idempotency-Key` that returns `202` must not enqueue twice on retry — see [13A client and server flow](13A-idempotency-client-and-server-flow.md) and [Async jobs + idempotency](13C-idempotency-integrations.md#async-jobs).
 
 ---
 

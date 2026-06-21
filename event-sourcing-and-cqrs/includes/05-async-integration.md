@@ -61,7 +61,7 @@ CREATE TABLE outbox (
 | **CDC (Debezium)** | Near real-time | Extra infra |
 | **In-process after commit** | Easy in dev | Not durable across crashes |
 
-Multi-service workflows (order → payment → inventory) → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md). Consumer dedup (inbox) → [Inbox pattern](07-sagas-operations.md#inbox-pattern-consumer-dedup).
+Multi-service workflows (order → payment → inventory) → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md). Consumer dedup (inbox) → [Inbox pattern](07C-sagas-operations.md#inbox-pattern-consumer-dedup).
 
 ---
 
@@ -138,7 +138,7 @@ sequenceDiagram
 
 ## Webhooks from domain events
 
-Map terminal domain events to outbound webhooks (same security as [async webhooks](../../api-design-and-protection/includes/10-async-webhooks.md#pattern-2--webhooks-server-push)):
+Map terminal domain events to outbound webhooks (same security as [async webhooks](../../api-design-and-protection/includes/10B-async-webhooks.md#pattern-2--webhooks-server-push)):
 
 ```json
 {

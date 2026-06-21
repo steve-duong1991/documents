@@ -9,8 +9,8 @@ Enterprise identity foundations for APIs: how IAM governs access, how RBAC assig
 
 | Article | Topics |
 |---------|--------|
-| [Active Directory and enterprise IdP](12-identity-active-directory.md) | AD(Active Directory) structure, Kerberos, Entra hybrid, group → role mapping |
-| [API access decisions](12-identity-enterprise-api.md) | Decision flow, takeaways, common mistakes |
+| [Active Directory and enterprise IdP](12A-identity-active-directory.md) | AD(Active Directory) structure, Kerberos, Entra hybrid, group → role mapping |
+| [API access decisions](12B-identity-enterprise-api.md) | Decision flow, takeaways, common mistakes |
 
 ## At a glance
 

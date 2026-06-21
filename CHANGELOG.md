@@ -4,12 +4,53 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ---
 
+## 2026-06-21 (minor navigation polish)
+
+### Corpus
+- Root README learning paths — deep-links to `NNA` sub-articles (`10A` jobs, `13A` client flow, `3A` gateway flows)
+- api-design README reading paths — same deep-links for contract design, hardening, long-running endpoints
+
+### api-design-and-protection
+- Trimmed `10-async-patterns` hub — moved job OpenAPI YAML to `10A-async-jobs-polling`; idempotency async diagram to `13C-idempotency-integrations`
+- Fixed duplicate `---` separators in async hub
+
+### CHANGELOG
+- Historical split entries updated to current `NNA-topic.md` filenames
+
+---
+
+## 2026-06-21 (sub-article letter suffixes)
+
+### Corpus
+- Renamed 14 hub-split sub-articles to `NNA-topic.md` (e.g. `10A-async-jobs-polling.md`); hub files unchanged
+- README TOC labels uppercase (`3A`, `10A`, `7C`); cross-repo link sweep (~32 files)
+- `validate-doc-readme.py` — TOC regex accepts `\d{2}[A-Z]?-` includes
+- `github-format.py` — section map maps hub files only (not `NNA-` sub-articles)
+
+---
+
+## 2026-06-21 (optional corpus polish)
+
+### Corpus
+- GLOSSARY: **Compaction (LSM)** row
+- Root README learning paths — explicit [api-rate-limiting §12 distributed](api-rate-limiting/includes/12-distributed-rate-limiting.md) in Ship a public API and Production hardening paths
+
+### api-design-and-protection
+- Split §3 Gateway → hub + `03A-api-gateway-request-flows`, `03B-api-gateway-stacks-and-selection` (README TOC `3A`, `3B`)
+- Split §13 Idempotency → hub + `13A-idempotency-client-and-server-flow`, `13B-idempotency-storage`, `13C-idempotency-integrations` (README TOC `13A`–`13C`)
+- Cross-link anchor updates (HTS §2, ES §4, stateless §11, GraphQL §17)
+
+### CONTRIBUTING
+- Sub-article examples extended to §3 Gateway and §13 Idempotency hub splits
+
+---
+
 ## 2026-06-21 (GitHub navigation — slim READMEs, article splits)
 
 ### Corpus
 - **README Option A:** guide READMEs are TOC + `Reading paths` / `See also` only — removed duplicate skim sections
 - `validate-doc-readme.py` — TOC sync only (no body link requirement per include)
-- CONTRIBUTING updated for TOC-primary navigation and sub-article naming (`10a` labels, `10-async-webhooks.md` files)
+- CONTRIBUTING updated for TOC-primary navigation and sub-article naming (`10A` labels, `10B-async-webhooks.md` files)
 - README TOC table fix — two-column separators normalized; column-count validation added
 
 ### api-rate-limiting
@@ -28,12 +69,12 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 - GLOSSARY: memtable, SSTable rows
 
 ### api-design-and-protection
-- Split §10 Async patterns → hub + `10-async-jobs-polling`, `10-async-webhooks`, `10-async-streaming`
-- Split §11 Stateless → hub + `11-stateless-auth-operations`
-- Split §12 Identity → hub + `12-identity-active-directory`, `12-identity-enterprise-api`
+- Split §10 Async patterns → hub + `10A-async-jobs-polling`, `10B-async-webhooks`, `10C-async-streaming`
+- Split §11 Stateless → hub + `11A-stateless-auth-operations`
+- Split §12 Identity → hub + `12A-identity-active-directory`, `12B-identity-enterprise-api`
 
 ### event-sourcing-and-cqrs
-- Split §7 Sagas → hub + `07-sagas-choreography-orchestration`, `07-sagas-compensation-idempotency`, `07-sagas-operations`
+- Split §7 Sagas → hub + `07A-sagas-choreography-orchestration`, `07B-sagas-compensation-idempotency`, `07C-sagas-operations`
 
 ### Removed (prior commit on branch)
 - All `GUIDE.md` combined files, `mkdocs.yml`, `build-guide.py`, pre-commit, external-link CI workflow

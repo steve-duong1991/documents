@@ -133,7 +133,7 @@ Rebuild test: wipe read table → replay full stream → compare to snapshot CSV
 | **Outbox integration** | Real PG + test Kafka/SQS; assert message after TX commit |
 | **Failure injection** | Fail step 3 → assert compensate 2, 1 |
 
-Propagate `saga_id` in test traces — same as production — [§7 Observability](07-sagas-operations.md#observability-and-operations).
+Propagate `saga_id` in test traces — same as production — [§7 Observability](07C-sagas-operations.md#observability-and-operations).
 
 ---
 

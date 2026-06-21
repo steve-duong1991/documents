@@ -43,7 +43,7 @@ flowchart TD
 | Situation | Prefer |
 |-----------|--------|
 | Simple CRUD, few state transitions | PostgreSQL + normal tables |
-| Single service, one database, no external APIs | Normal ACID(Atomicity, Consistency, Isolation, Durability) — no cross-service saga — see [When not to use a saga](07-sagas-operations.md#when-not-to-use-a-saga) |
+| Single service, one database, no external APIs | Normal ACID(Atomicity, Consistency, Isolation, Durability) — no cross-service saga — see [When not to use a saga](07C-sagas-operations.md#when-not-to-use-a-saga) |
 | Team new to distributed patterns | CRUD; add audit table first |
 | Strong immediate read-after-write everywhere | CRUD or sync read model only |
 | Tight deadline, small team | Defer ES until domain stabilizes |

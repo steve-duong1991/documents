@@ -1,6 +1,6 @@
 # Sagas — compensation and idempotency
 
-> **Related:** Overview → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md) · Choreography → [07-sagas-choreography-orchestration.md](07-sagas-choreography-orchestration.md) · Idempotency → [api-design §13](../../api-design-and-protection/includes/13-idempotency.md)
+> **Related:** Overview → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md) · Choreography → [07A-sagas-choreography-orchestration.md](07A-sagas-choreography-orchestration.md) · Idempotency → [api-design §13](../../api-design-and-protection/includes/13-idempotency.md)
 
 ## Compensation steps and rollback flows
 
