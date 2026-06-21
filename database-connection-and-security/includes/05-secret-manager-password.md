@@ -2,6 +2,8 @@
 
 > The most common production baseline — store a DB username/password in a cloud secret manager and inject it at runtime. No credentials in git or container images.
 
+> **Scope:** **Baseline pattern** — username/password in Secrets Manager (or equivalent), injected at runtime. Upgrade to short-lived IAM(Identity and Access Management) → [§4 IAM + RDS Proxy](04-aws-iam-rds-proxy.md). Enterprise dynamic creds → [§3 HCV Vault](03-hcv-vault.md).
+>
 > **Related:** Upgrade path → [§4 IAM + RDS Proxy](04-aws-iam-rds-proxy.md) · Self-hosted pooling → [§9 PgBouncer + secret](09-pgbouncer-proxy-password.md) · Rotation runbook → [§12 Credential rotation and DR](12-credential-rotation-and-dr.md)
 
 ## What it solves

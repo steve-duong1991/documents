@@ -77,6 +77,8 @@ Most production storage falls into one of two designs:
 
 B-Trees (and especially **B+ Trees**) are the default index structure for on-disk and page-oriented storage. They optimize for **minimal I/O** and **ordered range access**.
 
+> **Scope:** **Conceptual lens** — B-tree/B+ tree structure, page-oriented reads, range scans. PostgreSQL index DDL and partial/covering indexes → [postgresql-performance §2 Indexing](../postgresql-performance/includes/02-indexing.md). Write-heavy alternative → [§4 LSM trees](04-lsm-trees.md).
+>
 > **Related:** PostgreSQL B-tree, partial, and covering indexes → [postgresql-performance/includes/02-indexing.md](../postgresql-performance/includes/02-indexing.md)
 
 ---
@@ -385,6 +387,8 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 LSM trees are the main alternative to **B+ trees** for **write-heavy, append-friendly** storage. They trade **write amplification and read complexity** for **fast sequential writes** and high **ingest throughput**.
 
+> **Scope:** **Write-optimized storage** — memtable, SSTables, compaction, ingest throughput. On-disk ordered indexes (default PG) → [§1 B-Trees and B+ Trees](01-b-trees-and-b-plus.md). Amplification tradeoffs → [§6 Amplification](06-amplification-and-related-topics.md).
+>
 > **Related:** Read/write/space amplification → [06-amplification-and-related-topics.md](06-amplification-and-related-topics.md#amplification-framework-b-vs-lsm)
 
 ---
@@ -707,6 +711,8 @@ flowchart TD
 
 Storage-engine metrics, clustered indexes, complexity reference, common mistakes, and links to deeper guides elsewhere in this repo.
 
+> **Scope:** **Cross-structure comparison** — read/write/space amplification, clustered indexes, complexity table. PostgreSQL index pickers → [postgresql-performance §2 Indexing](../postgresql-performance/includes/02-indexing.md) and [§13 decision guide](../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md).
+>
 > **Related:**
 > - PostgreSQL index types and when to use each → [postgresql-performance/includes/02-indexing.md](../postgresql-performance/includes/02-indexing.md)
 > - PostgreSQL decision guide → [postgresql-performance/includes/13-decision-guide-and-common-mistakes.md](../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md)

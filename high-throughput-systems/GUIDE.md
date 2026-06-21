@@ -2429,7 +2429,7 @@ See [06-async-queues-workers.md — Queue vs stream](06-async-queues-workers.md#
 | Kafka | Per partition | Key = `aggregate_id` or `saga_id` |
 | RabbitMQ | Per queue if single consumer | Idempotency + DLQ |
 
-Cross-service sagas → partition by `saga_id` — .
+Cross-service sagas → partition by `saga_id` — [ES §7 Sagas](../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md).
 
 ---
 

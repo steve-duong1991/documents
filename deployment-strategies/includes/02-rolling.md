@@ -1,5 +1,7 @@
 # Rolling Deployment
 
+> **Scope:** **Incremental instance replacement** — mixed versions during rollout; capacity and health-check math. Fast full-environment rollback → [§3 Blue-green](03-blue-green.md). Automated ramps and analysis → [§10 Progressive delivery](10-progressive-delivery.md).
+>
 > **Related:** SLO(Service Level Objective) rollback triggers → [§13](13-slo-rollback-triggers.md) · Schema coupling → [§12](12-schema-migrations-and-deploy.md) · Stateless prerequisite → [api-design §11](../../api-design-and-protection/includes/11-stateless-architecture.md)
 
 ## What it is

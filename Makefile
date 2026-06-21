@@ -1,7 +1,7 @@
 .PHONY: validate validate-external build build-all check help
 
 help:
-	@echo "make validate          — check internal markdown links + anchors + README TOC"
+	@echo "make validate          — check internal markdown links + anchors + README TOC + prose lint"
 	@echo "make validate-external — also check https:// links (slow; optional)"
 	@echo "make check             — validate, acronym check, build-all, GUIDE.md drift check"
 	@echo "make build-all         — rebuild all GUIDE.md from includes/"
@@ -10,6 +10,7 @@ help:
 validate:
 	python3 scripts/validate-doc-links.py
 	python3 scripts/validate-doc-readme.py
+	python3 scripts/validate-doc-prose.py
 
 validate-external:
 	python3 scripts/validate-doc-links.py --external

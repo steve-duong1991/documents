@@ -31,6 +31,7 @@ jobs:
         run: |
           python3 scripts/validate-doc-links.py
           python3 scripts/validate-doc-readme.py
+          python3 scripts/validate-doc-prose.py
       - name: Verify acronym expansions up to date
         run: python3 scripts/expand-acronyms.py --check
       - name: Verify GUIDE.md matches includes

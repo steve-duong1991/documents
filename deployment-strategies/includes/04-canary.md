@@ -1,5 +1,7 @@
 # Canary Deployment
 
+> **Scope:** **Gradual traffic shift** — route a small % to the new version, ramp on metrics, rollback by routing traffic back. Instant full-stack swap → [§3 Blue-green](03-blue-green.md). Flags + automation → [§10 Progressive delivery](10-progressive-delivery.md).
+>
 > **Related:** Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO(Service Level Objective) rollback → [§13](13-slo-rollback-triggers.md) · Progressive delivery → [§10](10-progressive-delivery.md)
 
 ## What it is

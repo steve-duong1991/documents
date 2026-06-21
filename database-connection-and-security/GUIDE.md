@@ -466,6 +466,8 @@ Private subnet → TLS → IAM token → RDS Proxy → RDS
 
 > **HCV** = **H**ashi**C**orp **V**ault — a secrets management platform for securing service-to-database connections in production.
 
+> **Scope:** **Self-hosted secrets platform** — dynamic DB credentials, Vault Agent sidecars, policy models. Cloud-native IAM(Identity and Access Management) without Vault → [§4 AWS IAM + RDS Proxy](04-aws-iam-rds-proxy.md). Static password in Secret Manager → [§5 Secret manager + static password](05-secret-manager-password.md).
+>
 > **Related:** AWS-native alternative → [§4 AWS IAM + RDS Proxy](04-aws-iam-rds-proxy.md) · Pooling at scale → [§9 PgBouncer + secret](09-pgbouncer-proxy-password.md) · Decision guide → [§13 Decision guide](13-decision-guide.md)
 
 Vault helps you:
@@ -656,6 +658,8 @@ Steps:
 
 > AWS-native path for the same goals as Vault — no DB password in code, short-lived credentials, least privilege — without running HashiCorp Vault.
 
+> **Scope:** **AWS-native path** — IAM auth tokens, RDS Proxy, least privilege without Vault. HashiCorp Vault alternative → [§3 HCV Vault](03-hcv-vault.md). Direct RDS without Proxy → [§6 Direct RDS IAM](06-direct-rds-iam.md).
+>
 > **Related:** Direct RDS without Proxy → [§6 Direct RDS IAM](06-direct-rds-iam.md) · Vault comparison → [§3 HashiCorp Vault](03-hcv-vault.md) · Pool tuning → [postgresql-performance §7](../postgresql-performance/includes/07-connection-management.md)
 
 ## What it solves
@@ -835,6 +839,8 @@ Consider Vault (or Pattern B + stricter IAM) when:
 
 > The most common production baseline — store a DB username/password in a cloud secret manager and inject it at runtime. No credentials in git or container images.
 
+> **Scope:** **Baseline pattern** — username/password in Secrets Manager (or equivalent), injected at runtime. Upgrade to short-lived IAM(Identity and Access Management) → [§4 IAM + RDS Proxy](04-aws-iam-rds-proxy.md). Enterprise dynamic creds → [§3 HCV Vault](03-hcv-vault.md).
+>
 > **Related:** Upgrade path → [§4 IAM + RDS Proxy](04-aws-iam-rds-proxy.md) · Self-hosted pooling → [§9 PgBouncer + secret](09-pgbouncer-proxy-password.md) · Rotation runbook → [§12 Credential rotation and DR](12-credential-rotation-and-dr.md)
 
 ## What it solves

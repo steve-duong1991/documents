@@ -70,6 +70,8 @@ Design the contract, protect the edge, connect to the database safely, and deplo
 Optimize in order: measure, reduce work, fix the database hot path, then cache and scale.
 
 1. [high-throughput-systems](high-throughput-systems/README.md) — system-wide throughput order and layers
+   - Async brokers and queues → [HTS §14 message brokers](high-throughput-systems/includes/14-message-brokers-and-queues.md)
+   - CDC(Change Data Capture) and search indexing → [HTS §15 CDC](high-throughput-systems/includes/15-cdc-and-search-indexing.md)
 2. [postgresql-performance](postgresql-performance/README.md) — indexes, queries, pooling, replicas
    - Read [§9 scale-out terminology](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md) first if partitioning vs replication vs sharding is unclear
 3. [tree-and-index-structures](tree-and-index-structures/README.md) — B+ vs LSM when writes dominate
@@ -91,9 +93,11 @@ Append-only writes, read projections, and reliable async integration.
 1. [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) — core concepts and decision guide
 2. [event-sourcing-and-cqrs §5 async](event-sourcing-and-cqrs/includes/05-async-integration.md) — outbox, reliable publish
 3. [event-sourcing-and-cqrs §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) — cross-service workflows, compensation, ops
-4. [api-design-and-protection §10 async](api-design-and-protection/includes/10-async-patterns.md) — jobs, webhooks, polling
-5. [api-design-and-protection §13 idempotency](api-design-and-protection/includes/13-idempotency.md) — safe command retries
-6. [postgresql-performance §2 indexing](postgresql-performance/includes/02-indexing.md) — event table performance
+4. [event-sourcing-and-cqrs §8 schema evolution](event-sourcing-and-cqrs/includes/08-event-schema-evolution.md) — upcasting, projector compatibility
+5. [event-sourcing-and-cqrs §9 testing](event-sourcing-and-cqrs/includes/09-testing-and-verification.md) — aggregate, projector, and saga tests
+6. [api-design-and-protection §10 async](api-design-and-protection/includes/10-async-patterns.md) — jobs, webhooks, polling
+7. [api-design-and-protection §13 idempotency](api-design-and-protection/includes/13-idempotency.md) — safe command retries
+8. [postgresql-performance §2 indexing](postgresql-performance/includes/02-indexing.md) — event table performance
 
 ### Production hardening
 
@@ -179,7 +183,8 @@ documents/
 │   ├── build-guide.py
 │   ├── expand-acronyms.py
 │   ├── validate-doc-links.py
-│   └── validate-doc-readme.py
+│   ├── validate-doc-readme.py
+│   └── validate-doc-prose.py
 └── guide-name/
     ├── README.md
     ├── GUIDE.md

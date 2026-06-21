@@ -1,5 +1,7 @@
 # Overview — Quick Comparison
 
+> **Scope:** **Strategy comparison** — downtime, rollback speed, risk, and fit at a glance. Per-strategy mechanics → §1–§8; choosing and practices → [§11 Choosing a strategy](11-choosing-and-practices.md).
+>
 > **Related:** Stateless apps → [api-design §11 Stateless architecture](../../api-design-and-protection/includes/11-stateless-architecture.md) · Schema + deploy → [§12 Schema migrations](12-schema-migrations-and-deploy.md) · Decision guide → [§11 Choosing a strategy](11-choosing-and-practices.md)
 
 | Strategy | Downtime | Rollback speed | Risk | Complexity | Best for |

@@ -2,6 +2,8 @@
 
 Storage-engine metrics, clustered indexes, complexity reference, common mistakes, and links to deeper guides elsewhere in this repo.
 
+> **Scope:** **Cross-structure comparison** — read/write/space amplification, clustered indexes, complexity table. PostgreSQL index pickers → [postgresql-performance §2 Indexing](../../postgresql-performance/includes/02-indexing.md) and [§13 decision guide](../../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md).
+>
 > **Related:**
 > - PostgreSQL index types and when to use each → [postgresql-performance/includes/02-indexing.md](../../postgresql-performance/includes/02-indexing.md)
 > - PostgreSQL decision guide → [postgresql-performance/includes/13-decision-guide-and-common-mistakes.md](../../postgresql-performance/includes/13-decision-guide-and-common-mistakes.md)

@@ -6,6 +6,8 @@
 
 # Overview — Quick Comparison
 
+> **Scope:** **Strategy comparison** — downtime, rollback speed, risk, and fit at a glance. Per-strategy mechanics → §1–§8; choosing and practices → [§11 Choosing a strategy](11-choosing-and-practices.md).
+>
 > **Related:** Stateless apps → [api-design §11 Stateless architecture](../api-design-and-protection/includes/11-stateless-architecture.md) · Schema + deploy → [§12 Schema migrations](12-schema-migrations-and-deploy.md) · Decision guide → [§11 Choosing a strategy](11-choosing-and-practices.md)
 
 | Strategy | Downtime | Rollback speed | Risk | Complexity | Best for |
@@ -101,6 +103,8 @@ flowchart LR
 
 # Rolling Deployment
 
+> **Scope:** **Incremental instance replacement** — mixed versions during rollout; capacity and health-check math. Fast full-environment rollback → [§3 Blue-green](03-blue-green.md). Automated ramps and analysis → [§10 Progressive delivery](10-progressive-delivery.md).
+>
 > **Related:** SLO(Service Level Objective) rollback triggers → [§13](13-slo-rollback-triggers.md) · Schema coupling → [§12](12-schema-migrations-and-deploy.md) · Stateless prerequisite → [api-design §11](../api-design-and-protection/includes/11-stateless-architecture.md)
 
 ## What it is
@@ -209,6 +213,8 @@ Schema note: rollback app only works if **contract** migrations were not applied
 
 # Blue-Green Deployment
 
+> **Scope:** **Full-environment swap** — two complete stacks; deploy to idle Green, validate, switch traffic; Blue stays warm for rollback. Gradual % rollout → [§4 Canary](04-canary.md).
+>
 > **Related:** Canary alternative → [§4 Canary](04-canary.md) · Rollback triggers → [§13](13-slo-rollback-triggers.md) · Schema compatibility → [§12](12-schema-migrations-and-deploy.md)
 
 ## What it is
@@ -267,6 +273,8 @@ flowchart LR
 
 # Canary Deployment
 
+> **Scope:** **Gradual traffic shift** — route a small % to the new version, ramp on metrics, rollback by routing traffic back. Instant full-stack swap → [§3 Blue-green](03-blue-green.md). Flags + automation → [§10 Progressive delivery](10-progressive-delivery.md).
+>
 > **Related:** Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO(Service Level Objective) rollback → [§13](13-slo-rollback-triggers.md) · Progressive delivery → [§10](10-progressive-delivery.md)
 
 ## What it is
@@ -646,6 +654,8 @@ flowchart LR
 
 # Progressive Delivery
 
+> **Scope:** **Orchestration layer** — combines canary ramps, feature flags, and automated analysis (e.g. Argo Rollouts, Flagger). Canary mechanics alone → [§4 Canary](04-canary.md). Toggle patterns without traffic split → [§7 Feature flags](07-feature-flags.md).
+>
 > **Related:** Canary basics → [§4 Canary](04-canary.md) · Feature flags → [§7 Feature flags](07-feature-flags.md) · SLO(Service Level Objective) gates → [§13 SLO rollback](13-slo-rollback-triggers.md) · Observability → [HTS §11](../high-throughput-systems/includes/11-observability.md)
 
 ## What it is

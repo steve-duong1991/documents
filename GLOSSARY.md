@@ -11,9 +11,10 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Blue/green** | Two full environments; switch traffic between them | deployment-strategies §3 |
 | **BOLA(Broken Object-Level Authorization)** | Broken object-level authorization — access to another user's resource | api-design §2, §6 |
 | **BRIN(Block-Range Index) index** | Block-range index for very large, naturally ordered tables | PG §2 |
+| **B+ tree** | Disk-oriented index; ordered keys; default PostgreSQL B-tree | tree §1, PG §2 |
 | **CDC(Change Data Capture)** | Change data capture — stream DB changes to consumers (e.g. Debezium) | HTS §15, ES §5 |
 | **Choreography** | Saga style: services react to events without central orchestrator | ES §7 |
-| **GIN(Generalized Inverted Index) index** | inverted index for JSONB, arrays, full-text in PostgreSQL | PG §2, tree §6 |
+| **GIN(Generalized Inverted Index) index** | Inverted index for JSONB, arrays, and full-text in PostgreSQL | PG §2, tree §6 |
 | **Cache stampede** | Many concurrent cache misses hammering origin after expiry or cold start | HTS §4 |
 | **Cache-aside** | App reads cache, on miss loads DB and populates cache | HTS §4 |
 | **Canary** | Route small % of traffic to new version first | deployment-strategies §4 |

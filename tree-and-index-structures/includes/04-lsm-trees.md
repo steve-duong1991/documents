@@ -2,6 +2,8 @@
 
 LSM trees are the main alternative to **B+ trees** for **write-heavy, append-friendly** storage. They trade **write amplification and read complexity** for **fast sequential writes** and high **ingest throughput**.
 
+> **Scope:** **Write-optimized storage** — memtable, SSTables, compaction, ingest throughput. On-disk ordered indexes (default PG) → [§1 B-Trees and B+ Trees](01-b-trees-and-b-plus.md). Amplification tradeoffs → [§6 Amplification](06-amplification-and-related-topics.md).
+>
 > **Related:** Read/write/space amplification → [06-amplification-and-related-topics.md](06-amplification-and-related-topics.md#amplification-framework-b-vs-lsm)
 
 ---

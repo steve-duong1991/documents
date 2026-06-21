@@ -2,6 +2,8 @@
 
 > AWS-native path for the same goals as Vault — no DB password in code, short-lived credentials, least privilege — without running HashiCorp Vault.
 
+> **Scope:** **AWS-native path** — IAM auth tokens, RDS Proxy, least privilege without Vault. HashiCorp Vault alternative → [§3 HCV Vault](03-hcv-vault.md). Direct RDS without Proxy → [§6 Direct RDS IAM](06-direct-rds-iam.md).
+>
 > **Related:** Direct RDS without Proxy → [§6 Direct RDS IAM](06-direct-rds-iam.md) · Vault comparison → [§3 HashiCorp Vault](03-hcv-vault.md) · Pool tuning → [postgresql-performance §7](../../postgresql-performance/includes/07-connection-management.md)
 
 ## What it solves

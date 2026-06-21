@@ -19,7 +19,8 @@ documents/
 └── scripts/
     ├── build-guide.py
     ├── validate-doc-links.py
-    └── validate-doc-readme.py
+    ├── validate-doc-readme.py
+    └── validate-doc-prose.py
 ```
 
 Start from `README.md` for browsing. Use `GUIDE.md` for single-file reading or export.
@@ -67,6 +68,7 @@ cd documents && make validate
 
 - `validate-doc-links.py` — file paths and `#heading` anchors
 - `validate-doc-readme.py` — every `includes/*.md` appears in the guide README TOC
+- `validate-doc-prose.py` — suspicious empty links or stripped inline text (regression guard for acronym runs)
 
 Optional external URL check (slow; not in pre-commit):
 

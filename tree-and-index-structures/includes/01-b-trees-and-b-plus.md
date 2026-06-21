@@ -2,6 +2,8 @@
 
 B-Trees (and especially **B+ Trees**) are the default index structure for on-disk and page-oriented storage. They optimize for **minimal I/O** and **ordered range access**.
 
+> **Scope:** **Conceptual lens** — B-tree/B+ tree structure, page-oriented reads, range scans. PostgreSQL index DDL and partial/covering indexes → [postgresql-performance §2 Indexing](../../postgresql-performance/includes/02-indexing.md). Write-heavy alternative → [§4 LSM trees](04-lsm-trees.md).
+>
 > **Related:** PostgreSQL B-tree, partial, and covering indexes → [postgresql-performance/includes/02-indexing.md](../../postgresql-performance/includes/02-indexing.md)
 
 ---

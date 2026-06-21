@@ -2,6 +2,8 @@
 
 > **HCV** = **H**ashi**C**orp **V**ault — a secrets management platform for securing service-to-database connections in production.
 
+> **Scope:** **Self-hosted secrets platform** — dynamic DB credentials, Vault Agent sidecars, policy models. Cloud-native IAM(Identity and Access Management) without Vault → [§4 AWS IAM + RDS Proxy](04-aws-iam-rds-proxy.md). Static password in Secret Manager → [§5 Secret manager + static password](05-secret-manager-password.md).
+>
 > **Related:** AWS-native alternative → [§4 AWS IAM + RDS Proxy](04-aws-iam-rds-proxy.md) · Pooling at scale → [§9 PgBouncer + secret](09-pgbouncer-proxy-password.md) · Decision guide → [§13 Decision guide](13-decision-guide.md)
 
 Vault helps you:
