@@ -47,8 +47,10 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | If you are… | Read in order |
 |-------------|---------------|
 | **New to API infra** | Overview → [§3 LB vs gateway](includes/03-api-gateway.md) → [3A request flows](includes/03A-api-gateway-request-flows.md) → §11 (stateless) → §8 (reference arch) |
-| **Designing the API contract** | §1 → §7 (OpenAPI) → §15 (contract CI) → §14 (versioning) → [§13 idempotency](includes/13-idempotency.md) + [13A client flow](includes/13A-idempotency-client-and-server-flow.md) → [§10 async](includes/10-async-patterns.md) + [10A jobs](includes/10A-async-jobs-polling.md) |
+| **Designing the API contract** | §1 → §7 (OpenAPI) → §15 (contract CI) → §14 (versioning) → [§13 idempotency](includes/13-idempotency.md) + [13A client flow](includes/13A-idempotency-client-and-server-flow.md) → [§10 async](includes/10-async-patterns.md) + [10A jobs](includes/10A-async-jobs-polling.md) · non-REST(Representational State Transfer) → [§17 GraphQL/gRPC](includes/17-graphql-and-grpc.md) |
 | **Hardening for production** | §2 → §3 → §5 → §6 → [§13](includes/13-idempotency.md) + [13A](includes/13A-idempotency-client-and-server-flow.md) → §9 |
+| **B2B / SaaS partner API** | §4 auth → §5 tiers → [§16 multi-tenant](includes/16-multi-tenant-apis.md) → [§12 identity](includes/12-identity-rbac-iam-ad.md) + [api-rate-limiting §6 scope](../api-rate-limiting/includes/06-scope-identity.md) |
+| **GraphQL or gRPC API** | [§17 GraphQL and gRPC](includes/17-graphql-and-grpc.md) → §1 (REST baseline) → §7 (OpenAPI) or proto contracts → §15 (contract CI) |
 | **Picking rate limits** | [api-rate-limiting](../api-rate-limiting/README.md) + §5 here |
 | **Long-running or heavy endpoints** | [§10 async](includes/10-async-patterns.md) + [10A jobs + polling](includes/10A-async-jobs-polling.md) + §5 (async escape hatch) |
 | **Audit trail / event-sourced writes** | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) + §1 (write safety) + §8 (CQRS(Command Query Responsibility Segregation) diagram) |

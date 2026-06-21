@@ -159,3 +159,17 @@ Aligns with the [layered auth flow](04-auth-model.md#layered-auth-flow): gateway
 | **Typical artifacts** | Policies, MFA, audit, provisioning | Roles, bindings, permissions | Users, groups, OUs, GPO, DCs |
 | **In API context** | Gateway auth, OAuth, lifecycle | JWT roles/scopes, usage plans | SSO source; groups → API roles |
 
+---
+
+## Common mistakes
+
+| Mistake | Fix |
+|---------|-----|
+| Terminate **Kerberos** at the public API gateway | AD/Entra → OIDC/SAML → JWT at the edge ([Auth model](04-auth-model.md)) |
+| Expose **LDAP** to the internet for app auth | Federation via Entra ID / IdP; LDAP stays internal |
+| Stale **hybrid sync** (AD Connect / SCIM) | Monitor sync lag; revoked AD users still in JWT until TTL expires |
+| Treat AD **groups** as app permissions in code | Map groups → roles centrally — see [12B API access mistakes](12B-identity-enterprise-api.md#common-mistakes) |
+| Skip **object-level AuthZ** because RBAC passed | App still checks resource ownership ([Auth model — layered flow](04-auth-model.md#layered-auth-flow)) |
+
+General API identity pitfalls (JWT TTL, offboarding, service accounts) → [12B — Common mistakes](12B-identity-enterprise-api.md#common-mistakes).
+

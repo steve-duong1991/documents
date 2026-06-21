@@ -6,6 +6,11 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-06-21
 
+### api-design-and-protection reading paths
+- README: B2B/SaaS partner path (§4, §5, §16, §12, rate-limiting §6); GraphQL/gRPC path (§17)
+- Contract design path links to §17 for non-REST APIs
+- §12A Active Directory: AD-specific common mistakes + pointer to §12B
+
 ### Materialized view discoverability
 - **postgresql-performance:** README TOC §11 label mentions materialized views; §3/§9/§13 deep-links to `#materialized-views`
 - **GLOSSARY:** Materialized view row → PG §11
