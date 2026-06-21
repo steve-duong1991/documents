@@ -53,7 +53,7 @@ Requires an index on `(created_at DESC, id DESC)`.
 
 - Pre-filter with `WHERE` before `GROUP BY`
 - Use **`HAVING`** only when filtering aggregates — not as a substitute for `WHERE`
-- For repeated expensive aggregates, consider **materialized views**
+- For repeated expensive aggregates, consider [materialized views](11-read-scaling-and-caching.md#materialized-views)
 
 ## JOINs
 

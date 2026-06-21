@@ -15,7 +15,7 @@ A practical reference for choosing strategies and avoiding common mistakes.
 | "Too many connections" | PgBouncer before raising `max_connections` |
 | Table growing, queries slowing | Check dead tuples; tune autovacuum |
 | Time-series, 50M+ rows | Range partition on `created_at` + BRIN(Block-Range Index) or B-tree |
-| Dashboard aggregations | Materialized view + periodic refresh |
+| Dashboard aggregations | [Materialized view](11-read-scaling-and-caching.md#materialized-views) + periodic refresh |
 | Read-heavy SaaS | Optimize primary → read replica → Redis cache |
 | Nightly bulk import | `COPY` → `ANALYZE` → verify indexes |
 | Login brute force (many writes) | Short transactions; partial index on active sessions |

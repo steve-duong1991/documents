@@ -6,6 +6,10 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-06-21
 
+### Materialized view discoverability
+- **postgresql-performance:** README TOC §11 label mentions materialized views; §3/§9/§13 deep-links to `#materialized-views`
+- **GLOSSARY:** Materialized view row → PG §11
+
 ### Deferred polish
 - **Corpus:** consolidated same-day CHANGELOG entries under one `## 2026-06-21` header
 - **HTS §11:** merged duplicate distributed tracing sections into OpenTelemetry block

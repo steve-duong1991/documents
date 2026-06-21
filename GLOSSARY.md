@@ -37,6 +37,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Inbox pattern** | Consumer dedup table — same TX as side effect; pairs with outbox | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md), [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
 | **LSM(Log-Structured Merge) tree** | Log-structured merge; write-optimized storage | [tree-and-index-structures §4](tree-and-index-structures/includes/04-lsm-trees.md) |
 | **Memtable** | In-memory sorted buffer in LSM; absorbs writes before flush to disk | [tree §4](tree-and-index-structures/includes/04-lsm-trees.md) |
+| **Materialized view** | PostgreSQL snapshot of a query; fast reads until `REFRESH` | [PG §11](postgresql-performance/includes/11-read-scaling-and-caching.md#materialized-views), [§9](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md#materialized-views) |
 | **Optimistic concurrency** | Detect conflicting writes via version/check; retry on conflict | [ES §1](event-sourcing-and-cqrs/includes/01-core-concepts.md), [PG §12](postgresql-performance/includes/12-bulk-operations-and-concurrency.md) |
 | **Outbox pattern** | DB table + relay for reliable event publish | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md), [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
 | **Partitioning** | Split one logical table across child tables on a single PostgreSQL server | [PG §10](postgresql-performance/includes/10-partitioning.md) |

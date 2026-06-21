@@ -19,7 +19,7 @@ A practical reference for PostgreSQL performance — measurement, indexing, quer
 | 8 | [Memory and configuration](includes/08-memory-and-config.md) |
 | 9 | [Views, functions, and scale-out terminology](includes/09-views-functions-and-scale-out-terminology.md) |
 | 10 | [Partitioning](includes/10-partitioning.md) |
-| 11 | [Read scaling and caching](includes/11-read-scaling-and-caching.md) |
+| 11 | [Read scaling, caching & materialized views](includes/11-read-scaling-and-caching.md) |
 | 12 | [Bulk operations and concurrency](includes/12-bulk-operations-and-concurrency.md) |
 | 13 | [Decision guide and common mistakes](includes/13-decision-guide-and-common-mistakes.md) |
 | 14 | [Strong consistency — promises and costs](includes/14-consistency-promises-and-costs.md) |

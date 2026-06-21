@@ -8,7 +8,7 @@ PostgreSQL offers several ways to abstract queries (views), encapsulate logic (f
 > - Index types and patterns → [02-indexing.md](02-indexing.md)
 > - Query shape and common mistakes → [03-query-design.md](03-query-design.md)
 > - Single-node table splits → [10-partitioning.md](10-partitioning.md)
-> - Read replicas and materialized views → [11-read-scaling-and-caching.md](11-read-scaling-and-caching.md)
+> - Read replicas and materialized views → [11-read-scaling-and-caching.md#materialized-views](11-read-scaling-and-caching.md#materialized-views)
 > - Consistency when scaling reads → [14-consistency-promises-and-costs.md](14-consistency-promises-and-costs.md)
 
 ---
@@ -78,7 +78,7 @@ Pre-computed snapshot of a query — fast reads, stale until `REFRESH`. Use for 
 | Expensive aggregation read repeatedly | Real-time UI after writes |
 | Minutes of staleness OK | Session-critical consistency |
 
-`REFRESH MATERIALIZED VIEW CONCURRENTLY` requires a unique index on the view. Refresh schedules, layered read path, and consistency trade-offs → [Read scaling and caching](11-read-scaling-and-caching.md).
+`REFRESH MATERIALIZED VIEW CONCURRENTLY` requires a unique index on the view. Refresh schedules, layered read path, and consistency trade-offs → [Read scaling and caching — materialized views](11-read-scaling-and-caching.md#materialized-views).
 
 ### Recursive views
 
@@ -332,6 +332,6 @@ flowchart TD
 - [Indexing](02-indexing.md) — B-tree, partial, GIN(Generalized Inverted Index), BRIN(Block-Range Index), and covering indexes
 - [Query design](03-query-design.md) — pagination, N+1, functions on indexed columns
 - [Partitioning](10-partitioning.md) — range, list, hash, pruning, retention
-- [Read scaling and caching](11-read-scaling-and-caching.md) — replicas, Redis, materialized view refresh
+- [Read scaling and caching — materialized views](11-read-scaling-and-caching.md#materialized-views) — replicas, Redis, materialized view refresh
 - [Decision guide and common mistakes](13-decision-guide-and-common-mistakes.md) — scenario recommendations and priority checklist
 - [Strong consistency — promises and costs](14-consistency-promises-and-costs.md) — replication lag and read-your-writes
