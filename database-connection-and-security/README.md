@@ -9,9 +9,9 @@ Related: [postgresql-performance](../postgresql-performance/README.md) (connecti
 ## Table of contents
 
 | # | Section |
-|---|---------|--------------|
+|---|---------|
 | — | [Overview](includes/00-overview.md) |
-| 1 | [Local credentials](#1-local-credentials) *(dev template)* | [includes/01-local-db-credentials.md](includes/01-local-db-credentials.md) |
+| 1 | [Local credentials *(dev template)*](includes/01-local-db-credentials.md) |
 | 2 | [Production security](includes/02-prod-db-security.md) |
 | 3 | [HashiCorp Vault (HCV)](includes/03-hcv-vault.md) |
 | 4 | [AWS IAM + RDS Proxy](includes/04-aws-iam-rds-proxy.md) |

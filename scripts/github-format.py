@@ -37,6 +37,9 @@ TOC_HEADER_RE = re.compile(r"^(\| # \| (?:Topic|Strategy|Section) \|) Include fi
 TOC_ROW_RE = re.compile(
     r"^(\| (?:—|\d+) \|) \[([^\]]+)\]\(#[^)]*\) \| \[(includes/[^\]]+)\]\(\3\) \|$"
 )
+TOC_ROW_THREE_COL_RE = re.compile(
+    r"^(\| (?:—|\d+) \|) \[([^\]]+)\]\(#[^)]*\)(.*?) \| \[(includes/[^\]]+)\]\(\4\) \|$"
+)
 
 SEE_ALSO_PART_RE = re.compile(
     r"^(?:(?P<alias>PG|HTS|ES|api-design|deployment|tree|database-connection|api-rate-limiting)"
@@ -149,14 +152,34 @@ def clean_headings_in_text(text: str, acronyms: list[str]) -> str:
     return "\n".join(clean_heading_line(line, acronyms) for line in text.splitlines())
 
 
+def normalize_toc_separator(header_line: str, sep_line: str) -> str:
+    """Two-column TOC: separator must match header (github-format dropped a column)."""
+    if not sep_line.strip().startswith("|---"):
+        return sep_line
+    ncol = header_line.count("|") - 1
+    if ncol < 2:
+        return sep_line
+    return "|" + "|".join(["---"] * ncol) + "|"
+
+
 def fix_readme_toc(text: str) -> str:
     lines: list[str] = []
+    pending_header: str | None = None
     for line in text.splitlines():
         if TOC_HEADER_RE.match(line):
-            lines.append(TOC_HEADER_RE.sub(r"\1", line))
+            pending_header = TOC_HEADER_RE.sub(r"\1", line)
+            lines.append(pending_header)
             continue
-        if re.match(r"^\|---\|[-]+\|[-]+\|$", line):
-            lines.append("|---|-------|")
+        if pending_header is not None and line.strip().startswith("|---"):
+            lines.append(normalize_toc_separator(pending_header, line))
+            pending_header = None
+            continue
+        pending_header = None
+        m = TOC_ROW_THREE_COL_RE.match(line)
+        if m:
+            suffix = m.group(3).strip()
+            title = m.group(2) + (f" {suffix}" if suffix else "")
+            lines.append(f"{m.group(1)} [{title}]({m.group(4)}) |")
             continue
         m = TOC_ROW_RE.match(line)
         if m:

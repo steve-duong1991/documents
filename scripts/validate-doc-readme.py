@@ -9,6 +9,56 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 INCLUDE_RE = re.compile(r"\]\((includes/\d{2}-[a-z0-9-]+\.md)\)")
+TOC_HEADER_RE = re.compile(r"^\| # \| (?:Topic|Strategy|Section) \|$")
+TOC_ROW_RE = re.compile(r"^\| (?:—|\d+) \| .+ \|$")
+
+
+def table_column_count(line: str) -> int:
+    stripped = line.strip()
+    if not stripped.startswith("|"):
+        return 0
+    return stripped.count("|") - 1
+
+
+def validate_toc_table(readme_text: str, guide_name: str) -> list[str]:
+    errors: list[str] = []
+    in_toc = False
+    expected_cols: int | None = None
+
+    for lineno, line in enumerate(readme_text.splitlines(), start=1):
+        if line.strip() == "## Table of contents":
+            in_toc = True
+            expected_cols = None
+            continue
+        if not in_toc:
+            continue
+        if not line.strip():
+            continue
+        if line.startswith(">") or line.startswith("---"):
+            in_toc = False
+            expected_cols = None
+            continue
+        if not line.strip().startswith("|"):
+            in_toc = False
+            expected_cols = None
+            continue
+
+        cols = table_column_count(line)
+        if TOC_HEADER_RE.match(line):
+            expected_cols = cols
+            if cols != 2:
+                errors.append(
+                    f"{guide_name}/README.md:{lineno}: TOC header must be 2 columns, got {cols}"
+                )
+            continue
+        if expected_cols is None:
+            continue
+        if cols != expected_cols:
+            errors.append(
+                f"{guide_name}/README.md:{lineno}: TOC row has {cols} columns, expected {expected_cols}"
+            )
+
+    return errors
 
 
 def guide_dirs() -> list[Path]:
@@ -50,6 +100,8 @@ def main() -> int:
 
         # Each include should have a "See full details" link (except 00-overview optional)
         readme_text = readme.read_text(encoding="utf-8")
+        errors.extend(validate_toc_table(readme_text, guide.name))
+
         for name in disk:
             if name == "00-overview.md":
                 continue

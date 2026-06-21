@@ -9,7 +9,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (st
 ## Table of contents
 
 | # | Strategy |
-|---|----------|--------------|
+|---|----------|
 | — | [Quick comparison](includes/00-overview.md) |
 | 1 | [Recreate (Big Bang)](includes/01-recreate.md) |
 | 2 | [Rolling deployment](includes/02-rolling.md) |
