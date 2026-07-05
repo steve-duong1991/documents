@@ -22,7 +22,7 @@ Before provisioning brokers, decide **purpose**, **topology**, **companion servi
 
 | Area | Requirement |
 |------|-------------|
-| **Purpose** | Event bus, CDC, audit, analytics — [§11](11-decision-guide-and-common-mistakes.md) |
+| **Purpose** | Event bus, CDC(Change Data Capture), audit, analytics — [§11](11-decision-guide-and-common-mistakes.md) |
 | **Cluster mode** | **KRaft** (Kafka 3.3+); avoid new ZooKeeper clusters |
 | **Controller quorum** | 3 or 5 nodes (odd); dedicated or combined |
 | **Brokers** | 3+ prod; dedicated data volumes |
@@ -33,7 +33,7 @@ Before provisioning brokers, decide **purpose**, **topology**, **companion servi
 | **Replication** | `RF=3`, `min.insync.replicas=2`, unclean leader election **off** |
 | **Schema Registry** | Required for Avro/Protobuf/JSON Schema prod — [§6](06-serialization-and-schema-evolution.md) |
 | **Connect** | Separate worker cluster if CDC/sinks — [§7](07-connect-streams-and-ecosystem.md) |
-| **Security** | TLS + SASL; ACLs before traffic — [§10](10-operations-dr-security-and-observability.md) |
+| **Security** | TLS(Transport Layer Security) + SASL; ACLs before traffic — [§10](10-operations-dr-security-and-observability.md) |
 | **Observability** | Lag, under-replicated partitions, disk; log aggregation |
 | **Governance** | Topic naming; who creates topics; default retention |
 
@@ -83,7 +83,7 @@ Managed still requires **your** Schema Registry, Connect, and topic design.
 | Option | When | Notes |
 |--------|------|-------|
 | **Docker Compose (Kafka + KRaft)** | Laptop integration | Single broker; RF=1 |
-| **Redpanda single node** | Fast CI/dev | Kafka-compatible API |
+| **Redpanda single node** | Fast CI/dev | Kafka-compatible API(Application Programming Interface) |
 | **Testcontainers** | Automated tests | Real broker per suite — [§12](12-testing-and-verification.md) |
 | **Plain JSON** | Early spike | Switch to Registry format before staging |
 
@@ -103,7 +103,7 @@ No docker-compose YAML in this guide — use vendor docs for compose templates.
 |---------|--------------|
 | **Schema Registry** | 3 instances behind load balancer; RF=3 for `_schemas` topic |
 | **Connect** | 2+ workers; scale tasks with connector throughput |
-| **REST Proxy** | Optional; not a substitute for native clients |
+| **REST(Representational State Transfer) Proxy** | Optional; not a substitute for native clients |
 
 ---
 

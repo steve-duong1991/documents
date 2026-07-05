@@ -2,7 +2,7 @@
 
 Kafka's performance comes from treating a topic partition as an **append-only log on disk** — sequential writes, OS page cache, and minimal random I/O.
 
-> **Related:** LSM write-optimized storage (Streams state) → [tree §4 LSM](../../tree-and-index-structures/includes/04-lsm-trees.md) · Replication → [§2 topics and partitions](02-topics-partitions-and-replication.md)
+> **Related:** LSM(Log-Structured Merge) write-optimized storage (Streams state) → [tree §4 LSM](../../tree-and-index-structures/includes/04-lsm-trees.md) · Replication → [§2 topics and partitions](02-topics-partitions-and-replication.md)
 
 ---
 
@@ -12,7 +12,7 @@ Kafka's performance comes from treating a topic partition as an **append-only lo
 |-------|------|
 | **Log segment** | Immutable file chunk (`.log`, `.index`, `.timeindex`) |
 | **Broker** | Hosts partition leaders/followers; serves produce and fetch |
-| **Controller** | Manages partition leadership, ISR, topic metadata |
+| **Controller** | Manages partition leadership, ISR(In-Sync Replicas), topic metadata |
 | **KRaft** | Built-in consensus (replaces ZooKeeper in modern clusters) |
 | **Client** | Producer appends; consumer fetches by offset |
 

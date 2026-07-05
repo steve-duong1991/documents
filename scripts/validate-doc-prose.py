@@ -42,6 +42,9 @@ def iter_markdown_files() -> list[Path]:
     for guide in sorted(ROOT.iterdir()):
         if not guide.is_dir() or guide.name.startswith("."):
             continue
+        readme = guide / "README.md"
+        if readme.is_file():
+            files.append(readme)
         includes = guide / "includes"
         if includes.is_dir():
             files.extend(sorted(includes.glob("*.md")))

@@ -5,6 +5,7 @@ on:
     paths:
       - '**.md'
       - 'scripts/**'
+      - '.cursor/**'
       - 'acronyms.json'
       - 'Makefile'
       - '.github/workflows/documents.yml'
@@ -12,6 +13,7 @@ on:
     paths:
       - '**.md'
       - 'scripts/**'
+      - '.cursor/**'
       - 'acronyms.json'
       - 'Makefile'
       - '.github/workflows/documents.yml'

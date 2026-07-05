@@ -39,3 +39,4 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (st
 | [database-connection-and-security](../database-connection-and-security/README.md) | Secret rotation during deploys |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limit rollout traffic during canary |
 | [tree-and-index-structures](../tree-and-index-structures/README.md) | LSM(Log-Structured Merge) vs B+ when schema drives storage |
+| [apache-kafka](../apache-kafka/README.md) | Consumer lag, schema registry, and safe deploy when streams are in path |

@@ -6,6 +6,19 @@
 
 How you respond when a limit is hit is as important as the algorithm itself.
 
+---
+
+## At a glance
+
+| Strategy | HTTP(Hypertext Transfer Protocol) | Client experience | Default? |
+|----------|------|-------------------|----------|
+| **Hard reject** | `429` + `Retry-After` | Must backoff | Yes — public APIs |
+| **Throttle** | `200` after delay | Slower but succeeds | Partner/scrape deterrence |
+| **Queue** | `202` or delayed `200` | Async wait | Job ingestion only |
+| **Graduated** | Warn headers → throttle → `429` | Escalating pressure | Enterprise SaaS |
+
+---
+
 ## Comparison
 
 | Strategy | Behavior | Pros | Cons | When to use |
@@ -27,6 +40,12 @@ Canonical `429` example and header names for product tiers → [api-design §5 R
 | `X-RateLimit-Remaining` | Requests left in current window |
 | `X-RateLimit-Reset` | Unix timestamp when the window resets |
 
+Optional warning before hard block (graduated):
+
+```http
+X-RateLimit-Warning: 90% of quota consumed
+```
+
 ## Retry storm prevention
 
 Clients that retry aggressively on `429` amplify load. Mitigate with:
@@ -34,7 +53,23 @@ Clients that retry aggressively on `429` amplify load. Mitigate with:
 1. Document exponential backoff in your API(Application Programming Interface) docs
 2. Return accurate `Retry-After` values
 3. Use jitter in client SDKs
-4. Consider a separate, stricter limit for rapid retries from the same client
+4. Consider a separate, stricter limit for rapid retries from the same client — key: `ratelimit:key:{id}:retry:{window}` ([§6](06-scope-identity.md))
+
+## JSON error body
+
+Return structured errors so clients distinguish tier limits from abuse blocks:
+
+```json
+{
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "Monthly quota exhausted",
+    "retry_after": 3600
+  }
+}
+```
+
+Use distinct `code` values: `rate_limit_exceeded` vs `abuse_blocked` vs `concurrent_limit`.
 
 ## Common mistakes
 
@@ -43,3 +78,4 @@ Clients that retry aggressively on `429` amplify load. Mitigate with:
 | `429` without `Retry-After` | Always set seconds or HTTP-date |
 | Same error body for tier vs abuse blocks | Distinct `code` in JSON for client handling |
 | Throttling without closing idle connections | Time out slow clients; see [§5 Leaky bucket](05-leaky-bucket.md) for queue caps |
+| Retry storm from your own SDK | Exponential backoff + respect `Retry-After`; cap internal retries |

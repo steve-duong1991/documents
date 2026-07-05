@@ -10,7 +10,7 @@ Kafka systems need tests at serializer, producer, consumer, and integration laye
 
 | Layer | What to prove | Technique |
 |-------|---------------|-----------|
-| **Schema** | Compatible evolution | Registry API; `buf breaking`; compatibility CI |
+| **Schema** | Compatible evolution | Registry API(Application Programming Interface); `buf breaking`; compatibility CI |
 | **Serializer** | Round-trip bytes | Unit tests with golden fixtures |
 | **Producer** | Topic, key, headers | Mock or Testcontainers |
 | **Consumer** | Idempotent handler; commit order | Testcontainers + real topic |
@@ -85,7 +85,7 @@ Assert:
 |----------|--------|
 | Happy path | Side effect once; offset committed |
 | Duplicate delivery | Inbox dedup — second message no-op — [§8](08-integration-patterns.md) |
-| Poison message | Routed to DLQ after N tries |
+| Poison message | Routed to DLQ(Dead Letter Queue) after N tries |
 | DB failure mid-batch | Offset not committed; retry succeeds |
 
 Use **Testcontainers** (Kafka + PostgreSQL) for outbox + consumer pipeline — mirror [ES §9 outbox integration](../../event-sourcing-and-cqrs/includes/09-testing-and-verification.md).

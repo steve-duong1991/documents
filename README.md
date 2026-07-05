@@ -13,6 +13,7 @@ Practical reference docs for building and operating production APIs and data sys
 | [apache-kafka](apache-kafka/README.md) | Distributed commit log: internals, schema formats, setup, producers/consumers, integration, DR, testing |
 | [api-design-and-protection](api-design-and-protection/README.md) | REST(Representational State Transfer) design, protection, gateway, auth, identity, async, idempotency, stateless architecture |
 | [api-rate-limiting](api-rate-limiting/README.md) | Limiter algorithms, scope, deployment layers, response strategies |
+| [cursor-agents](cursor-agents/README.md) | Single vs multi agent, parallel Agents Window, subagents, auto-delegation |
 | [database-connection-and-security](database-connection-and-security/README.md) | DB credentials, TLS(Transport Layer Security), Vault, cloud IAM(Identity and Access Management), PgBouncer, production connection patterns |
 | [deployment-strategies](deployment-strategies/README.md) | Rolling, blue/green, canary, feature flags, GitOps(Git Operations), progressive delivery |
 | [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) | Event store, aggregates, CQRS(Command Query Responsibility Segregation), projections, outbox, sagas, API(Application Programming Interface) implications |
@@ -42,6 +43,9 @@ flowchart LR
     end
     subgraph ops [Data layer security]
         S[database-connection-and-security]
+    end
+    subgraph tooling [Tooling — meta]
+        C[cursor-agents]
     end
     A --> R
     A --> H
@@ -150,6 +154,14 @@ Partner auth, quotas, and abuse caps.
 3. [api-rate-limiting §6 scope](api-rate-limiting/includes/06-scope-identity.md)
 4. [api-design-and-protection §16 multi-tenant](api-design-and-protection/includes/16-multi-tenant-apis.md) — if SaaS with org isolation
 
+### Cursor agents
+
+Single-agent defaults, when to parallelize, and how to configure subagent auto-delegation.
+
+1. [cursor-agents](cursor-agents/README.md) — overview → [§1 single agent](cursor-agents/includes/01-single-agent.md) vs [§2 multi agent](cursor-agents/includes/02-multi-agent.md)
+2. [cursor-agents §3 subagents](cursor-agents/includes/03-subagents-and-auto-delegation.md) — `.cursor/agents/` descriptions, rules, built-in Explore/Bash/Browser
+3. [cursor-agents §4 decision guide](cursor-agents/includes/04-decision-guide.md) — when to pick what, cost, rollout path
+
 ---
 
 ## Contributing
@@ -177,6 +189,8 @@ cd documents && make validate
 
 These guides cover **backend API, data, throughput, and deploy** patterns. They intentionally omit deep dives on frontend, mobile, Kubernetes networking, and generic Terraform — link out to official docs when you adopt those stacks.
 
+[cursor-agents](cursor-agents/README.md) is **meta/tooling** — how to use Cursor agents to work on this corpus; it is not backend architecture. The repo also ships a [`.cursor/`](.cursor/) folder (rules, hooks, doc-reviewer subagent) aligned with that guide.
+
 ---
 
 ## File layout (every guide)
@@ -190,6 +204,7 @@ documents/
 ├── RUNBOOK-TEMPLATE.md
 ├── acronyms.json          ← acronym registry for expand-acronyms.py
 ├── Makefile
+├── .cursor/               ← agent rules, hooks, doc-reviewer (see cursor-agents guide)
 ├── scripts/
 │   ├── expand-acronyms.py
 │   ├── github-format.py

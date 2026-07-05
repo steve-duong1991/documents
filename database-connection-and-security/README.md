@@ -39,3 +39,4 @@ Related: [postgresql-performance](../postgresql-performance/README.md) (connecti
 | [api-rate-limiting](../api-rate-limiting/README.md) | Rate limits unrelated to DB auth but share Redis |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event store credentials and archival |
 | [tree-and-index-structures](../tree-and-index-structures/README.md) | Storage engine vs connection choice |
+| [apache-kafka](../apache-kafka/README.md) | Connect and broker credentials, TLS(Transport Layer Security), IAM for managed Kafka |

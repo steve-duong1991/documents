@@ -8,6 +8,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Apache Kafka** | Distributed commit log for event streaming, fan-out, and replay | [apache-kafka](apache-kafka/README.md) |
 | **Avro** | Binary schema format common with Kafka Schema Registry | [apache-kafka §6](apache-kafka/includes/06-serialization-and-schema-evolution.md) |
 | **At-least-once delivery** | Message may arrive more than once; consumer must be idempotent | [HTS §6](high-throughput-systems/includes/06-async-queues-workers.md), [api-design §13](api-design-and-protection/includes/13-idempotency.md) |
+| **A/B test** | Split users into control vs treatment variants to compare product metrics | [deployment §5](deployment-strategies/includes/05-ab-testing.md) |
 | **Autovacuum** | PostgreSQL background process reclaiming dead tuples and updating stats | [PG §6](postgresql-performance/includes/06-vacuum-and-bloat.md) |
 | **Backpressure** | Reject or queue load when downstream is saturated | [HTS §9](high-throughput-systems/includes/09-backpressure-and-limits.md) |
 | **Blue/green** | Two full environments; switch traffic between them | [deployment-strategies §3](deployment-strategies/includes/03-blue-green.md) |
@@ -16,6 +17,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **B+ tree** | Disk-oriented index; ordered keys; default PostgreSQL B-tree | [tree §1](tree-and-index-structures/includes/01-b-trees-and-b-plus.md), [PG §2](postgresql-performance/includes/02-indexing.md) |
 | **CDC(Change Data Capture)** | Change data capture — stream DB changes to consumers (e.g. Debezium) | [HTS §15](high-throughput-systems/includes/15-cdc-and-search-indexing.md), [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
 | **Choreography** | Saga style: services react to events without central orchestrator | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) |
+| **CloudEvents** | CNCF standard event envelope (`specversion`, `id`, `type`, `source`, `time`, `data`) for portable async messaging | [apache-kafka §6](apache-kafka/includes/06-serialization-and-schema-evolution.md#cloudevents) |
 | **GIN(Generalized Inverted Index) index** | Inverted index for JSONB, arrays, and full-text in PostgreSQL | [PG §2](postgresql-performance/includes/02-indexing.md), [tree §6](tree-and-index-structures/includes/06-amplification-and-related-topics.md) |
 | **Cache stampede** | Many concurrent cache misses hammering origin after expiry or cold start | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
 | **Cache-aside** | App reads cache, on miss loads DB and populates cache | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
@@ -31,6 +33,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Event sourcing** | State from append-only domain events | [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) |
 | **Eventual consistency** | Reads may lag writes; acceptable when business tolerates staleness | [PG §14](postgresql-performance/includes/14-consistency-promises-and-costs.md), [ES §2](event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md) |
 | **Expand / contract** | Safe migration: add schema → deploy → remove old | [deployment §12](deployment-strategies/includes/12-schema-migrations-and-deploy.md), [PG §15](postgresql-performance/includes/15-schema-migration-checklist.md) |
+| **Experiment flag** | Short-lived feature flag that assigns users to A/B variants | [deployment §5](deployment-strategies/includes/05-ab-testing.md), [§7 flag types](deployment-strategies/includes/07-feature-flags.md#flag-types) |
 | **Fail closed (rate limit)** | Block traffic when the limit store (Redis) is unavailable | [api-rate-limiting §11](api-rate-limiting/includes/11-common-mistakes-and-architecture.md) |
 | **Fail open (rate limit)** | Allow traffic when the limit store is down, often with a local emergency cap | [api-rate-limiting §11](api-rate-limiting/includes/11-common-mistakes-and-architecture.md) |
 | **Feature flag** | Runtime toggle to enable/disable behavior without redeploy | [deployment-strategies §7](deployment-strategies/includes/07-feature-flags.md) |
@@ -70,6 +73,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **SLO(Service Level Objective)** | Service level objective (target reliability/latency) | [HTS §1](high-throughput-systems/includes/01-measurement-and-slo.md), [§11](high-throughput-systems/includes/11-observability.md) |
 | **SLI(Service Level Indicator)** | Service level indicator — measured metric for an SLO | [HTS §1](high-throughput-systems/includes/01-measurement-and-slo.md), [§11](high-throughput-systems/includes/11-observability.md) |
 | **SSTable** | Immutable on-disk sorted file in LSM; merged during compaction | [tree §4](tree-and-index-structures/includes/04-lsm-trees.md) |
+| **Subagent** | Specialist agent spawned by a parent Cursor agent for isolated subtasks | [cursor-agents §3](cursor-agents/includes/03-subagents-and-auto-delegation.md) |
 | **Compaction (LSM)** | Background merge of SSTables; reclaims space and limits read amplification | [tree §4](tree-and-index-structures/includes/04-lsm-trees.md), [§6 amplification](tree-and-index-structures/includes/06-amplification-and-related-topics.md) |
 | **SSRF(Server-Side Request Forgery)** | Server-side request forgery — unsafe outbound fetches (e.g. webhook URL) | [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
 | **Snapshot (ES)** | Cached aggregate state at version N; not source of truth | [ES §3](event-sourcing-and-cqrs/includes/03-storage-and-projections.md) |

@@ -31,3 +31,4 @@ Related: [postgresql-performance](../postgresql-performance/README.md) (PostgreS
 | [database-connection-and-security](../database-connection-and-security/README.md) | Connection security is independent of index choice |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Overload protection when storage read path saturates |
 | [deployment-strategies](../deployment-strategies/README.md) | Deploy when changing index strategy at scale |
+| [apache-kafka](../apache-kafka/README.md) | LSM in Kafka Streams state stores; log-segment storage |

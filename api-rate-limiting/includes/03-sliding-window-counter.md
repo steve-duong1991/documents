@@ -1,6 +1,19 @@
 # Sliding Window Counter (Hybrid)
 
-> **Related:** Product tiers → [api-design §5](../../api-design-and-protection/includes/05-rate-limit-tiers.md) · Gateway stack → [§7 Deployment layers](07-deployment-layers.md) · Overload coupling → [HTS §9 Backpressure](../../high-throughput-systems/includes/09-backpressure-and-limits.md)
+> **Related:** Product tiers → [api-design §5](../../api-design-and-protection/includes/05-rate-limit-tiers.md) · Gateway stack → [§7 Deployment layers](07-deployment-layers.md) · Overload coupling → [HTS §9 Backpressure](../../high-throughput-systems/includes/09-backpressure-and-limits.md) · Redis keys → [§6](06-scope-identity.md) · Distributed → [§12](12-distributed-rate-limiting.md)
+
+---
+
+## At a glance
+
+| | Sliding window counter |
+|--|------------------------|
+| **Memory** | Two integers per key (previous + current window) |
+| **Redis ops** | `GET` ×2 + weighted math + `INCR` (or Lua script, 1 round trip) |
+| **Fairness** | Smooths boundary bursts; ~99% as fair as log |
+| **Best fit** | **Default for public production APIs** |
+
+---
 
 ## What it is
 
@@ -39,15 +52,22 @@ flowchart TD
 - API(Application Programming Interface) gateways (Kong, AWS API Gateway, Envoy)
 - Any production API where fairness matters but log-based storage is too costly
 
-## Implementation note
+## Redis implementation
+
+Two keys per identity (current + previous window):
 
 ```text
-weighted_count = prev_window_count × (1 - elapsed_in_current_window)
-               + current_window_count
-
-if weighted_count < limit → allow and increment current window
-else → reject 429
+ratelimit:key:key_abc123:global:1735689660   ← current minute
+ratelimit:key:key_abc123:global:1735689600   ← previous minute
 ```
+
+```text
+weighted = prev_count × (1 - elapsed_in_current_window) + curr_count
+if weighted < limit → INCR current key; allow
+else → 429
+```
+
+Prefer a **Lua script** for atomic read-compute-increment → [§12 clock skew](12-distributed-rate-limiting.md#clock-skew-and-window-boundaries). Key shape → [§6 template](06-scope-identity.md#key-template).
 
 ## Common mistakes
 
@@ -56,3 +76,4 @@ else → reject 429
 | Per-app-instance counters | Shared Redis (or equivalent) — see [§11 fail-open vs fail-closed](11-common-mistakes-and-architecture.md) |
 | Clock skew across Redis and app nodes | Use Redis time for window boundaries |
 | One global counter for all endpoints | Layer global → IP → tier → expensive endpoint ([§6](06-scope-identity.md)) |
+| Separate keys without shared scope prefix | Use `ratelimit:key:{id}:…` consistently with [§12](12-distributed-rate-limiting.md) |

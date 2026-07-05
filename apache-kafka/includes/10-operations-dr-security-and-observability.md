@@ -12,7 +12,7 @@ Running Kafka in production means monitoring **lag and replication**, securing c
 |--------|----------|
 | **Consumer lag growing** | Capacity or slow handler |
 | **Under-replicated partitions** | Broker failure or network |
-| **Offline partitions** | No leader in ISR |
+| **Offline partitions** | No leader in ISR(In-Sync Replicas) |
 | **ISR shrink** | Follower lag or broker down |
 | **Disk usage > 80%** | Retention or sizing issue |
 
@@ -29,7 +29,7 @@ Running Kafka in production means monitoring **lag and replication**, securing c
 | `UnderReplicatedPartitions` | Broker JMX | Check broker / network |
 | `OfflinePartitionsCount` | Cluster | Incident — leader election |
 | Request latency produce/fetch | Broker | Hot disk or network |
-| Connect task failures | Connect REST | Connector config / DLQ |
+| Connect task failures | Connect REST(Representational State Transfer) | Connector config / DLQ(Dead Letter Queue) |
 
 ---
 
@@ -64,8 +64,8 @@ Details build on [§9 setup](09-cluster-setup-and-requirements.md) — do not du
 
 | Layer | Practice |
 |-------|----------|
-| **Wire encryption** | TLS between clients and brokers; inter-broker TLS |
-| **Authentication** | SASL SCRAM, OAuth (OIDC), or mTLS |
+| **Wire encryption** | TLS(Transport Layer Security) between clients and brokers; inter-broker TLS |
+| **Authentication** | SASL SCRAM, OAuth (OIDC), or mTLS(Mutual Transport Layer Security) |
 | **Authorization** | ACLs (open source) or RBAC (Confluent); least privilege per principal |
 | **Quotas** | Byte rate per client id — multi-tenant fairness — [§2](02-topics-partitions-and-replication.md) |
 | **Admin access** | Separate admin principals; audit topic delete |
@@ -81,7 +81,7 @@ Details build on [§9 setup](09-cluster-setup-and-requirements.md) — do not du
 
 ## Disaster recovery
 
-Link RPO/RTO definitions → [database-connection §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md).
+Link RPO(Recovery Point Objective)/RTO(Recovery Time Objective) definitions → [database-connection §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md).
 
 | Scenario | Pattern | Stream RPO note |
 |----------|---------|-----------------|
@@ -98,7 +98,7 @@ flowchart LR
     DR --> StandbyConsumers[Standby_consumer_groups]
 ```
 
-**Stream RPO ≠ DB PITR:** Kafka retention and replication define how far back you can replay — not PostgreSQL WAL recovery.
+**Stream RPO ≠ DB PITR(Point-in-Time Recovery):** Kafka retention and replication define how far back you can replay — not PostgreSQL WAL(Write-Ahead Log) recovery.
 
 Failover checklist:
 
@@ -116,7 +116,7 @@ Failover checklist:
 | **OpenTelemetry** | Propagate `traceparent` in headers — [§3 headers](03-producers-and-delivery-guarantees.md#message-headers) |
 | **Structured logs** | topic, partition, offset, key hash, correlation_id |
 | **Dashboards** | Lag by group; broker disk; produce/consume rate |
-| **SLO example** | 99% of events consumed within 60s of publish |
+| **SLO(Service Level Objective) example** | 99% of events consumed within 60s of publish |
 
 ---
 

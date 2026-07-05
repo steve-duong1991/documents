@@ -105,7 +105,7 @@ Alert on **lag growth rate**, not only absolute lag — [§10](10-operations-dr-
 
 ## Pause, resume, and seek
 
-| API / tool | Use |
+| API(Application Programming Interface) / tool | Use |
 |------------|-----|
 | **`pause()` / `resume()`** | Stop fetching a partition during downstream outage |
 | **`seek()`** | Replay from offset; new projection rebuild |
@@ -146,7 +146,7 @@ Each maintains **independent lag** — slow analytics does not block search if g
 |---------|-----|
 | Auto-commit + DB write | Manual commit after successful write |
 | More consumers than partitions | Increase partitions or accept idle consumers |
-| Long sync HTTP in poll loop | Async worker pool; respect `max.poll.interval.ms` |
+| Long sync HTTP(Hypertext Transfer Protocol) in poll loop | Async worker pool; respect `max.poll.interval.ms` |
 | No idempotency on retry | Dedup table or natural keys — [api §13](../../api-design-and-protection/includes/13-idempotency.md) |
 | Single group for unrelated SLAs | Split groups by downstream |
 

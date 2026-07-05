@@ -30,10 +30,10 @@ Related: [high-throughput-systems](../high-throughput-systems/README.md) (when t
 
 | Guide | Topics |
 |-------|--------|
-| [high-throughput-systems](../high-throughput-systems/README.md) | Streaming pipelines, message brokers, CDC overview, observability |
+| [high-throughput-systems](../high-throughput-systems/README.md) | Streaming pipelines, message brokers, CDC(Change Data Capture) overview, observability |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Transactional outbox, sagas, domain event schema evolution |
 | [api-design-and-protection](../api-design-and-protection/README.md) | Async patterns, idempotency, multi-tenant APIs, contract testing |
 | [postgresql-performance](../postgresql-performance/README.md) | Row-level security, read models fed by Kafka consumers |
-| [tree-and-index-structures](../tree-and-index-structures/README.md) | LSM trees in Kafka Streams state stores |
-| [database-connection-and-security](../database-connection-and-security/README.md) | DR vocabulary (RPO/RTO), credentials for Connect |
+| [tree-and-index-structures](../tree-and-index-structures/README.md) | LSM(Log-Structured Merge) trees in Kafka Streams state stores |
+| [database-connection-and-security](../database-connection-and-security/README.md) | DR vocabulary (RPO/RTO(Recovery Time Objective)), credentials for Connect |
 | [deployment-strategies](../deployment-strategies/README.md) | Safe deploy when consumers lag or schemas change |

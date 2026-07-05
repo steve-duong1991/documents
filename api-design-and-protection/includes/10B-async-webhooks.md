@@ -1,6 +1,6 @@
 # Async patterns — webhooks
 
-> **Related:** Overview → [Async patterns](10-async-patterns.md) · Jobs and polling → [10A-async-jobs-polling.md](10A-async-jobs-polling.md) · HMAC(Hash-based Message Authentication Code) webhooks → [Auth model](04-auth-model.md#hmac-webhooks)
+> **Related:** Overview → [Async patterns](10-async-patterns.md) · Jobs and polling → [10A-async-jobs-polling.md](10A-async-jobs-polling.md) · HMAC(Hash-based Message Authentication Code) webhooks → [Auth model](04-auth-model.md#hmac-webhooks) · Same envelope on Kafka → [apache-kafka §6 envelope](../../apache-kafka/includes/06-serialization-and-schema-evolution.md#event-envelope-vs-raw-payload)
 
 ## Pattern 2 — Webhooks (server push)
 

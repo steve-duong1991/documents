@@ -15,6 +15,7 @@ guide-name/
 documents/
 ├── README.md           ← master index + learning paths
 ├── CONTRIBUTING.md     ← this file
+├── .cursor/            ← agent rules, hooks, subagents (see cursor-agents guide)
 └── scripts/
     ├── expand-acronyms.py
     ├── github-format.py
@@ -122,6 +123,12 @@ GitHub Actions: `.github/workflows/documents.yml` — link/anchor validation, RE
 - Registry: [acronyms.json](acronyms.json). Refresh expansions after adding terms: `python3 scripts/expand-acronyms.py`.
 - After bulk edits, run `python3 scripts/github-format.py` to normalize README TOC links and GLOSSARY.
 - CI runs `python3 scripts/expand-acronyms.py --check` to catch drift.
+
+---
+
+## Editing with Cursor agents
+
+The repo ships [`.cursor/`](.cursor/) (rules, hooks, doc-reviewer subagent) aligned with the [cursor-agents](cursor-agents/README.md) guide. After agent-assisted edits, run `make check` — the `afterFileEdit` hook runs `make validate` on markdown changes automatically.
 
 ---
 

@@ -2,7 +2,7 @@
 
 Producers append record batches to partition leaders. Delivery semantics are controlled by **`acks`**, **retries**, **idempotence**, and optionally **transactions**.
 
-> **Related:** Idempotency at API layer → [api-design §13](../../api-design-and-protection/includes/13-idempotency.md) · Consumer side → [§4 consumers](04-consumers-and-consumer-groups.md) · EOS limits → [§8 integration](08-integration-patterns.md)
+> **Related:** Idempotency at API(Application Programming Interface) layer → [api-design §13](../../api-design-and-protection/includes/13-idempotency.md) · Consumer side → [§4 consumers](04-consumers-and-consumer-groups.md) · EOS(Exactly-Once Semantics) limits → [§8 integration](08-integration-patterns.md)
 
 ---
 
@@ -25,7 +25,7 @@ Producers append record batches to partition leaders. Delivery semantics are con
 |-------|----------|-----|
 | **`0`** | Fire-and-forget | Metrics where loss OK |
 | **`1`** | Leader ack; replication async | Low durability (avoid for critical events) |
-| **`all` / `-1`** | All ISR ack | Durable produce |
+| **`all` / `-1`** | All ISR(In-Sync Replicas) ack | Durable produce |
 
 `acks=all` fails if ISR < `min.insync.replicas` — by design.
 

@@ -13,10 +13,10 @@ Apache Kafka is a **distributed commit log**: producers append records to topic 
 | **Model** | Message consumed → removed (or acked away) | Append-only log; retention window |
 | **Fan-out** | Duplicate publish or bridge | Native — multiple consumer groups |
 | **Replay** | Limited unless stored elsewhere | Yes — reset offset or new group |
-| **Ordering** | Per queue / FIFO shard | Per partition key |
-| **Best for** | Jobs, retries, DLQ | Event bus, CDC, audit, analytics |
+| **Ordering** | Per queue / FIFO(First In, First Out) shard | Per partition key |
+| **Best for** | Jobs, retries, DLQ(Dead Letter Queue) | Event bus, CDC(Change Data Capture), audit, analytics |
 
-**Rule of thumb:** Use Kafka when **many subscribers** need the **same history**, volume exceeds comfortable API throughput, or you need a **durable audit log** — not for simple background emails.
+**Rule of thumb:** Use Kafka when **many subscribers** need the **same history**, volume exceeds comfortable API(Application Programming Interface) throughput, or you need a **durable audit log** — not for simple background emails.
 
 ---
 
@@ -49,9 +49,9 @@ flowchart LR
 
 | Store | Strength | Weakness for events |
 |-------|----------|---------------------|
-| **PostgreSQL** | ACID, queries, source of truth | Poor fan-out; not an event bus |
+| **PostgreSQL** | ACID(Atomicity, Consistency, Isolation, Durability), queries, source of truth | Poor fan-out; not an event bus |
 | **Redis / SQS** | Simple job dispatch | No durable shared replay log |
-| **Kafka** | High-throughput fan-out + replay | No SQL; eventual consistency downstream |
+| **Kafka** | High-throughput fan-out + replay | No SQL(Structured Query Language); eventual consistency downstream |
 
 Typical architecture: **PostgreSQL = source of truth** → **outbox or CDC** → **Kafka = integration bus** → consumers update read models, search, analytics.
 

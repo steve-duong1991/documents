@@ -39,3 +39,4 @@ A practical reference for PostgreSQL performance — measurement, indexing, quer
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limiter algorithms and deployment layers |
 | [deployment-strategies](../deployment-strategies/README.md) | Safe rollout during schema and API(Application Programming Interface) changes |
 | [deployment-strategies §12](../deployment-strategies/includes/12-schema-migrations-and-deploy.md) | Expand/contract with rolling deploy |
+| [apache-kafka](../apache-kafka/README.md) | Read models and search indexes fed by Kafka consumers; Connect credentials |

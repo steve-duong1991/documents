@@ -1,6 +1,19 @@
 # Fixed Window Counter
 
-> **Related:** Product tiers → [api-design §5 Rate-limit tiers](../../api-design-and-protection/includes/05-rate-limit-tiers.md) · Decision guide → [§10](10-decision-guide.md) · Gateway enforcement → [§7 Deployment layers](07-deployment-layers.md)
+> **Related:** Product tiers → [api-design §5 Rate-limit tiers](../../api-design-and-protection/includes/05-rate-limit-tiers.md) · Decision guide → [§10](10-decision-guide.md) · Gateway enforcement → [§7 Deployment layers](07-deployment-layers.md) · Redis keys → [§6](06-scope-identity.md) · Distributed → [§12](12-distributed-rate-limiting.md)
+
+---
+
+## At a glance
+
+| | Fixed window |
+|--|--------------|
+| **Memory** | One integer per key |
+| **Redis ops** | `INCR` + `EXPIRE` (1–2 per request) |
+| **Fairness** | Poor at window boundaries (2× burst possible) |
+| **Best fit** | Daily/monthly quotas, coarse tier limits |
+
+---
 
 ## What it is
 
@@ -36,13 +49,23 @@ flowchart LR
 - Internal services where edge bursts are acceptable
 - Billing/usage metering where exact per-second fairness is not required
 
-## Implementation note
+## Redis implementation
+
+Key convention (shared with [§6](06-scope-identity.md#key-template)):
 
 ```text
-Key:   ratelimit:{client_id}:{window_start}
-Value: request count
-TTL:   window duration
+ratelimit:{scope}:{identity}:{bucket}:{window_start}
 ```
+
+Fixed-window example (per API key, 1-minute UTC window):
+
+```text
+Key:   ratelimit:key:key_abc123:global:1735689660
+Ops:   INCR key → if count == 1, EXPIRE key 60
+Limit: 600/min (from tier)
+```
+
+TTL bucket variant (no `window_start` in key) → [§6 TTL variant](06-scope-identity.md#ttl-bucket-variant-no-window_start-in-key). Multi-instance requires shared Redis → [§12](12-distributed-rate-limiting.md).
 
 ## Common mistakes
 
@@ -51,3 +74,5 @@ TTL:   window duration
 | Using fixed window for strict per-second fairness | Use sliding window counter or log for login/OTP endpoints |
 | Ignoring boundary burst at window rollover | Prefer sliding window counter for public APIs |
 | Daily quota keyed to UTC while product is regional | Align window timezone to billing or document UTC clearly |
+| Per-app-instance counter | Shared Redis — [§12](12-distributed-rate-limiting.md) |
+| Tier embedded in Redis key (`ratelimit:paid:…`) | Use scope prefix `key:`; resolve tier from cache at check time ([§6](06-scope-identity.md)) |

@@ -1,0 +1,50 @@
+---
+description: Markdown style, acronyms, TOC, and cross-link conventions for guide content
+globs: "**/*.md"
+alwaysApply: false
+---
+
+# Markdown content conventions
+
+## Naming
+
+| Item | Convention | Example |
+|------|------------|---------|
+| Guide folder | `kebab-case` | `database-connection-and-security` |
+| Include files | `NN-kebab-case.md` (zero-padded) | `15-schema-migration-checklist.md` |
+| Sub-articles | `NNA-` prefix | `10A-async-jobs-polling.md` |
+
+## Table of contents (guide README)
+
+- Section heading: `## Table of contents`
+- Two-column table: `| # | Topic |` then `|---|-------|`
+- Every `includes/*.md` on disk must appear in the TOC (and vice versa)
+- Sub-articles labeled under parent (e.g. `10a` under `10`)
+- After bulk TOC edits: `python3 scripts/github-format.py`
+
+## Cross-links
+
+| Source | Path to sibling guide |
+|--------|------------------------|
+| `guide/includes/*.md` | `../../other-guide/...` |
+| `guide/README.md` | `../other-guide/...` |
+
+## Acronyms
+
+- First use per file: `ACRONYM(Full Text)` — no space before `(`
+- No expansions in `#` headings
+- Registry: [acronyms.json](../acronyms.json). Refresh: `python3 scripts/expand-acronyms.py`
+
+## Section structure
+
+- Open with **At a glance** or **Rule of thumb** where helpful
+- Capstone/overview sections: `> **Related:**` links to sibling guides
+- Overlapping sibling topics: `> **Scope:**` before **Related**
+- Use mermaid for flows and architecture
+- End with **Common mistakes** / **Pros and cons** when depth warrants
+- Every guide README ends with `## See also` (sibling guide table)
+- Mid-chapter contextual links use `## Other guides in this repo` — not a duplicate full See also table
+
+## See also
+
+Full contributor checklist: [CONTRIBUTING.md](../CONTRIBUTING.md)

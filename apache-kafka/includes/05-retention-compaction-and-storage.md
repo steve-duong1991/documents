@@ -38,7 +38,7 @@ Add headroom for replication, compaction overhead, and growth.
 
 ## Log compaction
 
-Compaction retains the **latest value for each key** — like an LSM merge by key:
+Compaction retains the **latest value for each key** — like an LSM(Log-Structured Merge) merge by key:
 
 ```mermaid
 flowchart LR
@@ -97,7 +97,7 @@ Use when retention months/years but local NVMe insufficient — ops complexity i
 |---------|---------|
 | `{domain}.{entity}.{event}` | `orders.order.created` |
 | `{env}.{domain}...` | `prod.orders.order.created` |
-| **DLQ** | `orders.order.created.dlq` |
+| **DLQ(Dead Letter Queue)** | `orders.order.created.dlq` |
 | **Retry** | `orders.order.created.retry` |
 
 Document naming in [§9 governance](09-cluster-setup-and-requirements.md).

@@ -4,6 +4,28 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ---
 
+## 2026-07-05
+
+### Navigation and discoverability polish
+- **Corpus:** root README Scope note for cursor-agents (meta/tooling) + `.cursor/` in file layout; mermaid tooling subgraph
+- **See also:** apache-kafka rows in postgresql-performance, deployment-strategies, database-connection-and-security, api-rate-limiting, tree-and-index-structures READMEs
+- **cursor-agents:** See also links to Engineering Guides repo and `.cursor/` rules
+- **CI:** `.cursor/**` in documents workflow path filters
+- **api-rate-limiting §6:** Redis key patterns by scope, layered keys, cardinality and hot-key notes
+- **deployment-strategies §5:** A/B vs canary vs feature-flag boundary, decision table, workflow sequence
+- **Corpus polish:** aligned Redis key convention (§6 + §12); GLOSSARY A/B test, experiment flag, subagent; CONTRIBUTING `.cursor/` note; validate-doc-prose scans guide READMEs; expanded api-rate-limiting §1–§5 and §9 algorithm cards
+
+### cursor-agents (new guide)
+- **New guide:** 5 sections — single vs multi agent overview, single agent usage, parallel Agents Window + subagents, auto-delegation setup, decision guide
+- **Corpus:** root README guide row + learning path
+
+### apache-kafka §6 schema polish
+- **§6:** Avro/Protobuf/JSON naming tables; event envelope vs raw payload; field rules (money, timestamps, IDs); CloudEvents; HTTP OpenAPI vs bus vs event store diagram
+- **GLOSSARY:** CloudEvents row
+- **Corpus:** acronym expansions applied across `apache-kafka/` includes
+
+---
+
 ## 2026-06-22
 
 ### apache-kafka (new guide)

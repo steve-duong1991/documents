@@ -2,7 +2,7 @@
 
 Production Kafka usage almost always sits **between** a durable write (database or event store) and **idempotent consumers** — not as a lone source of truth.
 
-> **Related:** Outbox detail → [ES §5 async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · CDC pipeline → [HTS §15 CDC](../../high-throughput-systems/includes/15-cdc-and-search-indexing.md) · Async API hub → [api-design §10](../../api-design-and-protection/includes/10-async-patterns.md) · Idempotency → [api-design §13](../../api-design-and-protection/includes/13-idempotency.md)
+> **Related:** Outbox detail → [ES §5 async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · CDC(Change Data Capture) pipeline → [HTS §15 CDC](../../high-throughput-systems/includes/15-cdc-and-search-indexing.md) · Async API(Application Programming Interface) hub → [api-design §10](../../api-design-and-protection/includes/10-async-patterns.md) · Idempotency → [api-design §13](../../api-design-and-protection/includes/13-idempotency.md)
 
 ---
 
@@ -14,7 +14,7 @@ Production Kafka usage almost always sits **between** a durable write (database 
 | **CDC (Debezium)** | Capture DB changes without app dual-write |
 | **Inbox (consumer dedup)** | At-least-once → effective once |
 | **Partition by saga_id** | Ordered saga steps |
-| **Retry / DLQ topics** | Poison message isolation |
+| **Retry / DLQ(Dead Letter Queue) topics** | Poison message isolation |
 | **Headers** | Tracing and correlation without schema churn |
 
 **Rule of thumb:** Never **dual-write** DB + Kafka in one request without outbox or CDC — crash between steps causes drift.
@@ -52,7 +52,7 @@ sequenceDiagram
 | **Debezium on outbox table** | Low lag | Connector ops |
 | **In-process after commit** | Dev only | Not crash-safe |
 
-Full SQL and architecture → [ES §5](../../event-sourcing-and-cqrs/includes/05-async-integration.md).
+Full SQL(Structured Query Language) and architecture → [ES §5](../../event-sourcing-and-cqrs/includes/05-async-integration.md).
 
 **Produce settings:** idempotent producer, `acks=all`, partition key = `aggregate_id` or `tenant_id`.
 
@@ -146,7 +146,7 @@ Naming: `{source-topic}.retry`, `{source-topic}.dlq`.
 | Publish before DB commit | Outbox in same transaction |
 | No inbox on consumer | Dedup by business key |
 | DLQ without monitoring | Alert on DLQ rate |
-| Webhook directly from Kafka consumer without SSRF checks | [api §10B webhooks](../../api-design-and-protection/includes/10B-async-webhooks.md) |
+| Webhook directly from Kafka consumer without SSRF(Server-Side Request Forgery) checks | [api §10B webhooks](../../api-design-and-protection/includes/10B-async-webhooks.md) |
 | Trace only in logs | Propagate `traceparent` header |
 
 ---

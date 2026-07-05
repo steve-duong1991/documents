@@ -1,0 +1,39 @@
+---
+description: Engineering Guides repo layout, validation, and agent workflow
+alwaysApply: true
+---
+
+# Engineering Guides (`documents/`)
+
+This repo holds **backend API, data, throughput, and deploy** reference guides. Each guide has a `README.md` (table of contents) and `includes/*.md` (full articles).
+
+## Before finishing any doc change
+
+1. Update guide README TOC when adding, renaming, or removing `includes/*.md`
+2. Use correct cross-link paths (`../` from README, `../../` from includes)
+3. Run validation from repo root:
+
+```bash
+make validate    # links, anchors, README TOC, prose lint
+make check       # validate + acronym check
+```
+
+After bulk TOC or GLOSSARY edits: `make github-format`
+
+## File layout
+
+```
+guide-name/
+├── README.md
+└── includes/
+    └── NN-topic.md
+```
+
+Root index: [README.md](../README.md). Conventions: [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+## Agent behavior
+
+- Prefer **editing existing includes** over new top-level guides
+- Link to sibling guides instead of duplicating full algorithms
+- No `TODO` / placeholder sections — ship complete content or don't add the file
+- Do not create commits unless the user asks

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "python3 .cursor/hooks/validate-markdown-edit.py",
+        "matcher": "Write|TabWrite",
+        "timeout": 120
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/guard-destructive-shell.sh",
+        "matcher": "rm\\s+-rf|git\\s+reset\\s+--hard|git\\s+clean\\s+-fd",
+        "failClosed": false
+      }
+    ]
+  }
+}

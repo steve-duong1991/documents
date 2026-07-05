@@ -13,7 +13,7 @@ Multi-instance APIs cannot rate limit in process memory — counters must live i
 | Concern | Default approach |
 |---------|------------------|
 | **Store** | Redis Cluster or managed Redis (ElastiCache, Memorystore) with persistence |
-| **Key** | `ratelimit:{scope}:{identity}:{window}` — hash tag for shard affinity when needed |
+| **Key** | `ratelimit:{scope}:{identity}:{bucket}:{window}` — see [§6 key template](06-scope-identity.md#key-template) |
 | **Algorithm at scale** | Sliding window counter or token bucket in Redis (`INCR`, `GET`, Lua scripts) |
 | **Hot identity** | Sub-shard keys (`user_id % 32`) or local token bucket + periodic sync |
 | **Clock skew** | TTL-based windows — do not assume wall-clock alignment across nodes |
@@ -58,16 +58,26 @@ Use **AOF** or **RDB** persistence if counter loss on failover is unacceptable �
 
 ## Key design
 
+Shared convention with [§6 Scope & identity](06-scope-identity.md#redis-key-patterns-by-scope):
+
 ```text
-ratelimit:{tier}:{client_id}:{endpoint_bucket}:{window_start}
+ratelimit:{scope}:{identity}:{bucket}:{window_start}
 ```
+
+| Field | Values | Example segment |
+|-------|--------|-------------------|
+| `scope` | `global`, `ip`, `key`, `user`, `org` | `key` |
+| `identity` | API(Application Programming Interface) key ID, user ID, org ID, IP | `key_abc123` |
+| `bucket` | `global`, `read`, `write`, `export`, `auth` | `export` |
+| `window_start` | UTC epoch bucket, or omit with TTL variant | `1735689600` |
 
 | Pattern | Example | Why |
 |---------|---------|-----|
-| Per API(Application Programming Interface) key | `ratelimit:paid:key_abc:global:1735689600` | Billing-aligned |
-| Per user | `ratelimit:free:user_42:write:1735689600` | Fairness |
-| Per endpoint class | `ratelimit:paid:key_abc:export:1735689600` | Protect expensive routes |
-| Hash tag (cluster) | `ratelimit:{shard_7}:user_42:...` | Co-locate related keys on one slot |
+| Per API key | `ratelimit:key:key_abc123:global:1735689600` | Billing-aligned; tier from cache |
+| Per user | `ratelimit:user:usr_9f2a:write:1735689600` | Fairness across shared keys |
+| Per tenant | `ratelimit:org:org_acme:global:1735689600` | Multi-tenant quota |
+| Per endpoint class | `ratelimit:key:key_abc123:export:1735689600` | Protect expensive routes |
+| Hash tag (cluster) | `ratelimit:{org_acme}:user:usr_9f2a:global:1735689600` | Co-locate org keys on one slot |
 
 **Hot key:** One viral `client_id` or shared integration user → single Redis slot saturates. Mitigations:
 
@@ -101,8 +111,8 @@ Token bucket in Redis often uses **Lua** for atomic `refill + deduct` — one ro
 
 | Model | Key shape | Good for |
 |-------|-----------|----------|
-| **Global per account** | `ratelimit:acct_99:global` | Contract quota "10k/hour worldwide" |
-| **Regional per account** | `ratelimit:acct_99:eu-west` | Data residency; absorb regional spikes |
+| **Global per account** | `ratelimit:org:acct_99:global:{window}` | Contract quota "10k/hour worldwide" |
+| **Regional per account** | `ratelimit:org:acct_99:eu-west:{window}` | Data residency; absorb regional spikes |
 | **Both** | Regional bucket + lower global cap | Enterprise "50k/h global, 20k/h per region" |
 
 ```mermaid

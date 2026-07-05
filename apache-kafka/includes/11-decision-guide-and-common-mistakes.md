@@ -27,7 +27,7 @@ Use this section when choosing **Kafka vs alternatives**, **managed vs self-host
 | Job with poll result (`202`) | Natural | Awkward | Awkward |
 | 5+ independent consumers | Bridge or duplicate | Native | Shards + fan-out |
 | Replay last N days | External store | Retention window | Retention window |
-| Strict per-entity order | FIFO shard | Partition key | Partition key |
+| Strict per-entity order | FIFO(First In, First Out) shard | Partition key | Partition key |
 | Ops complexity | Lower | Higher | Managed middle |
 | Cross-cloud portability | Varies | High (open protocol) | AWS-bound |
 
@@ -58,7 +58,7 @@ flowchart TD
 | Signal | Example |
 |--------|---------|
 | Event bus between 5+ services | Order lifecycle → search, warehouse, email, analytics |
-| CDC to multiple sinks | Debezium → Kafka → OpenSearch + cache |
+| CDC(Change Data Capture) to multiple sinks | Debezium → Kafka → OpenSearch + cache |
 | Audit log with retention | Compliance stream |
 | Reprocess on new logic | Reset consumer offset; rebuild projection |
 | High throughput fan-out | Metrics, clickstream |
@@ -70,7 +70,7 @@ flowchart TD
 | Signal | Better fit |
 |--------|------------|
 | Fire-and-forget emails | SQS + worker |
-| Request/response RPC | HTTP/gRPC |
+| Request/response RPC | HTTP(Hypertext Transfer Protocol)/gRPC |
 | Primary source of truth | PostgreSQL / event store |
 | Team cannot operate 3+ brokers | Managed Kafka or simpler queue |
 | Global ordering of everything | Redesign boundaries or accept single partition bottleneck |
@@ -95,7 +95,7 @@ Options: Amazon MSK, Confluent Cloud, Aiven, Redpanda Cloud — evaluate SLA, Co
 | Product | Notes |
 |---------|-------|
 | **Apache Kafka** | Reference; full ecosystem |
-| **Redpanda** | Kafka API; different implementation; simpler ops for some teams |
+| **Redpanda** | Kafka API(Application Programming Interface); different implementation; simpler ops for some teams |
 | **Amazon Kinesis** | Managed; AWS integration; shard model |
 | **Pulsar** | Multi-tenancy native; different ops model |
 
