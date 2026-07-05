@@ -14,6 +14,7 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 - **api-rate-limiting §6:** Redis key patterns by scope, layered keys, cardinality and hot-key notes
 - **deployment-strategies §5:** A/B vs canary vs feature-flag boundary, decision table, workflow sequence
 - **Corpus polish:** aligned Redis key convention (§6 + §12); GLOSSARY A/B test, experiment flag, subagent; CONTRIBUTING `.cursor/` note; validate-doc-prose scans guide READMEs; expanded api-rate-limiting §1–§5 and §9 algorithm cards
+- **Final nits:** global Redis key documented as 5-segment special case (§6); expanded deployment §00, §3, §6, §9, §10 strategy cards
 
 ### cursor-agents (new guide)
 - **New guide:** 5 sections — single vs multi agent overview, single agent usage, parallel Agents Window + subagents, auto-delegation setup, decision guide

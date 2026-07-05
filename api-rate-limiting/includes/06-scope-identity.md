@@ -10,7 +10,7 @@ Rate limits can be keyed by different dimensions. Layer them from cheapest to mo
 
 | Scope | Typical Redis key fragment | Counter cardinality |
 |-------|---------------------------|---------------------|
-| Global | `ratelimit:global:api` | 1 |
+| Global | `ratelimit:global:api:global` | 1 |
 | Per IP | `ratelimit:ip:203.0.113.42` | ~unique IPs/day |
 | Per API(Application Programming Interface) key | `ratelimit:key:key_abc123` | ~active keys |
 | Per user | `ratelimit:user:usr_9f2a` | ~MAU |
@@ -53,13 +53,15 @@ ratelimit:{scope}:{identity}:{bucket}:{window_start}
 | `bucket` | Endpoint class or `global` | `read`, `write`, `export`, `auth` |
 | `window_start` | Fixed UTC minute/hour, or omit when using TTL buckets | `1735689600` |
 
+**Global scope special case:** identity is always `api`, bucket is always `global` — full key `ratelimit:global:api:global:{window}`. Do not omit the bucket segment for global; it keeps parsing consistent with other scopes.
+
 Use **endpoint classes** (read / write / export) instead of raw paths — avoids unbounded key cardinality from query strings.
 
 ### Examples by scope
 
 | Scope | Redis key (sliding window, 1-minute) | Notes |
 |-------|--------------------------------------|-------|
-| **Global** | `ratelimit:global:api:1735689660` | Single key; first line of DDoS defense |
+| **Global** | `ratelimit:global:api:global:1735689660` | Single key; identity `api`, bucket `global` |
 | **Per IP** | `ratelimit:ip:203.0.113.42:global:1735689660` | Normalize IPv6; trust IP only from edge |
 | **Per API key** | `ratelimit:key:key_abc123:global:1735689660` | Map key → tier from DB/cache at check time |
 | **Per user** | `ratelimit:user:usr_9f2a:write:1735689660` | Separate read/write buckets |
@@ -72,7 +74,7 @@ Use **endpoint classes** (read / write / export) instead of raw paths — avoids
 A single authenticated `POST /v1/reports/export` might increment **four** counters in order (cheapest first):
 
 ```text
-1. ratelimit:global:api:{window}
+1. ratelimit:global:api:global:{window}
 2. ratelimit:ip:{client_ip}:global:{window}
 3. ratelimit:org:{org_id}:global:{window}
 4. ratelimit:key:{api_key}:export:{window}
