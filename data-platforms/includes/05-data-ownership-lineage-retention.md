@@ -2,7 +2,7 @@
 
 Every derived store needs a **named owner**, a **lineage path** back to the system of record, and a **retention policy** that finance, legal, and engineering agree on.
 
-> **Related:** OLTP vs warehouse → [§1](01-oltp-vs-olap.md) · Kafka retention → [apache-kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) · Storage cost → [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md) · Multi-tenant isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md)
+> **Related:** OLTP vs warehouse → [§1](01-oltp-vs-olap.md) · Kafka retention → [apache-kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) · Kafka event catalog / freshness SLOs → [apache-kafka §9](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos) · Storage cost → [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md) · Multi-tenant isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md)
 
 ---
 
@@ -55,7 +55,7 @@ Prefer **data products** (orders_fact, customer_profile) over "the analytics dum
 
 Catalog tools (OpenMetadata, DataHub, vendor catalogs) help — start with a **markdown/registry row per dataset** if tooling is immature.
 
-Trace Kafka topics to sinks: [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md).
+For **Kafka topics**, the topic manifest **is** the event catalog (owner, consumers, classification, freshness SLO) — [apache-kafka §9 event catalog](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos). Trace topics to sinks: [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md).
 
 ---
 
@@ -106,6 +106,7 @@ Event-sourced systems need explicit erasure strategies — [ES decision guide](.
 | Erase in OLTP only | Propagate to search, lake, backups policy |
 | Shadow ETL(Extract, Transform, Load) in a spreadsheet | Register dataset or refuse production use |
 | Kafka retention < warehouse lag | Extend retention or land to durable store first |
+| Kafka topic with no catalog owner / freshness SLO | Require manifest before produce — [kafka §9](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos) |
 
 ---
 

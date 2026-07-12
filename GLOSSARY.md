@@ -23,6 +23,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Cache-aside** | App reads cache, on miss loads DB and populates cache | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
 | **Canary** | Route small % of traffic to new version first | [deployment-strategies §4](deployment-strategies/includes/04-canary.md) |
 | **Circuit breaker** | Stop calling a failing dependency after a threshold; fail fast or fallback | [HTS §9](high-throughput-systems/includes/09-backpressure-and-limits.md) |
+| **Client quota (Kafka)** | Broker cap on produce/fetch byte or request rate per user/`client.id` — noisy-neighbor control | [apache-kafka §10](apache-kafka/includes/10-operations-dr-security-and-observability.md#client-quotas-and-noisy-neighbor) |
 | **Compensating transaction** | Local undo step in a saga; semantically reverses a completed forward step | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) |
 | **Concurrent index** | `CREATE INDEX CONCURRENTLY` — builds index without blocking writes | [PG §15](postgresql-performance/includes/15-schema-migration-checklist.md) |
 | **Consumer group** | Cooperating Kafka consumers sharing partition assignment and offsets | [apache-kafka §4](apache-kafka/includes/04-consumers-and-consumer-groups.md) |
@@ -39,6 +40,10 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Fail closed (rate limit)** | Block traffic when the limit store (Redis) is unavailable | [api-rate-limiting §11](api-rate-limiting/includes/11-common-mistakes-and-architecture.md) |
 | **Fail open (rate limit)** | Allow traffic when the limit store is down, often with a local emergency cap | [api-rate-limiting §11](api-rate-limiting/includes/11-common-mistakes-and-architecture.md) |
 | **Feature flag** | Runtime toggle to enable/disable behavior without redeploy | [deployment-strategies §7](deployment-strategies/includes/07-feature-flags.md) |
+| **Flag lifecycle / cleanup** | Remove release flags after 100% + bake; reclassify kill switches | [deployment §7 lifecycle](deployment-strategies/includes/07-feature-flags.md#lifecycle-and-cleanup) |
+| **Feature to PROD playbook** | Ordered release gates from design through canary, rollback, and drills | [deployment §14](deployment-strategies/includes/14-feature-to-prod-playbook.md), [cursor-workflows §5](cursor-workflows/includes/05-ship-to-prod.md) |
+| **Game day** | Scheduled failure drill (tabletop or live) to practice detect/mitigate/recover | [sre §9](sre-and-incidents/includes/09-game-days-and-drills.md) |
+| **Operate and learn** | Post-ramp phase: watch, cleanup, incidents, drills, next backlog | [cursor-workflows §6](cursor-workflows/includes/06-operate-and-learn.md) |
 | **GitOps(Git Operations)** | Declarative infra/app state in git; cluster reconciles to desired state | [deployment-strategies §9](deployment-strategies/includes/09-gitops.md) |
 | **Hot key** | Cache or DB key receiving disproportionate traffic; throughput bottleneck | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
 | **Idempotency key** | Client header for safe retry of writes | [api-design §13](api-design-and-protection/includes/13-idempotency.md) |
@@ -85,11 +90,12 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Tenant** | One customer org (company, workspace) on shared SaaS(Software as a Service) infrastructure | [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md#what-is-a-tenant) |
 | **TCO(Total Cost of Ownership)** | Invoice plus engineering time and risk — used in build vs managed choices | [finops §5](finops-and-cost/includes/05-build-vs-managed-cost.md) |
 | **Thundering herd** | Same as cache stampede — synchronized miss storm on hot keys | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
-| **Unit economics (infra)** | Cost per request, tenant, or feature used to judge design margin | [finops §1](finops-and-cost/includes/01-unit-economics.md) |
+| **Tiered storage (Kafka)** | Hot local log segments + cold object storage for long retention | [apache-kafka §5](apache-kafka/includes/05-retention-compaction-and-storage.md#tiered-storage) |
 | **Topic (Kafka)** | Named stream of partitioned logs | [apache-kafka §2](apache-kafka/includes/02-topics-partitions-and-replication.md) |
 | **Token bucket** | Rate limit algorithm allowing controlled bursts | [api-rate-limiting §4](api-rate-limiting/includes/04-token-bucket.md) |
 | **Transactional outbox** | Same transaction: business write + outbox row | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
 | **Two-phase commit (2PC)** | Distributed commit protocol across nodes; avoided for microservice sagas | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) |
+| **Unit economics (infra)** | Cost per request, tenant, or feature used to judge design margin | [finops §1](finops-and-cost/includes/01-unit-economics.md) |
 | **Upcasting** | Transform historical event schema on read (v1 → v2) | [ES §8](event-sourcing-and-cqrs/includes/08-event-schema-evolution.md) |
 | **USE(Utilization, Saturation, Errors) method** | Utilization, saturation, errors — monitor resources | [HTS §11](high-throughput-systems/includes/11-observability.md) |
 | **Write-through cache** | Update cache and DB together on write | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |

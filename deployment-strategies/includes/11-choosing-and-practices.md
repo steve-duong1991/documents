@@ -1,6 +1,6 @@
 # Choosing a Strategy & Best Practices
 
-> **Related:** Overview comparison → [§00 Overview](00-overview.md) · Schema migrations → [§12](12-schema-migrations-and-deploy.md) · SLO(Service Level Objective) rollback → [§13](13-slo-rollback-triggers.md)
+> **Related:** Overview comparison → [§00 Overview](00-overview.md) · Schema migrations → [§12](12-schema-migrations-and-deploy.md) · SLO(Service Level Objective) rollback → [§13](13-slo-rollback-triggers.md) · End-to-end release order → [§14 Feature to PROD playbook](14-feature-to-prod-playbook.md)
 
 ## Decision flow
 

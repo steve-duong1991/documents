@@ -1,8 +1,8 @@
 # Deployment Strategies Guide
 
-A practical reference for common deployment patterns — how they work, pros and cons, when to use each, and best practices.
+A practical reference for common deployment patterns — how they work, pros and cons, when to use each, best practices, and an end-to-end **feature → PROD playbook**.
 
-Related: [api-design-and-protection](../api-design-and-protection/README.md) (stateless architecture enables safe rollouts) · [high-throughput-systems](../high-throughput-systems/README.md) (scale and deploy layer)
+Related: [api-design-and-protection](../api-design-and-protection/README.md) (stateless architecture enables safe rollouts) · [high-throughput-systems](../high-throughput-systems/README.md) (scale and deploy layer) · [cursor-workflows §5](../cursor-workflows/includes/05-ship-to-prod.md) (post-merge in Cursor)
 
 ---
 
@@ -24,6 +24,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (st
 | 11 | [Choosing a strategy & best practices](includes/11-choosing-and-practices.md) |
 | 12 | [Schema migrations and deploy coupling](includes/12-schema-migrations-and-deploy.md) |
 | 13 | [SLO-based rollback triggers](includes/13-slo-rollback-triggers.md) |
+| 14 | [Feature to PROD playbook](includes/14-feature-to-prod-playbook.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
@@ -40,3 +41,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (st
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limit rollout traffic during canary |
 | [tree-and-index-structures](../tree-and-index-structures/README.md) | LSM(Log-Structured Merge) vs B+ when schema drives storage |
 | [apache-kafka](../apache-kafka/README.md) | Consumer lag, schema registry, and safe deploy when streams are in path |
+| [cicd-and-environments](../cicd-and-environments/README.md) | Build once, promote digests, flags as control |
+| [sre-and-incidents](../sre-and-incidents/README.md) | SLOs, error budgets, game days after ship |
+| [cursor-workflows §5](../cursor-workflows/includes/05-ship-to-prod.md) | Post-merge ship workflow in Cursor |
+| [testing-strategy](../testing-strategy/README.md) | Quality gates and production verification |

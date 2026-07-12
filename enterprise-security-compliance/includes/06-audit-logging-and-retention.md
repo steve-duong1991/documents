@@ -1,6 +1,6 @@
 # Audit Logging and Retention
 
-> **Related:** Append-only domain audit → [event-sourcing-and-cqrs](../../event-sourcing-and-cqrs/README.md) · API(Application Programming Interface) correlation IDs → [api-design overview](../../api-design-and-protection/includes/00-overview.md) · Observability triage → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · PII(Personally Identifiable Information) in logs → [§7](07-pii-and-data-classification.md) · Evidence → [§10](10-compliance-evidence.md)
+> **Related:** Append-only domain audit → [event-sourcing-and-cqrs](../../event-sourcing-and-cqrs/README.md) · API(Application Programming Interface) correlation IDs → [api-design overview](../../api-design-and-protection/includes/00-overview.md) · Observability triage → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · PII(Personally Identifiable Information) in logs → [§7](07-pii-and-data-classification.md) · Evidence → [§10](10-compliance-evidence.md) · Kafka retention / tiered storage for bus history → [apache-kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) · Broker ACL and admin audit → [apache-kafka §10](../../apache-kafka/includes/10-operations-dr-security-and-observability.md)
 
 ## At a glance
 
@@ -52,6 +52,8 @@ flowchart LR
 
 For **business history** as product feature, prefer domain events → [event-sourcing](../../event-sourcing-and-cqrs/README.md). Audit logs answer **security and compliance**; event stores answer **domain rebuild**.
 
+When security or compliance events travel on **Kafka**, treat the topic as an audit pipeline: short hot retention + cold archive (or tiered storage), ACL(Access Control List)–restricted consumers, and lag alerts on the ship path — [apache-kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) · [§10](../../apache-kafka/includes/10-operations-dr-security-and-observability.md). Do not use unbounded Kafka retention as the only WORM store.
+
 ## Retention policy sketch
 
 | Class | Hot | Cold | Delete |
@@ -81,3 +83,4 @@ Document retention in the same pack auditors see → [§10](10-compliance-eviden
 | Everyone on eng can query security archive | Least privilege on log stores |
 | Infinite retention of everything | Cost + GDPR risk; classify |
 | No correlation_id across gateway and app | Propagate from edge |
+| Kafka topic = immutable compliance archive alone | Land to WORM/warehouse; size Kafka retention deliberately — [kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) |

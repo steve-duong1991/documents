@@ -1,6 +1,6 @@
 # PII and Data Classification
 
-> **Related:** Audit redaction → [§6](06-audit-logging-and-retention.md) · Encryption of sensitive fields → [§8](08-encryption-policy.md) · Multi-tenant isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md) · Event store erasure tension → [event-sourcing decision guide](../../event-sourcing-and-cqrs/includes/06-decision-guide.md)
+> **Related:** Audit redaction → [§6](06-audit-logging-and-retention.md) · Encryption of sensitive fields → [§8](08-encryption-policy.md) · Multi-tenant isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md) · Event store erasure tension → [event-sourcing decision guide](../../event-sourcing-and-cqrs/includes/06-decision-guide.md) · PII on Kafka topics / catalog classification → [apache-kafka §6](../../apache-kafka/includes/06-serialization-and-schema-evolution.md) · [kafka §9 catalog](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos) · Compaction tombstones → [kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md)
 
 ## At a glance
 
@@ -59,6 +59,7 @@ Every new personal data field should answer:
 | Backups | Document backup lag; erasure completes after backup expiry or rewrite policy |
 | Search / CQRS(Command Query Responsibility Segregation) projections | Erasure job per store; don’t forget replicas |
 | Event sourcing | Prefer encrypt-and-forget keys or avoid putting raw PII in events |
+| Kafka / event bus | Classify topics in the event catalog; separate restricted topics or field-level encryption; tombstone compacted PII keys — [kafka §9](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos) · [kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) |
 
 ## Cross-border and vendors
 
@@ -73,3 +74,4 @@ Track **where** processing happens (regions, SaaS tools). New vendor that receiv
 | Erasing primary DB only | Inventory all copies (warehouse, tickets, S3) |
 | Infinite analytics raw dumps | Aggregate + retention on identity keys |
 | No owner for classification labels | Schema registry / data catalog owner per domain |
+| Putting raw PII on high-fan-out Kafka topics | Minimize payload; restricted topic + ACLs; catalog classification — [kafka §9](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos) |

@@ -2,7 +2,7 @@
 
 Reliability muscles atrophy without practice. Game days rehearse failure **before** customers force the lesson.
 
-> **Related:** DB DR and credential drills → [database-connection §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) · Backup/PITR(Point-in-Time Recovery) → [postgresql-performance §16](../../postgresql-performance/includes/16-backup-restore-and-pitr.md) · Runbooks → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md) · Capacity failover tests → [§3](03-capacity-and-load-testing.md) · Postmortems → [§7](07-postmortems.md)
+> **Related:** DB DR and credential drills → [database-connection §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) · Backup/PITR(Point-in-Time Recovery) → [postgresql-performance §16](../../postgresql-performance/includes/16-backup-restore-and-pitr.md) · Runbooks → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md) · Capacity failover tests → [§3](03-capacity-and-load-testing.md) · Postmortems → [§7](07-postmortems.md) · Release checklist → [deployment §14](../../deployment-strategies/includes/14-feature-to-prod-playbook.md)
 
 ---
 

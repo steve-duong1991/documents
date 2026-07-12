@@ -28,7 +28,7 @@ Related: [postgresql-performance](../postgresql-performance/README.md) · [high-
 |-------|--------|
 | [postgresql-performance](../postgresql-performance/README.md) | Indexes, replicas, expand/contract migrations ([§15](../postgresql-performance/includes/15-schema-migration-checklist.md)) |
 | [high-throughput-systems](../high-throughput-systems/README.md) | Caching layers ([§4](../high-throughput-systems/includes/04-caching-layers.md)), CDC(Change Data Capture) and search ([§15](../high-throughput-systems/includes/15-cdc-and-search-indexing.md)), batch/ETL(Extract, Transform, Load) |
-| [apache-kafka](../apache-kafka/README.md) | Event bus, Connect, CDC pipelines, retention |
+| [apache-kafka](../apache-kafka/README.md) | Event bus, Connect, CDC pipelines, retention, [event catalog / freshness SLOs](../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos) |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Outbox, projections, read models |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Redis-backed limits and distributed quotas |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Credentials, IAM(Identity and Access Management), DR vocabulary |

@@ -2,7 +2,7 @@
 
 Beyond custom producers/consumers, **Kafka Connect** integrates external systems and **Kafka Streams** builds stream processing with embedded state.
 
-> **Related:** LSM(Log-Structured Merge) state stores → [tree §4 LSM](../../tree-and-index-structures/includes/04-lsm-trees.md) · CDC(Change Data Capture) → [§8 integration](08-integration-patterns.md) · Mirror/DR → [§10 DR](10-operations-dr-security-and-observability.md)
+> **Related:** LSM(Log-Structured Merge) state stores → [tree §4 LSM](../../tree-and-index-structures/includes/04-lsm-trees.md) · CDC(Change Data Capture) → [§8 integration](08-integration-patterns.md) · Mirror/DR → [§10 DR](10-operations-dr-security-and-observability.md#disaster-recovery) · Active-active → [§10](10-operations-dr-security-and-observability.md#active-active-multi-region)
 
 ---
 
@@ -76,9 +76,40 @@ Run Connect workers **separate from brokers** in production — [§9 setup](09-c
 |------------|-----|
 | Topic replication | DR standby cluster — [§10 DR](10-operations-dr-security-and-observability.md) |
 | Offset sync | Consumer failover planning |
-| Bidirectional | Multi-region (complex — conflict handling manual) |
+| Bidirectional | Multi-region active-active (complex — see below) |
 
 MM2 is **async** — RPO(Recovery Point Objective) > 0; not a synchronous dual-write.
+
+### Topologies
+
+| Topology | Flow | Prefer when |
+|----------|------|-------------|
+| **Active → passive (DR)** | Primary produces; MM2 mirrors to standby; consumers failover on disaster | Most enterprises; clearest ownership |
+| **Active → active (multi-region)** | Each region produces locally; MM2 (or equivalent) replicates topics both ways | Latency needs local produce; team can own conflict rules |
+| **Fan-in hub** | Edge clusters → central analytics cluster | Analytics isolation; do not reverse-fan domain writes |
+
+```mermaid
+flowchart LR
+    subgraph DR[Active_passive]
+        P1[Primary] -->|MM2| S1[Standby]
+    end
+    subgraph AA[Active_active]
+        R1[Region_A] <-->|MM2| R2[Region_B]
+    end
+```
+
+### Active-active hard requirements
+
+| Requirement | Why |
+|-------------|-----|
+| **Idempotent consumers** | Same event may arrive from local produce and remote mirror |
+| **Stable event ids** | Dedup key = producer `event_id` / outbox id — not broker offset |
+| **Conflict policy** | Last-write-wins by timestamp, region preference, or domain merge — document per topic |
+| **No dual-write of the same command** | Route a given aggregate to one home region when possible |
+| **Schema Registry parity** | Subjects and compatibility modes match across regions — [§6](06-serialization-and-schema-evolution.md) |
+| **Lag SLO per link** | Treat inter-region lag as user-visible staleness, not just ops metric |
+
+**Rule of thumb:** Default to **active-passive DR**. Choose active-active only when product latency requires local produce **and** you have a written conflict/idempotency design — full ops playbook → [§10 active-active](10-operations-dr-security-and-observability.md#active-active-multi-region).
 
 ---
 
@@ -110,7 +141,8 @@ MM2 is **async** — RPO(Recovery Point Objective) > 0; not a synchronous dual-w
 |---------|-----|
 | Connect on broker JVM | Dedicated worker cluster |
 | Streams state without changelog backup | Monitor changelog topics; RF=3 |
-| MM2 as active-active without idempotency | Design consumers idempotent; accept lag |
+| MM2 as active-active without idempotency | Design consumers idempotent; accept lag — [§10](10-operations-dr-security-and-observability.md#active-active-multi-region) |
+| Bidirectional MM2 without home-region routing | Pin aggregates to a region; document conflict policy |
 | SMT doing heavy enrichment | Stream processing app or consumer |
 
 ---

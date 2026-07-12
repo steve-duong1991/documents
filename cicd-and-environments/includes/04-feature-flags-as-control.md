@@ -17,7 +17,7 @@ Flags let you **ship dark** and **expose deliberately**. Used well they are an o
 | **Experiment** | Product learning | Bound to experiment end |
 | **Permission** | Entitlement | Product-owned; not a deploy tool |
 
-**Rule of thumb:** Release flags should be **boring and temporary**. If a flag is older than one quarter, schedule its removal or reclassify it.
+**Rule of thumb:** Release flags should be **boring and temporary**. If a flag is older than one quarter, schedule its removal or reclassify it — [deployment §7 lifecycle](../../deployment-strategies/includes/07-feature-flags.md#lifecycle-and-cleanup).
 
 ---
 
@@ -61,7 +61,7 @@ Wire flag changes into incident timelines ([sre §6](../../sre-and-incidents/inc
 | **Who toggles prod** | RBAC(Role-Based Access Control); audit log |
 | **Default on flag service outage** | Fail to last-known safe / old path ([deployment §7](../../deployment-strategies/includes/07-feature-flags.md)) |
 | **CI(Continuous Integration)** | Test flag on and off |
-| **Cleanup** | Ticket on creation; delete code + config together |
+| **Cleanup** | Ticket on creation; delete code + config together — full steps → [deployment §7 lifecycle](../../deployment-strategies/includes/07-feature-flags.md#lifecycle-and-cleanup) |
 | **Naming** | `team_feature_intent_date` — searchable |
 
 ---

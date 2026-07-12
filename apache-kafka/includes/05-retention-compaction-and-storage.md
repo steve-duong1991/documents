@@ -2,7 +2,7 @@
 
 Topics retain data by **time**, **size**, or **compaction policy**. Storage planning ties retention to disk, replay windows, and compliance.
 
-> **Related:** Streaming pipeline sizing → [HTS §7](../../high-throughput-systems/includes/07-streaming-pipelines.md) · Cluster disk → [§9 setup](09-cluster-setup-and-requirements.md)
+> **Related:** Streaming pipeline sizing → [HTS §7](../../high-throughput-systems/includes/07-streaming-pipelines.md) · Cluster disk → [§9 setup](09-cluster-setup-and-requirements.md) · Audit/PII retention on the bus → [ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md) · [ESC §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) · Storage cost → [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md)
 
 ---
 
@@ -72,12 +72,45 @@ Domain event store stays in **PostgreSQL** — Kafka retention is not unlimited 
 
 ## Tiered storage
 
-| Feature | Benefit |
-|---------|---------|
-| **Remote storage (S3, etc.)** | Cheaper long retention; local disk hot tier |
-| **Fetch from tier** | Transparent to consumers (latency tradeoff) |
+Keep **hot** segments on local NVMe and age **cold** segments to object storage (S3, GCS, Azure Blob) so retention can stretch to months/years without sizing every broker for full history.
 
-Use when retention months/years but local NVMe insufficient — ops complexity increases.
+| Layer | Holds | Latency | Cost |
+|-------|-------|---------|------|
+| **Local (hot)** | Recent segments actively produced/consumed | Low (disk / page cache) | High $/GB |
+| **Remote (cold)** | Aged segments past local retention window | Higher (object GET + restore) | Low $/GB |
+
+```mermaid
+flowchart LR
+    Produce[Producers] --> Local[Local_log_dirs]
+    Local -->|Age_out| Remote[(Object_storage)]
+    Consume[Consumers] --> Local
+    Consume -.->|Catch_up_old_offsets| Remote
+```
+
+| When to enable | When to skip |
+|----------------|--------------|
+| Compliance/audit topics need 90d–1y+ in Kafka itself | Retention ≤ 7–14d fits comfortably on local disk |
+| Replay/rebuild windows longer than NVMe budget | Warehouse/lake already lands durable copy within hours |
+| Managed offering includes tiered storage with known RPO | Team cannot operate restore latency / remote fetch alerts |
+
+### Ops checklist
+
+| Concern | Practice |
+|---------|----------|
+| **Local retention** | Size hot tier for peak produce + consumer lag buffer — not full topic retention |
+| **Remote fetch SLO** | Alert when remote fetch latency or error rate spikes; lag runbooks must mention cold-tier catch-up |
+| **Broker disk** | Still alert at 80% local — tiering does not remove hot-path disk risk |
+| **Compaction** | Prefer delete-retention topics for long cold history; compacted changelogs stay mostly hot |
+| **DR / MM2** | Mirror primary cluster; do not assume remote objects alone are your failover — [§10 DR](10-operations-dr-security-and-observability.md) |
+| **Cost** | Object storage + GET fees vs shorter Kafka retention + warehouse land — [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md) |
+
+**Rule of thumb:** Tiered storage is for **keeping Kafka as the replay window** cheaper — not a substitute for a governed warehouse archive or WORM(Write Once Read Many) security audit store ([ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md)).
+
+### Pros and cons
+
+**Pros:** Long retention without ballooning broker NVMe; consumers still use normal offsets.
+
+**Cons:** Catch-up from cold tier is slower; more failure modes (object permissions, network); ops must monitor remote fetch health.
 
 ---
 
@@ -112,6 +145,8 @@ Full governance rules, enforcement, and CI(Continuous Integration) checks → [�
 | Compact topic without keys | Every record needs key for compaction |
 | Undersized disk | Monitor log dir; alert before 80% |
 | Compaction for immutable audit | Use delete policy + compliance retention |
+| Tiered storage as only compliance archive | Land to WORM/warehouse; document Kafka RPO separately |
+| Ignoring remote-fetch latency in lag SLOs | Separate hot vs cold catch-up expectations |
 
 ---
 

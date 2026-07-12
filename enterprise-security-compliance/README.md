@@ -46,4 +46,5 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (th
 | [deployment-strategies](../deployment-strategies/README.md) | Safe rollout; gate security checks with deploys |
 | [high-throughput-systems §11](../high-throughput-systems/includes/11-observability.md) | Logs, metrics, traces for security signals |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Append-only audit when domain history is the control |
+| [apache-kafka](../apache-kafka/README.md) | Bus retention, tiered storage, ACLs/quotas, event catalog classification for PII topics |
 | [fullstack-bff-and-clients](../fullstack-bff-and-clients/README.md) | Browser CSRF(Cross-Site Request Forgery), auth UX, client secrets pitfalls |

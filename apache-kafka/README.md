@@ -1,8 +1,8 @@
 # Apache Kafka Guide
 
-A practical deep dive into Apache Kafka — commit log internals, topics and replication, producers and consumers, schema formats, cluster setup, operations, integration patterns, retry/DLQ(Dead Letter Queue), failure recovery, and testing.
+A practical deep dive into Apache Kafka — commit log internals, topics and replication, producers and consumers, schema formats, cluster setup, operations, integration patterns, retry/DLQ(Dead Letter Queue), failure recovery, and testing. Platform angle: topic governance and event catalog SLOs, client quotas, tiered storage, and multi-region DR / active-active.
 
-Related: [high-throughput-systems](../high-throughput-systems/README.md) (when to stream, system throughput) · [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) (outbox, sagas, domain schema evolution)
+Related: [high-throughput-systems](../high-throughput-systems/README.md) (when to stream, system throughput) · [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) (outbox, sagas, domain schema evolution) · [enterprise-security-compliance](../enterprise-security-compliance/README.md) (audit/PII on the bus)
 
 ---
 
@@ -40,3 +40,4 @@ Related: [high-throughput-systems](../high-throughput-systems/README.md) (when t
 | [deployment-strategies](../deployment-strategies/README.md) | Safe deploy when consumers lag or schemas change |
 | [data-platforms](../data-platforms/README.md) | CDC/search pipelines; retention and ownership of derived stores |
 | [finops-and-cost](../finops-and-cost/README.md) | Kafka retention/storage cost; managed vs self-hosted TCO(Total Cost of Ownership) |
+| [enterprise-security-compliance](../enterprise-security-compliance/README.md) | Audit/PII on the bus; classification; compliance evidence tied to stream retention |

@@ -35,7 +35,8 @@ Before provisioning brokers, decide **purpose**, **topology**, **companion servi
 | **Connect** | Separate worker cluster if CDC/sinks — [§7](07-connect-streams-and-ecosystem.md) |
 | **Security** | TLS(Transport Layer Security) + SASL; ACLs before traffic — [§10](10-operations-dr-security-and-observability.md) |
 | **Observability** | Lag, under-replicated partitions, disk; log aggregation |
-| **Governance** | Topic naming standards — [§9 governance](#topic-naming-governance); who creates topics; default retention |
+| **Governance** | Topic naming — [§9 governance](#topic-naming-governance); event catalog + ownership SLOs — [§9 catalog](#event-catalog-and-ownership-slos) |
+| **Client quotas** | Default produce/fetch byte rates per principal — [§10 quotas](10-operations-dr-security-and-observability.md#client-quotas-and-noisy-neighbor) |
 
 ---
 
@@ -186,6 +187,45 @@ Each topic in Git with metadata:
 | `retention.ms` | 604800000 (7d) |
 | `owner` | team-orders@company.com |
 | `description` | Order created domain event |
+| `classification` | internal / confidential / restricted — [ESC §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) |
+| `freshness_slo_s` | 60 (p99 consume lag target) |
+| `consumers` | `search-indexer`, `notifications-email` |
+
+---
+
+## Event catalog and ownership SLOs
+
+Treat the topic manifest set as the **event catalog**: discoverable contracts for producers, consumers, retention, and freshness — not only IaC(Infrastructure as Code) for brokers.
+
+| Catalog field | Why |
+|---------------|-----|
+| **Owner** | On-call for schema breaks, poison pills, retention changes |
+| **Producers / consumers** | Incident blast radius; contract test matrix |
+| **Classification** | PII(Personally Identifiable Information) and audit retention — [ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md) / [§7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) |
+| **Freshness SLO(Service Level Objective)** | Max acceptable consumer lag (e.g. p99 < 60s) — page when breached |
+| **Schema subject + compatibility** | CI gate before deploy — [§6](06-serialization-and-schema-evolution.md) |
+| **Delete / erasure path** | How GDPR-style deletes reach consumers and warehouses — [data-platforms §5](../../data-platforms/includes/05-data-ownership-lineage-retention.md) |
+
+### Platform ownership model
+
+| Role | Owns |
+|------|------|
+| **Domain team** | Topic semantics, schema evolution, consumer correctness, freshness SLO |
+| **Kafka platform** | Cluster SLOs (availability, under-replicated), quotas, ACL(Access Control List) machinery, self-service topic PR path |
+| **Security / legal** | Classification labels, retention floors for audit topics |
+
+**Rule of thumb:** No production produce without a catalog row (owner + SLO + classification). Orphan topics are deleted or quarantined.
+
+### Freshness SLO examples
+
+| Topic class | Typical freshness SLO | Alert |
+|-------------|----------------------|-------|
+| User-facing projection (search, feed) | p99 lag < 30–60s | Page domain on-call |
+| Async notifications | p99 lag < 5–15 min | Ticket / business hours |
+| Analytics / warehouse land | lag < batch window (e.g. 1h) | Platform + data owner |
+| Audit / compliance bus | lag < 5 min + pipeline integrity | Security + platform |
+
+Align catalog freshness with observability dashboards — [§10](10-operations-dr-security-and-observability.md#observability-integration). Broader dataset ownership → [data-platforms §5](../../data-platforms/includes/05-data-ownership-lineage-retention.md).
 
 ---
 
@@ -198,6 +238,8 @@ Each topic in Git with metadata:
 | Connect on broker nodes | Dedicated workers |
 | No topic creation governance | CI or admin API only — [§9 governance](09-cluster-setup-and-requirements.md#topic-naming-governance) |
 | Undersized disk | Formula in [§5](05-retention-compaction-and-storage.md) |
+| Topics without catalog owner / SLO | Require manifest fields before merge |
+| Shared cluster with no client quotas | Default quotas per principal — [§10](10-operations-dr-security-and-observability.md#client-quotas-and-noisy-neighbor) |
 
 ---
 

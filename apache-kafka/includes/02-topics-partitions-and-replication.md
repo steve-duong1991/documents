@@ -98,7 +98,7 @@ Kafka is **not** a tenant authZ layer — enforce tenant in application code and
 | Control | Use |
 |---------|-----|
 | **ACLs** | Prefix patterns — `Produce` on `tenant-a.*`, `Consume` on specific groups |
-| **Quotas** | `producer_byte_rate` / `consumer_byte_rate` per client principal |
+| **Quotas** | `producer_byte_rate` / `consumer_byte_rate` per client principal — detail → [§10 quotas](10-operations-dr-security-and-observability.md#client-quotas-and-noisy-neighbor) |
 | **App validation** | Every consumer checks `tenant_id` against auth context before side effects |
 
 **Rule:** Match DB tenant isolation ([PG RLS](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md)) in consumer handlers — Kafka ACLs alone are insufficient.

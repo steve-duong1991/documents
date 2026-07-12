@@ -16,9 +16,10 @@ Practical reference docs for building and operating production APIs and data sys
 | [architecture-decisions](architecture-decisions/README.md) | System shape, boundaries, DDD(Domain-Driven Design), strangler, ADRs, tradeoffs, capacity estimation, multi-tenant, failure domains |
 | [cicd-and-environments](cicd-and-environments/README.md) | CI(Continuous Integration)/CD(Continuous Delivery) pipelines, env promotion, config vs secrets, flags, branching, rollback, container health, platform boundaries |
 | [cursor-agents](cursor-agents/README.md) | Single vs multi agent, parallel Agents Window, subagents, auto-delegation |
+| [cursor-workflows](cursor-workflows/README.md) | Cursor playbook: design → architecture → coding → review → ship → operate (MCP, mocks, stack rules) |
 | [data-platforms](data-platforms/README.md) | Beyond one OLTP DB: warehouse/lake, search, Redis roles, caching coherence, ownership, migrations, analytics isolation |
 | [database-connection-and-security](database-connection-and-security/README.md) | DB credentials, TLS(Transport Layer Security), Vault, cloud IAM(Identity and Access Management), PgBouncer, production connection patterns |
-| [deployment-strategies](deployment-strategies/README.md) | Rolling, blue/green, canary, feature flags, GitOps(Git Operations), progressive delivery |
+| [deployment-strategies](deployment-strategies/README.md) | Rolling, blue/green, canary, feature flags, GitOps(Git Operations), progressive delivery, feature→PROD playbook |
 | [distributed-systems-primitives](distributed-systems-primitives/README.md) | CAP(Consistency, Availability, Partition Tolerance)/PACELC mechanisms, consistent hashing, unique IDs, consensus, service discovery, Bloom/HLL, clocks |
 | [enterprise-security-compliance](enterprise-security-compliance/README.md) | Secure SDLC(Software Development Life Cycle), threat process, supply chain, secrets, audit/PII(Personally Identifiable Information), encryption, zero trust, compliance evidence |
 | [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) | Event store, aggregates, CQRS(Command Query Responsibility Segregation), projections, outbox, sagas, API(Application Programming Interface) implications |
@@ -92,6 +93,7 @@ flowchart LR
     end
     subgraph tooling [Tooling — meta]
         C[cursor-agents]
+        CW[cursor-workflows]
     end
     A --> R
     A --> H
@@ -155,7 +157,7 @@ Decision-making, resilience, delivery, quality, and leadership — then deepen w
 
 1. [architecture-decisions](architecture-decisions/README.md) — system shape, boundaries, ADRs → [§12 decision guide](architecture-decisions/includes/12-decision-guide.md) · [§13 capacity](architecture-decisions/includes/13-capacity-estimation.md)
 2. [distributed-systems-primitives](distributed-systems-primitives/README.md) + [resilience-patterns](resilience-patterns/README.md) — mechanisms and failure survival
-3. [sre-and-incidents](sre-and-incidents/README.md) + [cicd-and-environments](cicd-and-environments/README.md) — operate and ship safely
+3. [sre-and-incidents](sre-and-incidents/README.md) + [cicd-and-environments](cicd-and-environments/README.md) — operate and ship safely → release order [deployment §14 playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md)
 4. [testing-strategy](testing-strategy/README.md) + [enterprise-security-compliance](enterprise-security-compliance/README.md) — quality and enterprise readiness
 5. [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) + [tech-lead-practice](tech-lead-practice/README.md) — client seam and people/process
 6. [finops-and-cost](finops-and-cost/README.md) + [data-platforms](data-platforms/README.md) — cost and data beyond one OLTP DB
@@ -169,7 +171,7 @@ Design the contract, protect the edge, connect to the database safely, and deplo
 2. [api-rate-limiting](api-rate-limiting/README.md) — algorithms and where to enforce limits; multi-instance → [§12 distributed](api-rate-limiting/includes/12-distributed-rate-limiting.md)
 3. [database-connection-and-security](database-connection-and-security/README.md) — production credentials and IAM
 4. Large uploads → [api-design §18 object storage](api-design-and-protection/includes/18-object-storage-and-uploads.md)
-5. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green
+5. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green → end-to-end order [§14 playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md)
 6. [resilience-patterns](resilience-patterns/README.md) — timeouts/retries/breakers on every dependency
 
 ### Make it fast
@@ -279,13 +281,16 @@ Triage saturation-first, rollback, and DR when alerts fire.
 
 ### Ship safely (CI/CD)
 
-Build once, promote digests, and undo safely.
+Build once, promote digests, progressive expose, and undo safely.
 
-1. [cicd-and-environments](cicd-and-environments/README.md) — pipeline, promotion, config/secrets, flags, rollback
-2. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green, progressive delivery
-3. [testing-strategy](testing-strategy/README.md) — pyramid, gates, production verification
-4. [sre-and-incidents §1–§2](sre-and-incidents/includes/01-sli-slo-sla.md) — SLOs and error-budget gates on release
-5. [database-connection-and-security](database-connection-and-security/README.md) — secrets and rotation during deploys
+1. [deployment-strategies §14 feature to PROD playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md) — ordered gates design → canary → runbook/drill
+2. [cicd-and-environments](cicd-and-environments/README.md) — pipeline, promotion, config/secrets, flags, rollback
+3. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green, progressive delivery
+4. [testing-strategy](testing-strategy/README.md) — pyramid, gates, production verification
+5. [sre-and-incidents §1–§2](sre-and-incidents/includes/01-sli-slo-sla.md) — SLOs and error-budget gates on release
+6. [cursor-workflows §5 ship to PROD](cursor-workflows/includes/05-ship-to-prod.md) — post-merge Cursor workflow
+7. [cursor-workflows §6 operate and learn](cursor-workflows/includes/06-operate-and-learn.md) — watch, cleanup, drills, next backlog
+8. [database-connection-and-security](database-connection-and-security/README.md) — secrets and rotation during deploys
 
 ### Architecture & resilience
 
@@ -382,6 +387,7 @@ Single-agent defaults, when to parallelize, and how to configure subagent auto-d
 1. [cursor-agents](cursor-agents/README.md) — overview → [§1 single agent](cursor-agents/includes/01-single-agent.md) vs [§2 multi agent](cursor-agents/includes/02-multi-agent.md)
 2. [cursor-agents §3 subagents](cursor-agents/includes/03-subagents-and-auto-delegation.md) — `.cursor/agents/` descriptions, rules, built-in Explore/Bash/Browser
 3. [cursor-agents §4 decision guide](cursor-agents/includes/04-decision-guide.md) — when to pick what, cost, rollout path
+4. [cursor-workflows](cursor-workflows/README.md) — design → architecture → coding → review → [§5 ship](cursor-workflows/includes/05-ship-to-prod.md) → [§6 operate](cursor-workflows/includes/06-operate-and-learn.md)
 
 ---
 
@@ -410,7 +416,7 @@ cd documents && make validate
 
 These guides cover **backend API, data, throughput, deploy, architecture decisions, distributed primitives, system-design practice, NoSQL tradeoffs, realtime fan-out, specialized stores, payments/fintech, resilience, SRE(Site Reliability Engineering), CI/CD, testing, enterprise security/compliance, fullstack UI↔API (BFF/clients), FinOps, and Tech Lead practice**. They intentionally omit deep dives on native mobile toolchains, Kubernetes CNI networking, and generic Terraform — link out to official docs when you adopt those stacks. Networking fundamentals (DNS, HTTP versions, TLS placement) are covered at the API/edge layer in [HTS §16](high-throughput-systems/includes/16-networking-fundamentals.md), not as a full cloud-networking curriculum.
 
-[cursor-agents](cursor-agents/README.md) is **meta/tooling** — how to use Cursor agents to work on this corpus; it is not backend architecture. The repo also ships a [`.cursor/`](.cursor/) folder (rules, hooks, doc-reviewer subagent) aligned with that guide.
+[cursor-agents](cursor-agents/README.md) and [cursor-workflows](cursor-workflows/README.md) are **meta/tooling** — how to use Cursor agents across design, architecture, coding, review, ship to PROD, and operate/learn; they are not backend architecture. The repo also ships a [`.cursor/`](.cursor/) folder (rules, hooks, doc-reviewer subagent) aligned with those guides.
 
 ---
 

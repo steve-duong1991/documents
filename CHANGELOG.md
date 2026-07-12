@@ -6,6 +6,22 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-07-12
 
+### apache-kafka platform gaps (enterprise shared cluster)
+- **apache-kafka §5:** Tiered storage — hot/cold tiers, ops checklist, when to skip, compliance boundary vs WORM/warehouse
+- **apache-kafka §9:** Event catalog and ownership SLOs — manifest fields, platform vs domain ownership, freshness SLO examples
+- **apache-kafka §10:** Client quotas / noisy-neighbor; active-active multi-region playbook; ESC audit/PII cross-links; quota throttle metrics
+- **apache-kafka §7:** MirrorMaker 2 topologies (active-passive, active-active, fan-in) + active-active hard requirements
+- **enterprise-security-compliance §6/§7:** Bidirectional links to Kafka retention, ACLs, catalog classification, PII-on-bus patterns
+- **data-platforms §5:** Event catalog as topic manifest; freshness SLO ownership mistake
+- **Corpus:** GLOSSARY (client quota, tiered storage); See also rows on apache-kafka, ESC, data-platforms READMEs
+
+### Feature → PROD release playbook
+- **deployment-strategies §14:** Feature to PROD playbook — ordered gates (design → contract → quality → migration → promote → canary/flag → SLO rollback → runbook/drill)
+- **deployment-strategies §7:** Lifecycle and cleanup — when/how to remove release flags (1–4 weeks after 100%, not months); reclassify kill switches; quarterly inventory
+- **cursor-workflows §5:** Ship to PROD — post-merge Cursor workflow (promote, progressive expose, observe/abort, close-out); overview loop extended past code review
+- **cursor-workflows §6:** Operate and learn — steady-state watch, cleanup, incidents/postmortems, drills, feed next FEATURE; loop closes back to §1 design; flag cleanup points at §7 lifecycle
+- **Corpus:** Ship safely + Tech Lead Fullstack / Ship a public API / Cursor agents learning paths point at §14, §5, and §6
+
 ### System design curriculum gaps closed (6 new guides + 3 extensions)
 - **system-design-walkthroughs:** 11 sections — how to approach, URL shortener, news feed, chat/presence, ride-sharing geo, distributed rate limiter (system design), notification pipeline, search autocomplete, video streaming basics, decision guide
 - **nosql-and-key-value-stores:** 7 sections — when to choose DynamoDB/Cassandra/Mongo vs PostgreSQL, access-pattern modeling (GSI/LSI, hot partitions), Dynamo-style multi-tenant SaaS, Cassandra, MongoDB, decision guide
