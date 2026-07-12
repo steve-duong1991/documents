@@ -1,6 +1,6 @@
 # Apache Kafka Guide
 
-A practical deep dive into Apache Kafka — commit log internals, topics and replication, producers and consumers, schema formats, cluster setup, operations, integration patterns, and testing.
+A practical deep dive into Apache Kafka — commit log internals, topics and replication, producers and consumers, schema formats, cluster setup, operations, integration patterns, retry/DLQ(Dead Letter Queue), failure recovery, and testing.
 
 Related: [high-throughput-systems](../high-throughput-systems/README.md) (when to stream, system throughput) · [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) (outbox, sagas, domain schema evolution)
 
@@ -23,6 +23,7 @@ Related: [high-throughput-systems](../high-throughput-systems/README.md) (when t
 | 10 | [Operations, DR, security, and observability](includes/10-operations-dr-security-and-observability.md) |
 | 11 | [Decision guide and common mistakes](includes/11-decision-guide-and-common-mistakes.md) |
 | 12 | [Testing and verification](includes/12-testing-and-verification.md) |
+| 13 | [Failure modes, troubleshooting, and recovery](includes/13-failure-modes-troubleshooting-and-recovery.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
@@ -37,3 +38,5 @@ Related: [high-throughput-systems](../high-throughput-systems/README.md) (when t
 | [tree-and-index-structures](../tree-and-index-structures/README.md) | LSM(Log-Structured Merge) trees in Kafka Streams state stores |
 | [database-connection-and-security](../database-connection-and-security/README.md) | DR vocabulary (RPO/RTO(Recovery Time Objective)), credentials for Connect |
 | [deployment-strategies](../deployment-strategies/README.md) | Safe deploy when consumers lag or schemas change |
+| [data-platforms](../data-platforms/README.md) | CDC/search pipelines; retention and ownership of derived stores |
+| [finops-and-cost](../finops-and-cost/README.md) | Kafka retention/storage cost; managed vs self-hosted TCO(Total Cost of Ownership) |

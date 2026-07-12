@@ -112,4 +112,4 @@ Details → [postgresql-performance §15](../../postgresql-performance/includes/
 
 **Pros:** Zero-downtime rolling deploys; safe rollback to previous binary; works with canary and blue/green.
 
-**Cons:** Multi-release timelines; temporary schema duplication; requires team habit and CI checks.
+**Cons:** Multi-release timelines; temporary schema duplication; requires team habit and CI(Continuous Integration) checks.

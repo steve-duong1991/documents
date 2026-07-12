@@ -182,6 +182,3 @@ Each row is an independent ACID commit. Saga "atomicity" is **logical** (busines
 Prefer **saga + outbox + idempotency** over 2PC for service-oriented systems.
 
 ---
-
-
-

@@ -28,7 +28,7 @@ Public APIs outlive clients. Versioning and deprecation policy is part of the co
 | Add new enum values (clients tolerate unknown) | Tighten validation on existing inputs |
 | Deprecate with sunset header (still works) | Remove deprecated behavior |
 
-Document every release in changelog; run OpenAPI diff in CI → [§15 contract testing](15-contract-and-schema-testing.md).
+Document every release in changelog; run OpenAPI diff in CI(Continuous Integration) → [§15 contract testing](15-contract-and-schema-testing.md).
 
 ---
 

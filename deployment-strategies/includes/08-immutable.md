@@ -39,7 +39,7 @@ flowchart LR
 
 | Mistake | Fix |
 |---------|-----|
-| Huge images slow every deploy | Slim base images; layer caching in CI |
+| Huge images slow every deploy | Slim base images; layer caching in CI(Continuous Integration) |
 | Immutable VMs but mutable config on disk | Config via env/secrets at boot — not manual edits |
 | New image with non-backward-compatible DB migration | [§12](12-schema-migrations-and-deploy.md) expand/contract order |
 

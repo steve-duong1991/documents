@@ -15,7 +15,7 @@ When to use single agent, parallel agents, or subagents — plus trade-offs and 
 | Huge codebase search / noisy shell output | **Built-in subagents** (automatic) |
 | Verify work is really done | **Verifier subagent** (custom) |
 | Simple one-shot action (format, changelog) | **Skill or slash command** — not a subagent |
-| Long cloud/CI work while you code locally | **Cloud agent** (`/in-cloud`, `/babysit`) |
+| Long cloud/CI(Continuous Integration) work while you code locally | **Cloud agent** (`/in-cloud`, `/babysit`) |
 | Auth, payments, security-sensitive changes | **Security-auditor subagent** + explicit review |
 
 ---

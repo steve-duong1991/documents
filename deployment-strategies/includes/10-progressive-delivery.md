@@ -10,7 +10,7 @@
 
 | Tool | Runs on | Automates | Pairs with |
 |------|---------|-----------|------------|
-| **Argo Rollouts** | Kubernetes | Canary steps, analysis, rollback | Argo CD GitOps(Git Operations) |
+| **Argo Rollouts** | Kubernetes | Canary steps, analysis, rollback | Argo CD(Continuous Delivery) GitOps(Git Operations) |
 | **Flagger** | K8s + Istio/NGINX/App Mesh | Metric-based canary promotion | Flux or Argo CD |
 | **AWS CodeDeploy** | ECS/Lambda | Blue-green / linear / canary | CodePipeline |
 | **Spinnaker** | Multi-cloud | Pipelines, manual judgments | Any cluster |
@@ -58,7 +58,7 @@ Failed gate → auto-rollback to stable ReplicaSet — wire to [§13 SLO trigger
 ## When to use
 
 - Large-scale SaaS, fintech, healthcare
-- Teams with mature SRE and observability practices
+- Teams with mature SRE(Site Reliability Engineering) and observability practices
 - **After** basic rolling + feature flags work — not day-one for small teams
 
 ## Best practices

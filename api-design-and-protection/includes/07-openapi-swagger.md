@@ -1,6 +1,6 @@
 # OpenAPI / Swagger
 
-> **Scope:** **Author and publish** the API(Application Programming Interface) contract — OpenAPI format, Swagger UI, codegen, gateway import, terminology. **CI gates** (Spectral, breaking diff, contract tests, deploy coupling) → [§15 Contract and schema testing](15-contract-and-schema-testing.md).
+> **Scope:** **Author and publish** the API(Application Programming Interface) contract — OpenAPI format, Swagger UI, codegen, gateway import, terminology. **CI(Continuous Integration) gates** (Spectral, breaking diff, contract tests, deploy coupling) → [§15 Contract and schema testing](15-contract-and-schema-testing.md).
 >
 > **Related:** Contract testing in CI → [§15 Contract and schema testing](15-contract-and-schema-testing.md) · Versioning → [§14 API versioning](14-api-versioning-and-deprecation.md) · Gateway import → [§3 Gateway](03-api-gateway.md)
 

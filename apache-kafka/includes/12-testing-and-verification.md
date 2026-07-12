@@ -2,7 +2,7 @@
 
 Kafka systems need tests at serializer, producer, consumer, and integration layers — especially **schema compatibility** and **outbox relay** paths.
 
-> **Related:** ES testing patterns → [ES §9 testing](../../event-sourcing-and-cqrs/includes/09-testing-and-verification.md) · Contract CI → [api-design §15 contract testing](../../api-design-and-protection/includes/15-contract-and-schema-testing.md) · Schema formats → [§6](06-serialization-and-schema-evolution.md) · Local broker → [§9 dev workflow](09-cluster-setup-and-requirements.md#local-dev-workflow)
+> **Related:** ES testing patterns → [ES §9 testing](../../event-sourcing-and-cqrs/includes/09-testing-and-verification.md) · Contract CI(Continuous Integration) → [api-design §15 contract testing](../../api-design-and-protection/includes/15-contract-and-schema-testing.md) · Schema formats → [§6](06-serialization-and-schema-evolution.md) · Local broker → [§9 dev workflow](09-cluster-setup-and-requirements.md#local-dev-workflow)
 
 ---
 
@@ -85,7 +85,7 @@ Assert:
 |----------|--------|
 | Happy path | Side effect once; offset committed |
 | Duplicate delivery | Inbox dedup — second message no-op — [§8](08-integration-patterns.md) |
-| Poison message | Routed to DLQ(Dead Letter Queue) after N tries |
+| Poison message | Routed to DLQ(Dead Letter Queue) after N tries — [§8](08-integration-patterns.md#retry-and-dlq-deep-dive) |
 | DB failure mid-batch | Offset not committed; retry succeeds |
 
 Use **Testcontainers** (Kafka + PostgreSQL) for outbox + consumer pipeline — mirror [ES §9 outbox integration](../../event-sourcing-and-cqrs/includes/09-testing-and-verification.md).
@@ -146,7 +146,7 @@ Run in staging — expensive for every CI run.
 | No golden old-schema fixtures | Regression on compatibility |
 | Test with plain JSON, prod Avro | Staging format parity — [§9](09-cluster-setup-and-requirements.md) |
 | Shared prod topic for tests | Isolated cluster or topic prefix |
-| Skip DLQ path tests | Inject bad record; assert DLQ |
+| Skip DLQ path tests | Inject bad record; assert DLQ — [§8](08-integration-patterns.md#retry-and-dlq-deep-dive) |
 
 ---
 

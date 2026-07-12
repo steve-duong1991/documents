@@ -1,6 +1,6 @@
 # Contract and Schema Testing
 
-OpenAPI is not documentation only — it is the **contract** CI should enforce before deploy.
+OpenAPI is not documentation only — it is the **contract** CI(Continuous Integration) should enforce before deploy.
 
 > **Deep dive:** Kafka Schema Registry compatibility and contract CI → [apache-kafka §6](../../apache-kafka/includes/06-serialization-and-schema-evolution.md) · [§12 testing](../../apache-kafka/includes/12-testing-and-verification.md)
 >

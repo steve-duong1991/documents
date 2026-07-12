@@ -86,7 +86,7 @@ flowchart TD
 | Compliance requires customer-managed keys | Check offering | Full control |
 | Need latest upstream Kafka quickly | Provider lag | You patch |
 
-Options: Amazon MSK, Confluent Cloud, Aiven, Redpanda Cloud — evaluate SLA, Connect support, Schema Registry bundling.
+Options: Amazon MSK, Confluent Cloud, Aiven, Redpanda Cloud — evaluate SLA(Service Level Agreement), Connect support, Schema Registry bundling.
 
 ---
 
@@ -124,6 +124,8 @@ This guide focuses on **Apache Kafka semantics** — most apply to API-compatibl
 | Mistake | Section |
 |---------|---------|
 | Ignore consumer lag growth | [§10](10-operations-dr-security-and-observability.md) |
+| No DLQ(Dead Letter Queue) / retry pattern | [§8 retry and DLQ](08-integration-patterns.md#retry-and-dlq-deep-dive) |
+| No failure runbooks | [§13](13-failure-modes-troubleshooting-and-recovery.md) |
 | Wrong serializer in staging | [§9](09-cluster-setup-and-requirements.md) |
 | Saga without partition key | [§2](../../event-sourcing-and-cqrs/includes/07C-sagas-operations.md) |
 | Skip integration tests | [§12](12-testing-and-verification.md) |

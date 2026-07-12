@@ -106,5 +106,5 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 | B+ tree for autocomplete prefix search | Trie or radix tree |
 | Heap when you need arbitrary key lookup | Ordered map (red-black) or hash |
 | R-tree for 1D sorted keys | B+ tree |
-| KD-tree in high dimensions | Different ANN approach or dimension reduction |
+| KD-tree in high dimensions | Different ANN(Approximate Nearest Neighbor) approach or dimension reduction |
 | Merkle tree for general indexing | Use for integrity proofs only |

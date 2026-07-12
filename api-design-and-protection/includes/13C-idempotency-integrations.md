@@ -85,7 +85,7 @@ Log safely:
 - `request_id`, `client_id`, endpoint
 - Outcome: `fresh`, `replay`, `conflict`, `body_mismatch`
 
-Never log full payment payloads or PII unnecessarily. Idempotency replay metrics help investigate duplicate-charge reports.
+Never log full payment payloads or PII(Personally Identifiable Information) unnecessarily. Idempotency replay metrics help investigate duplicate-charge reports.
 
 ---
 

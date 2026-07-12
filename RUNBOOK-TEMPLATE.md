@@ -46,7 +46,7 @@ flowchart TD
 
 | Check | Command / dashboard |
 |-------|---------------------|
-| Last deploy | _CI / Argo CD / release dashboard_ |
+| Last deploy | _CI / Argo CD(Continuous Delivery) / release dashboard_ |
 | Error by route | _API health dashboard_ |
 | DB pool wait | _pg_stat_activity / pool metrics_ |
 | Consumer lag | _Kafka / SQS dashboard_ |

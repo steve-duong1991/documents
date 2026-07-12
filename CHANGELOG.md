@@ -4,6 +4,39 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ---
 
+## 2026-07-12
+
+### System design curriculum gaps closed (6 new guides + 3 extensions)
+- **system-design-walkthroughs:** 11 sections — how to approach, URL shortener, news feed, chat/presence, ride-sharing geo, distributed rate limiter (system design), notification pipeline, search autocomplete, video streaming basics, decision guide
+- **nosql-and-key-value-stores:** 7 sections — when to choose DynamoDB/Cassandra/Mongo vs PostgreSQL, access-pattern modeling (GSI/LSI, hot partitions), Dynamo-style multi-tenant SaaS, Cassandra, MongoDB, decision guide
+- **distributed-systems-primitives:** 9 sections — CAP/PACELC mechanisms, consistent hashing, unique IDs, consensus/leader election, service discovery, Bloom/HLL/Count-Min, clocks/ordering, decision guide
+- **realtime-at-scale:** 6 sections — WebSocket fan-out, pub/sub backplanes, presence/typing, CRDT/OT, decision guide (complements fullstack §5 UX and api-design §10C contracts)
+- **specialized-data-systems:** 6 sections — time-series, graph DBs, vector/RAG, workflow engines vs sagas, decision guide
+- **payments-and-fintech:** 6 sections — PCI scope reduction, double-charge prevention, double-entry ledger, fraud/reconciliation, decision guide
+- **api-design-and-protection §18:** Object storage and large-file uploads (presigned URLs, multipart, virus scan, CDN delivery, SSRF)
+- **high-throughput-systems §16:** Networking fundamentals (DNS, HTTP/2/3, TLS placement, anycast, connection draining)
+- **architecture-decisions §13:** Capacity estimation workbook (DAU→RPS, Little's Law, DB/Redis/Kafka sizing checklist)
+- **Corpus:** root README index + relation diagram + learning paths (system design practice, NoSQL, realtime, specialized data, payments, media/networking); Scope expanded; acronyms for NFR, CRDT, OT, TSDB, ANN, RAG, PCI DSS, PAN, DNS, QUIC, …
+
+---
+
+## 2026-07-11
+
+### Tech Lead Fullstack curriculum (10 new guides)
+- **architecture-decisions:** 13 sections — monolith/modular/microservices, boundaries, DDD, strangler, ADRs, tradeoffs, integration, data ownership, BFF composition, multi-tenant models, failure domains, decision guide
+- **resilience-patterns:** 12 sections — timeouts, retries/backoff/jitter, circuit breakers, bulkheads, load shedding, systemwide idempotency, locks, delivery semantics, cascading failure, chaos, decision guide
+- **sre-and-incidents:** 12 sections — SLI/SLO/SLA, error budgets, capacity/load, observability practice, alerting, incident command, postmortems, on-call, drills, synthetics, decision guide
+- **cicd-and-environments:** 10 sections — CI pipeline, CD/promotion, config vs secrets, flags as control, branching, rollback vs forward-fix, containers/health, platform boundaries, decision guide
+- **enterprise-security-compliance:** 12 sections — secure SDLC, threat-modeling process (vs api-design §6), OWASP, supply chain/SBOM, secrets beyond DB, audit/retention, PII, encryption, zero trust, compliance evidence, decision guide
+- **fullstack-bff-and-clients:** 11 sections — frontend architecture, SSR/CSR/SSG, BFF contracts, Web Vitals, realtime UX, a11y, auth UX, offline/flaky network, design-system boundaries, decision guide
+- **testing-strategy:** 10 sections — pyramid/diamond, what not to automate, contracts, integration/E2E, load/soak/resilience, flakes, quality gates, production verification, decision guide
+- **tech-lead-practice:** 12 sections — vision/roadmap, design & code reviews, mentoring, debt, estimation, stakeholders, cross-team API ownership, build vs buy, escalation, decision guide
+- **data-platforms:** 9 sections — OLTP vs OLAP, search, Redis roles, caching coherence, ownership/lineage/retention, migration coordination, analytics isolation, decision guide
+- **finops-and-cost:** 9 sections — unit economics, cost drivers, right-sizing, retention cost, build vs managed TCO, budgets, architecture cost tradeoffs, decision guide
+- **Corpus:** root README index + relation diagram + Tech Lead Fullstack / architecture / testing / practice learning paths; Scope expanded; acronyms CI/CD, SRE, SBOM, FinOps, SSR/SSG, …
+
+---
+
 ## 2026-07-05
 
 ### Navigation and discoverability polish

@@ -8,7 +8,7 @@
 
 ### Key generation
 
-- Client generates a **UUID v4** (or similar) **once per user action**
+- Client generates a **UUID(Universally Unique Identifier) v4** (or similar) **once per user action**
 - **Reuse the same key** on retries of the *same* logical operation
 - **Never reuse** the key for a different operation (different amount, recipient, or payload)
 

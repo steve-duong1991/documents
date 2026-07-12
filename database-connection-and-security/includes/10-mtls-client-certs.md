@@ -132,6 +132,6 @@ Short-lived client certs (hours/days) reduce impact of key compromise — simila
 |---------|-----|
 | mTLS without network isolation | Private subnet first — cert ≠ firewall |
 | No cert rotation runbook | Automate issue/revoke; test before expiry |
-| Private key in application repo | HSM, cert manager, or Vault PKI |
+| Private key in application repo | HSM(Hardware Security Module), cert manager, or Vault PKI |
 | `pg_hba.conf` `cert` without CN mapping | Map certificate CN to DB role explicitly |
 | mTLS as first prod choice without PKI team | Start [§5](05-secret-manager-password.md) or cloud IAM |

@@ -33,7 +33,7 @@ For **how clients authenticate** (OAuth, API keys, JWT validation), see [Auth mo
 
 | Area | Examples |
 |------|----------|
-| **Authentication** | Password, MFA, SSO, API keys |
+| **Authentication** | Password, MFA(Multi-Factor Authentication), SSO, API keys |
 | **Authorization** | RBAC, ABAC, resource policies |
 | **Provisioning** | SCIM, LDAP sync, JIT access |
 | **Governance** | Access reviews, audit logs, JML — see [12A — IAM lifecycle](12A-identity-active-directory.md#iam-lifecycle-joiner-mover-leaver) |
@@ -51,7 +51,7 @@ For **how clients authenticate** (OAuth, API keys, JWT validation), see [Auth mo
 |-------|-----------------|----------|
 | **RBAC** | Job function (role) | Orgs with stable job titles |
 | **ABAC** | Attributes (dept, clearance, resource tags) | Fine-grained, dynamic rules |
-| **ACL** | Per-resource list of who can access | Small sets, file shares |
+| **ACL(Access Control List)** | Per-resource list of who can access | Small sets, file shares |
 | **PBAC / Policy** | Declarative policies (Rego, IAM JSON) | Cloud, APIs, zero-trust |
 
 Map roles to **scopes** or route policies at the gateway; re-check **object-level AuthZ** in the app — [12B RBAC at the API layer](12B-identity-enterprise-api.md#rbac-at-the-api-layer) and [Auth model — layered flow](04-auth-model.md#layered-auth-flow).

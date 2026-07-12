@@ -143,7 +143,7 @@ After throughput changes:
 3. Check DB top queries shifted
 4. Verify cache hit rate and replication lag under load
 
-Store results in CI or runbook for comparison.
+Store results in CI(Continuous Integration) or runbook for comparison.
 
 ---
 

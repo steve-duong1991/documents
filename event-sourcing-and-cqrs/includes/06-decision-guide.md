@@ -60,7 +60,7 @@ flowchart TD
 | Complete audit trail by design | Higher complexity than CRUD |
 | Temporal queries ("state at time T") | [Event schema evolution (upcasting)](08-event-schema-evolution.md) |
 | Debug by replaying exact sequence | Storage grows — snapshots + archival |
-| Aligns with domain language | GDPR/PII erasure vs immutability |
+| Aligns with domain language | GDPR/PII(Personally Identifiable Information) erasure vs immutability |
 | Flexible downstream consumers | Steeper learning curve |
 
 ### CQRS

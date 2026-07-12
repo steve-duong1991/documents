@@ -11,14 +11,30 @@ Practical reference docs for building and operating production APIs and data sys
 | Guide | What it covers |
 |-------|----------------|
 | [apache-kafka](apache-kafka/README.md) | Distributed commit log: internals, schema formats, setup, producers/consumers, integration, DR, testing |
-| [api-design-and-protection](api-design-and-protection/README.md) | REST(Representational State Transfer) design, protection, gateway, auth, identity, async, idempotency, stateless architecture |
+| [api-design-and-protection](api-design-and-protection/README.md) | REST(Representational State Transfer) design, protection, gateway, auth, identity, async, idempotency, object storage uploads, stateless architecture |
 | [api-rate-limiting](api-rate-limiting/README.md) | Limiter algorithms, scope, deployment layers, response strategies |
+| [architecture-decisions](architecture-decisions/README.md) | System shape, boundaries, DDD(Domain-Driven Design), strangler, ADRs, tradeoffs, capacity estimation, multi-tenant, failure domains |
+| [cicd-and-environments](cicd-and-environments/README.md) | CI(Continuous Integration)/CD(Continuous Delivery) pipelines, env promotion, config vs secrets, flags, branching, rollback, container health, platform boundaries |
 | [cursor-agents](cursor-agents/README.md) | Single vs multi agent, parallel Agents Window, subagents, auto-delegation |
+| [data-platforms](data-platforms/README.md) | Beyond one OLTP DB: warehouse/lake, search, Redis roles, caching coherence, ownership, migrations, analytics isolation |
 | [database-connection-and-security](database-connection-and-security/README.md) | DB credentials, TLS(Transport Layer Security), Vault, cloud IAM(Identity and Access Management), PgBouncer, production connection patterns |
 | [deployment-strategies](deployment-strategies/README.md) | Rolling, blue/green, canary, feature flags, GitOps(Git Operations), progressive delivery |
+| [distributed-systems-primitives](distributed-systems-primitives/README.md) | CAP(Consistency, Availability, Partition Tolerance)/PACELC mechanisms, consistent hashing, unique IDs, consensus, service discovery, Bloom/HLL, clocks |
+| [enterprise-security-compliance](enterprise-security-compliance/README.md) | Secure SDLC(Software Development Life Cycle), threat process, supply chain, secrets, audit/PII(Personally Identifiable Information), encryption, zero trust, compliance evidence |
 | [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) | Event store, aggregates, CQRS(Command Query Responsibility Segregation), projections, outbox, sagas, API(Application Programming Interface) implications |
-| [high-throughput-systems](high-throughput-systems/README.md) | End-to-end throughput: measure, cache, async, streaming, backpressure, scale |
+| [finops-and-cost](finops-and-cost/README.md) | Cost as design constraint: unit economics, drivers, right-sizing, retention, build vs managed, budgets |
+| [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) | Fullstack TL ownership of UI↔API: BFF(Backend for Frontend), rendering, Web Vitals, realtime UX, a11y, browser auth |
+| [high-throughput-systems](high-throughput-systems/README.md) | End-to-end throughput: measure, cache, async, streaming, backpressure, networking fundamentals, scale |
+| [nosql-and-key-value-stores](nosql-and-key-value-stores/README.md) | DynamoDB / Cassandra / Mongo vs PostgreSQL; access-pattern modeling; multi-tenant Dynamo-style tradeoffs |
+| [payments-and-fintech](payments-and-fintech/README.md) | PCI(Payment Card Industry) scope reduction, double-charge prevention, ledgers, fraud and reconciliation |
 | [postgresql-performance](postgresql-performance/README.md) | Measurement, indexing, queries, vacuum, pooling, replicas, bulk ops, consistency |
+| [realtime-at-scale](realtime-at-scale/README.md) | WebSocket fan-out, pub/sub backplanes, presence, CRDT(Conflict-free Replicated Data Type)/OT(Operational Transformation) |
+| [resilience-patterns](resilience-patterns/README.md) | Timeouts, retries, circuit breakers, bulkheads, load shedding, idempotency, locks, delivery semantics, cascading failure, chaos |
+| [specialized-data-systems](specialized-data-systems/README.md) | Time-series, graph DBs, vector/RAG(Retrieval-Augmented Generation), workflow engines (Temporal / Step Functions) |
+| [sre-and-incidents](sre-and-incidents/README.md) | SLIs/SLOs, error budgets, observability culture, alerting, incident command, postmortems, on-call, drills |
+| [system-design-walkthroughs](system-design-walkthroughs/README.md) | End-to-end designs: URL shortener, feed, chat, geo, rate limiter, notifications, autocomplete, video |
+| [tech-lead-practice](tech-lead-practice/README.md) | Vision/roadmap, design & code reviews, mentoring, debt, estimation, stakeholders, API ownership, build vs buy |
+| [testing-strategy](testing-strategy/README.md) | Pyramid/diamond, what not to automate, contracts, E2E, load/chaos, flakes, quality gates, production verification |
 | [tree-and-index-structures](tree-and-index-structures/README.md) | B+, LSM(Log-Structured Merge), in-memory trees, specialized structures, decision guides |
 
 ---
@@ -31,6 +47,7 @@ flowchart LR
         A[api-design-and-protection]
         R[api-rate-limiting]
         D[deployment-strategies]
+        CD[cicd-and-environments]
     end
     subgraph perf [Performance]
         H[high-throughput-systems]
@@ -40,29 +57,109 @@ flowchart LR
     subgraph advanced [Advanced patterns]
         E[event-sourcing-and-cqrs]
         K[apache-kafka]
+        DP[data-platforms]
+        AD[architecture-decisions]
+        NS[nosql-and-key-value-stores]
+        SDS[specialized-data-systems]
+    end
+    subgraph foundations [Foundations]
+        DSP[distributed-systems-primitives]
+        SDW[system-design-walkthroughs]
+    end
+    subgraph realtime [Realtime and money]
+        RT[realtime-at-scale]
+        PAY[payments-and-fintech]
     end
     subgraph ops [Data layer security]
         S[database-connection-and-security]
+    end
+    subgraph clients [Clients]
+        FB[fullstack-bff-and-clients]
+    end
+    subgraph sec [Org security]
+        ESC[enterprise-security-compliance]
+    end
+    subgraph cost [Cost]
+        F[finops-and-cost]
+    end
+    subgraph reliability [Reliability]
+        SRE[sre-and-incidents]
+        RP[resilience-patterns]
+    end
+    subgraph quality [Quality and leadership]
+        TS[testing-strategy]
+        TLP[tech-lead-practice]
     end
     subgraph tooling [Tooling — meta]
         C[cursor-agents]
     end
     A --> R
     A --> H
+    A --> FB
+    A --> PAY
     H --> P
     P --> T
+    P --> NS
     A --> E
     H --> K
     E --> K
+    H --> DP
+    P --> DP
+    K --> DP
+    DP --> F
+    DP --> SDS
+    H --> F
     P --> S
     A --> S
+    A --> ESC
+    S --> ESC
+    FB --> ESC
+    FB --> RT
     H --> D
     A --> D
+    CD --> D
+    CD --> TS
+    D --> SRE
+    H --> SRE
+    CD --> SRE
+    AD --> A
+    AD --> E
+    AD --> H
+    AD --> RP
+    AD --> FB
+    AD --> TLP
+    AD --> DSP
+    AD --> SDW
+    DSP --> NS
+    DSP --> H
+    SDW --> H
+    SDW --> RT
+    RP --> H
+    RP --> R
+    RP --> SRE
+    RP --> PAY
+    TS --> CD
+    TS --> SRE
+    TLP --> AD
+    TLP --> SRE
+    TLP --> TS
 ```
 
 ---
 
 ## Learning paths
+
+### Tech Lead Fullstack (start here)
+
+Decision-making, resilience, delivery, quality, and leadership — then deepen with the specialist paths below.
+
+1. [architecture-decisions](architecture-decisions/README.md) — system shape, boundaries, ADRs → [§12 decision guide](architecture-decisions/includes/12-decision-guide.md) · [§13 capacity](architecture-decisions/includes/13-capacity-estimation.md)
+2. [distributed-systems-primitives](distributed-systems-primitives/README.md) + [resilience-patterns](resilience-patterns/README.md) — mechanisms and failure survival
+3. [sre-and-incidents](sre-and-incidents/README.md) + [cicd-and-environments](cicd-and-environments/README.md) — operate and ship safely
+4. [testing-strategy](testing-strategy/README.md) + [enterprise-security-compliance](enterprise-security-compliance/README.md) — quality and enterprise readiness
+5. [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) + [tech-lead-practice](tech-lead-practice/README.md) — client seam and people/process
+6. [finops-and-cost](finops-and-cost/README.md) + [data-platforms](data-platforms/README.md) — cost and data beyond one OLTP DB
+7. Practice designs → [system-design-walkthroughs](system-design-walkthroughs/README.md)
 
 ### Ship a public API
 
@@ -71,7 +168,9 @@ Design the contract, protect the edge, connect to the database safely, and deplo
 1. [api-design-and-protection](api-design-and-protection/README.md) — design, gateway ([§3 hub](api-design-and-protection/includes/03-api-gateway.md), [3A request flows](api-design-and-protection/includes/03A-api-gateway-request-flows.md)), auth, checklist
 2. [api-rate-limiting](api-rate-limiting/README.md) — algorithms and where to enforce limits; multi-instance → [§12 distributed](api-rate-limiting/includes/12-distributed-rate-limiting.md)
 3. [database-connection-and-security](database-connection-and-security/README.md) — production credentials and IAM
-4. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green
+4. Large uploads → [api-design §18 object storage](api-design-and-protection/includes/18-object-storage-and-uploads.md)
+5. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green
+6. [resilience-patterns](resilience-patterns/README.md) — timeouts/retries/breakers on every dependency
 
 ### Make it fast
 
@@ -124,7 +223,38 @@ Security review, overload protection, and operational safety nets.
 1. [api-design-and-protection §2 protection](api-design-and-protection/includes/02-api-protection.md) + [§6 threat model](api-design-and-protection/includes/06-threat-model.md)
 2. [api-design-and-protection §12 identity](api-design-and-protection/includes/12-identity-rbac-iam-ad.md)
 3. [database-connection-and-security](database-connection-and-security/README.md) — network, TLS, secrets, cloud identity
-4. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting §12 distributed limiting](api-rate-limiting/includes/12-distributed-rate-limiting.md) (Redis topology, regional quotas, fail-open) + [api-rate-limiting](api-rate-limiting/README.md)
+4. [enterprise-security-compliance](enterprise-security-compliance/README.md) — SDLC gates, supply chain, audit/PII(Personally Identifiable Information), compliance evidence
+5. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting §12 distributed limiting](api-rate-limiting/includes/12-distributed-rate-limiting.md) (Redis topology, regional quotas, fail-open) + [api-rate-limiting](api-rate-limiting/README.md)
+
+### Fullstack UI ↔ API
+
+Own the client seam: BFF(Backend for Frontend) contracts, rendering, performance, and browser auth.
+
+1. [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) — overview → [§3 BFF](fullstack-bff-and-clients/includes/03-bff-ownership.md) → [§1 architecture](fullstack-bff-and-clients/includes/01-frontend-architecture.md)
+2. [fullstack §2 rendering](fullstack-bff-and-clients/includes/02-rendering-tradeoffs.md) + [§4 Web Vitals](fullstack-bff-and-clients/includes/04-web-performance.md)
+3. [fullstack §7 auth UX](fullstack-bff-and-clients/includes/07-auth-ux.md) + [api-design §4 auth](api-design-and-protection/includes/04-auth-model.md)
+4. Live updates → [fullstack §5](fullstack-bff-and-clients/includes/05-realtime-ux.md) + [api-design §10 async](api-design-and-protection/includes/10-async-patterns.md)
+
+### Data platform (beyond one database)
+
+Warehouse/lake, search, Redis roles, caching coherence, and analytics that do not starve OLTP.
+
+1. [data-platforms](data-platforms/README.md) — overview → [§8 decision guide](data-platforms/includes/08-decision-guide.md)
+2. [data-platforms §1 OLTP vs OLAP](data-platforms/includes/01-oltp-vs-olap.md) + [§7 analytics isolation](data-platforms/includes/07-analytics-without-harming-oltp.md)
+3. [high-throughput-systems §15 CDC/search](high-throughput-systems/includes/15-cdc-and-search-indexing.md) + [data-platforms §2 search](data-platforms/includes/02-search-systems.md)
+4. [data-platforms §4 caching coherence](data-platforms/includes/04-caching-end-to-end.md) vs [HTS §4 cache algorithms](high-throughput-systems/includes/04-caching-layers.md)
+5. [data-platforms §6 migration coordination](data-platforms/includes/06-migration-coordination.md) + [PG §15](postgresql-performance/includes/15-schema-migration-checklist.md)
+6. [finops-and-cost §4 retention cost](finops-and-cost/includes/04-storage-and-retention-cost.md)
+
+### FinOps / cost-aware design
+
+Unit economics and architecture tradeoffs for Tech Leads.
+
+1. [finops-and-cost](finops-and-cost/README.md) — overview → [§1 unit economics](finops-and-cost/includes/01-unit-economics.md)
+2. [finops-and-cost §2 drivers](finops-and-cost/includes/02-cloud-cost-drivers.md) + [§3 right-sizing](finops-and-cost/includes/03-right-sizing-and-autoscaling.md)
+3. [finops-and-cost §7 architecture cost](finops-and-cost/includes/07-architecture-cost-tradeoffs.md) + [§8 decision guide](finops-and-cost/includes/08-decision-guide.md)
+4. [high-throughput-systems](high-throughput-systems/README.md) — reduce waste before buying scale
+5. [data-platforms §5 ownership/retention](data-platforms/includes/05-data-ownership-lineage-retention.md)
 
 ### DBA / platform engineer
 
@@ -132,18 +262,109 @@ Operate PostgreSQL safely: connections, migrations, backups, and deploy coupling
 
 1. [postgresql-performance](postgresql-performance/README.md) — measure, index, pool, maintain
 2. [postgresql-performance §15 migrations](postgresql-performance/includes/15-schema-migration-checklist.md) — expand/contract, concurrent indexes
-3. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) — restore drills and WAL(Write-Ahead Log)
-4. [database-connection-and-security](database-connection-and-security/README.md) — credentials, IAM, rotation, DR drills
-5. [deployment-strategies §12–13](deployment-strategies/includes/12-schema-migrations-and-deploy.md) — schema + deploy order, SLO(Service Level Objective) rollback
+3. [data-platforms §6 migration coordination](data-platforms/includes/06-migration-coordination.md) — org-scale CDC/search/warehouse sequencing
+4. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) — restore drills and WAL(Write-Ahead Log)
+5. [database-connection-and-security](database-connection-and-security/README.md) — credentials, IAM, rotation, DR drills
+6. [deployment-strategies §12–13](deployment-strategies/includes/12-schema-migrations-and-deploy.md) — schema + deploy order, SLO(Service Level Objective) rollback
 
 ### On-call / incident response
 
 Triage saturation-first, rollback, and DR when alerts fire.
 
-1. [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md) or [example orders-api runbook](RUNBOOK-EXAMPLE-orders-api.md)
-2. [high-throughput-systems §11 observability](high-throughput-systems/includes/11-observability.md) — triage order, RED(Rate, Errors, Duration)/USE(Utilization, Saturation, Errors), tracing
-3. [deployment-strategies §13 SLO rollback](deployment-strategies/includes/13-slo-rollback-triggers.md)
-4. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) + [database-connection §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md)
+1. [sre-and-incidents](sre-and-incidents/README.md) — SLOs, error budgets, alerting, incident command, postmortems, on-call
+2. [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md) or [example orders-api runbook](RUNBOOK-EXAMPLE-orders-api.md)
+3. [high-throughput-systems §11 observability](high-throughput-systems/includes/11-observability.md) — triage order, RED(Rate, Errors, Duration)/USE(Utilization, Saturation, Errors), tracing
+4. [deployment-strategies §13 SLO rollback](deployment-strategies/includes/13-slo-rollback-triggers.md) + [cicd-and-environments §6](cicd-and-environments/includes/06-rollback-vs-forward-fix.md)
+5. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) + [database-connection §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md)
+
+### Ship safely (CI/CD)
+
+Build once, promote digests, and undo safely.
+
+1. [cicd-and-environments](cicd-and-environments/README.md) — pipeline, promotion, config/secrets, flags, rollback
+2. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green, progressive delivery
+3. [testing-strategy](testing-strategy/README.md) — pyramid, gates, production verification
+4. [sre-and-incidents §1–§2](sre-and-incidents/includes/01-sli-slo-sla.md) — SLOs and error-budget gates on release
+5. [database-connection-and-security](database-connection-and-security/README.md) — secrets and rotation during deploys
+
+### Architecture & resilience
+
+Choose system shape, then survive partial failure.
+
+1. [architecture-decisions](architecture-decisions/README.md) — monolith↔services, DDD, ADRs, data ownership → [§13 capacity estimation](architecture-decisions/includes/13-capacity-estimation.md)
+2. [distributed-systems-primitives](distributed-systems-primitives/README.md) — hashing, IDs, consensus, clocks (mechanisms under CAP/PACELC)
+3. [resilience-patterns](resilience-patterns/README.md) — timeouts, retries, circuit breakers, bulkheads, chaos
+4. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting](api-rate-limiting/README.md)
+5. [sre-and-incidents](sre-and-incidents/README.md) — error budgets when resilience is not enough alone
+
+### System design practice (interview + production)
+
+Clarify requirements, estimate capacity, then design end-to-end — linking into specialist guides for depth.
+
+1. [system-design-walkthroughs §1 how to approach](system-design-walkthroughs/includes/01-how-to-approach.md) + [architecture-decisions §13 capacity](architecture-decisions/includes/13-capacity-estimation.md)
+2. [system-design-walkthroughs](system-design-walkthroughs/README.md) — pick 3–4 problems across bottleneck classes → [§10 decision guide](system-design-walkthroughs/includes/10-decision-guide.md)
+3. Deepen bottlenecks via [high-throughput-systems](high-throughput-systems/README.md), [realtime-at-scale](realtime-at-scale/README.md), [nosql-and-key-value-stores](nosql-and-key-value-stores/README.md)
+
+### NoSQL / alternative primary stores
+
+When PostgreSQL is not the right primary — access patterns first.
+
+1. [nosql-and-key-value-stores](nosql-and-key-value-stores/README.md) — overview → [§1 when to choose](nosql-and-key-value-stores/includes/01-when-to-choose.md)
+2. [§2 access-pattern modeling](nosql-and-key-value-stores/includes/02-access-pattern-modeling.md) (GSI/LSI(Local Secondary Index), hot partitions)
+3. [§3 multi-tenant Dynamo-style](nosql-and-key-value-stores/includes/03-dynamo-style-multi-tenant.md) vs [PG §17 RLS](postgresql-performance/includes/17-row-level-security-multi-tenant.md)
+4. [distributed-systems-primitives §2 consistent hashing](distributed-systems-primitives/includes/02-consistent-hashing.md) when sharding keys matter
+
+### Realtime at scale
+
+Fan-out architecture beyond client UX contracts.
+
+1. [fullstack-bff-and-clients §5 realtime UX](fullstack-bff-and-clients/includes/05-realtime-ux.md) — product/UX contract
+2. [realtime-at-scale](realtime-at-scale/README.md) — connection fan-out → pub/sub backplanes → presence
+3. Collaborative editing → [realtime §4 CRDT/OT](realtime-at-scale/includes/04-crdt-and-ot.md)
+4. Walkthrough practice → [system-design §4 chat](system-design-walkthroughs/includes/04-chat-and-presence.md)
+
+### Specialized data systems
+
+Time-series, graph, vector/RAG, and durable workflows — only when OLTP + search are not enough.
+
+1. [specialized-data-systems](specialized-data-systems/README.md) → [§5 decision guide](specialized-data-systems/includes/05-decision-guide.md)
+2. Observability metrics → [§1 time-series](specialized-data-systems/includes/01-time-series.md) + [sre-and-incidents §4](sre-and-incidents/includes/04-observability-practice.md)
+3. Saga vs Temporal → [§4 workflow engines](specialized-data-systems/includes/04-workflow-engines.md) + [event-sourcing §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
+
+### Payments / fintech
+
+Money movement hardening beyond generic idempotency.
+
+1. [payments-and-fintech](payments-and-fintech/README.md) — [§1 PCI scope](payments-and-fintech/includes/01-pci-scope-reduction.md) → [§2 double-charge](payments-and-fintech/includes/02-idempotency-and-double-charge.md)
+2. [§3 ledger](payments-and-fintech/includes/03-ledger-and-double-entry.md) + [event-sourcing §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
+3. [§4 fraud/reconciliation](payments-and-fintech/includes/04-fraud-and-reconciliation.md) + [enterprise-security-compliance](enterprise-security-compliance/README.md)
+
+### Media uploads and edge networking
+
+Large files, object storage, and the network path that carries them.
+
+1. [api-design §18 object storage](api-design-and-protection/includes/18-object-storage-and-uploads.md) — presigned uploads, multipart, virus scan
+2. [high-throughput-systems §16 networking](high-throughput-systems/includes/16-networking-fundamentals.md) — DNS(Domain Name System), HTTP(Hypertext Transfer Protocol)/2/3, TLS, draining
+3. [HTS §2 entry and edge](high-throughput-systems/includes/02-entry-and-edge.md) + [finops §4 retention cost](finops-and-cost/includes/04-storage-and-retention-cost.md)
+4. Practice → [system-design §9 video](system-design-walkthroughs/includes/09-video-streaming-basics.md)
+
+### Testing strategy
+
+What to automate, where, and how gates stay honest.
+
+1. [testing-strategy](testing-strategy/README.md) — overview → [§9 decision guide](testing-strategy/includes/09-decision-guide.md)
+2. [api-design §15 contracts](api-design-and-protection/includes/15-contract-and-schema-testing.md) + [testing-strategy §3](testing-strategy/includes/03-contract-testing-boundaries.md)
+3. [cicd-and-environments §1](cicd-and-environments/includes/01-ci-pipeline-design.md) + [testing-strategy §7 quality gates](testing-strategy/includes/07-quality-gates.md)
+4. [resilience-patterns §10 chaos](resilience-patterns/includes/10-chaos-and-failure-injection.md) + [testing-strategy §5 load/soak](testing-strategy/includes/05-load-soak-resilience-tests.md)
+
+### Tech Lead practice
+
+Direction, reviews, debt, and cross-team ownership.
+
+1. [tech-lead-practice](tech-lead-practice/README.md) — overview → [§11 decision guide](tech-lead-practice/includes/11-decision-guide.md)
+2. [architecture-decisions §5 ADRs](architecture-decisions/includes/05-adrs-and-design-docs.md) + [tech-lead §2 design reviews](tech-lead-practice/includes/02-design-reviews.md)
+3. [tech-lead §5 debt](tech-lead-practice/includes/05-tech-debt-portfolio.md) + [§7 stakeholders](tech-lead-practice/includes/07-stakeholder-communication.md)
+4. [sre-and-incidents](sre-and-incidents/README.md) — reliability as a leadership outcome
 
 ### B2B / partner API
 
@@ -187,7 +408,7 @@ cd documents && make validate
 
 ## Scope
 
-These guides cover **backend API, data, throughput, and deploy** patterns. They intentionally omit deep dives on frontend, mobile, Kubernetes networking, and generic Terraform — link out to official docs when you adopt those stacks.
+These guides cover **backend API, data, throughput, deploy, architecture decisions, distributed primitives, system-design practice, NoSQL tradeoffs, realtime fan-out, specialized stores, payments/fintech, resilience, SRE(Site Reliability Engineering), CI/CD, testing, enterprise security/compliance, fullstack UI↔API (BFF/clients), FinOps, and Tech Lead practice**. They intentionally omit deep dives on native mobile toolchains, Kubernetes CNI networking, and generic Terraform — link out to official docs when you adopt those stacks. Networking fundamentals (DNS, HTTP versions, TLS placement) are covered at the API/edge layer in [HTS §16](high-throughput-systems/includes/16-networking-fundamentals.md), not as a full cloud-networking curriculum.
 
 [cursor-agents](cursor-agents/README.md) is **meta/tooling** — how to use Cursor agents to work on this corpus; it is not backend architecture. The repo also ships a [`.cursor/`](.cursor/) folder (rules, hooks, doc-reviewer subagent) aligned with that guide.
 

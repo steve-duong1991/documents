@@ -26,7 +26,7 @@ flowchart TD
 | **Start** | Rolling + health checks + backward-compatible migrations |
 | **Add next** | Feature flags for product-facing changes |
 | **Add when risk is high** | Canary releases |
-| **Add when rollback time is SLA-critical** | Blue-green |
+| **Add when rollback time is SLA(Service Level Agreement)-critical** | Blue-green |
 | **Add for major rewrites** | Shadow traffic |
 
 ## Cross-cutting best practices
@@ -46,7 +46,7 @@ flowchart TD
 
 | Stack | Typical pattern |
 |-------|-----------------|
-| **Kubernetes** | Rolling default; Argo Rollouts/Flagger for canary; GitOps(Git Operations) with Argo CD |
+| **Kubernetes** | Rolling default; Argo Rollouts/Flagger for canary; GitOps(Git Operations) with Argo CD(Continuous Delivery) |
 | **AWS ECS/Fargate** | Rolling update; CodeDeploy blue-green for Lambda/ECS |
 | **Serverless** | Alias weighted routing (canary); immutable versions |
 | **VMs + load balancer** | Rolling pool replace or blue-green ASG swap |

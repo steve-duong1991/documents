@@ -2,7 +2,7 @@
 
 Running Kafka in production means monitoring **lag and replication**, securing clients, planning **disaster recovery**, and tying alerts to runbooks.
 
-> **Related:** DR vocabulary → [database-connection §12 DR](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) · Observability patterns → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · Runbook template → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md) · Setup baseline → [§9](09-cluster-setup-and-requirements.md)
+> **Related:** DR vocabulary → [database-connection §12 DR](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) · Observability patterns → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · Runbook template → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md) · Setup baseline → [§9](09-cluster-setup-and-requirements.md) · **Failure catalog and runbooks** → [§13](13-failure-modes-troubleshooting-and-recovery.md)
 
 ---
 
@@ -38,11 +38,11 @@ Running Kafka in production means monitoring **lag and replication**, securing c
 | Symptom | Diagnosis | Fix |
 |---------|-----------|-----|
 | Lag flat, high | Steady overload | Add consumers to partition limit; optimize handler |
-| Lag spike after deploy | Regression or poison pill | Roll back; inspect DLQ |
+| Lag spike after deploy | Regression or poison pill | Roll back; inspect DLQ — [§13 poison pill](13-failure-modes-troubleshooting-and-recovery.md#runbook-poison-pill) |
 | One partition hot lag | Skewed key | Rekey strategy — [§2](02-topics-partitions-and-replication.md) |
 | All groups lag | Broker or disk | Broker ops — disk, network |
 
-Runbook row → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md) consumer lag section.
+Runbook row → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md) consumer lag section. Detailed runbooks → [§13](13-failure-modes-troubleshooting-and-recovery.md).
 
 ---
 
@@ -70,7 +70,7 @@ Details build on [§9 setup](09-cluster-setup-and-requirements.md) — do not du
 | **Quotas** | Byte rate per client id — multi-tenant fairness — [§2](02-topics-partitions-and-replication.md) |
 | **Admin access** | Separate admin principals; audit topic delete |
 
-| Principal | Typical ACL |
+| Principal | Typical ACL(Access Control List) |
 |-----------|-------------|
 | Service producer | `WRITE` on specific topics |
 | Service consumer | `READ` + `GROUP` on specific group |
@@ -103,7 +103,7 @@ flowchart LR
 Failover checklist:
 
 1. Confirm mirror lag acceptable
-2. Point consumers to DR bootstrap servers (or DNS cutover)
+2. Point consumers to DR bootstrap servers (or DNS(Domain Name System) cutover)
 3. Reset or sync consumer groups per runbook
 4. Verify Schema Registry subject parity
 
@@ -138,7 +138,7 @@ Failover checklist:
 | TLS enabled, ACLs open | Principle of least privilege |
 | No DR drill | Failover test to mirror cluster quarterly |
 | Delete topic ACL for apps | Admin-only |
-| Ignore Connect DLQ | Monitor connector dead letter topics |
+| Ignore Connect DLQ | Monitor connector dead letter topics — [§8 DLQ](08-integration-patterns.md#detection-and-alerting) |
 
 ---
 

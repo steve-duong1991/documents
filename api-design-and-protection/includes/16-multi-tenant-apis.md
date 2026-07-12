@@ -2,7 +2,7 @@
 
 SaaS APIs must isolate tenants in auth, data, rate limits, and operations — not only with a `tenant_id` column.
 
-> **Deep dive:** Multi-tenant Kafka topic and ACL patterns → [apache-kafka §2](../../apache-kafka/includes/02-topics-partitions-and-replication.md#multi-tenant-isolation)
+> **Deep dive:** Multi-tenant Kafka topic and ACL(Access Control List) patterns → [apache-kafka §2](../../apache-kafka/includes/02-topics-partitions-and-replication.md#multi-tenant-isolation)
 >
 > **Related:** AuthZ / BOLA(Broken Object-Level Authorization) → [04-auth-model.md](04-auth-model.md) · Rate tiers → [05-rate-limit-tiers.md](05-rate-limit-tiers.md) · Idempotency keys → [13-idempotency.md](13-idempotency.md) · Identity → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · PostgreSQL RLS(Row-Level Security) → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md) · Consistency → [PG §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md)
 

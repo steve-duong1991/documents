@@ -2,7 +2,7 @@
 
 Kafka carries opaque bytes — **serializers** turn objects into values and **Schema Registry** (or conventions) govern evolution across producers and consumers.
 
-> **Related:** Domain event evolution → [ES §8](../../event-sourcing-and-cqrs/includes/08-event-schema-evolution.md) · Contract CI → [api-design §15](../../api-design-and-protection/includes/15-contract-and-schema-testing.md) · Testing → [§12](12-testing-and-verification.md)
+> **Related:** Domain event evolution → [ES §8](../../event-sourcing-and-cqrs/includes/08-event-schema-evolution.md) · Contract CI(Continuous Integration) → [api-design §15](../../api-design-and-protection/includes/15-contract-and-schema-testing.md) · Testing → [§12](12-testing-and-verification.md)
 
 ---
 
@@ -147,7 +147,7 @@ Topic names → [§5 topic naming](05-retention-compaction-and-storage.md#topic-
 | Element | Convention | Example |
 |---------|------------|---------|
 | **Record name** | PascalCase, past tense | `OrderCreated`, `PaymentFailed` |
-| **Namespace** | Reverse-DNS + domain | `com.example.commerce.order` |
+| **Namespace** | Reverse-DNS(Domain Name System) + domain | `com.example.commerce.order` |
 | **Field names** | `snake_case` | `order_id`, `customer_id` |
 | **Enums** | PascalCase type; `UPPER` values | `OrderStatus.PENDING` |
 | **Optional fields** | Union with `null` + default | `["null", "string"]`, `"default": null` |
@@ -257,7 +257,7 @@ Map `type` ↔ `event_type`, `id` ↔ `event_id`, `time` ↔ `occurred_at`. Pref
 | **Money** | `long` minor units + `currency` string — never `float` / `double` |
 | **IDs** | `string` with documented prefix (`ord_`, `cus_`, `evt_`) |
 | **Large blobs** | S3/GCS URI in value; metadata only on the bus — [§5 message size limits](05-retention-compaction-and-storage.md#message-size-limits) |
-| **PII** | Separate topic or field-level encryption; document in schema description |
+| **PII(Personally Identifiable Information)** | Separate topic or field-level encryption; document in schema description |
 | **Deletes** | Explicit tombstone or `*.deleted` event — not silent omission |
 
 ---

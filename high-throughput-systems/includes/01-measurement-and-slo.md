@@ -86,7 +86,7 @@ Pair with product **rate tiers** — [api-design §5](../../api-design-and-prote
 
 | Tool | Best for |
 |------|----------|
-| **k6** | Scriptable HTTP(Hypertext Transfer Protocol); CI-friendly; threshold assertions |
+| **k6** | Scriptable HTTP(Hypertext Transfer Protocol); CI(Continuous Integration)-friendly; threshold assertions |
 | **Locust** | Python scenarios; interactive ramp |
 | **Gatling** | JVM shops; detailed reports |
 | **Vegeta** | Quick constant-rate HTTP flood |

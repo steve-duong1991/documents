@@ -6,7 +6,7 @@
 
 ## At a glance
 
-| | GitOps | Traditional CI/CD push |
+| | GitOps | Traditional CI(Continuous Integration)/CD(Continuous Delivery) push |
 |--|--------|------------------------|
 | **Trigger** | Git commit merged → controller reconciles | Pipeline SSH/API(Application Programming Interface) deploys to servers |
 | **Source of truth** | Git manifest (desired state) | Often last pipeline run + manual drift |

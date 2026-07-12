@@ -4,7 +4,7 @@ How traffic enters your API stack: what load balancers and API gateways each do,
 
 > **Scope:** **Architecture lens** — LB vs gateway, request flows, product selection. Throughput tips (CDN(Content Delivery Network) cache, hop count, TLS(Transport Layer Security) CPU) → [HTS §2 Entry and edge](../../high-throughput-systems/includes/02-entry-and-edge.md).
 >
-> **Related:** Rate-limit deployment layers → [api-rate-limiting §7](../../api-rate-limiting/includes/07-deployment-layers.md) · Throughput tips → [HTS §2 Entry and edge](../../high-throughput-systems/includes/02-entry-and-edge.md)
+> **Related:** Rate-limit deployment layers → [api-rate-limiting §7](../../api-rate-limiting/includes/07-deployment-layers.md) · Throughput tips → [HTS §2 Entry and edge](../../high-throughput-systems/includes/02-entry-and-edge.md) · DNS(Domain Name System), protocol, and TLS placement depth → [HTS §16 Networking fundamentals](../../high-throughput-systems/includes/16-networking-fundamentals.md)
 
 ## Articles in this section
 
@@ -111,7 +111,7 @@ Modern **L7 load balancers** (AWS ALB, NGINX) can do path routing, TLS, and WAF(
 | Mistake | Fix |
 |---------|-----|
 | Gateway as only auth layer | App still enforces object-level AuthZ |
-| One-time OpenAPI import, never synced | CI verify routes match spec |
+| One-time OpenAPI import, never synced | CI(Continuous Integration) verify routes match spec |
 | LB only for public API products | Add gateway for auth, tiers, versioning |
 | Policy junk drawer in gateway | Keep business rules in app; gateway for cross-cutting |
 | No health check distinction | Readiness must include DB/cache dependencies |

@@ -181,7 +181,7 @@ Quick picks:
 | Approach | What it does |
 |----------|--------------|
 | Volume/disk encryption | EBS, managed DB encryption |
-| Encrypted backups | Backups encrypted with KMS-managed keys |
+| Encrypted backups | Backups encrypted with KMS(Key Management Service)-managed keys |
 | Customer-managed keys (CMK) | You control encryption keys |
 
 ---

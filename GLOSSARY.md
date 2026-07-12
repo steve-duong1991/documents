@@ -28,7 +28,9 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Consumer group** | Cooperating Kafka consumers sharing partition assignment and offsets | [apache-kafka §4](apache-kafka/includes/04-consumers-and-consumer-groups.md) |
 | **Connection pool** | Reuse DB connections (PgBouncer, RDS Proxy) instead of one session per request | [PG §7](postgresql-performance/includes/07-connection-management.md), [database-connection](database-connection-and-security/README.md) |
 | **CQRS(Command Query Responsibility Segregation)** | Separate write model and read models | [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) |
+| **Data platform** | Set of stores beyond one OLTP DB — warehouse/lake, search, cache, bus — with ownership and sync paths | [data-platforms](data-platforms/README.md) |
 | **Dead letter queue (DLQ)** | Queue for messages that failed max retries | [HTS §6](high-throughput-systems/includes/06-async-queues-workers.md), [§7](high-throughput-systems/includes/07-streaming-pipelines.md) |
+| **FinOps(Cloud Financial Operations)** | Engineering practice treating cloud cost as a design and ops constraint | [finops-and-cost](finops-and-cost/README.md) |
 | **Error budget** | Allowed unreliability below SLO (100% − SLO) | [HTS §11](high-throughput-systems/includes/11-observability.md) |
 | **Event sourcing** | State from append-only domain events | [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) |
 | **Eventual consistency** | Reads may lag writes; acceptable when business tolerates staleness | [PG §14](postgresql-performance/includes/14-consistency-promises-and-costs.md), [ES §2](event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md) |
@@ -48,6 +50,8 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Materialized view** | PostgreSQL snapshot of a query; fast reads until `REFRESH` | [PG §11](postgresql-performance/includes/11-read-scaling-and-caching.md#materialized-views), [§9](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md#materialized-views) |
 | **Multi-tenant** | One deployment serves many customer orgs; data isolated per tenant | [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md) |
 | **Optimistic concurrency** | Detect conflicting writes via version/check; retry on conflict | [ES §1](event-sourcing-and-cqrs/includes/01-core-concepts.md), [PG §12](postgresql-performance/includes/12-bulk-operations-and-concurrency.md) |
+| **OLAP(Online Analytical Processing)** | Analytical workloads — scans, aggregates, history; typically warehouse/lake | [data-platforms §1](data-platforms/includes/01-oltp-vs-olap.md) |
+| **OLTP(Online Transaction Processing)** | Transactional workloads — short reads/writes, constraints; typically primary PostgreSQL | [data-platforms §1](data-platforms/includes/01-oltp-vs-olap.md), [postgresql-performance](postgresql-performance/README.md) |
 | **Offset (Kafka)** | Position of a record in a partition log | [apache-kafka §4](apache-kafka/includes/04-consumers-and-consumer-groups.md) |
 | **Outbox pattern** | DB table + relay for reliable event publish | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md), [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
 | **Partition (Kafka)** | Ordered sub-stream within a topic; unit of parallelism | [apache-kafka §2](apache-kafka/includes/02-topics-partitions-and-replication.md) |
@@ -79,7 +83,9 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Snapshot (ES)** | Cached aggregate state at version N; not source of truth | [ES §3](event-sourcing-and-cqrs/includes/03-storage-and-projections.md) |
 | **Stateless app tier** | No session in process memory; horizontal scale | [api-design §11](api-design-and-protection/includes/11-stateless-architecture.md) |
 | **Tenant** | One customer org (company, workspace) on shared SaaS(Software as a Service) infrastructure | [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md#what-is-a-tenant) |
+| **TCO(Total Cost of Ownership)** | Invoice plus engineering time and risk — used in build vs managed choices | [finops §5](finops-and-cost/includes/05-build-vs-managed-cost.md) |
 | **Thundering herd** | Same as cache stampede — synchronized miss storm on hot keys | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
+| **Unit economics (infra)** | Cost per request, tenant, or feature used to judge design margin | [finops §1](finops-and-cost/includes/01-unit-economics.md) |
 | **Topic (Kafka)** | Named stream of partitioned logs | [apache-kafka §2](apache-kafka/includes/02-topics-partitions-and-replication.md) |
 | **Token bucket** | Rate limit algorithm allowing controlled bursts | [api-rate-limiting §4](api-rate-limiting/includes/04-token-bucket.md) |
 | **Transactional outbox** | Same transaction: business write + outbox row | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
@@ -87,3 +93,13 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Upcasting** | Transform historical event schema on read (v1 → v2) | [ES §8](event-sourcing-and-cqrs/includes/08-event-schema-evolution.md) |
 | **USE(Utilization, Saturation, Errors) method** | Utilization, saturation, errors — monitor resources | [HTS §11](high-throughput-systems/includes/11-observability.md) |
 | **Write-through cache** | Update cache and DB together on write | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
+| **Consistent hashing** | Hash ring with virtual nodes so remapping touches few keys when nodes change | [distributed-systems-primitives §2](distributed-systems-primitives/includes/02-consistent-hashing.md) |
+| **CRDT(Conflict-free Replicated Data Type)** | Mergeable data type for concurrent edits without central locking | [realtime-at-scale §4](realtime-at-scale/includes/04-crdt-and-ot.md) |
+| **GSI(Global Secondary Index)** | Alternate partition/sort key projection on a key-value table (DynamoDB-style) | [nosql §2](nosql-and-key-value-stores/includes/02-access-pattern-modeling.md) |
+| **Hot partition** | Disproportionate traffic on one shard/key range; throughput ceiling | [nosql §2](nosql-and-key-value-stores/includes/02-access-pattern-modeling.md), [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
+| **Presigned URL** | Time-limited signed URL for direct client↔object-storage upload/download | [api-design §18](api-design-and-protection/includes/18-object-storage-and-uploads.md) |
+| **Snowflake ID** | Time-sortable unique ID from timestamp + worker + sequence bits | [distributed-systems-primitives §3](distributed-systems-primitives/includes/03-unique-ids.md) |
+| **Double-entry ledger** | Every money movement is balanced debit + credit journal lines | [payments §3](payments-and-fintech/includes/03-ledger-and-double-entry.md) |
+| **PCI DSS(Payment Card Industry Data Security Standard)** | Cardholder-data security standard; reduce scope via tokenization/hosted fields | [payments §1](payments-and-fintech/includes/01-pci-scope-reduction.md) |
+| **RAG(Retrieval-Augmented Generation)** | Retrieve relevant chunks (often via vector ANN(Approximate Nearest Neighbor)) then generate with an LLM | [specialized-data-systems §3](specialized-data-systems/includes/03-vector-and-rag.md) |
+| **Capacity estimation** | Back-of-envelope QPS, storage, connections, and memory before designing | [architecture-decisions §13](architecture-decisions/includes/13-capacity-estimation.md) |

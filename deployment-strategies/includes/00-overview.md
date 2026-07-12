@@ -18,7 +18,7 @@
 | Product experiment (not deploy safety) | [§5 A/B testing](05-ab-testing.md) | Pair with canary — not instead of |
 | Declarative K8s delivery | [§9 GitOps](09-gitops.md) | Progressive sync per environment |
 
-**Rule of thumb:** Most teams run **rolling + expand/contract migrations + feature flags**. Add **canary** when error budget is tight; add **blue-green** when rollback SLA is seconds.
+**Rule of thumb:** Most teams run **rolling + expand/contract migrations + feature flags**. Add **canary** when error budget is tight; add **blue-green** when rollback SLA(Service Level Agreement) is seconds.
 
 ---
 

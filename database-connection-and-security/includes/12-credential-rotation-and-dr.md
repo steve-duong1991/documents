@@ -96,7 +96,7 @@ Record **actual RTO** from drill — update on-call runbook.
 | **Schema migrations history** | Rebuild empty DB correctly |
 | **Vault policies / IAM bindings** | Restore access paths |
 | **PgBouncer / proxy config** | Pool rules match app |
-| **Encryption keys** | KMS keys and rotation state |
+| **Encryption keys** | KMS(Key Management Service) keys and rotation state |
 
 ---
 

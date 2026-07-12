@@ -90,7 +90,7 @@ sequenceDiagram
 
 | Strategy | When to use |
 |----------|-------------|
-| **Accept lag** | List views, dashboards — document SLA |
+| **Accept lag** | List views, dashboards — document SLA(Service Level Agreement) |
 | **`202` + poll** | Client must see own write immediately — reuse [async job pattern](../../api-design-and-protection/includes/10-async-patterns.md) |
 | **Read-your-writes** | Route recent IDs to write-side or sync projector for that aggregate |
 | **`409` + retry** | Command conflicts — client refreshes and retries |

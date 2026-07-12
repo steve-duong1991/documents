@@ -92,7 +92,7 @@ Request → validate token → derive tenant_id → SET app.tenant_id → querie
 |------|-------------|-----|
 | **`app_api`** | Application queries | Policies enforced |
 | **`app_readonly`** | Read replicas / reports | Policies enforced |
-| **`app_migration`** | Schema migrations | Often `BYPASSRLS` or superuser — CI only |
+| **`app_migration`** | Schema migrations | Often `BYPASSRLS` or superuser — CI(Continuous Integration) only |
 | **`postgres` superuser** | Break-glass admin | Bypasses RLS — never for app |
 
 ```sql

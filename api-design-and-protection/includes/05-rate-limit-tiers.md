@@ -27,7 +27,7 @@ flowchart LR
 | **Free** | Trial / dev | 60 | 10,000 | 10 | 5/min | 100K |
 | **Standard** | Paid small team | 600 | 500,000 | 100 | 30/min | 5M |
 | **Professional** | Production app | 3,000 | 5,000,000 | 500 | 150/min | 50M |
-| **Enterprise** | Contract | Custom | Custom | Custom | Custom SLA | Unlimited† |
+| **Enterprise** | Contract | Custom | Custom | Custom | Custom SLA(Service Level Agreement) | Unlimited† |
 | **Internal** | Your services | 10,000+ | N/A | High | Separate pool | N/A |
 
 \*Expensive: reports, search, bulk export, ML inference, file processing  

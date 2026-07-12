@@ -12,8 +12,8 @@
 |--|------------|--------|
 | **Traffic** | 0% → 100% instant flip | 5% → 25% → 100% gradual |
 | **Capacity** | ~2× during cutover window | ~1× (two versions, partial traffic) |
-| **Rollback** | Flip LB/DNS back — seconds | Route 0% to new version |
-| **Best when** | Rollback SLA is seconds | Validate under real load incrementally |
+| **Rollback** | Flip LB/DNS(Domain Name System) back — seconds | Route 0% to new version |
+| **Best when** | Rollback SLA(Service Level Agreement) is seconds | Validate under real load incrementally |
 
 ---
 

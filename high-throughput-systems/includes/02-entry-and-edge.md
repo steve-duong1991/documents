@@ -4,7 +4,7 @@ Absorb traffic **before it hits origin** — CDN(Content Delivery Network) cache
 
 > **Scope:** **Throughput lens** — reduce origin RPS, shed abuse early, minimize hops and TLS(Transport Layer Security) CPU on the hot path. LB vs gateway definitions, request flows, and product selection → [api-design §3 Gateway](../../api-design-and-protection/includes/03-api-gateway.md).
 >
-> **Related:** Full gateway + LB guide → [api-design §3 Gateway](../../api-design-and-protection/includes/03-api-gateway.md) · Edge rate limits → [api-rate-limiting §7](../../api-rate-limiting/includes/07-deployment-layers.md)
+> **Related:** Full gateway + LB guide → [api-design §3 Gateway](../../api-design-and-protection/includes/03-api-gateway.md) · Edge rate limits → [api-rate-limiting §7](../../api-rate-limiting/includes/07-deployment-layers.md) · DNS(Domain Name System), protocol versions, anycast, connection draining → [§16 Networking fundamentals](16-networking-fundamentals.md)
 
 ---
 

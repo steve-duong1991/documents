@@ -153,7 +153,7 @@ Stateless APIs often fetch context from a DB or cache on every request. That mak
 | Scenario | Better approach |
 |----------|-----------------|
 | **WebSocket / SSE(Server-Sent Events) connection state** | Stateful connection gateway + stateless business logic behind it |
-| **In-memory chat/game room** | Dedicated stateful service or CRDT/sync layer |
+| **In-memory chat/game room** | Dedicated stateful service or CRDT(Conflict-free Replicated Data Type)/sync layer |
 | **Heavy model loaded once per GPU** | Stateful worker pool with routing to warm instances |
 | **Legacy apps with server sessions** | Sticky sessions temporarily → migrate to external session store (Redis) |
 | **Strong immediate revocation required** | Short-lived tokens + introspection endpoint or session store lookup |

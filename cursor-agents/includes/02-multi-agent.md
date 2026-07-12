@@ -15,7 +15,7 @@ Multiple **independent** agent sessions, each with its own task, model, and work
 - Splitting unrelated work (frontend + backend + tests simultaneously)
 - Research while implementation runs elsewhere
 - Long-running cloud work while you keep coding locally
-- PR babysitting, CI fixes, codebase exploration in the background
+- PR babysitting, CI(Continuous Integration) fixes, codebase exploration in the background
 
 ### How to use
 

@@ -163,7 +163,7 @@ For most **public SaaS APIs**:
 3. **Gateway**: Kong or AWS API Gateway (authN, tier rate limits, routing)
 4. **Load balancer**: ALB or equivalent per service group (scale + health checks)
 5. **App**: OAuth for users, scoped API keys for partners; object-level AuthZ in code
-6. **Operate**: contract tests in CI, monitoring on 401/403/429/5xx, key rotation
+6. **Operate**: contract tests in CI(Continuous Integration), monitoring on 401/403/429/5xx, key rotation
 
 See [Load Balancer, API Gateway & Entry Architecture](03-api-gateway.md) for flows and stack choices.
 

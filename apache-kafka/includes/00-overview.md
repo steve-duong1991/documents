@@ -73,6 +73,7 @@ Typical architecture: **PostgreSQL = source of truth** → **outbox or CDC** →
 | 10 | Operations, DR, security | [10-operations-dr-security-and-observability.md](10-operations-dr-security-and-observability.md) |
 | 11 | Decision guide | [11-decision-guide-and-common-mistakes.md](11-decision-guide-and-common-mistakes.md) |
 | 12 | Testing | [12-testing-and-verification.md](12-testing-and-verification.md) |
+| 13 | Failure modes and recovery | [13-failure-modes-troubleshooting-and-recovery.md](13-failure-modes-troubleshooting-and-recovery.md) |
 
 ---
 
@@ -85,6 +86,8 @@ Typical architecture: **PostgreSQL = source of truth** → **outbox or CDC** →
 | How do domain events evolve over years? | [ES §8 schema evolution](../../event-sourcing-and-cqrs/includes/08-event-schema-evolution.md) |
 | How do sagas use partition keys? | [ES §7C sagas ops](../../event-sourcing-and-cqrs/includes/07C-sagas-operations.md) |
 | CDC to search index | [HTS §15 CDC](../../high-throughput-systems/includes/15-cdc-and-search-indexing.md) |
+| Poison pill, DLQ replay, offset recovery | [§13 failure modes](13-failure-modes-troubleshooting-and-recovery.md) |
+| Where to store failed messages (DB vs Kafka) | [§8 storage decision](08-integration-patterns.md#where-to-store-messages-recovery-and-retry) |
 
 ---
 
@@ -96,3 +99,4 @@ Typical architecture: **PostgreSQL = source of truth** → **outbox or CDC** →
 | One partition for all traffic | Scale partitions with throughput |
 | Skip Schema Registry in prod | Pick format in [§6](06-serialization-and-schema-evolution.md); enforce compatibility |
 | No consumer lag monitoring | Alert on lag **growth rate** — [§10](10-operations-dr-security-and-observability.md) |
+| No runbook for poison pills / DLQ | [§13 failure modes](13-failure-modes-troubleshooting-and-recovery.md) |

@@ -13,7 +13,7 @@
 | **Design** | Separate rate limits for expensive POST vs job status GET |
 | **Design** | Webhook `callback_url` SSRF(Server-Side Request Forgery)-protected; outbound HMAC(Hash-based Message Authentication Code) signed |
 | **OpenAPI** | Spec published; Swagger UI or portal live |
-| **OpenAPI** | CI contract tests pass; Spectral lint clean |
+| **OpenAPI** | CI(Continuous Integration) contract tests pass; Spectral lint clean |
 | **Auth** | OAuth(Open Authorization) + PKCE(Proof Key for Code Exchange) for user apps; scoped API(Application Programming Interface) keys for partners |
 | **AuthZ** | Object ownership on every `{id}` route (BOLA(Broken Object-Level Authorization)) |
 | **AuthZ** | Writable field whitelist on PATCH/POST |

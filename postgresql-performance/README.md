@@ -40,3 +40,5 @@ A practical reference for PostgreSQL performance — measurement, indexing, quer
 | [deployment-strategies](../deployment-strategies/README.md) | Safe rollout during schema and API(Application Programming Interface) changes |
 | [deployment-strategies §12](../deployment-strategies/includes/12-schema-migrations-and-deploy.md) | Expand/contract with rolling deploy |
 | [apache-kafka](../apache-kafka/README.md) | Read models and search indexes fed by Kafka consumers; Connect credentials |
+| [data-platforms](../data-platforms/README.md) | Warehouse/search/Redis roles; analytics off primary; org-scale migration coordination |
+| [finops-and-cost](../finops-and-cost/README.md) | Right-size DB before horizontal sprawl; retention and backup cost |

@@ -24,6 +24,7 @@ A practical reference for building systems that handle high request, event, and 
 | 13 | [Multi-region read routing](includes/13-multi-region-read-routing.md) |
 | 14 | [Message brokers and queues](includes/14-message-brokers-and-queues.md) |
 | 15 | [CDC and search indexing](includes/15-cdc-and-search-indexing.md) |
+| 16 | [Networking fundamentals](includes/16-networking-fundamentals.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
@@ -39,3 +40,5 @@ A practical reference for building systems that handle high request, event, and 
 | [apache-kafka](../apache-kafka/README.md) | Kafka internals, schema, setup, producers/consumers, integration |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event log, outbox, projections |
 | [database-connection-and-security](../database-connection-and-security/README.md) | DB credentials, IAM(Identity and Access Management), PgBouncer |
+| [data-platforms](../data-platforms/README.md) | Warehouse/lake, search coherence, Redis roles; caching end-to-end vs §4 algorithms |
+| [finops-and-cost](../finops-and-cost/README.md) | Unit economics of scale; right-sizing before buying capacity |

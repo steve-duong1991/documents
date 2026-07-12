@@ -79,4 +79,3 @@ flowchart TD
 ```
 
 **Best practice:** webhook primary, `GET /jobs/{id}` always available as source of truth.
-

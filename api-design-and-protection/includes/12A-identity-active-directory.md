@@ -156,7 +156,7 @@ Aligns with the [layered auth flow](04-auth-model.md#layered-auth-flow): gateway
 | **Type** | Framework + tooling | Access **model** | Directory + auth **product** |
 | **Answers** | Full identity lifecycle | "What can this role do?" | "Who is this user in the org?" |
 | **Scope** | People, apps, cloud, APIs | Permissions via roles | Typically enterprise Windows / hybrid |
-| **Typical artifacts** | Policies, MFA, audit, provisioning | Roles, bindings, permissions | Users, groups, OUs, GPO, DCs |
+| **Typical artifacts** | Policies, MFA(Multi-Factor Authentication), audit, provisioning | Roles, bindings, permissions | Users, groups, OUs, GPO, DCs |
 | **In API context** | Gateway auth, OAuth, lifecycle | JWT roles/scopes, usage plans | SSO source; groups → API roles |
 
 Hub comparison → [12 — IAM, RBAC, and AD](12-identity-rbac-iam-ad.md#iam-rbac-and-ad--comparison).
@@ -203,4 +203,3 @@ API access checklist and mistakes → [12B — API design takeaways](12B-identit
 | Skip **object-level AuthZ** because RBAC passed | App still checks resource ownership ([Auth model — layered flow](04-auth-model.md#layered-auth-flow)) |
 
 General API identity pitfalls (JWT TTL, offboarding, service accounts) → [12B — Common mistakes](12B-identity-enterprise-api.md#common-mistakes).
-

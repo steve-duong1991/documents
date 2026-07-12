@@ -72,7 +72,7 @@ Route 53 → CloudFront + WAF → API Gateway → ALB → ECS Fargate / EKS / La
 | Gateway | AWS API Gateway (HTTP API for simple; REST(Representational State Transfer) for usage plans) |
 | LB | ALB for containers; NLB for raw TCP |
 | Auth | Cognito, Lambda authorizers, IAM (internal) |
-| IaC | Terraform or AWS CDK |
+| IaC(Infrastructure as Code) | Terraform or AWS CDK |
 
 #### Kubernetes
 
@@ -152,6 +152,6 @@ Some gateways (Kong, Azure APIM, AWS) can **import OpenAPI** to auto-create rout
 ### Cons
 
 - Policies (rate limits, auth) still configured separately
-- Spec drift if import is one-time only — use CI to verify
+- Spec drift if import is one-time only — use CI(Continuous Integration) to verify
 
 See [OpenAPI / Swagger](07-openapi-swagger.md) for the full lifecycle role of the spec.

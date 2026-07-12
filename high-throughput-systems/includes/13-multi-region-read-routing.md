@@ -31,7 +31,7 @@ flowchart LR
 | Metric | Typical target |
 |--------|----------------|
 | **RPO(Recovery Point Objective)** | Replication lag window (seconds–minutes) |
-| **RTO(Recovery Time Objective)** | DNS + promote + app config (minutes–hours) |
+| **RTO(Recovery Time Objective)** | DNS(Domain Name System) + promote + app config (minutes–hours) |
 
 Run DR drill quarterly → [database-connection-and-security §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md).
 

@@ -42,7 +42,7 @@ flowchart TD
 
 | Check | Command / dashboard |
 |-------|---------------------|
-| Last deploy | Argo CD `orders-api` · `build_id` metric |
+| Last deploy | Argo CD(Continuous Delivery) `orders-api` · `build_id` metric |
 | Error by route | Grafana `orders-api` by `route` |
 | DB pool wait | `pg_stat_activity` · pool metric `wait_count` |
 | Consumer lag | SQS `orders-export` approximate age |

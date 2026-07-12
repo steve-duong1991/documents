@@ -1,6 +1,6 @@
 # PaaS / platform-managed database
 
-> The platform (Supabase, Neon, Railway, Heroku, PlanetScale, etc.) hosts the database and gives you a **connection string** — credentials managed in the provider dashboard or CI, not in application source code.
+> The platform (Supabase, Neon, Railway, Heroku, PlanetScale, etc.) hosts the database and gives you a **connection string** — credentials managed in the provider dashboard or CI(Continuous Integration), not in application source code.
 
 > **Related:** Production hardening path → [§5 Secret manager](05-secret-manager-password.md) · When to leave PaaS → [§13 Decision guide](13-decision-guide.md) · Security layers gap → [§2 Production security](02-prod-db-security.md)
 

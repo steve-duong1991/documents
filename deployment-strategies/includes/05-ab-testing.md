@@ -11,7 +11,7 @@
 | Pattern | Primary question | Who owns it | Rollback lever |
 |---------|------------------|-------------|----------------|
 | **A/B test** | Which variant wins? (product metric) | Product / data science | Turn off experiment flag |
-| **Canary deploy** | Is new **code** safe in prod? (SLO, errors) | Platform / SRE | Route 0% to new version |
+| **Canary deploy** | Is new **code** safe in prod? (SLO, errors) | Platform / SRE(Site Reliability Engineering) | Route 0% to new version |
 | **Feature flag (release)** | When to expose shipped code? | Product + platform | Flag OFF → old behavior |
 | **Feature flag (experiment)** | Which UX/logic variant for this cohort? | Product | End experiment; pick winner |
 
@@ -154,7 +154,7 @@ Typical sequence:
 |---------|-----|
 | Using A/B as the only deploy safety mechanism | Pair with canary/rolling + [§13 SLO rollback](13-slo-rollback-triggers.md) |
 | Enabling experiment and deploy in one step | Separate code deploy from flag/experiment enable ([§7](07-feature-flags.md)) |
-| No privacy review for logged experiment data | Treat experiment events like production PII |
+| No privacy review for logged experiment data | Treat experiment events like production PII(Personally Identifiable Information) |
 | Canary % confused with A/B variant % | Document: canary = **version** routing; A/B = **behavior** within a version |
 | Experiment flag lives forever | End experiment; delete losing branch ([§7 flag debt](07-feature-flags.md#failure-modes)) |
 | Different variants call different API versions | Prefer one version + flag; avoids schema drift during experiment |

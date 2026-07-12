@@ -93,7 +93,7 @@ At-least-once messaging + client retries mean **every saga step runs at least on
 
 ### Correlation and saga IDs
 
-- **`saga_id`** — one UUID per business process instance (e.g. one checkout).
+- **`saga_id`** — one UUID(Universally Unique Identifier) per business process instance (e.g. one checkout).
 - **`correlation_id`** — ties all messages/logs for tracing (often same as `saga_id`).
 - **`causation_id`** — parent message/event that caused this step.
 

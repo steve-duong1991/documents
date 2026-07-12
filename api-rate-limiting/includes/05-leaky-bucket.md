@@ -73,4 +73,4 @@ Use **Token Bucket** when you want to **allow bursts** but cap the average rate 
 | Unbounded queue depth | Cap queue size; reject with `429` when full |
 | Leaky bucket at edge for user-facing latency | Prefer token bucket or sliding window at API; reserve leaky for downstream protection |
 | Same leak rate for reads and writes | Tighter leak rate on write paths |
-| Leaky bucket without timeout on queued requests | Return `504` or `429` when wait exceeds SLA |
+| Leaky bucket without timeout on queued requests | Return `504` or `429` when wait exceeds SLA(Service Level Agreement) |

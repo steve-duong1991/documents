@@ -95,7 +95,7 @@ Pair with [api-design §15 contract testing](../../api-design-and-protection/inc
 | `UPDATE events SET payload = ...` | Upcast on read |
 | Deploy writer before reader | Two-phase deploy: readers first |
 | No version field | Add `schema_version` early |
-| Skip upcaster tests | Fixture per version in CI |
+| Skip upcaster tests | Fixture per version in CI(Continuous Integration) |
 
 ---
 

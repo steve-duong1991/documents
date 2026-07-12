@@ -55,7 +55,7 @@ flowchart TB
 | # | Risk | Example attack | Control |
 |---|------|----------------|---------|
 | 1 | **Broken object-level authorization (BOLA)** | `GET /v1/orders/999` (not yours) | Owner check on every `{id}` route |
-| 2 | **Broken authentication** | Leaked API key, weak OAuth(Open Authorization) | MFA for admin, key rotation, PKCE(Proof Key for Code Exchange) |
+| 2 | **Broken authentication** | Leaked API key, weak OAuth(Open Authorization) | MFA(Multi-Factor Authentication) for admin, key rotation, PKCE(Proof Key for Code Exchange) |
 | 3 | **Broken object property-level authorization** | PATCH sets `"role":"admin"` | Whitelist writable fields |
 | 4 | **Unrestricted resource consumption** | Flood `POST /search` | Tier limits, pagination caps, async queues |
 | 5 | **Broken function-level authorization** | Regular user calls `/admin` | RBAC on every route; separate admin surface |
@@ -92,7 +92,7 @@ flowchart LR
 ## Threat modeling workshop (minimal)
 
 1. **Draw data flow** — client → edge → gateway → service → DB
-2. **List assets** — user PII, payment data, API keys, admin functions
+2. **List assets** — user PII(Personally Identifiable Information), payment data, API keys, admin functions
 3. **List actors** — anonymous, authenticated user, partner, insider, attacker
 4. **Apply STRIDE** per component
 5. **Map to OWASP API** for API-specific gaps
@@ -110,7 +110,7 @@ flowchart LR
 ## Cons
 
 - Time-consuming if done as heavy documentation only
-- Can become stale if not tied to CI/CD and reviews
+- Can become stale if not tied to CI(Continuous Integration)/CD(Continuous Delivery) and reviews
 - Over-focus on theoretical threats vs actual abuse patterns
 - Not a substitute for penetration testing and monitoring
 

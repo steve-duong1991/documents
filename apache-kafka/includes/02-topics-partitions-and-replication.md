@@ -91,7 +91,7 @@ Kafka is **not** a tenant authZ layer — enforce tenant in application code and
 
 | Pattern | Isolation | Tradeoff |
 |---------|-----------|----------|
-| **Topic per tenant** | Strong; ACL per topic | Topic explosion; ops overhead at 1000+ tenants |
+| **Topic per tenant** | Strong; ACL(Access Control List) per topic | Topic explosion; ops overhead at 1000+ tenants |
 | **Shared topic, `tenant_id` in key** | Few topics; partition by tenant | Hot tenant → hot partition |
 | **Tenant in payload only** | Weakest | Cross-tenant leak if consumer bug; avoid |
 

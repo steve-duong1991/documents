@@ -38,7 +38,7 @@ flowchart LR
 - Keep flags short-lived; delete after full rollout
 - Avoid flags deep in hot paths without performance testing
 - Protect flag changes with audit logs and RBAC(Role-Based Access Control)
-- Test with flag ON and OFF in CI
+- Test with flag ON and OFF in CI(Continuous Integration)
 
 ---
 

@@ -164,7 +164,7 @@ Use `event_id` for partner deduplication — mirrors idempotency on the command 
 | Metric | Alert when |
 |--------|------------|
 | Outbox lag (unpublished count) | Growing backlog |
-| Projector lag (events behind head) | Read model stale beyond SLA |
+| Projector lag (events behind head) | Read model stale beyond SLA(Service Level Agreement) |
 | Consumer error rate | DLQ(Dead Letter Queue) filling |
 | Webhook delivery failures | Partner integration broken |
 

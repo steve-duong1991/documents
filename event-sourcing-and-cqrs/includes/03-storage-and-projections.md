@@ -170,7 +170,7 @@ Test on staging with production-sized stream **before** production incident.
 
 | Requirement | Approach |
 |-------------|----------|
-| **Right to erasure** | Tombstone event + crypto-shred PII keys; legal review |
+| **Right to erasure** | Tombstone event + crypto-shred PII(Personally Identifiable Information) keys; legal review |
 | **Legal hold** | No delete; archive only |
 | **Retention policy** | Hot PG window + S3 archive; document in compliance |
 

@@ -36,7 +36,7 @@ flowchart LR
 | **Task** | Parallel units of connector work |
 | **Worker** | JVM running connectors |
 | **SMT(Simple Message Transform)** | Lightweight map/filter in pipeline |
-| **Dead letter queue** | Route failed records to DLQ(Dead Letter Queue) topic |
+| **Dead letter queue** | Route failed records to DLQ(Dead Letter Queue) topic — config detail in [§8 DLQ](08-integration-patterns.md#retry-and-dlq-deep-dive) |
 
 ### When Connect
 
@@ -55,7 +55,7 @@ Run Connect workers **separate from brokers** in production — [§9 setup](09-c
 
 | Feature | Detail |
 |---------|------|
-| **Topology** | DAG of processors |
+| **Topology** | DAG(Directed Acyclic Graph) of processors |
 | **State stores** | RocksDB-backed changelog topics (LSM) — [tree §4](../../tree-and-index-structures/includes/04-lsm-trees.md) |
 | **Exactly-once** | `processing.guarantee=exactly_once_v2` (broker + Streams cooperation) |
 | **Repartition topics** | Created automatically for key changes |

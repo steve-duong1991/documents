@@ -125,7 +125,7 @@ See the dedicated guide: [api-rate-limiting](../../api-rate-limiting/README.md).
 
 **Never log:**
 
-- Raw tokens, API keys, passwords, full PAN, unnecessary PII
+- Raw tokens, API keys, passwords, full PAN(Primary Account Number), unnecessary PII(Personally Identifiable Information)
 
 **Alert on:**
 

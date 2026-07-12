@@ -14,7 +14,7 @@ Before provisioning brokers, decide **purpose**, **topology**, **companion servi
 | **Staging** | 3 | 3 | Yes | If prod uses |
 | **Production** | 3+ across AZs | 3 | HA (3+) | Dedicated workers |
 
-**Rule of thumb:** Staging should mirror **prod serializer format**, **ACL model**, and **RF/min.insync** — not necessarily prod throughput.
+**Rule of thumb:** Staging should mirror **prod serializer format**, **ACL(Access Control List) model**, and **RF/min.insync** — not necessarily prod throughput.
 
 ---
 
@@ -35,7 +35,7 @@ Before provisioning brokers, decide **purpose**, **topology**, **companion servi
 | **Connect** | Separate worker cluster if CDC/sinks — [§7](07-connect-streams-and-ecosystem.md) |
 | **Security** | TLS(Transport Layer Security) + SASL; ACLs before traffic — [§10](10-operations-dr-security-and-observability.md) |
 | **Observability** | Lag, under-replicated partitions, disk; log aggregation |
-| **Governance** | Topic naming; who creates topics; default retention |
+| **Governance** | Topic naming standards — [§9 governance](#topic-naming-governance); who creates topics; default retention |
 
 ---
 
@@ -83,7 +83,7 @@ Managed still requires **your** Schema Registry, Connect, and topic design.
 | Option | When | Notes |
 |--------|------|-------|
 | **Docker Compose (Kafka + KRaft)** | Laptop integration | Single broker; RF=1 |
-| **Redpanda single node** | Fast CI/dev | Kafka-compatible API(Application Programming Interface) |
+| **Redpanda single node** | Fast CI(Continuous Integration)/dev | Kafka-compatible API(Application Programming Interface) |
 | **Testcontainers** | Automated tests | Real broker per suite — [§12](12-testing-and-verification.md) |
 | **Plain JSON** | Early spike | Switch to Registry format before staging |
 
@@ -91,7 +91,7 @@ Managed still requires **your** Schema Registry, Connect, and topic design.
 |----------|-----|
 | Match staging serializers | Catch schema bugs early |
 | Separate dev cluster from prod | Never point dev code at prod brokers |
-| Seed test topics via IaC or scripts | Reproducible integration tests |
+| Seed test topics via IaC(Infrastructure as Code) or scripts | Reproducible integration tests |
 
 No docker-compose YAML in this guide — use vendor docs for compose templates.
 
@@ -119,6 +119,76 @@ No docker-compose YAML in this guide — use vendor docs for compose templates.
 
 ---
 
+## Topic naming governance
+
+Enforce naming in **CI**, **IaC(Infrastructure as Code)**, or **admin-only topic creation** — not ad hoc from application startup.
+
+### Naming rules
+
+| Rule | Standard |
+|------|----------|
+| **Format** | `{domain}.{entity}.{event}` — lowercase, dot-separated |
+| **Characters** | `[a-z0-9.-]` only; no spaces or underscores in new topics |
+| **Length** | ≤ 249 characters (Kafka limit); prefer ≤ 80 for readability |
+| **Environment** | **Pick one org-wide:** (A) separate cluster per env, **or** (B) `{env}.{domain}.{entity}.{event}` prefix on shared cluster |
+| **Retry / DLQ(Dead Letter Queue)** | Suffix `.retry` and `.dlq` on **same domain path** — `orders.order.created.retry` |
+| **Internal / platform** | Prefix `_internal.` or team prefix — `_internal.connect-offsets` (Connect manages); avoid user traffic |
+| **Streams / Connect auto topics** | Document allowed prefixes (`*.repartition`, `*.changelog`, `connect-*`); do not manually create |
+| **Version in topic name** | **Avoid** — use Schema Registry version in payload; exception: explicit major breaking boundary (`orders.v2.order.created`) |
+| **Multi-tenant** | **Avoid** topic-per-tenant at scale — use shared topic + `tenant_id` in key — [§2 multi-tenant](02-topics-partitions-and-replication.md#multi-tenant-isolation) |
+| **Consumer group id** | `{service}-{purpose}` — e.g. `search-indexer`, `notifications-email`; no env in group id if cluster is env-scoped |
+
+### Examples
+
+| Valid | Invalid | Why |
+|-------|---------|-----|
+| `orders.order.created` | `OrdersOrderCreated` | No camelCase |
+| `payments.invoice.paid` | `payments_invoice_paid` | Use dots not underscores |
+| `orders.order.created.dlq` | `dlq-orders` | DLQ suffix on source path |
+| `search-indexer` (group) | `consumer-group-1` | Non-descriptive group id |
+
+### Schema subject alignment
+
+| Topic | Registry subject |
+|-------|------------------|
+| `orders.order.created` | `orders.order.created-value`, `orders.order.created-key` |
+
+Detail → [§6 naming](06-serialization-and-schema-evolution.md#naming-conventions).
+
+### Who creates topics
+
+| Model | When | Enforcement |
+|-------|------|-------------|
+| **IaC / GitOps(Git Operations)** | Recommended prod | PR review; naming linter in CI |
+| **Admin API / ticket** | Central platform team | Runbook + naming checklist |
+| **Auto-create by broker** | Dev only | `auto.create.topics.enable=false` in staging/prod |
+
+Applications should **fail fast** if topic missing — not silently create misnamed topics.
+
+### CI naming linter (example checks)
+
+```text
+- Match regex: ^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*)+(\.(retry|dlq))?$
+- Reject: prod., staging. prefix if cluster is env-isolated
+- Require: RF=3, min.insync.replicas=2 for prod topics
+- Require: retention.ms documented in topic manifest
+```
+
+### Topic manifest (recommended)
+
+Each topic in Git with metadata:
+
+| Field | Example |
+|-------|---------|
+| `name` | `orders.order.created` |
+| `partitions` | 12 |
+| `replication.factor` | 3 |
+| `retention.ms` | 604800000 (7d) |
+| `owner` | team-orders@company.com |
+| `description` | Order created domain event |
+
+---
+
 ## Common mistakes
 
 | Mistake | Fix |
@@ -126,7 +196,7 @@ No docker-compose YAML in this guide — use vendor docs for compose templates.
 | Single broker prod | 3 brokers, RF=3 |
 | Dev plain JSON, prod Avro surprise | Staging uses prod format |
 | Connect on broker nodes | Dedicated workers |
-| No topic creation governance | CI or admin API only |
+| No topic creation governance | CI or admin API only — [§9 governance](09-cluster-setup-and-requirements.md#topic-naming-governance) |
 | Undersized disk | Formula in [§5](05-retention-compaction-and-storage.md) |
 
 ---

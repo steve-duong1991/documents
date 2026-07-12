@@ -96,11 +96,11 @@ Use when retention months/years but local NVMe insufficient — ops complexity i
 | Pattern | Example |
 |---------|---------|
 | `{domain}.{entity}.{event}` | `orders.order.created` |
-| `{env}.{domain}...` | `prod.orders.order.created` |
+| `{env}.{domain}...` | `prod.orders.order.created` (if shared cluster) |
 | **DLQ(Dead Letter Queue)** | `orders.order.created.dlq` |
 | **Retry** | `orders.order.created.retry` |
 
-Document naming in [§9 governance](09-cluster-setup-and-requirements.md).
+Full governance rules, enforcement, and CI(Continuous Integration) checks → [§9 topic naming governance](09-cluster-setup-and-requirements.md#topic-naming-governance).
 
 ---
 

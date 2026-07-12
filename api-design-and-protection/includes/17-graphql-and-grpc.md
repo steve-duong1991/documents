@@ -83,7 +83,7 @@ flowchart TD
 |---------|-----|
 | GraphQL at edge without query cost limits | Depth/complexity caps |
 | gRPC everywhere including public mobile | REST or BFF for public |
-| Skip contract tests on `.proto` | Same CI discipline as OpenAPI — [§15](15-contract-and-schema-testing.md) |
+| Skip contract tests on `.proto` | Same CI(Continuous Integration) discipline as OpenAPI — [§15](15-contract-and-schema-testing.md) |
 | GraphQL N+1 to database | Batch loaders |
 
 ---

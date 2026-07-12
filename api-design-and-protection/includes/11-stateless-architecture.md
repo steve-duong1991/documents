@@ -172,7 +172,7 @@ Entry-layer details → [Load Balancer & API Gateway — request flows](03A-api-
 |-----------|-------|-----|
 | User profiles, orders | PostgreSQL | In-memory map per server |
 | Shopping cart (if needed) | Redis or DB keyed by `user_id` | Session cookie blob |
-| Uploaded files | S3 / object storage | Local disk on instance |
+| Uploaded files | S3 / object storage — see [§18 Object storage and uploads](18-object-storage-and-uploads.md) | Local disk on instance |
 | Async jobs | DB + queue | Blocking request thread |
 | Rate-limit counters | Redis (shared) | Per-instance counters |
 
@@ -200,4 +200,3 @@ flowchart TB
 ```
 
 ---
-
