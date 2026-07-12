@@ -55,7 +55,7 @@ Prefer **data products** (orders_fact, customer_profile) over "the analytics dum
 
 Catalog tools (OpenMetadata, DataHub, vendor catalogs) help — start with a **markdown/registry row per dataset** if tooling is immature.
 
-For **Kafka topics**, the topic manifest **is** the event catalog (owner, consumers, classification, freshness SLO) — [apache-kafka §9 event catalog](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos). Trace topics to sinks: [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md).
+For **Kafka topics**, the topic manifest **is** the event catalog (owner, consumers, classification, freshness SLO(Service Level Objective)) — [apache-kafka §9 event catalog](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos). Trace topics to sinks: [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md).
 
 ---
 

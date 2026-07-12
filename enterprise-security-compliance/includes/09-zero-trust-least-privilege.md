@@ -27,7 +27,7 @@ flowchart LR
 
 | Hop | Identity | Authorization |
 |-----|----------|---------------|
-| Human → app | OIDC(OpenID Connect)/SSO + MFA(Multi-Factor Authentication) for privileged | RBAC(Role-Based Access Control) / claims |
+| Human → app | OIDC(OpenID Connect)/SSO(Single Sign-On) + MFA(Multi-Factor Authentication) for privileged | RBAC(Role-Based Access Control) / claims |
 | App → API | Session or token | Scopes + object checks |
 | Service → service | mTLS(Mutual Transport Layer Security) or signed internal JWT(JSON Web Token) | Allowlisted callers + method AuthZ |
 | Service → data | IAM(Identity and Access Management) role or scoped DB user | Table/column minimum |

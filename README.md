@@ -14,6 +14,7 @@ Practical reference docs for building and operating production APIs and data sys
 | [api-design-and-protection](api-design-and-protection/README.md) | REST(Representational State Transfer) design, protection, gateway, auth, identity, async, idempotency, object storage uploads, stateless architecture |
 | [api-rate-limiting](api-rate-limiting/README.md) | Limiter algorithms, scope, deployment layers, response strategies |
 | [architecture-decisions](architecture-decisions/README.md) | System shape, boundaries, DDD(Domain-Driven Design), strangler, ADRs, tradeoffs, capacity estimation, multi-tenant, failure domains |
+| [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) | OAuth(Open Authorization) 2.0 grants, OIDC(OpenID Connect) discovery/ID tokens, token lifecycle, cookie/session CSRF(Cross-Site Request Forgery), login hardening |
 | [cicd-and-environments](cicd-and-environments/README.md) | CI(Continuous Integration)/CD(Continuous Delivery) pipelines, env promotion, config vs secrets, flags, branching, rollback, container health, platform boundaries |
 | [cursor-agents](cursor-agents/README.md) | Single vs multi agent, parallel Agents Window, subagents, auto-delegation |
 | [cursor-workflows](cursor-workflows/README.md) | Cursor playbook: design → architecture → coding → review → ship → operate (MCP, mocks, stack rules) |
@@ -49,6 +50,9 @@ flowchart LR
         R[api-rate-limiting]
         D[deployment-strategies]
         CD[cicd-and-environments]
+    end
+    subgraph authn [Auth protocols]
+        AUTH[auth-oauth-oidc-and-login-security]
     end
     subgraph perf [Performance]
         H[high-throughput-systems]
@@ -99,6 +103,9 @@ flowchart LR
     A --> H
     A --> FB
     A --> PAY
+    A --> AUTH
+    FB --> AUTH
+    AUTH --> ESC
     H --> P
     P --> T
     P --> NS
@@ -223,7 +230,7 @@ Deep dive on Apache Kafka — setup, schema choice, semantics, and integration w
 Security review, overload protection, and operational safety nets.
 
 1. [api-design-and-protection §2 protection](api-design-and-protection/includes/02-api-protection.md) + [§6 threat model](api-design-and-protection/includes/06-threat-model.md)
-2. [api-design-and-protection §12 identity](api-design-and-protection/includes/12-identity-rbac-iam-ad.md)
+2. [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) + [api-design §12 identity](api-design-and-protection/includes/12-identity-rbac-iam-ad.md)
 3. [database-connection-and-security](database-connection-and-security/README.md) — network, TLS, secrets, cloud identity
 4. [enterprise-security-compliance](enterprise-security-compliance/README.md) — SDLC gates, supply chain, audit/PII(Personally Identifiable Information), compliance evidence
 5. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting §12 distributed limiting](api-rate-limiting/includes/12-distributed-rate-limiting.md) (Redis topology, regional quotas, fail-open) + [api-rate-limiting](api-rate-limiting/README.md)
@@ -234,8 +241,20 @@ Own the client seam: BFF(Backend for Frontend) contracts, rendering, performance
 
 1. [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) — overview → [§3 BFF](fullstack-bff-and-clients/includes/03-bff-ownership.md) → [§1 architecture](fullstack-bff-and-clients/includes/01-frontend-architecture.md)
 2. [fullstack §2 rendering](fullstack-bff-and-clients/includes/02-rendering-tradeoffs.md) + [§4 Web Vitals](fullstack-bff-and-clients/includes/04-web-performance.md)
-3. [fullstack §7 auth UX](fullstack-bff-and-clients/includes/07-auth-ux.md) + [api-design §4 auth](api-design-and-protection/includes/04-auth-model.md)
+3. [fullstack §7 auth UX](fullstack-bff-and-clients/includes/07-auth-ux.md) + [api-design §4 auth](api-design-and-protection/includes/04-auth-model.md) + [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) (grants, OIDC, cookies, login hardening)
 4. Live updates → [fullstack §5](fullstack-bff-and-clients/includes/05-realtime-ux.md) + [api-design §10 async](api-design-and-protection/includes/10-async-patterns.md)
+
+### Auth / login / SSO
+
+OAuth(Open Authorization) grants, OIDC(OpenID Connect), cookies/sessions, and password login hardening. Role-specific shortcuts live in the guide [Reading paths](auth-oauth-oidc-and-login-security/README.md#reading-paths).
+
+1. [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) — overview → [§6 decision guide](auth-oauth-oidc-and-login-security/includes/06-decision-guide.md)
+2. Core protocol → [§1 grants](auth-oauth-oidc-and-login-security/includes/01-oauth2-grants-and-flows.md) + [§1a client auth/exchange](auth-oauth-oidc-and-login-security/includes/01A-client-auth-and-token-exchange.md) + [§1b scopes/consent](auth-oauth-oidc-and-login-security/includes/01B-scopes-and-consent.md) + [§2 OIDC](auth-oauth-oidc-and-login-security/includes/02-oidc-discovery-and-tokens.md) + [§2a logout/step-up](auth-oauth-oidc-and-login-security/includes/02A-oidc-logout-and-step-up.md) + [§2b SSO](auth-oauth-oidc-and-login-security/includes/02B-sso-integration-playbook.md) + [§2c SAML](auth-oauth-oidc-and-login-security/includes/02C-saml-protocol.md) + [§3 tokens](auth-oauth-oidc-and-login-security/includes/03-token-lifecycle-and-validation.md) + [§3a integrity](auth-oauth-oidc-and-login-security/includes/03A-token-cookie-integrity.md) + [§3b revoke/logout](auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md) + [§3c denylist Redis](auth-oauth-oidc-and-login-security/includes/03C-denylist-redis-patterns.md) + [§3d lifetimes](auth-oauth-oidc-and-login-security/includes/03D-lifetimes-and-sliding-sessions.md) + [§3e concurrent sessions](auth-oauth-oidc-and-login-security/includes/03E-concurrent-sessions-and-devices.md)
+3. Advanced OAuth → [§1c PAR](auth-oauth-oidc-and-login-security/includes/01C-pushed-authorization-requests.md) + [§1d resource indicators](auth-oauth-oidc-and-login-security/includes/01D-resource-indicators.md) + [§1e Device + CIBA](auth-oauth-oidc-and-login-security/includes/01E-device-authorization-and-ciba.md) + [§1f JAR/RAR](auth-oauth-oidc-and-login-security/includes/01F-jar-and-rar.md)
+4. First-party web → [§4 cookie/session](auth-oauth-oidc-and-login-security/includes/04-cookie-session-and-csrf.md) + [§4a third-party/mobile](auth-oauth-oidc-and-login-security/includes/04A-third-party-cookies-and-mobile-redirects.md) + [§4b guest sessions](auth-oauth-oidc-and-login-security/includes/04B-anonymous-and-guest-sessions.md) + [fullstack §7](fullstack-bff-and-clients/includes/07-auth-ux.md)
+5. Passwords / MFA(Multi-Factor Authentication) → [§5 login playbook](auth-oauth-oidc-and-login-security/includes/05-login-security-playbook.md) + [§5b signup/magic links](auth-oauth-oidc-and-login-security/includes/05B-signup-verify-and-magic-links.md) + [§5c WebAuthn/passkeys](auth-oauth-oidc-and-login-security/includes/05C-webauthn-and-passkeys.md) + [§5d impersonation](auth-oauth-oidc-and-login-security/includes/05D-impersonation-and-support-access.md)
+6. Client-type matrix + RBAC(Role-Based Access Control) → [api-design §4](api-design-and-protection/includes/04-auth-model.md) + [§12](api-design-and-protection/includes/12-identity-rbac-iam-ad.md)
+7. CI auth tests → [§5a](auth-oauth-oidc-and-login-security/includes/05A-auth-testing-checklist.md)
 
 ### Data platform (beyond one database)
 
@@ -376,9 +395,10 @@ Direction, reviews, debt, and cross-team ownership.
 Partner auth, quotas, and abuse caps.
 
 1. [api-design-and-protection §4 auth](api-design-and-protection/includes/04-auth-model.md) + [§12 identity](api-design-and-protection/includes/12-identity-rbac-iam-ad.md)
-2. [api-design-and-protection §5 tiers](api-design-and-protection/includes/05-rate-limit-tiers.md)
-3. [api-rate-limiting §6 scope](api-rate-limiting/includes/06-scope-identity.md)
-4. [api-design-and-protection §16 multi-tenant](api-design-and-protection/includes/16-multi-tenant-apis.md) — if SaaS with org isolation
+2. [auth-oauth-oidc-and-login-security §1](auth-oauth-oidc-and-login-security/includes/01-oauth2-grants-and-flows.md) (client credentials) + [§3 tokens](auth-oauth-oidc-and-login-security/includes/03-token-lifecycle-and-validation.md)
+3. [api-design-and-protection §5 tiers](api-design-and-protection/includes/05-rate-limit-tiers.md)
+4. [api-rate-limiting §6 scope](api-rate-limiting/includes/06-scope-identity.md)
+5. [api-design-and-protection §16 multi-tenant](api-design-and-protection/includes/16-multi-tenant-apis.md) — if SaaS with org isolation
 
 ### Cursor agents
 

@@ -31,6 +31,7 @@ Related: [api-design §15 contract testing](../api-design-and-protection/include
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Aggregate, projector, outbox, and saga tests |
 | [apache-kafka](../apache-kafka/README.md) | Broker/integration testing and schema contracts |
 | [cicd-and-environments](../cicd-and-environments/README.md) | Pipeline stages, promotion, quality gates wiring |
+| [auth-oauth-oidc-and-login-security §5a](../auth-oauth-oidc-and-login-security/includes/05A-auth-testing-checklist.md) | Auth/OIDC(OpenID Connect)/CSRF(Cross-Site Request Forgery)/revoke negative test checklist |
 | [deployment-strategies](../deployment-strategies/README.md) | Canary, progressive delivery, SLO(Service Level Objective) rollback |
 | [resilience-patterns](../resilience-patterns/README.md) | Timeouts, retries, chaos — what resilience tests prove |
 | [sre-and-incidents](../sre-and-incidents/README.md) | Capacity planning, synthetics, error budgets |

@@ -1,6 +1,8 @@
 # Auth UX
 
-> **Related:** API(Application Programming Interface) auth models → [api-design §4 Auth model](../../api-design-and-protection/includes/04-auth-model.md) · Enterprise identity → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) · Secrets not in the browser → [enterprise-security §5](../../enterprise-security-compliance/includes/05-secrets-beyond-database.md) · XSS(Cross-Site Scripting)/CSRF(Cross-Site Request Forgery) classes → [enterprise-security §3](../../enterprise-security-compliance/includes/03-owasp-and-common-vulns.md)
+> **Scope:** **Browser and product UX** for login, session expiry, and cookie vs Bearer storage from the client lens. Cookie flags, CSRF(Cross-Site Request Forgery) mechanics, OAuth(Open Authorization)/OIDC(OpenID Connect) protocol depth, and password login hardening → [auth-oauth-oidc-and-login-security](../../auth-oauth-oidc-and-login-security/README.md) ([§4 cookie/session](../../auth-oauth-oidc-and-login-security/includes/04-cookie-session-and-csrf.md), [§5 login playbook](../../auth-oauth-oidc-and-login-security/includes/05-login-security-playbook.md)).
+
+> **Related:** Protocol + cookie mechanics → [auth-oauth-oidc-and-login-security](../../auth-oauth-oidc-and-login-security/README.md) · API(Application Programming Interface) auth models → [api-design §4 Auth model](../../api-design-and-protection/includes/04-auth-model.md) · Enterprise identity → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) · Secrets not in the browser → [enterprise-security §5](../../enterprise-security-compliance/includes/05-secrets-beyond-database.md) · XSS(Cross-Site Scripting)/CSRF classes → [enterprise-security §3](../../enterprise-security-compliance/includes/03-owasp-and-common-vulns.md)
 
 ## At a glance
 
@@ -57,7 +59,7 @@ sequenceDiagram
 | Custom header requirement | Helps; not sufficient alone if CORS misconfigured |
 | Don’t CSRF-protect Bearer-from-header APIs blindly | Different threat model |
 
-Detail on API-side OAuth(Open Authorization)/PKCE(Proof Key for Code Exchange) → [api-design §4](../../api-design-and-protection/includes/04-auth-model.md).
+Detail on OAuth(Open Authorization)/PKCE(Proof Key for Code Exchange) grants → [auth §1](../../auth-oauth-oidc-and-login-security/includes/01-oauth2-grants-and-flows.md). Client-type auth matrix → [api-design §4](../../api-design-and-protection/includes/04-auth-model.md). Cookie flags, synchronizer CSRF, session store → [auth §4](../../auth-oauth-oidc-and-login-security/includes/04-cookie-session-and-csrf.md). Third-party cookie / mobile redirects → [auth §4a](../../auth-oauth-oidc-and-login-security/includes/04A-third-party-cookies-and-mobile-redirects.md). BFF token exchange → [auth §1a](../../auth-oauth-oidc-and-login-security/includes/01A-client-auth-and-token-exchange.md).
 
 ## UX checklist
 

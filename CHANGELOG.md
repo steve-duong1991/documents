@@ -6,6 +6,34 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-07-12
 
+### Auth / OAuth / OIDC / login security (new guide)
+- **auth-oauth-oidc-and-login-security:** 27 includes / §§0–6 — OAuth 2.0 grants (Auth Code + PKCE, client credentials, device code; deprecated Implicit/ROPC), OIDC discovery + ID token claims, token lifecycle/JWKS/refresh rotation, cookie/session/CSRF, login playbook (Argon2id, lockout, MFA, device trust, recovery), decision guide; plus SSO/SAML, PAR/resource/CIBA/JAR/RAR, revoke/denylist, guest sessions, signup/magic links, WebAuthn, impersonation
+- **§3a:** Token and cookie integrity (anti-tampering) — client untrusted; JWT sig vs opaque lookup vs session `sid`; HttpOnly ≠ integrity; DPoP/mTLS binding
+- **§3b:** Revoke / force logout / denylist playbook — validate vs invalidate; device vs all-device logout; user/`jti`/session block stores
+- **§1a:** Client authentication methods + token exchange (RFC 8693) for BFF on-behalf-of; revocation/introspection endpoint pointers
+- **§2a:** OIDC RP / front / back-channel logout + step-up (`prompt` / `max_age` / `acr_values`)
+- **§4a:** Third-party cookie deprecation + mobile App/Universal Links vs custom schemes
+- **§3c:** Denylist Redis patterns — basic/advanced keys (`jti`, session, user disabled, family, user epoch `tv`), TTL hygiene, pipeline/cluster notes
+- **§1b:** Scopes and consent design (first-party vs third-party; light resource indicators)
+- **§2b:** SSO integration playbook — IdP SSO → OIDC → app session → API Bearer; enterprise vs social; account linking
+- **§2c:** Full SAML 2.0 protocol guide — SP/IdP, assertions, bindings, metadata, XML risks, SAML→OIDC bridge
+- **§3d:** Lifetimes and sliding sessions — matrix for access/refresh/idle/absolute/cookie/IdP SSO; silent re-auth policy
+- **§5a:** Auth testing checklist for CI (OAuth/OIDC/CSRF/revoke/SAML negatives)
+- **§3a:** Short DPoP advanced note (proof-of-possession)
+- **§1c:** Pushed Authorization Requests (RFC 9126) — `request_uri`, when to adopt, PKCE still required
+- **§1d:** Resource indicators (RFC 8707) — `resource`/`aud`, multi-API AS, exchange
+- **§1e:** Device Authorization + CIBA — polling, user_code, backchannel modes
+- **§1f:** JAR + RAR — signed request objects; `authorization_details`
+- **§3e:** Concurrent sessions and devices — caps, revoke one/others, SSO interaction
+- **§4a:** Expanded CHIPS / `Partitioned` cookie detail
+- **§4b:** Anonymous / guest sessions — create, caps, promote on register/login, TTL/abuse
+- **§5b:** Signup, email verification, and magic links
+- **§5c:** WebAuthn and passkeys
+- **§5d:** Impersonation and support access (actor≠subject)
+- **Deferred (by design):** vendor Entra/Okta click-path cookbooks
+- **Cross-links:** api-design §4 Scope + deep-dive pointer; fullstack §7 Scope + cookie mechanics; ESC §3 / §11; root index + Auth/login/SSO learning path; Production hardening + Fullstack + B2B paths updated
+- **Corpus:** acronyms SSO, JWKS, TOTP, CHIPS, DPoP, SAML, PAR, CIBA, JAR, RAR, OTP, FIDO, WebAuthn; GLOSSARY entries for Auth Code + PKCE, ID token, refresh rotation, denylist Redis, back-channel logout, token exchange, PAR, resource indicators, guest session, CIBA, JAR, RAR, passkey, impersonation
+
 ### apache-kafka platform gaps (enterprise shared cluster)
 - **apache-kafka §5:** Tiered storage — hot/cold tiers, ops checklist, when to skip, compliance boundary vs WORM/warehouse
 - **apache-kafka §9:** Event catalog and ownership SLOs — manifest fields, platform vs domain ownership, freshness SLO examples

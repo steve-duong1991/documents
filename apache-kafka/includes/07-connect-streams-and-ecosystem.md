@@ -107,7 +107,7 @@ flowchart LR
 | **Conflict policy** | Last-write-wins by timestamp, region preference, or domain merge — document per topic |
 | **No dual-write of the same command** | Route a given aggregate to one home region when possible |
 | **Schema Registry parity** | Subjects and compatibility modes match across regions — [§6](06-serialization-and-schema-evolution.md) |
-| **Lag SLO per link** | Treat inter-region lag as user-visible staleness, not just ops metric |
+| **Lag SLO(Service Level Objective) per link** | Treat inter-region lag as user-visible staleness, not just ops metric |
 
 **Rule of thumb:** Default to **active-passive DR**. Choose active-active only when product latency requires local produce **and** you have a written conflict/idempotency design — full ops playbook → [§10 active-active](10-operations-dr-security-and-observability.md#active-active-multi-region).
 

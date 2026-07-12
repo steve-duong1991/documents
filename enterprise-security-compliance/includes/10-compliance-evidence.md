@@ -7,7 +7,7 @@
 | SOC 2–style theme | Engineering evidence (examples) |
 |-------------------|----------------------------------|
 | **Change management** | PR links, required reviews, deploy tickets, GitOps(Git Operations) history |
-| **Access control** | IAM(Identity and Access Management) exports, SSO configs, quarterly access review sheets |
+| **Access control** | IAM(Identity and Access Management) exports, SSO(Single Sign-On) configs, quarterly access review sheets |
 | **Encryption** | KMS(Key Management Service) policies, TLS(Transport Layer Security) baselines, backup encryption proof |
 | **Monitoring** | Alert definitions, on-call rotations, incident tickets with timelines |
 | **Vendor / supply chain** | SBOM(Software Bill of Materials) samples, SCA(Software Composition Analysis) policy, signed deploy admissions |

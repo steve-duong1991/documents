@@ -60,7 +60,7 @@ Participants: feature TL, one engineer who owns the code, security champion, and
 
 ## When lightweight is enough
 
-- Internal tool behind SSO with no new external callers
+- Internal tool behind SSO(Single Sign-On) with no new external callers
 - Pure UI copy change with no new data fields
 - Refactor with identical trust boundaries
 

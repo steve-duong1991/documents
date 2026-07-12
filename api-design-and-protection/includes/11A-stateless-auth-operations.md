@@ -1,6 +1,6 @@
 # Stateless architecture — auth, consistency, and operations
 
-> **Related:** Core concepts → [Stateless architecture](11-stateless-architecture.md) · Auth model → [04-auth-model.md](04-auth-model.md) · Async workers → [10-async-patterns.md](10-async-patterns.md)
+> **Related:** Core concepts → [Stateless architecture](11-stateless-architecture.md) · Auth model → [04-auth-model.md](04-auth-model.md) · Token lifecycle / refresh rotation → [auth §3](../../auth-oauth-oidc-and-login-security/includes/03-token-lifecycle-and-validation.md) · Async workers → [10-async-patterns.md](10-async-patterns.md)
 
 ## Stateless auth flow
 

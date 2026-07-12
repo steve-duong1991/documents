@@ -8,9 +8,11 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Apache Kafka** | Distributed commit log for event streaming, fan-out, and replay | [apache-kafka](apache-kafka/README.md) |
 | **Avro** | Binary schema format common with Kafka Schema Registry | [apache-kafka §6](apache-kafka/includes/06-serialization-and-schema-evolution.md) |
 | **At-least-once delivery** | Message may arrive more than once; consumer must be idempotent | [HTS §6](high-throughput-systems/includes/06-async-queues-workers.md), [api-design §13](api-design-and-protection/includes/13-idempotency.md) |
+| **Authorization Code + PKCE(Proof Key for Code Exchange)** | Default OAuth(Open Authorization) interactive grant; PKCE stops stolen `code` exchange | [auth §1](auth-oauth-oidc-and-login-security/includes/01-oauth2-grants-and-flows.md) |
 | **A/B test** | Split users into control vs treatment variants to compare product metrics | [deployment §5](deployment-strategies/includes/05-ab-testing.md) |
 | **Autovacuum** | PostgreSQL background process reclaiming dead tuples and updating stats | [PG §6](postgresql-performance/includes/06-vacuum-and-bloat.md) |
 | **Backpressure** | Reject or queue load when downstream is saturated | [HTS §9](high-throughput-systems/includes/09-backpressure-and-limits.md) |
+| **Back-channel logout** | IdP POSTs a logout_token JWT(JSON Web Token) to each RP so sessions die without browser iframes | [auth §2a](auth-oauth-oidc-and-login-security/includes/02A-oidc-logout-and-step-up.md) |
 | **Blue/green** | Two full environments; switch traffic between them | [deployment-strategies §3](deployment-strategies/includes/03-blue-green.md) |
 | **BOLA(Broken Object-Level Authorization)** | Broken object-level authorization — access to another user's resource | [api-design §2](api-design-and-protection/includes/02-api-protection.md), [§6](api-design-and-protection/includes/06-threat-model.md) |
 | **BRIN(Block-Range Index) index** | Block-range index for very large, naturally ordered tables | [PG §2](postgresql-performance/includes/02-indexing.md) |
@@ -47,6 +49,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **GitOps(Git Operations)** | Declarative infra/app state in git; cluster reconciles to desired state | [deployment-strategies §9](deployment-strategies/includes/09-gitops.md) |
 | **Hot key** | Cache or DB key receiving disproportionate traffic; throughput bottleneck | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
 | **Idempotency key** | Client header for safe retry of writes | [api-design §13](api-design-and-protection/includes/13-idempotency.md) |
+| **ID token** | OIDC(OpenID Connect) JWT(JSON Web Token) proving who authenticated to the client (not for API(Application Programming Interface) Bearer) | [auth §2](auth-oauth-oidc-and-login-security/includes/02-oidc-discovery-and-tokens.md) |
 | **Inbox pattern** | Consumer dedup table — same TX as side effect; pairs with outbox | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md), [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
 | **ISR (In-Sync Replicas)** | Kafka followers caught up with partition leader | [apache-kafka §2](apache-kafka/includes/02-topics-partitions-and-replication.md) |
 | **KRaft** | Kafka Raft metadata mode (replaces ZooKeeper) | [apache-kafka §1](apache-kafka/includes/01-commit-log-and-internals.md) |
@@ -60,6 +63,15 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Offset (Kafka)** | Position of a record in a partition log | [apache-kafka §4](apache-kafka/includes/04-consumers-and-consumer-groups.md) |
 | **Outbox pattern** | DB table + relay for reliable event publish | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md), [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
 | **Partition (Kafka)** | Ordered sub-stream within a topic; unit of parallelism | [apache-kafka §2](apache-kafka/includes/02-topics-partitions-and-replication.md) |
+| **PAR(Pushed Authorization Requests)** | POST authorize params to AS first; redirect with short-lived `request_uri` | [auth §1c](auth-oauth-oidc-and-login-security/includes/01C-pushed-authorization-requests.md) |
+| **CIBA(Client-Initiated Backchannel Authentication)** | Client starts AuthN out-of-band; user authenticates on a consumption device | [auth §1e](auth-oauth-oidc-and-login-security/includes/01E-device-authorization-and-ciba.md) |
+| **JAR(JWT-secured Authorization Request)** | Authorize parameters as a signed (optional encrypted) JWT request object | [auth §1f](auth-oauth-oidc-and-login-security/includes/01F-jar-and-rar.md) |
+| **RAR(Rich Authorization Requests)** | Structured `authorization_details` beyond flat OAuth scopes | [auth §1f](auth-oauth-oidc-and-login-security/includes/01F-jar-and-rar.md) |
+| **Guest / anonymous session** | Narrow pre-login `sid` for cart/wizard; promote + rotate on register/login | [auth §4b](auth-oauth-oidc-and-login-security/includes/04B-anonymous-and-guest-sessions.md) |
+| **Passkey / WebAuthn(Web Authentication)** | Origin-bound public-key AuthN (FIDO(Fast IDentity Online)2); phishing-resistant | [auth §5c](auth-oauth-oidc-and-login-security/includes/05C-webauthn-and-passkeys.md) |
+| **Magic link** | One-time email link for verify or passwordless login; single-use short TTL | [auth §5b](auth-oauth-oidc-and-login-security/includes/05B-signup-verify-and-magic-links.md) |
+| **Impersonation (support)** | Actor acts as subject with TTL, ticket, and audit — not a silent user session | [auth §5d](auth-oauth-oidc-and-login-security/includes/05D-impersonation-and-support-access.md) |
+| **Concurrent session / device revoke** | List and kill per-device `sid` / refresh families; logout-others vs everywhere | [auth §3e](auth-oauth-oidc-and-login-security/includes/03E-concurrent-sessions-and-devices.md) |
 | **Partitioning** | Split one logical table across child tables on a single PostgreSQL server | [PG §10](postgresql-performance/includes/10-partitioning.md) |
 | **PITR(Point-in-Time Recovery)** | Point-in-time recovery from WAL(Write-Ahead Log) + backup | [PG §16](postgresql-performance/includes/16-backup-restore-and-pitr.md), [database-connection §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
 | **Projector** | Process that builds read models from events | [event-sourcing-and-cqrs §2](event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md) |
@@ -69,6 +81,10 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Rate limit tier** | Product quota (free/paid/enterprise) | [api-design §5](api-design-and-protection/includes/05-rate-limit-tiers.md) |
 | **Read replica** | Standby replaying WAL; offloads SELECT, adds replication lag | [PG §11](postgresql-performance/includes/11-read-scaling-and-caching.md) |
 | **Read-your-writes** | User sees own write immediately after POST | [PG §14](postgresql-performance/includes/14-consistency-promises-and-costs.md), [api-design §11](api-design-and-protection/includes/11-stateless-architecture.md) |
+| **Refresh token rotation** | Issue new refresh on each use; reuse of old refresh revokes the family | [auth §3](auth-oauth-oidc-and-login-security/includes/03-token-lifecycle-and-validation.md) |
+| **Resource indicator** | OAuth `resource` / token `aud` naming which API may accept the access token | [auth §1d](auth-oauth-oidc-and-login-security/includes/01D-resource-indicators.md) |
+| **Revoke / force logout** | Invalidate sessions and refresh; optional `jti` denylist for still-valid access JWTs | [auth §3b](auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md) |
+| **Denylist Redis patterns** | Key shapes and TTLs for `jti` / session / user ban / refresh family in Redis | [auth §3c](auth-oauth-oidc-and-login-security/includes/03C-denylist-redis-patterns.md) |
 | **Replication** | Full copy of database on another node for HA or read scale | [PG §9](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md), [§11](postgresql-performance/includes/11-read-scaling-and-caching.md) |
 | **RLS(Row-Level Security)** | PostgreSQL policy that filters rows per session (e.g. per `tenant_id`) | [PG §17](postgresql-performance/includes/17-row-level-security-multi-tenant.md), [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md) |
 | **Rolling deploy** | Replace instances incrementally; mixed versions during rollout | [deployment-strategies §2](deployment-strategies/includes/02-rolling.md) |
@@ -87,12 +103,17 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **SSRF(Server-Side Request Forgery)** | Server-side request forgery — unsafe outbound fetches (e.g. webhook URL) | [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
 | **Snapshot (ES)** | Cached aggregate state at version N; not source of truth | [ES §3](event-sourcing-and-cqrs/includes/03-storage-and-projections.md) |
 | **Stateless app tier** | No session in process memory; horizontal scale | [api-design §11](api-design-and-protection/includes/11-stateless-architecture.md) |
+| **Sliding session idle** | Extend idle timeout on activity without extending absolute cap | [auth §3d](auth-oauth-oidc-and-login-security/includes/03D-lifetimes-and-sliding-sessions.md) |
+| **SAML(Security Assertion Markup Language) 2.0** | XML federation protocol (enterprise SSO(Single Sign-On)); prefer OIDC in apps, bridge when needed | [auth §2c](auth-oauth-oidc-and-login-security/includes/02C-saml-protocol.md) |
 | **Tenant** | One customer org (company, workspace) on shared SaaS(Software as a Service) infrastructure | [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md#what-is-a-tenant) |
 | **TCO(Total Cost of Ownership)** | Invoice plus engineering time and risk — used in build vs managed choices | [finops §5](finops-and-cost/includes/05-build-vs-managed-cost.md) |
 | **Thundering herd** | Same as cache stampede — synchronized miss storm on hot keys | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
 | **Tiered storage (Kafka)** | Hot local log segments + cold object storage for long retention | [apache-kafka §5](apache-kafka/includes/05-retention-compaction-and-storage.md#tiered-storage) |
 | **Topic (Kafka)** | Named stream of partitioned logs | [apache-kafka §2](apache-kafka/includes/02-topics-partitions-and-replication.md) |
 | **Token bucket** | Rate limit algorithm allowing controlled bursts | [api-rate-limiting §4](api-rate-limiting/includes/04-token-bucket.md) |
+| **Token / cookie integrity** | Detect client tampering via JWT signature or opaque server lookup — not by trusting the client | [auth §3a](auth-oauth-oidc-and-login-security/includes/03A-token-cookie-integrity.md) |
+| **Token exchange (OBO)** | OAuth grant that swaps a subject token for a new audience-scoped access token (BFF→API) | [auth §1a](auth-oauth-oidc-and-login-security/includes/01A-client-auth-and-token-exchange.md) |
+| **Third-party cookie deprecation** | Browsers block/partition cross-site cookies — breaks iframe silent renew and front-channel logout | [auth §4a](auth-oauth-oidc-and-login-security/includes/04A-third-party-cookies-and-mobile-redirects.md) |
 | **Transactional outbox** | Same transaction: business write + outbox row | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
 | **Two-phase commit (2PC)** | Distributed commit protocol across nodes; avoided for microservice sagas | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) |
 | **Unit economics (infra)** | Cost per request, tenant, or feature used to judge design margin | [finops §1](finops-and-cost/includes/01-unit-economics.md) |

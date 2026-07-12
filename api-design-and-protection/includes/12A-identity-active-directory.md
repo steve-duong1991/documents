@@ -59,7 +59,9 @@ sequenceDiagram
     Svc-->>User: 6. Access granted
 ```
 
-Modern APIs rarely terminate Kerberos at the gateway directly. Typical pattern: AD → Entra ID / IdP → **OIDC(OpenID Connect)/SAML** → JWT(JSON Web Token) with groups/roles → gateway + app.
+Modern APIs rarely terminate Kerberos at the gateway directly. Typical pattern: AD → Entra ID / IdP → **OIDC(OpenID Connect)/SAML(Security Assertion Markup Language)** → JWT(JSON Web Token) with groups/roles → gateway + app.
+
+SAML protocol depth (assertions, bindings, SP checklist, SAML→OIDC bridge) → [auth §2c](../../auth-oauth-oidc-and-login-security/includes/02C-saml-protocol.md). SSO(Single Sign-On) integration playbook → [auth §2b](../../auth-oauth-oidc-and-login-security/includes/02B-sso-integration-playbook.md).
 
 ### AD vs Microsoft Entra ID
 
@@ -157,7 +159,7 @@ Aligns with the [layered auth flow](04-auth-model.md#layered-auth-flow): gateway
 | **Answers** | Full identity lifecycle | "What can this role do?" | "Who is this user in the org?" |
 | **Scope** | People, apps, cloud, APIs | Permissions via roles | Typically enterprise Windows / hybrid |
 | **Typical artifacts** | Policies, MFA(Multi-Factor Authentication), audit, provisioning | Roles, bindings, permissions | Users, groups, OUs, GPO, DCs |
-| **In API context** | Gateway auth, OAuth, lifecycle | JWT roles/scopes, usage plans | SSO source; groups → API roles |
+| **In API context** | Gateway auth, OAuth, lifecycle | JWT roles/scopes, usage plans | SSO(Single Sign-On) source; groups → API roles |
 
 Hub comparison → [12 — IAM, RBAC, and AD](12-identity-rbac-iam-ad.md#iam-rbac-and-ad--comparison).
 

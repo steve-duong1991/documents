@@ -25,12 +25,13 @@ flowchart TD
 
 | Situation | Do this |
 |-----------|---------|
-| Internal CRUD behind SSO, no new PII(Personally Identifiable Information) | §1 gates; skip heavy threat workshop |
+| Internal CRUD behind SSO(Single Sign-On), no new PII(Personally Identifiable Information) | §1 gates; skip heavy threat workshop |
 | First public API or partner webhook | §2 full model + [api-design §6](../../api-design-and-protection/includes/06-threat-model.md) |
 | Customer questionnaire / SOC 2 year | §10 map + freshen §6–§9 artifacts |
 | CVE in transitive dep | §4 SBOM(Software Bill of Materials) inventory → patch → redeploy |
 | “Where do we put the Stripe key?” | §5 — not the DB vault chapter |
-| Browser session cookies | [fullstack §7](../../fullstack-bff-and-clients/includes/07-auth-ux.md) + §3 CSRF(Cross-Site Request Forgery) |
+| Browser session cookies | [fullstack §7](../../fullstack-bff-and-clients/includes/07-auth-ux.md) + [auth §4](../../auth-oauth-oidc-and-login-security/includes/04-cookie-session-and-csrf.md) + §3 CSRF(Cross-Site Request Forgery) |
+| OAuth(Open Authorization)/OIDC(OpenID Connect) / password login | [auth-oauth-oidc-and-login-security](../../auth-oauth-oidc-and-login-security/README.md) |
 
 ## Control minimums by product stage
 

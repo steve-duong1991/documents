@@ -1,6 +1,8 @@
 # Auth Model
 
-> **Related:** Enterprise identity → [§12 Identity RBAC / IAM / AD](12-identity-rbac-iam-ad.md) · Gateway enforcement → [§3 Gateway](03-api-gateway.md) · Webhook security → [§10 Async patterns](10-async-patterns.md)
+> **Scope:** **Which auth model per client type** (OAuth(Open Authorization)/API(Application Programming Interface) key/mTLS(Mutual Transport Layer Security)/HMAC(Hash-based Message Authentication Code)) and the AuthN→AuthZ layering at gateway vs app. Grant-type walkthroughs, OIDC(OpenID Connect) discovery/claims, token rotation, cookie/CSRF(Cross-Site Request Forgery) mechanics, and password login hardening → [auth-oauth-oidc-and-login-security](../../auth-oauth-oidc-and-login-security/README.md).
+
+> **Related:** Protocol depth → [auth-oauth-oidc-and-login-security](../../auth-oauth-oidc-and-login-security/README.md) · Enterprise identity → [§12 Identity RBAC / IAM / AD](12-identity-rbac-iam-ad.md) · Gateway enforcement → [§3 Gateway](03-api-gateway.md) · Webhook security → [§10 Async patterns](10-async-patterns.md) · Browser cookie UX → [fullstack §7](../../fullstack-bff-and-clients/includes/07-auth-ux.md)
 
 ## What it is
 
@@ -82,6 +84,8 @@ flowchart TB
 - Lock redirect URIs exactly
 - Minimal scopes per client
 - Short access token TTL
+
+**Deep dive:** grant walkthroughs, OIDC discovery/ID tokens, refresh rotation → [auth-oauth-oidc-and-login-security §1–§3](../../auth-oauth-oidc-and-login-security/README.md)
 
 ## API keys (server-to-server)
 

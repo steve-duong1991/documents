@@ -46,7 +46,7 @@ flowchart TD
 
 - Low-to-medium traffic APIs
 - Strict fairness requirements
-- Sensitive endpoints: login, password reset, OTP verification, account recovery
+- Sensitive endpoints: login, password reset, OTP(One-Time Password) verification, account recovery
 
 ## Redis implementation
 

@@ -1,6 +1,6 @@
 # Audit Logging and Retention
 
-> **Related:** Append-only domain audit → [event-sourcing-and-cqrs](../../event-sourcing-and-cqrs/README.md) · API(Application Programming Interface) correlation IDs → [api-design overview](../../api-design-and-protection/includes/00-overview.md) · Observability triage → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · PII(Personally Identifiable Information) in logs → [§7](07-pii-and-data-classification.md) · Evidence → [§10](10-compliance-evidence.md) · Kafka retention / tiered storage for bus history → [apache-kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) · Broker ACL and admin audit → [apache-kafka §10](../../apache-kafka/includes/10-operations-dr-security-and-observability.md)
+> **Related:** Append-only domain audit → [event-sourcing-and-cqrs](../../event-sourcing-and-cqrs/README.md) · API(Application Programming Interface) correlation IDs → [api-design overview](../../api-design-and-protection/includes/00-overview.md) · Observability triage → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · PII(Personally Identifiable Information) in logs → [§7](07-pii-and-data-classification.md) · Evidence → [§10](10-compliance-evidence.md) · Kafka retention / tiered storage for bus history → [apache-kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) · Broker ACL(Access Control List) and admin audit → [apache-kafka §10](../../apache-kafka/includes/10-operations-dr-security-and-observability.md)
 
 ## At a glance
 

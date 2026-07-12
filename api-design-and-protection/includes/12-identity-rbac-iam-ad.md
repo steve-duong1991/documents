@@ -33,7 +33,7 @@ For **how clients authenticate** (OAuth, API keys, JWT validation), see [Auth mo
 
 | Area | Examples |
 |------|----------|
-| **Authentication** | Password, MFA(Multi-Factor Authentication), SSO, API keys |
+| **Authentication** | Password, MFA(Multi-Factor Authentication), SSO(Single Sign-On), API keys |
 | **Authorization** | RBAC, ABAC, resource policies |
 | **Provisioning** | SCIM, LDAP sync, JIT access |
 | **Governance** | Access reviews, audit logs, JML — see [12A — IAM lifecycle](12A-identity-active-directory.md#iam-lifecycle-joiner-mover-leaver) |

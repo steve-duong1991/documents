@@ -51,6 +51,7 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | **Designing the API contract** | §1 → §7 (OpenAPI) → §15 (contract CI(Continuous Integration)) → §14 (versioning) → [§13 idempotency](includes/13-idempotency.md) + [13A client flow](includes/13A-idempotency-client-and-server-flow.md) → [§10 async](includes/10-async-patterns.md) + [10A jobs](includes/10A-async-jobs-polling.md) · non-REST(Representational State Transfer) → [§17 GraphQL/gRPC](includes/17-graphql-and-grpc.md) |
 | **Hardening for production** | §2 → §3 → §5 → §6 → [§13](includes/13-idempotency.md) + [13A](includes/13A-idempotency-client-and-server-flow.md) → §9 |
 | **B2B / SaaS partner API** | §4 auth → §5 tiers → [§16 multi-tenant](includes/16-multi-tenant-apis.md) → [§12 identity](includes/12-identity-rbac-iam-ad.md) + [api-rate-limiting §6 scope](../api-rate-limiting/includes/06-scope-identity.md) |
+| **OAuth(Open Authorization) / OIDC(OpenID Connect) / login depth** | [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) after §4 |
 | **GraphQL or gRPC API** | [§17 GraphQL and gRPC](includes/17-graphql-and-grpc.md) → §1 (REST baseline) → §7 (OpenAPI) or proto contracts → §15 (contract CI) |
 | **Picking rate limits** | [api-rate-limiting](../api-rate-limiting/README.md) + §5 here |
 | **Long-running or heavy endpoints** | [§10 async](includes/10-async-patterns.md) + [10A jobs + polling](includes/10A-async-jobs-polling.md) + §5 (async escape hatch) |
@@ -64,6 +65,7 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | Guide | Topics |
 |-------|--------|
 | [api-rate-limiting](../api-rate-limiting/README.md) | Algorithms, deployment layers, common mistakes |
+| [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) | OAuth(Open Authorization) grants, OIDC(OpenID Connect), token lifecycle, cookie/session, login hardening |
 | [apache-kafka](../apache-kafka/README.md) | Schema choice, multi-tenant topics, consumer idempotency with Kafka |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event store, CQRS(Command Query Responsibility Segregation), outbox, audit APIs |
 | [database-connection-and-security](../database-connection-and-security/README.md) | DB credentials, IAM(Identity and Access Management), vault patterns |

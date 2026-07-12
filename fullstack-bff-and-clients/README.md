@@ -30,7 +30,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (co
 |-------------|---------------|
 | **New fullstack TL on a product** | Overview → §3 BFF → §1 Frontend architecture → §10 |
 | **Choosing SSR(Server-Side Rendering) vs SPA** | §2 Rendering → §4 Performance → §10 |
-| **Shipping browser auth safely** | §7 Auth UX → [api-design §4](../api-design-and-protection/includes/04-auth-model.md) → [enterprise-security §5](../enterprise-security-compliance/includes/05-secrets-beyond-database.md) |
+| **Shipping browser auth safely** | §7 Auth UX → [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) → [api-design §4](../api-design-and-protection/includes/04-auth-model.md) → [enterprise-security §5](../enterprise-security-compliance/includes/05-secrets-beyond-database.md) |
 | **Realtime or live dashboards** | §5 Realtime → [api-design §10 async](../api-design-and-protection/includes/10-async-patterns.md) |
 | **Design system / multi-app UI** | §9 Design-system boundaries → §1 → §6 Accessibility |
 
@@ -43,6 +43,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (co
 | [api-design-and-protection](../api-design-and-protection/README.md) | REST(Representational State Transfer) contracts, auth, async, idempotency |
 | [api-design §10 Async](../api-design-and-protection/includes/10-async-patterns.md) | Jobs, polling, webhooks, SSE(Server-Sent Events), streaming |
 | [api-design §4 Auth model](../api-design-and-protection/includes/04-auth-model.md) | OAuth(Open Authorization), tokens, session patterns at the API |
+| [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) | Grants, OIDC(OpenID Connect), cookie/CSRF(Cross-Site Request Forgery) mechanics, login playbook |
 | [architecture-decisions](../architecture-decisions/README.md) | System shape, ADRs, BFF composition at architecture level |
 | [architecture-decisions §9 BFF](../architecture-decisions/includes/09-bff-and-api-composition.md) | When a BFF exists in the system map |
 | [enterprise-security-compliance](../enterprise-security-compliance/README.md) | Secrets, CSRF(Cross-Site Request Forgery)/XSS(Cross-Site Scripting) context, compliance evidence |

@@ -71,7 +71,7 @@ TTL bucket variant (no `window_start` in key) → [§6 TTL variant](06-scope-ide
 
 | Mistake | Fix |
 |---------|-----|
-| Using fixed window for strict per-second fairness | Use sliding window counter or log for login/OTP endpoints |
+| Using fixed window for strict per-second fairness | Use sliding window counter or log for login/OTP(One-Time Password) endpoints |
 | Ignoring boundary burst at window rollover | Prefer sliding window counter for public APIs |
 | Daily quota keyed to UTC while product is regional | Align window timezone to billing or document UTC clearly |
 | Per-app-instance counter | Shared Redis — [§12](12-distributed-rate-limiting.md) |

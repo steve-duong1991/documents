@@ -1,6 +1,6 @@
 # OWASP and Common Vulnerabilities
 
-> **Related:** API(Application Programming Interface) Top 10 detail → [api-design §6](../../api-design-and-protection/includes/06-threat-model.md) · Secure SDLC(Software Development Life Cycle) → [§1](01-secure-sdlc.md) · Secrets → [§5](05-secrets-beyond-database.md) · Browser XSS(Cross-Site Scripting)/CSRF(Cross-Site Request Forgery) → [fullstack §7 Auth UX](../../fullstack-bff-and-clients/includes/07-auth-ux.md)
+> **Related:** API(Application Programming Interface) Top 10 detail → [api-design §6](../../api-design-and-protection/includes/06-threat-model.md) · Secure SDLC(Software Development Life Cycle) → [§1](01-secure-sdlc.md) · Secrets → [§5](05-secrets-beyond-database.md) · Browser XSS(Cross-Site Scripting)/CSRF(Cross-Site Request Forgery) → [fullstack §7 Auth UX](../../fullstack-bff-and-clients/includes/07-auth-ux.md) · Login hardening / OAuth(Open Authorization) depth → [auth-oauth-oidc-and-login-security](../../auth-oauth-oidc-and-login-security/README.md)
 
 ## At a glance
 

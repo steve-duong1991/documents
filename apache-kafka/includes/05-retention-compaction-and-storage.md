@@ -2,7 +2,7 @@
 
 Topics retain data by **time**, **size**, or **compaction policy**. Storage planning ties retention to disk, replay windows, and compliance.
 
-> **Related:** Streaming pipeline sizing → [HTS §7](../../high-throughput-systems/includes/07-streaming-pipelines.md) · Cluster disk → [§9 setup](09-cluster-setup-and-requirements.md) · Audit/PII retention on the bus → [ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md) · [ESC §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) · Storage cost → [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md)
+> **Related:** Streaming pipeline sizing → [HTS §7](../../high-throughput-systems/includes/07-streaming-pipelines.md) · Cluster disk → [§9 setup](09-cluster-setup-and-requirements.md) · Audit/PII(Personally Identifiable Information) retention on the bus → [ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md) · [ESC §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) · Storage cost → [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md)
 
 ---
 
@@ -91,17 +91,17 @@ flowchart LR
 |----------------|--------------|
 | Compliance/audit topics need 90d–1y+ in Kafka itself | Retention ≤ 7–14d fits comfortably on local disk |
 | Replay/rebuild windows longer than NVMe budget | Warehouse/lake already lands durable copy within hours |
-| Managed offering includes tiered storage with known RPO | Team cannot operate restore latency / remote fetch alerts |
+| Managed offering includes tiered storage with known RPO(Recovery Point Objective) | Team cannot operate restore latency / remote fetch alerts |
 
 ### Ops checklist
 
 | Concern | Practice |
 |---------|----------|
 | **Local retention** | Size hot tier for peak produce + consumer lag buffer — not full topic retention |
-| **Remote fetch SLO** | Alert when remote fetch latency or error rate spikes; lag runbooks must mention cold-tier catch-up |
+| **Remote fetch SLO(Service Level Objective)** | Alert when remote fetch latency or error rate spikes; lag runbooks must mention cold-tier catch-up |
 | **Broker disk** | Still alert at 80% local — tiering does not remove hot-path disk risk |
 | **Compaction** | Prefer delete-retention topics for long cold history; compacted changelogs stay mostly hot |
-| **DR / MM2** | Mirror primary cluster; do not assume remote objects alone are your failover — [§10 DR](10-operations-dr-security-and-observability.md) |
+| **DR / MM2(MirrorMaker 2)** | Mirror primary cluster; do not assume remote objects alone are your failover — [§10 DR](10-operations-dr-security-and-observability.md) |
 | **Cost** | Object storage + GET fees vs shorter Kafka retention + warehouse land — [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md) |
 
 **Rule of thumb:** Tiered storage is for **keeping Kafka as the replay window** cheaper — not a substitute for a governed warehouse archive or WORM(Write Once Read Many) security audit store ([ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md)).

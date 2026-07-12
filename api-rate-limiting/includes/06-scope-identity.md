@@ -123,7 +123,7 @@ Gateway can enforce global + IP; app or gateway plugin enriches with API key / t
 
 - **Combine IP + identity** — per-IP alone punishes corporate NAT and mobile carriers
 - **Different limits per tier** — free vs paid vs enterprise ([api-design §5 tiers](../../api-design-and-protection/includes/05-rate-limit-tiers.md))
-- **Stricter limits on auth endpoints** — login, password reset, OTP
+- **Stricter limits on auth endpoints** — login, password reset, OTP(One-Time Password)
 - **Looser limits on read, tighter on write** — `GET` vs `POST`/`DELETE`
 - **Hash tags for cluster affinity** — `{org_acme}` in key when org counters need same slot for multi-key Lua
 - **Document identity fallback** — if JWT missing `org_id`, fall back to user scope, not unlimited

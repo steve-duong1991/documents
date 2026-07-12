@@ -41,6 +41,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (th
 | Guide | Topics |
 |-------|--------|
 | [api-design-and-protection](../api-design-and-protection/README.md) | Edge protection, auth, STRIDE(Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) for APIs, identity |
+| [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) | OAuth(Open Authorization)/OIDC(OpenID Connect), cookies/sessions, password login hardening |
 | [api-design §6 Threat model](../api-design-and-protection/includes/06-threat-model.md) | API-focused STRIDE + OWASP(Open Worldwide Application Security Project) API Top 10 |
 | [database-connection-and-security](../database-connection-and-security/README.md) | DB credentials, IAM(Identity and Access Management), vault, rotation |
 | [deployment-strategies](../deployment-strategies/README.md) | Safe rollout; gate security checks with deploys |

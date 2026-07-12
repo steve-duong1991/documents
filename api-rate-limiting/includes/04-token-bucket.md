@@ -84,5 +84,5 @@ Use **Lua** for atomic refill + deduct in one round trip — avoids race between
 |---------|-----|
 | High `capacity` that overwhelms DB on burst | Size burst to what downstream can absorb; pair with [§8 concurrent limits](08-specialized-limiters.md) |
 | Per-node token state | Centralize in Redis for multi-instance APIs — [§12](12-distributed-rate-limiting.md) |
-| Token bucket for strict OTP fairness | Use sliding window log ([§2](02-sliding-window-log.md)) on auth endpoints |
+| Token bucket for strict OTP(One-Time Password) fairness | Use sliding window log ([§2](02-sliding-window-log.md)) on auth endpoints |
 | Refill computed in app without shared clock | Lua in Redis or store `last_refill_ms` in hash |

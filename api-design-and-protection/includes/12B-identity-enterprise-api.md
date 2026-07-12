@@ -16,7 +16,7 @@
 
 Default stack for public SaaS APIs (extends [overview default](00-overview.md#default-recommendation)):
 
-1. **Entra ID / Okta** (fed from AD if hybrid) for employee SSO
+1. **Entra ID / Okta** (fed from AD if hybrid) for employee SSO(Single Sign-On)
 2. **OAuth(Open Authorization) 2.0 + OIDC(OpenID Connect)** for user-facing apps → JWT with scopes/roles
 3. **Scoped API keys** for partners (see [Auth model](04-auth-model.md))
 4. **Gateway** validates token + coarse RBAC; **app** validates object ownership

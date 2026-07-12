@@ -57,7 +57,7 @@ Each channel gets its own queue and worker pool because each has different throu
 
 | Priority | Example | Queue treatment |
 |----------|---------|------------------|
-| **Critical** (security, OTP) | Login code, fraud alert | Dedicated high-priority queue per channel, minimal batching |
+| **Critical** (security, OTP(One-Time Password)) | Login code, fraud alert | Dedicated high-priority queue per channel, minimal batching |
 | **Transactional** | Order confirmation, password reset | Standard queue, fast SLA(Service Level Agreement) |
 | **Bulk / marketing** | Weekly digest, promo | Low-priority queue; rate-limited against provider caps; throttled during high-priority bursts |
 

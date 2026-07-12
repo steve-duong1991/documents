@@ -2,7 +2,7 @@
 
 Running Kafka in production means monitoring **lag and replication**, securing clients, planning **disaster recovery**, and tying alerts to runbooks.
 
-> **Related:** DR vocabulary → [database-connection §12 DR](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) · Observability patterns → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · Runbook template → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md) · Setup baseline → [§9](09-cluster-setup-and-requirements.md) · **Failure catalog and runbooks** → [§13](13-failure-modes-troubleshooting-and-recovery.md) · Audit/PII on streams → [ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md) · [ESC §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) · MM2 topologies → [§7 MirrorMaker](07-connect-streams-and-ecosystem.md#mirrormaker-2-mm2)
+> **Related:** DR vocabulary → [database-connection §12 DR](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) · Observability patterns → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · Runbook template → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md) · Setup baseline → [§9](09-cluster-setup-and-requirements.md) · **Failure catalog and runbooks** → [§13](13-failure-modes-troubleshooting-and-recovery.md) · Audit/PII(Personally Identifiable Information) on streams → [ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md) · [ESC §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) · MM2(MirrorMaker 2) topologies → [§7 MirrorMaker](07-connect-streams-and-ecosystem.md#mirrormaker-2-mm2)
 
 ---
 
@@ -69,7 +69,7 @@ Details build on [§9 setup](09-cluster-setup-and-requirements.md) — do not du
 | **Authorization** | ACLs (open source) or RBAC (Confluent); least privilege per principal |
 | **Quotas** | Byte rate per client id / user — multi-tenant fairness — [#client-quotas-and-noisy-neighbor](#client-quotas-and-noisy-neighbor) |
 | **Admin access** | Separate admin principals; audit topic delete |
-| **Broker / ACL audit** | Log authorization denials and admin API(Application Programming Interface) calls — feed security audit pipeline ([ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md)) |
+| **Broker / ACL(Access Control List) audit** | Log authorization denials and admin API(Application Programming Interface) calls — feed security audit pipeline ([ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md)) |
 
 | Principal | Typical ACL(Access Control List) |
 |-----------|-------------|
@@ -178,7 +178,7 @@ flowchart TD
 | Check | Detail |
 |-------|--------|
 | **Idempotent sinks** | Inbox / unique `event_id` before side effects — [§8](08-integration-patterns.md) |
-| **Inter-region lag SLO** | Page when mirror lag exceeds freshness budget from catalog |
+| **Inter-region lag SLO(Service Level Objective)** | Page when mirror lag exceeds freshness budget from catalog |
 | **Schema + ACL parity** | Same subjects, compatibility, and principals in every region |
 | **Failover drill** | Kill region or pause MM2 link quarterly; verify no double charge / double email |
 | **Avoid Streams stateful active-active** | Prefer Flink or single-region state — [§7 Streams](07-connect-streams-and-ecosystem.md#kafka-streams) |
