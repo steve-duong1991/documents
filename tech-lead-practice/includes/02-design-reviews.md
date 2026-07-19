@@ -2,7 +2,7 @@
 
 Facilitate reviews that catch architectural risk early without becoming theater or rubber stamps.
 
-> **Related:** ADR process → [architecture-decisions §5](../../architecture-decisions/includes/05-adrs-and-design-docs.md) · Trade-offs → [architecture-decisions §6](../../architecture-decisions/includes/06-tradeoff-frameworks.md) · Code review → [§3](03-code-review-standards.md)
+> **Related:** ADR process → [architecture-decisions §5](../../architecture-decisions/includes/05-adrs-and-design-docs.md) · ARB / decision rights → [architecture §5A](../../architecture-decisions/includes/05A-architecture-governance.md) · Trade-offs → [architecture-decisions §6](../../architecture-decisions/includes/06-tradeoff-frameworks.md) · Code review → [§3](03-code-review-standards.md)
 
 ---
 

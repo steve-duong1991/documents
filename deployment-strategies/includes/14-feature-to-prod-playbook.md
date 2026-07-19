@@ -21,7 +21,7 @@ One path for Tech Leads shipping a user-facing feature to production at scale. W
 | **4. Promote** | Same digest → staging → prod | [cicd §2](../../cicd-and-environments/includes/02-cd-and-promotion.md) |
 | **5. Progressive release** | Canary and/or flag with bake time | [§4](04-canary.md) · [§7](07-feature-flags.md) · [§10](10-progressive-delivery.md) |
 | **6. Observe / abort** | Version-tagged metrics; auto or one-click rollback | [§13](13-slo-rollback-triggers.md) · [HTS §11](../../high-throughput-systems/includes/11-observability.md) |
-| **7. Steady state** | Runbook current; drill on calendar | [RUNBOOK-TEMPLATE](../../RUNBOOK-TEMPLATE.md) · [SRE §9](../../sre-and-incidents/includes/09-game-days-and-drills.md) |
+| **7. Steady state** | Hypercare closed; runbook current; drill on calendar | [SRE §10A hypercare](../../sre-and-incidents/includes/10A-hypercare-checklist.md) · [RUNBOOK-TEMPLATE](../../RUNBOOK-TEMPLATE.md) · [SRE §9](../../sre-and-incidents/includes/09-game-days-and-drills.md) |
 
 ```mermaid
 flowchart LR
@@ -125,6 +125,7 @@ Skip only for pure config/flag or code-only changes with **no** schema or event 
 
 | Check | Done when |
 |-------|-----------|
+| [ ] Hypercare 24–72 h complete (or written extension) | SLOs + business KPI + CX glance — [SRE §10A](../../sre-and-incidents/includes/10A-hypercare-checklist.md) |
 | [ ] Runbook updated same day | Symptoms, dashboards, rollback, contacts — [RUNBOOK-TEMPLATE](../../RUNBOOK-TEMPLATE.md) |
 | [ ] Feature fully ramped or flag cleaned up | No permanent 5% canary leftover; release flag on cleanup track — [§7 lifecycle](07-feature-flags.md#lifecycle-and-cleanup) |
 | [ ] Next drill on calendar | Bad deploy / kill switch / dependency loss — [SRE §9](../../sre-and-incidents/includes/09-game-days-and-drills.md) |
@@ -165,7 +166,7 @@ Cursor hand-off after ramp → [cursor-workflows §6 Operate and learn](../../cu
 | Need | Guide |
 |------|-------|
 | CI/CD(Continuous Delivery) promotion and flags as control | [cicd-and-environments](../../cicd-and-environments/README.md) |
-| Incidents, error budgets, game days | [sre-and-incidents](../../sre-and-incidents/README.md) |
+| Incidents, error budgets, game days, hypercare | [sre-and-incidents](../../sre-and-incidents/README.md) · [§10A](../../sre-and-incidents/includes/10A-hypercare-checklist.md) |
 | Cursor post-merge ship workflow | [cursor-workflows §5](../../cursor-workflows/includes/05-ship-to-prod.md) |
 | After ramp: operate and learn | [cursor-workflows §6](../../cursor-workflows/includes/06-operate-and-learn.md) |
 | Design → code loop before this playbook | [cursor-workflows](../../cursor-workflows/README.md) |

@@ -1,6 +1,6 @@
 # SRE & Incidents Guide
 
-A practical reference for tech leads running production services — SLIs/SLOs, error budgets, observability culture, alerting, incident command, postmortems, on-call, and drills.
+A practical reference for tech leads running production services — SLIs/SLOs, error budgets, observability culture, alerting, incident command, postmortems, on-call, drills, and post-release hypercare.
 
 Related: [high-throughput-systems §11](../high-throughput-systems/includes/11-observability.md) (signals and triage) · [deployment-strategies §13](../deployment-strategies/includes/13-slo-rollback-triggers.md) (SLO rollback) · [RUNBOOK-TEMPLATE.md](../RUNBOOK-TEMPLATE.md)
 
@@ -21,6 +21,7 @@ Related: [high-throughput-systems §11](../high-throughput-systems/includes/11-o
 | 8 | [On-call design](includes/08-on-call-design.md) |
 | 9 | [Game days and drills](includes/09-game-days-and-drills.md) |
 | 10 | [Synthetic monitoring](includes/10-synthetic-monitoring.md) |
+| 10A | [Hypercare checklist (first 72h)](includes/10A-hypercare-checklist.md) |
 | 11 | [Decision guide](includes/11-decision-guide.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.

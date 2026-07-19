@@ -2,7 +2,7 @@
 
 Architecture choices set the **cost curve**. Use this section in design reviews alongside reliability and delivery — not after the invoice lands.
 
-> **Related:** Decision guide → [§8](08-decision-guide.md) · ADRs and tradeoffs → [architecture-decisions](../../architecture-decisions/README.md) · HTS decisions → [HTS §12](../../high-throughput-systems/includes/12-decision-guide-and-common-mistakes.md) · Data store choice → [data-platforms §8](../../data-platforms/includes/08-decision-guide.md) · Build vs managed → [§5](05-build-vs-managed-cost.md)
+> **Related:** Decision guide → [§8](08-decision-guide.md) · Org/stage/pricing fit → [architecture §14](../../architecture-decisions/includes/14-org-stage-and-pricing-fit.md) · ADRs and tradeoffs → [architecture-decisions](../../architecture-decisions/README.md) · HTS decisions → [HTS §12](../../high-throughput-systems/includes/12-decision-guide-and-common-mistakes.md) · Data store choice → [data-platforms §8](../../data-platforms/includes/08-decision-guide.md) · Build vs managed → [§5](05-build-vs-managed-cost.md)
 
 ---
 

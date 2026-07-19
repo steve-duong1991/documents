@@ -6,6 +6,20 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-07-19
 
+### SA gaps: debt×CX, org fit, hypercare, learning path
+- **tech-lead §5A (new):** Balancing debt, business, and CX — ship-with-degrade vs stop features vs pay debt first
+- **architecture §14 (new):** Org, stage, and pricing fit — people/platform maturity, B2B vs B2C, pricing → defaults; NFR sheet
+- **sre §10A (new):** Hypercare checklist (first 72h) — SLOs + business KPI + Web Vitals/support; abort/extend
+- **Root README:** New **Solution Architect** learning path; TL Fullstack / Ship safely / On-call / Tech Lead / Architecture paths updated
+- **Cross-links:** deploy §14 Gate 7; cursor-workflows §6; architecture §1/§12; tech-lead §5/§11; finops §7/§8; sre §10/§11; GLOSSARY Hypercare; acronyms CX/CSAT/GTM/KPI/RUM/NPS
+
+### SA org/process depth
+- **tech-lead §1A (new):** Product discovery for Tech Leads — evidence, JTBD/spikes, discovery brief → solution design
+- **architecture §1A (new):** Team Topologies — stream/platform/enabling/complicated-subsystem, interaction modes, reverse Conway
+- **architecture §5A (new):** Architecture governance (ARB) — decision rights by blast radius, lightweight ARB, paved-road exceptions
+- **architecture §4A (new):** Modernization program — waves, dual-run KPIs, cutover RACI, program exit
+- **Corpus:** SA + Tech Lead + Architecture paths updated; cursor-workflows §1 / READMEs; acronyms ARB/JTBD
+
 ### Identity depth + residency + erasure + notifications
 - **api-design §12D (new):** Fine-grained AuthZ — BOLA, ReBAC/Zanzibar-style, ABAC vs RBAC, AuthZ service vs JWT, caching/tenancy
 - **enterprise-security §7A (new):** Erasure and DSAR playbook — store inventory, crypto-shred, fan-out, legal hold, multi-tenant

@@ -13,7 +13,7 @@ Practical reference docs for building and operating production APIs and data sys
 | [apache-kafka](apache-kafka/README.md) | Distributed commit log: internals, schema formats, setup, producers/consumers, integration, DR, testing |
 | [api-design-and-protection](api-design-and-protection/README.md) | REST(Representational State Transfer) design, protection, gateway, auth, identity, async, idempotency, object storage uploads, stateless architecture |
 | [api-rate-limiting](api-rate-limiting/README.md) | Limiter algorithms, scope, deployment layers, response strategies |
-| [architecture-decisions](architecture-decisions/README.md) | System shape, boundaries, DDD(Domain-Driven Design), strangler, ADRs, tradeoffs, capacity estimation, multi-tenant, failure domains |
+| [architecture-decisions](architecture-decisions/README.md) | System shape, Team Topologies, strangler/program modernization, ADRs/ARB, tradeoffs, capacity, multi-tenant, failure domains, org/stage/pricing fit |
 | [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) | OAuth(Open Authorization) 2.0 grants, OIDC(OpenID Connect) discovery/ID tokens, SSO(Single Sign-On)/multi-tenant B2B(Business-to-Business), token lifecycle, cookie/session CSRF(Cross-Site Request Forgery), login hardening |
 | [cicd-and-environments](cicd-and-environments/README.md) | CI(Continuous Integration)/CD(Continuous Delivery) pipelines, env promotion, config vs secrets, flags, branching, rollback, container health, platform boundaries |
 | [cursor-agents](cursor-agents/README.md) | Single vs multi agent, parallel Agents Window, subagents, auto-delegation |
@@ -33,9 +33,9 @@ Practical reference docs for building and operating production APIs and data sys
 | [realtime-at-scale](realtime-at-scale/README.md) | WebSocket fan-out, pub/sub backplanes, presence, CRDT(Conflict-free Replicated Data Type)/OT(Operational Transformation) |
 | [resilience-patterns](resilience-patterns/README.md) | Timeouts, retries, circuit breakers, bulkheads, load shedding, idempotency, locks, delivery, cascades, chaos, policy placement, observability, drain |
 | [specialized-data-systems](specialized-data-systems/README.md) | Time-series, graph DBs, vector/RAG(Retrieval-Augmented Generation), workflow engines (Temporal / Step Functions) |
-| [sre-and-incidents](sre-and-incidents/README.md) | SLIs/SLOs, error budgets, observability culture, alerting, incident command, postmortems, on-call, drills |
+| [sre-and-incidents](sre-and-incidents/README.md) | SLIs/SLOs, error budgets, observability culture, alerting, incident command, postmortems, on-call, drills, hypercare |
 | [system-design-walkthroughs](system-design-walkthroughs/README.md) | End-to-end designs: URL shortener, feed, chat, geo, rate limiter, notifications, autocomplete, video |
-| [tech-lead-practice](tech-lead-practice/README.md) | Vision/roadmap, design & code reviews, mentoring, debt, estimation, stakeholders, API ownership, build vs buy |
+| [tech-lead-practice](tech-lead-practice/README.md) | Vision/roadmap, product discovery, design & code reviews, mentoring, debt, debt×business×CX, estimation, stakeholders, API ownership, build vs buy |
 | [testing-strategy](testing-strategy/README.md) | Pyramid/diamond, what not to automate, contracts, E2E, load/chaos, flakes, quality gates, production verification |
 | [tree-and-index-structures](tree-and-index-structures/README.md) | B+, LSM(Log-Structured Merge), in-memory trees, specialized structures, decision guides |
 
@@ -162,14 +162,31 @@ flowchart LR
 
 Decision-making, resilience, delivery, quality, and leadership — then deepen with the specialist paths below.
 
-1. [architecture-decisions](architecture-decisions/README.md) — system shape, boundaries, ADRs → [§12 decision guide](architecture-decisions/includes/12-decision-guide.md) · [§13 capacity](architecture-decisions/includes/13-capacity-estimation.md)
+1. [architecture-decisions](architecture-decisions/README.md) — system shape, boundaries, ADRs → [§12 decision guide](architecture-decisions/includes/12-decision-guide.md) · [§13 capacity](architecture-decisions/includes/13-capacity-estimation.md) · [§14 org/stage/pricing](architecture-decisions/includes/14-org-stage-and-pricing-fit.md)
 2. [distributed-systems-primitives](distributed-systems-primitives/README.md) + [resilience-patterns](resilience-patterns/README.md) — mechanisms and failure survival
-3. [sre-and-incidents](sre-and-incidents/README.md) + [cicd-and-environments](cicd-and-environments/README.md) — operate and ship safely → release order [deployment §14 playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md)
+3. [sre-and-incidents](sre-and-incidents/README.md) + [cicd-and-environments](cicd-and-environments/README.md) — operate and ship safely → release order [deployment §14 playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md) · [§10A hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md)
 4. [testing-strategy](testing-strategy/README.md) + [enterprise-security-compliance](enterprise-security-compliance/README.md) — quality and enterprise readiness → erasure [ESC §7A](enterprise-security-compliance/includes/07A-erasure-and-dsar.md)
 5. [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) + [api-design §12](api-design-and-protection/includes/12-identity-rbac-iam-ad.md) — login/SSO; B2B → [§2d](auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · [§12C](api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) · [§12D](api-design-and-protection/includes/12D-fine-grained-authz.md)
-6. [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) + [tech-lead-practice](tech-lead-practice/README.md) — client seam and people/process
+6. [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) + [tech-lead-practice](tech-lead-practice/README.md) — client seam and people/process → debt × CX [tech-lead §5A](tech-lead-practice/includes/05A-debt-business-cx-balance.md)
 7. [finops-and-cost](finops-and-cost/README.md) + [data-platforms](data-platforms/README.md) — cost and data beyond one OLTP DB
 8. Practice designs → [system-design-walkthroughs](system-design-walkthroughs/README.md)
+
+### Solution Architect (design → decide → watch)
+
+End-to-end SA path without requiring Cursor: discover the problem, choose a shape that fits the org, govern hard decisions, ship safely, then watch PROD with tech and business signals.
+
+1. Discovery → [tech-lead §1A product discovery](tech-lead-practice/includes/01A-product-discovery.md) — evidence, metrics, kill criteria
+2. Problem and options → [cursor-workflows §1 Solution design](cursor-workflows/includes/01-solution-design.md) (method) · [§1A templates](cursor-workflows/includes/01A-epic-feature-user-story-templates.md) · [system-design §1](system-design-walkthroughs/includes/01-how-to-approach.md)
+3. Architecture artifacts → [cursor-workflows §2](cursor-workflows/includes/02-solution-architecture.md) · [architecture-decisions](architecture-decisions/README.md) — [§5 ADRs](architecture-decisions/includes/05-adrs-and-design-docs.md) · [§5A ARB/governance](architecture-decisions/includes/05A-architecture-governance.md) · [§6 tradeoffs](architecture-decisions/includes/06-tradeoff-frameworks.md) · [§13 capacity](architecture-decisions/includes/13-capacity-estimation.md)
+4. Fit to company and teams → [architecture §14 org/stage/pricing](architecture-decisions/includes/14-org-stage-and-pricing-fit.md) · [§1A Team Topologies](architecture-decisions/includes/01A-team-topologies.md) · [finops §7](finops-and-cost/includes/07-architecture-cost-tradeoffs.md) · [tech-lead §9 build vs buy](tech-lead-practice/includes/09-build-vs-buy.md)
+5. Survive failure → [architecture §11](architecture-decisions/includes/11-failure-domains.md) + [resilience-patterns](resilience-patterns/README.md) → [§12 checkout](resilience-patterns/includes/12-worked-example-checkout.md) · [§16 decisions](resilience-patterns/includes/16-decision-guide.md)
+6. Debt vs roadmap vs CX → [tech-lead §5](tech-lead-practice/includes/05-tech-debt-portfolio.md) · [§5A](tech-lead-practice/includes/05A-debt-business-cx-balance.md)
+7. Large legacy change → [architecture §4](architecture-decisions/includes/04-strangler-and-modernization.md) · [§4A modernization program](architecture-decisions/includes/04A-modernization-program.md)
+8. Ship → [deployment §14 feature to PROD](deployment-strategies/includes/14-feature-to-prod-playbook.md) · [testing-strategy](testing-strategy/README.md) · [cicd-and-environments](cicd-and-environments/README.md)
+9. Watch PROD → [sre §10A hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md) · [sre §1–2](sre-and-incidents/includes/01-sli-slo-sla.md) · [HTS §11](high-throughput-systems/includes/11-observability.md) · [fullstack §4 Web Vitals](fullstack-bff-and-clients/includes/04-web-performance.md)
+10. Practice → [system-design-walkthroughs](system-design-walkthroughs/README.md) · deepen via [Architecture & resilience](#architecture--resilience) path below
+
+Cursor-specific agent loop (optional) → [cursor-workflows](cursor-workflows/README.md) §3–§6.
 
 ### Ship a public API
 
@@ -300,8 +317,9 @@ Triage saturation-first, rollback, and DR when alerts fire.
 1. [sre-and-incidents](sre-and-incidents/README.md) — SLOs, error budgets, alerting, incident command, postmortems, on-call
 2. [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md) or [example orders-api runbook](RUNBOOK-EXAMPLE-orders-api.md)
 3. [high-throughput-systems §11 observability](high-throughput-systems/includes/11-observability.md) — triage order, RED(Rate, Errors, Duration)/USE(Utilization, Saturation, Errors), tracing
-4. [deployment-strategies §13 SLO rollback](deployment-strategies/includes/13-slo-rollback-triggers.md) + [cicd-and-environments §6](cicd-and-environments/includes/06-rollback-vs-forward-fix.md)
-5. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) + [database-connection §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md)
+4. After a ship → [sre §10A hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md) (SLOs + business KPI + CX)
+5. [deployment-strategies §13 SLO rollback](deployment-strategies/includes/13-slo-rollback-triggers.md) + [cicd-and-environments §6](cicd-and-environments/includes/06-rollback-vs-forward-fix.md)
+6. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) + [database-connection §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md)
 
 ### Ship safely (CI/CD)
 
@@ -312,15 +330,16 @@ Build once, promote digests, progressive expose, and undo safely.
 3. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green, progressive delivery
 4. [testing-strategy](testing-strategy/README.md) — pyramid, gates, production verification
 5. [sre-and-incidents §1–§2](sre-and-incidents/includes/01-sli-slo-sla.md) — SLOs and error-budget gates on release
-6. [cursor-workflows §5 ship to PROD](cursor-workflows/includes/05-ship-to-prod.md) — post-merge Cursor workflow
-7. [cursor-workflows §6 operate and learn](cursor-workflows/includes/06-operate-and-learn.md) — watch, cleanup, drills, next backlog
-8. [database-connection-and-security](database-connection-and-security/README.md) — secrets and rotation during deploys
+6. [sre §10A hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md) — first 72h SLOs + business KPI + CX
+7. [cursor-workflows §5 ship to PROD](cursor-workflows/includes/05-ship-to-prod.md) — post-merge Cursor workflow
+8. [cursor-workflows §6 operate and learn](cursor-workflows/includes/06-operate-and-learn.md) — watch, cleanup, drills, next backlog
+9. [database-connection-and-security](database-connection-and-security/README.md) — secrets and rotation during deploys
 
 ### Architecture & resilience
 
 Choose system shape, then survive partial failure.
 
-1. [architecture-decisions](architecture-decisions/README.md) — monolith↔services, DDD, ADRs, data ownership → [§13 capacity estimation](architecture-decisions/includes/13-capacity-estimation.md)
+1. [architecture-decisions](architecture-decisions/README.md) — monolith↔services, DDD, ADRs, data ownership → [§1A Team Topologies](architecture-decisions/includes/01A-team-topologies.md) · [§5A ARB](architecture-decisions/includes/05A-architecture-governance.md) · [§13 capacity](architecture-decisions/includes/13-capacity-estimation.md) · [§14 org/stage/pricing](architecture-decisions/includes/14-org-stage-and-pricing-fit.md) · legacy programs [§4A](architecture-decisions/includes/04A-modernization-program.md)
 2. [distributed-systems-primitives](distributed-systems-primitives/README.md) — hashing, IDs, consensus, clocks (mechanisms under CAP/PACELC)
 3. [resilience-patterns](resilience-patterns/README.md) — timeouts, retries, breakers, bulkheads, placement, checkout example, chaos
 4. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting](api-rate-limiting/README.md)
@@ -392,9 +411,11 @@ What to automate, where, and how gates stay honest.
 Direction, reviews, debt, and cross-team ownership.
 
 1. [tech-lead-practice](tech-lead-practice/README.md) — overview → [§11 decision guide](tech-lead-practice/includes/11-decision-guide.md)
-2. [architecture-decisions §5 ADRs](architecture-decisions/includes/05-adrs-and-design-docs.md) + [tech-lead §2 design reviews](tech-lead-practice/includes/02-design-reviews.md)
-3. [tech-lead §5 debt](tech-lead-practice/includes/05-tech-debt-portfolio.md) + [§7 stakeholders](tech-lead-practice/includes/07-stakeholder-communication.md)
-4. [sre-and-incidents](sre-and-incidents/README.md) — reliability as a leadership outcome
+2. [tech-lead §1A product discovery](tech-lead-practice/includes/01A-product-discovery.md) + [§1 vision](tech-lead-practice/includes/01-technical-vision-and-roadmap.md)
+3. [architecture-decisions §5 ADRs](architecture-decisions/includes/05-adrs-and-design-docs.md) + [§5A governance](architecture-decisions/includes/05A-architecture-governance.md) + [tech-lead §2 design reviews](tech-lead-practice/includes/02-design-reviews.md)
+4. [tech-lead §5 debt](tech-lead-practice/includes/05-tech-debt-portfolio.md) + [§5A debt × business × CX](tech-lead-practice/includes/05A-debt-business-cx-balance.md) + [§7 stakeholders](tech-lead-practice/includes/07-stakeholder-communication.md)
+5. [architecture §14 org/stage/pricing](architecture-decisions/includes/14-org-stage-and-pricing-fit.md) · [§1A Team Topologies](architecture-decisions/includes/01A-team-topologies.md) — when company/team shape changes the technical default
+6. [sre-and-incidents](sre-and-incidents/README.md) — reliability as a leadership outcome · [§10A hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md)
 
 ### B2B / partner API
 

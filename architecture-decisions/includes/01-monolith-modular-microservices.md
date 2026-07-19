@@ -2,7 +2,7 @@
 
 When each shape fits — and what distribution actually costs in ops, latency, and team coordination.
 
-> **Related:** Boundaries → [02-service-boundaries-and-decomposition.md](02-service-boundaries-and-decomposition.md) · Failure domains → [11-failure-domains.md](11-failure-domains.md) · Throughput order → [high-throughput-systems](../../high-throughput-systems/README.md)
+> **Related:** Team Topologies depth → [§1A](01A-team-topologies.md) · Boundaries → [02-service-boundaries-and-decomposition.md](02-service-boundaries-and-decomposition.md) · Failure domains → [11-failure-domains.md](11-failure-domains.md) · Org/stage/pricing defaults → [§14](14-org-stage-and-pricing-fit.md) · Throughput order → [high-throughput-systems](../../high-throughput-systems/README.md)
 
 ---
 
@@ -26,6 +26,8 @@ When each shape fits — and what distribution actually costs in ops, latency, a
 | Squads own distinct domains end-to-end | Modular → extract services at seams |
 | Platform team + many product teams | Microservices with paved road (CI, observability, auth) |
 | Outsourced “shared platform” without product ownership | Avoid — creates tickets-as-architecture |
+
+Team types (stream-aligned, platform, enabling, complicated-subsystem) and interaction modes → [§1A](01A-team-topologies.md).
 
 ```mermaid
 flowchart LR

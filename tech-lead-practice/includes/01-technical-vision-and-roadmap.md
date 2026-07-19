@@ -2,7 +2,7 @@
 
 Translate product goals into a coherent technical direction people can execute against for quarters, not days.
 
-> **Related:** ADRs and design docs → [architecture-decisions §5](../../architecture-decisions/includes/05-adrs-and-design-docs.md) · Debt portfolio → [§5](05-tech-debt-portfolio.md) · Stakeholders → [§7](07-stakeholder-communication.md)
+> **Related:** Product discovery → [§1A](01A-product-discovery.md) · ADRs and design docs → [architecture-decisions §5](../../architecture-decisions/includes/05-adrs-and-design-docs.md) · Debt portfolio → [§5](05-tech-debt-portfolio.md) · Stakeholders → [§7](07-stakeholder-communication.md)
 
 ---
 

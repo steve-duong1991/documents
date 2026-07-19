@@ -2,7 +2,7 @@
 
 When to spend, when to cut, and which FinOps(Cloud Financial Operations) moves belong in the next sprint versus the next architecture review.
 
-> **Related:** Overview → [§0](00-overview.md) · Architecture tradeoffs → [§7](07-architecture-cost-tradeoffs.md) · [architecture-decisions](../../architecture-decisions/README.md) · HTS decisions → [HTS §12](../../high-throughput-systems/includes/12-decision-guide-and-common-mistakes.md) · Data platform decisions → [data-platforms §8](../../data-platforms/includes/08-decision-guide.md)
+> **Related:** Overview → [§0](00-overview.md) · Architecture tradeoffs → [§7](07-architecture-cost-tradeoffs.md) · Org/stage/pricing fit → [architecture §14](../../architecture-decisions/includes/14-org-stage-and-pricing-fit.md) · [architecture-decisions](../../architecture-decisions/README.md) · HTS decisions → [HTS §12](../../high-throughput-systems/includes/12-decision-guide-and-common-mistakes.md) · Data platform decisions → [data-platforms §8](../../data-platforms/includes/08-decision-guide.md)
 
 ---
 

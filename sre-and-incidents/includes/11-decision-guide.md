@@ -20,6 +20,7 @@ What to adopt first, what to postpone, and how SRE(Site Reliability Engineering)
 | Burned-out rotation | [§8 On-call](08-on-call-design.md) |
 | Untested DR / runbooks | [§9 Game days](09-game-days-and-drills.md) |
 | Quiet-hours blind spots | [§10 Synthetics](10-synthetic-monitoring.md) |
+| Just ramped a feature to PROD | [§10A Hypercare](10A-hypercare-checklist.md) |
 
 ---
 

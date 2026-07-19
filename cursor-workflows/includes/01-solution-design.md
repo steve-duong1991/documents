@@ -1,6 +1,6 @@
 # Solution Design
 
-> **Related:** EPIC/FEATURE/USER_STORY templates → [§1A](01A-epic-feature-user-story-templates.md) · Architecture → [§2](02-solution-architecture.md) · Tech lead practice → [../../tech-lead-practice/README.md](../../tech-lead-practice/README.md) · Architecture decisions → [../../architecture-decisions/README.md](../../architecture-decisions/README.md)
+> **Related:** Product discovery (before this) → [tech-lead §1A](../../tech-lead-practice/includes/01A-product-discovery.md) · EPIC/FEATURE/USER_STORY templates → [§1A](01A-epic-feature-user-story-templates.md) · Architecture → [§2](02-solution-architecture.md) · Tech lead practice → [../../tech-lead-practice/README.md](../../tech-lead-practice/README.md) · Architecture decisions → [../../architecture-decisions/README.md](../../architecture-decisions/README.md)
 
 ## At a glance
 

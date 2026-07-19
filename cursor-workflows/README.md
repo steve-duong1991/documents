@@ -27,7 +27,8 @@ Related: [Cursor Agents guide](../cursor-agents/README.md) · [Feature to PROD p
 |----------|--------|
 | [Engineering Guides](../README.md) | Full corpus — validate per [CONTRIBUTING](../CONTRIBUTING.md) |
 | [Cursor Agents](../cursor-agents/README.md) | Single vs multi agent, subagents, Agents Window |
-| [Architecture decisions](../architecture-decisions/README.md) | ADRs, boundaries, tradeoffs, capacity |
+| [Architecture decisions](../architecture-decisions/README.md) | ADRs, boundaries, tradeoffs, capacity, Team Topologies, ARB |
+| [tech-lead §1A Product discovery](../tech-lead-practice/includes/01A-product-discovery.md) | Problem evidence before solution design |
 | [Fullstack BFF and clients](../fullstack-bff-and-clients/README.md) | React, BFF(Backend for Frontend), client architecture |
 | [API design and protection](../api-design-and-protection/README.md) | OpenAPI, contracts, mocks |
 | [Testing strategy](../testing-strategy/README.md) | Pyramid, contracts, E2E |

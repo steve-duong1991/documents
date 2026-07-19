@@ -2,7 +2,7 @@
 
 Synthetics are **proactive probes** that exercise critical journeys even when real traffic is quiet. They catch “nobody is shopping so metrics look fine” failures.
 
-> **Related:** Observability practice → [§4](04-observability-practice.md) · Alerting → [§5](05-alerting-and-paging.md) · Deploy gates → [deployment §13](../../deployment-strategies/includes/13-slo-rollback-triggers.md) · CI(Continuous Integration) smoke → [cicd §1](../../cicd-and-environments/includes/01-ci-pipeline-design.md)
+> **Related:** Observability practice → [§4](04-observability-practice.md) · Alerting → [§5](05-alerting-and-paging.md) · Post-ramp hypercare → [§10A](10A-hypercare-checklist.md) · Deploy gates → [deployment §13](../../deployment-strategies/includes/13-slo-rollback-triggers.md) · CI(Continuous Integration) smoke → [cicd §1](../../cicd-and-environments/includes/01-ci-pipeline-design.md)
 
 ---
 

@@ -2,7 +2,7 @@
 
 What a Tech Lead owns that a strong senior individual contributor does not — and how the two roles reinforce each other.
 
-> **Related:** Architecture decisions → [architecture-decisions](../../architecture-decisions/README.md) · Reliability practice → [sre-and-incidents](../../sre-and-incidents/README.md) · Decision picker → [§11](11-decision-guide.md)
+> **Related:** Architecture decisions → [architecture-decisions](../../architecture-decisions/README.md) · Product discovery → [§1A](01A-product-discovery.md) · Debt × business × CX → [§5A](05A-debt-business-cx-balance.md) · Reliability practice → [sre-and-incidents](../../sre-and-incidents/README.md) · Decision picker → [§11](11-decision-guide.md)
 
 ---
 

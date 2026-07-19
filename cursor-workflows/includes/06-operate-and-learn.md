@@ -2,7 +2,7 @@
 
 > **Scope:** **After ramp** — steady-state ops, cleanup, incidents, drills, and feeding the next FEATURE — not SRE(Site Reliability Engineering) theory or deploy mechanics.
 >
-> **Related:** Ship to PROD → [§5](05-ship-to-prod.md) · Playbook Gate 7 → [deployment §14](../../deployment-strategies/includes/14-feature-to-prod-playbook.md) · SLOs / error budgets → [sre §1–2](../../sre-and-incidents/includes/01-sli-slo-sla.md) · Incidents → [sre §6–7](../../sre-and-incidents/includes/06-incident-command.md) · Game days → [sre §9](../../sre-and-incidents/includes/09-game-days-and-drills.md) · Next loop → [§1 Solution design](01-solution-design.md)
+> **Related:** Ship to PROD → [§5](05-ship-to-prod.md) · Playbook Gate 7 → [deployment §14](../../deployment-strategies/includes/14-feature-to-prod-playbook.md) · Hypercare checklist → [sre §10A](../../sre-and-incidents/includes/10A-hypercare-checklist.md) · SLOs / error budgets → [sre §1–2](../../sre-and-incidents/includes/01-sli-slo-sla.md) · Incidents → [sre §6–7](../../sre-and-incidents/includes/06-incident-command.md) · Game days → [sre §9](../../sre-and-incidents/includes/09-game-days-and-drills.md) · Next loop → [§1 Solution design](01-solution-design.md)
 
 Ramp complete is not “done.” This phase keeps the feature healthy, turns production signal into backlog, then restarts design for the next change.
 
@@ -51,7 +51,7 @@ Flag: alert gaps, noisy pages, missing version tags.
 Propose alert threshold tweaks — do not silence without a ticket.
 ```
 
-Signals and triage order → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · [sre §4–5](../../sre-and-incidents/includes/04-observability-practice.md).
+Signals and triage order → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · [sre §4–5](../../sre-and-incidents/includes/04-observability-practice.md). Full first-72h checklist (SLOs + business KPI + CX) → [sre §10A](../../sre-and-incidents/includes/10A-hypercare-checklist.md).
 
 ### 2. Cleanup
 
@@ -106,7 +106,7 @@ roles, success metrics. Output a calendar invite body + runbook gaps to verify.
 
 | Input from operate | Becomes |
 |--------------------|---------|
-| Postmortem actions | USER_STORYs / tech debt — [tech-lead §5](../../tech-lead-practice/includes/05-tech-debt-portfolio.md) |
+| Postmortem actions | USER_STORYs / tech debt — [tech-lead §5](../../tech-lead-practice/includes/05-tech-debt-portfolio.md) · [§5A](../../tech-lead-practice/includes/05A-debt-business-cx-balance.md) |
 | SLO burn / cost spike | Reliability or FinOps(Cloud Financial Operations) FEATURE — [finops](../../finops-and-cost/README.md) |
 | Product follow-ups | New EPIC/FEATURE — [§1](01-solution-design.md) · [§1A](01A-epic-feature-user-story-templates.md) |
 | Error budget exhausted | Freeze risky ships until recovered — [sre §2](../../sre-and-incidents/includes/02-error-budgets.md) |

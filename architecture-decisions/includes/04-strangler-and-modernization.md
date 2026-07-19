@@ -2,7 +2,7 @@
 
 Incremental rewrite with the strangler fig pattern — replace legacy capability by capability without a big-bang cutover.
 
-> **Related:** Boundaries → [02-service-boundaries-and-decomposition.md](02-service-boundaries-and-decomposition.md) · Deploy safety → [deployment-strategies](../../deployment-strategies/README.md) · Dual-run data → [08-data-ownership.md](08-data-ownership.md)
+> **Related:** Multi-quarter program → [§4A](04A-modernization-program.md) · Boundaries → [02-service-boundaries-and-decomposition.md](02-service-boundaries-and-decomposition.md) · Deploy safety → [deployment-strategies](../../deployment-strategies/README.md) · Dual-run data → [08-data-ownership.md](08-data-ownership.md)
 
 ---
 

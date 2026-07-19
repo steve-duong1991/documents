@@ -12,10 +12,12 @@ Related: [architecture-decisions](../architecture-decisions/README.md) (ADRs, bo
 |---|-------|
 | — | [Overview](includes/00-overview.md) |
 | 1 | [Technical vision and roadmap](includes/01-technical-vision-and-roadmap.md) |
+| 1A | [Product discovery for Tech Leads](includes/01A-product-discovery.md) |
 | 2 | [Design reviews](includes/02-design-reviews.md) |
 | 3 | [Code review standards](includes/03-code-review-standards.md) |
 | 4 | [Mentoring and leveling](includes/04-mentoring-and-leveling.md) |
 | 5 | [Tech debt portfolio](includes/05-tech-debt-portfolio.md) |
+| 5A | [Balancing debt, business, and CX](includes/05A-debt-business-cx-balance.md) |
 | 6 | [Estimation and risk](includes/06-estimation-and-risk.md) |
 | 7 | [Stakeholder communication](includes/07-stakeholder-communication.md) |
 | 8 | [Cross-team API ownership](includes/08-cross-team-api-ownership.md) |

@@ -10,6 +10,7 @@ What Tech Leads own when shaping systems: boundaries, consistency, integration, 
 > - Throughput and overload → [high-throughput-systems](../../high-throughput-systems/README.md)
 > - Resilience stack → [resilience-patterns](../../resilience-patterns/README.md)
 > - Capstone → [12-decision-guide.md](12-decision-guide.md)
+> - Org/stage/pricing fit → [14-org-stage-and-pricing-fit.md](14-org-stage-and-pricing-fit.md)
 
 ---
 

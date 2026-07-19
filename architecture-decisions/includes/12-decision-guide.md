@@ -2,7 +2,7 @@
 
 When to choose what — system shape, boundaries, integration, tenancy — and common mistakes across this guide.
 
-> **Related:** Overview → [00-overview.md](00-overview.md) · Failure domains → [§11](11-failure-domains.md) · Resilience decisions → [resilience-patterns §16](../../resilience-patterns/includes/16-decision-guide.md) · Checkout stack example → [resilience §12](../../resilience-patterns/includes/12-worked-example-checkout.md) · Throughput decisions → [HTS §12](../../high-throughput-systems/includes/12-decision-guide-and-common-mistakes.md) · Numbers before you decide → [§13 Capacity estimation](13-capacity-estimation.md)
+> **Related:** Overview → [00-overview.md](00-overview.md) · Failure domains → [§11](11-failure-domains.md) · Org/stage/pricing fit → [§14](14-org-stage-and-pricing-fit.md) · Resilience decisions → [resilience-patterns §16](../../resilience-patterns/includes/16-decision-guide.md) · Checkout stack example → [resilience §12](../../resilience-patterns/includes/12-worked-example-checkout.md) · Throughput decisions → [HTS §12](../../high-throughput-systems/includes/12-decision-guide-and-common-mistakes.md) · Numbers before you decide → [§13 Capacity estimation](13-capacity-estimation.md)
 
 ---
 
@@ -33,9 +33,12 @@ flowchart TD
 
 | Scenario | Recommended approach |
 |----------|----------------------|
-| Early product, 1–2 teams | Modular monolith; ADR only for irreversible choices |
+| Early product, 1–2 teams | Modular monolith; ADR only for irreversible choices — confirm with [§14](14-org-stage-and-pricing-fit.md) |
+| Org/pricing/stage unclear | Fill NFR sheet + people/GTM matrix — [§14](14-org-stage-and-pricing-fit.md) |
 | One module needs 10× scale | Extract that capability; keep rest modular |
-| Legacy core blocking delivery | Strangler facade + one slice — [§4](04-strangler-and-modernization.md) |
+| Legacy core blocking delivery | Strangler facade + one slice — [§4](04-strangler-and-modernization.md); multi-quarter → [§4A](04A-modernization-program.md) |
+| Team cuts fight the architecture | Team Topologies + reverse Conway — [§1A](01A-team-topologies.md) |
+| Who decides this architecture call? | Blast-radius rights — [§5A](05A-architecture-governance.md) |
 | Mobile + web chatty backends | BFF(Backend for Frontend) composition — [§9](09-bff-and-api-composition.md) |
 | BFF fans out to 5+ sync deps | Parallelize under hop budget; bulkhead each dep; omit/degrade T1 — [§9](09-bff-and-api-composition.md), [resilience §4–5](../../resilience-patterns/includes/04-bulkheads.md) |
 | Payments + social feed | Tiered consistency — [§6](06-tradeoff-frameworks.md) |
@@ -53,7 +56,7 @@ flowchart TD
 - [ ] Problem and non-goals written
 - [ ] Rough capacity numbers stated (QPS(Queries Per Second), storage, instances) — [§13](13-capacity-estimation.md)
 - [ ] Options include “do nothing / stay modular”
-- [ ] Team topology can support the shape — [§1](01-monolith-modular-microservices.md)
+- [ ] Team topology can support the shape — [§1](01-monolith-modular-microservices.md) · [§14](14-org-stage-and-pricing-fit.md)
 - [ ] Bounded contexts and language checked — [§3](03-domain-driven-design.md)
 - [ ] Data ownership explicit — [§8](08-data-ownership.md)
 - [ ] Integration style matches UX — [§7](07-integration-styles.md)
@@ -113,3 +116,4 @@ flowchart TD
 | [event-sourcing-and-cqrs](../../event-sourcing-and-cqrs/README.md) | When history is the model |
 | [tech-lead-practice](../../tech-lead-practice/README.md) | Facilitation and ownership |
 | [finops-and-cost](../../finops-and-cost/README.md) | Cost of architectural options |
+| [§14 Org/stage/pricing fit](14-org-stage-and-pricing-fit.md) | People, GTM, pricing defaults |

@@ -2,7 +2,7 @@
 
 When to write an ADR(Architecture Decision Record), when to use an RFC(Request for Comments), and templates that stay useful after the meeting ends.
 
-> **Related:** Overview process → [00-overview.md](00-overview.md) · Tradeoffs → [06-tradeoff-frameworks.md](06-tradeoff-frameworks.md) · Tech lead culture → [tech-lead-practice](../../tech-lead-practice/README.md)
+> **Related:** Overview process → [00-overview.md](00-overview.md) · ARB / decision rights → [§5A](05A-architecture-governance.md) · Tradeoffs → [06-tradeoff-frameworks.md](06-tradeoff-frameworks.md) · Tech lead culture → [tech-lead-practice](../../tech-lead-practice/README.md)
 
 ---
 

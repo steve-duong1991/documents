@@ -2,7 +2,7 @@
 
 Treat debt like a product backlog: inventory, cost of delay, and negotiated paydown — not endless complaining.
 
-> **Related:** Vision/roadmap → [§1](01-technical-vision-and-roadmap.md) · Estimation → [§6](06-estimation-and-risk.md) · Error budgets → [sre-and-incidents §2](../../sre-and-incidents/includes/02-error-budgets.md) · Strangler modernization → [architecture-decisions §4](../../architecture-decisions/includes/04-strangler-and-modernization.md)
+> **Related:** Debt × business × CX → [§5A](05A-debt-business-cx-balance.md) · Vision/roadmap → [§1](01-technical-vision-and-roadmap.md) · Estimation → [§6](06-estimation-and-risk.md) · Error budgets → [sre-and-incidents §2](../../sre-and-incidents/includes/02-error-budgets.md) · Strangler modernization → [architecture-decisions §4](../../architecture-decisions/includes/04-strangler-and-modernization.md)
 
 ---
 
@@ -51,7 +51,7 @@ flowchart TB
 | Compliance | “Z required for audit evidence” |
 | Bundle | “Ship feature A with refactor of module B” |
 
-When reliability debt dominates, use [error budgets](../../sre-and-incidents/includes/02-error-budgets.md) as the stop-the-line mechanism.
+When reliability debt dominates, use [error budgets](../../sre-and-incidents/includes/02-error-budgets.md) as the stop-the-line mechanism. When roadmap, debt, and CX(Customer Experience) conflict → [§5A](05A-debt-business-cx-balance.md).
 
 ---
 
