@@ -20,6 +20,9 @@ A practical reference for choosing strategies and avoiding common mistakes.
 | Nightly bulk import | `COPY` → `ANALYZE` → verify indexes |
 | Login brute force (many writes) | Short transactions; partial index on active sessions |
 | JSONB attribute search | GIN(Generalized Inverted Index) index; don't replace relational filters |
+| Multi-tenant SaaS on one DB | `tenant_id` + composite FKs + RLS — [§17](17-row-level-security-multi-tenant.md) |
+| Enterprise needs dedicated DB | Schema/DB silo ops — [§18](18-schema-and-database-per-tenant.md); model choice — [arch §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md) |
+| Cross-tenant leak suspicion under PgBouncer | Confirm `SET LOCAL` (not session `SET`) — [§17 poolers](17-row-level-security-multi-tenant.md#pgbouncer-and-poolers) |
 
 ## Full decision flow
 

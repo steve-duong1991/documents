@@ -6,6 +6,14 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-07-19
 
+### Multi-tenant database design gaps closed
+- **postgresql-performance §17:** Composite `(tenant_id, …)` PK/FK/unique; shared vs tenant-scoped tables; PgBouncer/`SET LOCAL`; RLS performance; expanded testing and mistakes
+- **postgresql-performance §18 (new):** Schema and database per tenant — `search_path`, provisioning, migration fan-out, pool→silo cutover, tenant restore drills
+- **architecture-decisions §10:** Shared platform data; pool→silo checklist; tenant restore drill; links to PG §17/§18
+- **architecture-decisions §12:** SaaS silo + mid-flight migration scenarios; restore checklist item
+- **api-design-and-protection §16:** Isolation matrix deduped to arch §10; API implications only; Scope block
+- **Corpus:** Root learning path **Multi-tenant SaaS data**; GLOSSARY (schema/DB per tenant; multi-tenant → arch §10); PG/arch README TOC and reading paths
+
 ### Architecture ↔ resilience bridge
 - **architecture-decisions §12:** Sync path = hop budget + tiers + resilience stack; BFF fan-out scenario; concrete checklist (fallback contracts, retry owner, chaos, drain); See also refreshed
 - **architecture-decisions §11:** Fallback contracts + policy placement links; shared infra needs a retry/timeout owner; mistake table tightened

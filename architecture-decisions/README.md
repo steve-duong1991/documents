@@ -35,7 +35,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [E
 | **Drawing service cuts** | §2 Boundaries → §3 DDD → §8 Data ownership |
 | **Modernizing a legacy core** | §4 Strangler → §7 Integration → [deployment-strategies](../deployment-strategies/README.md) |
 | **Recording a hard call** | §5 ADRs → §6 Tradeoffs → §12 Decision guide |
-| **Multi-tenant SaaS** | §10 Multi-tenant → [api-design §16](../api-design-and-protection/includes/16-multi-tenant-apis.md) → [PG §17](../postgresql-performance/includes/17-row-level-security-multi-tenant.md) |
+| **Multi-tenant SaaS** | §10 Multi-tenant → [PG §17 RLS](../postgresql-performance/includes/17-row-level-security-multi-tenant.md) → [PG §18 silos](../postgresql-performance/includes/18-schema-and-database-per-tenant.md) → [api-design §16](../api-design-and-protection/includes/16-multi-tenant-apis.md) |
 | **Client-facing composition** | §9 BFF → [fullstack-bff-and-clients](../fullstack-bff-and-clients/README.md) |
 | **Sizing a design before build** | [§13 Capacity estimation](includes/13-capacity-estimation.md) → [HTS §1 Little's Law](../high-throughput-systems/includes/01-measurement-and-slo.md#littles-law-in-practice) → §12 Decision guide |
 
@@ -51,7 +51,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [E
 | [resilience-patterns](../resilience-patterns/README.md) | Timeouts, retries, breakers, bulkheads, placement, [checkout example](../resilience-patterns/includes/12-worked-example-checkout.md), observability |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Aggregates, outbox, sagas when boundaries need event history |
 | [apache-kafka](../apache-kafka/README.md) | Event backbone for async integration |
-| [postgresql-performance](../postgresql-performance/README.md) | Consistency costs, RLS(Row Level Security), pooling |
+| [postgresql-performance](../postgresql-performance/README.md) | Consistency costs, RLS(Row Level Security), schema/DB-per-tenant, pooling |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Connection identity per service |
 | [deployment-strategies](../deployment-strategies/README.md) | Safe rollout during strangler and cutovers |
 | [fullstack-bff-and-clients](../fullstack-bff-and-clients/README.md) | Client BFF depth beyond composition pattern |

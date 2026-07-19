@@ -2,9 +2,11 @@
 
 SaaS APIs must isolate tenants in auth, data, rate limits, and operations — not only with a `tenant_id` column.
 
+> **Scope:** **HTTP(Hypertext Transfer Protocol) API, cache, and queue tenancy** — claim binding, URL design, rate limits, cache/queue prefixes. Isolation model choice (pool vs silo) → [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). PostgreSQL RLS(Row-Level Security) → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md). Schema/DB silos → [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md).
+>
 > **Deep dive:** Multi-tenant Kafka topic and ACL(Access Control List) patterns → [apache-kafka §2](../../apache-kafka/includes/02-topics-partitions-and-replication.md#multi-tenant-isolation)
 >
-> **Related:** AuthZ / BOLA(Broken Object-Level Authorization) → [04-auth-model.md](04-auth-model.md) · Rate tiers → [05-rate-limit-tiers.md](05-rate-limit-tiers.md) · Idempotency keys → [13-idempotency.md](13-idempotency.md) · Identity → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · PostgreSQL RLS(Row-Level Security) → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md) · Consistency → [PG §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md)
+> **Related:** AuthZ / BOLA(Broken Object-Level Authorization) → [04-auth-model.md](04-auth-model.md) · Rate tiers → [05-rate-limit-tiers.md](05-rate-limit-tiers.md) · Idempotency keys → [13-idempotency.md](13-idempotency.md) · Identity → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Consistency → [PG §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md)
 
 ---
 
@@ -46,7 +48,7 @@ Gateway RBAC(Role-Based Access Control) checks coarse roles; the app still enfor
 | **Isolation** | Logical (discipline + RLS) | Physical (stronger by default) |
 | **Typical fit** | Most B2B SaaS | Enterprise contract, strict compliance |
 
-**Multi-tenant** is the default for scalable SaaS. Move to **schema/DB silos** or **single-tenant** when a large customer or regulator requires dedicated resources — see [Isolation models](#isolation-models) below.
+**Multi-tenant** is the default for scalable SaaS. Move to **schema/DB silos** or **single-tenant** when a large customer or regulator requires dedicated resources — decide the model in [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md), then enforce it on every API path below.
 
 ---
 
@@ -57,7 +59,7 @@ Gateway RBAC(Role-Based Access Control) checks coarse roles; the app still enfor
 | **Token** | `tenant_id` / `org_id` in JWT(JSON Web Token) claims |
 | **Gateway** | Per-tenant usage plans, API(Application Programming Interface) keys |
 | **Application** | Row-level checks on every query |
-| **Database** | `tenant_id` on rows + indexes |
+| **Database** | `tenant_id` on rows + indexes / RLS / silo routing — [arch §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md), [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md), [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md) |
 | **Cache** | Tenant prefix on every key |
 | **Queues** | Tenant in message metadata; fair scheduling |
 | **Observability** | Metrics and logs tagged by tenant |
@@ -68,29 +70,15 @@ Gateway RBAC(Role-Based Access Control) checks coarse roles; the app still enfor
 
 ## Isolation models
 
-```mermaid
-flowchart TB
-    subgraph Shared["Shared DB (common)"]
-        T1[tenant_id column + RLS]
-    end
-    subgraph Schema["Schema per tenant"]
-        S1[tenant_a.orders]
-        S2[tenant_b.orders]
-    end
-    subgraph DB["Database per tenant"]
-        D1[(tenant_a DB)]
-        D2[(tenant_b DB)]
-    end
-```
+**Canonical decision matrix:** [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md) — pool, pool + RLS, schema/DB silo, cells.
 
-| Model | Pros | Cons |
-|-------|------|------|
-| **Shared table + `tenant_id`** | Simple ops | Noisy neighbor; strict query discipline |
-| **Row-level security (RLS)** | DB enforces tenant | Policy complexity — [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md) |
-| **Schema / DB per tenant** | Strong isolation | Ops scale; migration cost |
-| **Silos for enterprise** | Compliance | Highest cost |
+| API implication | Detail |
+|-----------------|--------|
+| **Pool (default)** | Claim-bound `tenant_id` on every query; prefer RLS as safety net — [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md) |
+| **Schema / DB silo** | Router maps auth tenant → schema/`search_path` or DB pool — never trust client-supplied DB name — [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md) |
+| **Enterprise cell** | Region or stack routing in front of the API; same claim-binding rules |
 
-Default for most B2B SaaS: **shared PostgreSQL + `tenant_id` + RLS or app-level checks**.
+Default for most B2B SaaS APIs: **shared PostgreSQL + `tenant_id` + RLS or app-level checks**, with cache/queue prefixes below.
 
 ---
 

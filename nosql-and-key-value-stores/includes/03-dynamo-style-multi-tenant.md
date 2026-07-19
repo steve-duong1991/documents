@@ -2,7 +2,7 @@
 
 How tenant isolation differs when the table is DynamoDB-style instead of PostgreSQL — key design instead of a database-enforced predicate, and where the noisy-neighbor risk actually lives.
 
-> **Scope:** **Key-level tenant isolation mechanics** in a key-value store. Product-level tenancy model choice (pool vs silo) → [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). PostgreSQL's database-enforced equivalent → [PG §17 row-level security](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md).
+> **Scope:** **Key-level tenant isolation mechanics** in a key-value store. Product-level tenancy model choice (pool vs silo) → [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). PostgreSQL's database-enforced equivalent → [PG §17 row-level security](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md). PostgreSQL schema/DB silos → [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md).
 >
 > **Related:** Access-pattern modeling → [§2](02-access-pattern-modeling.md) · Multi-tenant API(Application Programming Interface) patterns → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md)
 

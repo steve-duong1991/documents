@@ -285,8 +285,9 @@ Operate PostgreSQL safely: connections, migrations, backups, and deploy coupling
 2. [postgresql-performance §15 migrations](postgresql-performance/includes/15-schema-migration-checklist.md) — expand/contract, concurrent indexes
 3. [data-platforms §6 migration coordination](data-platforms/includes/06-migration-coordination.md) — org-scale CDC/search/warehouse sequencing
 4. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) — restore drills and WAL(Write-Ahead Log)
-5. [database-connection-and-security](database-connection-and-security/README.md) — credentials, IAM, rotation, DR drills
-6. [deployment-strategies §12–13](deployment-strategies/includes/12-schema-migrations-and-deploy.md) — schema + deploy order, SLO(Service Level Objective) rollback
+5. Multi-tenant ops → [§17 RLS](postgresql-performance/includes/17-row-level-security-multi-tenant.md) + [§18 silos](postgresql-performance/includes/18-schema-and-database-per-tenant.md)
+6. [database-connection-and-security](database-connection-and-security/README.md) — credentials, IAM, rotation, DR drills
+7. [deployment-strategies §12–13](deployment-strategies/includes/12-schema-migrations-and-deploy.md) — schema + deploy order, SLO(Service Level Objective) rollback
 
 ### On-call / incident response
 
@@ -335,8 +336,9 @@ When PostgreSQL is not the right primary — access patterns first.
 
 1. [nosql-and-key-value-stores](nosql-and-key-value-stores/README.md) — overview → [§1 when to choose](nosql-and-key-value-stores/includes/01-when-to-choose.md)
 2. [§2 access-pattern modeling](nosql-and-key-value-stores/includes/02-access-pattern-modeling.md) (GSI/LSI(Local Secondary Index), hot partitions)
-3. [§3 multi-tenant Dynamo-style](nosql-and-key-value-stores/includes/03-dynamo-style-multi-tenant.md) vs [PG §17 RLS](postgresql-performance/includes/17-row-level-security-multi-tenant.md)
+3. [§3 multi-tenant Dynamo-style](nosql-and-key-value-stores/includes/03-dynamo-style-multi-tenant.md) vs [PG §17 RLS](postgresql-performance/includes/17-row-level-security-multi-tenant.md) / [PG §18 silos](postgresql-performance/includes/18-schema-and-database-per-tenant.md)
 4. [distributed-systems-primitives §2 consistent hashing](distributed-systems-primitives/includes/02-consistent-hashing.md) when sharding keys matter
+5. Full SaaS path → [Multi-tenant SaaS data](#multi-tenant-saas-data)
 
 ### Realtime at scale
 
@@ -399,6 +401,18 @@ Partner auth, quotas, and abuse caps.
 3. [api-design-and-protection §5 tiers](api-design-and-protection/includes/05-rate-limit-tiers.md)
 4. [api-rate-limiting §6 scope](api-rate-limiting/includes/06-scope-identity.md)
 5. [api-design-and-protection §16 multi-tenant](api-design-and-protection/includes/16-multi-tenant-apis.md) — if SaaS with org isolation
+6. Data isolation depth → [Multi-tenant SaaS data](#multi-tenant-saas-data) path below
+
+### Multi-tenant SaaS data
+
+Choose isolation model, then enforce it in PostgreSQL (or Dynamo-style keys) and on every API/cache/queue path.
+
+1. [architecture-decisions §10](architecture-decisions/includes/10-multi-tenant-system-models.md) — pool vs schema/DB silo vs cells; restore drills
+2. [postgresql-performance §17 RLS](postgresql-performance/includes/17-row-level-security-multi-tenant.md) — shared-table `tenant_id`, composite FKs, `SET LOCAL`, poolers
+3. [postgresql-performance §18 silos](postgresql-performance/includes/18-schema-and-database-per-tenant.md) — `search_path`, migration fan-out, pool→silo cutover
+4. [nosql-and-key-value-stores §3](nosql-and-key-value-stores/includes/03-dynamo-style-multi-tenant.md) — when the primary is key-value
+5. [api-design-and-protection §16](api-design-and-protection/includes/16-multi-tenant-apis.md) — claim binding, cache/queue prefixes
+6. Async bus → [apache-kafka §2 multi-tenant](apache-kafka/includes/02-topics-partitions-and-replication.md#multi-tenant-isolation)
 
 ### Cursor agents
 

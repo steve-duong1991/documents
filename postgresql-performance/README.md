@@ -1,6 +1,6 @@
 # PostgreSQL Performance Guide
 
-A practical reference for PostgreSQL performance — measurement, indexing, query design, maintenance, configuration, scaling, and when to use each strategy.
+A practical reference for PostgreSQL performance — measurement, indexing, query design, maintenance, configuration, scaling, multi-tenant isolation (RLS and silos), and when to use each strategy.
 
 ---
 
@@ -26,6 +26,7 @@ A practical reference for PostgreSQL performance — measurement, indexing, quer
 | 15 | [Schema migration checklist](includes/15-schema-migration-checklist.md) |
 | 16 | [Backup, restore, and PITR](includes/16-backup-restore-and-pitr.md) |
 | 17 | [Row-level security for multi-tenant data](includes/17-row-level-security-multi-tenant.md) |
+| 18 | [Schema and database per tenant](includes/18-schema-and-database-per-tenant.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 

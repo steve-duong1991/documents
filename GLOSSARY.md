@@ -56,7 +56,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **LSM(Log-Structured Merge) tree** | Log-structured merge; write-optimized storage | [tree-and-index-structures §4](tree-and-index-structures/includes/04-lsm-trees.md) |
 | **Memtable** | In-memory sorted buffer in LSM; absorbs writes before flush to disk | [tree §4](tree-and-index-structures/includes/04-lsm-trees.md) |
 | **Materialized view** | PostgreSQL snapshot of a query; fast reads until `REFRESH` | [PG §11](postgresql-performance/includes/11-read-scaling-and-caching.md#materialized-views), [§9](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md#materialized-views) |
-| **Multi-tenant** | One deployment serves many customer orgs; data isolated per tenant | [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md) |
+| **Multi-tenant** | One deployment serves many customer orgs; data isolated per tenant | [arch §10](architecture-decisions/includes/10-multi-tenant-system-models.md), [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md) |
 | **Optimistic concurrency** | Detect conflicting writes via version/check; retry on conflict | [ES §1](event-sourcing-and-cqrs/includes/01-core-concepts.md), [PG §12](postgresql-performance/includes/12-bulk-operations-and-concurrency.md) |
 | **OLAP(Online Analytical Processing)** | Analytical workloads — scans, aggregates, history; typically warehouse/lake | [data-platforms §1](data-platforms/includes/01-oltp-vs-olap.md) |
 | **OLTP(Online Transaction Processing)** | Transactional workloads — short reads/writes, constraints; typically primary PostgreSQL | [data-platforms §1](data-platforms/includes/01-oltp-vs-olap.md), [postgresql-performance](postgresql-performance/README.md) |
@@ -87,6 +87,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Denylist Redis patterns** | Key shapes and TTLs for `jti` / session / user ban / refresh family in Redis | [auth §3c](auth-oauth-oidc-and-login-security/includes/03C-denylist-redis-patterns.md) |
 | **Replication** | Full copy of database on another node for HA or read scale | [PG §9](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md), [§11](postgresql-performance/includes/11-read-scaling-and-caching.md) |
 | **RLS(Row-Level Security)** | PostgreSQL policy that filters rows per session (e.g. per `tenant_id`) | [PG §17](postgresql-performance/includes/17-row-level-security-multi-tenant.md), [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md) |
+| **Schema / DB per tenant** | Silo isolation — one PostgreSQL schema or database per customer org | [PG §18](postgresql-performance/includes/18-schema-and-database-per-tenant.md), [arch §10](architecture-decisions/includes/10-multi-tenant-system-models.md) |
 | **Rolling deploy** | Replace instances incrementally; mixed versions during rollout | [deployment-strategies §2](deployment-strategies/includes/02-rolling.md) |
 | **RPO(Recovery Point Objective)** | Recovery point objective — max data loss | [database-connection §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
 | **RTO(Recovery Time Objective)** | Recovery time objective — max downtime to restore | [database-connection §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
@@ -105,7 +106,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Stateless app tier** | No session in process memory; horizontal scale | [api-design §11](api-design-and-protection/includes/11-stateless-architecture.md) |
 | **Sliding session idle** | Extend idle timeout on activity without extending absolute cap | [auth §3d](auth-oauth-oidc-and-login-security/includes/03D-lifetimes-and-sliding-sessions.md) |
 | **SAML(Security Assertion Markup Language) 2.0** | XML federation protocol (enterprise SSO(Single Sign-On)); prefer OIDC in apps, bridge when needed | [auth §2c](auth-oauth-oidc-and-login-security/includes/02C-saml-protocol.md) |
-| **Tenant** | One customer org (company, workspace) on shared SaaS(Software as a Service) infrastructure | [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md#what-is-a-tenant) |
+| **Tenant** | One customer org (company, workspace) on shared SaaS(Software as a Service) infrastructure | [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md#what-is-a-tenant), [arch §10](architecture-decisions/includes/10-multi-tenant-system-models.md) |
 | **TCO(Total Cost of Ownership)** | Invoice plus engineering time and risk — used in build vs managed choices | [finops §5](finops-and-cost/includes/05-build-vs-managed-cost.md) |
 | **Thundering herd** | Same as cache stampede — synchronized miss storm on hot keys | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
 | **Tiered storage (Kafka)** | Hot local log segments + cold object storage for long retention | [apache-kafka §5](apache-kafka/includes/05-retention-compaction-and-storage.md#tiered-storage) |
