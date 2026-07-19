@@ -21,6 +21,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [E
 | 8 | [Data ownership](includes/08-data-ownership.md) |
 | 9 | [BFF and API composition](includes/09-bff-and-api-composition.md) |
 | 10 | [Multi-tenant system models](includes/10-multi-tenant-system-models.md) |
+| 10A | [Regional cells and data residency](includes/10A-regional-cells-and-residency.md) |
 | 11 | [Failure domains](includes/11-failure-domains.md) |
 | 12 | [Decision guide](includes/12-decision-guide.md) |
 | 13 | [Capacity estimation](includes/13-capacity-estimation.md) |
@@ -35,7 +36,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [E
 | **Drawing service cuts** | §2 Boundaries → §3 DDD → §8 Data ownership |
 | **Modernizing a legacy core** | §4 Strangler → §7 Integration → [deployment-strategies](../deployment-strategies/README.md) |
 | **Recording a hard call** | §5 ADRs → §6 Tradeoffs → §12 Decision guide |
-| **Multi-tenant SaaS** | §10 Multi-tenant → [PG §17 RLS](../postgresql-performance/includes/17-row-level-security-multi-tenant.md) → [PG §18 silos](../postgresql-performance/includes/18-schema-and-database-per-tenant.md) → [api-design §16](../api-design-and-protection/includes/16-multi-tenant-apis.md) |
+| **Multi-tenant SaaS(Software as a Service)** | §10 Multi-tenant → [§10A cells/residency](includes/10A-regional-cells-and-residency.md) → [auth §2d](../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) → [PG §17 RLS](../postgresql-performance/includes/17-row-level-security-multi-tenant.md) → [PG §18 silos](../postgresql-performance/includes/18-schema-and-database-per-tenant.md) → [api-design §16](../api-design-and-protection/includes/16-multi-tenant-apis.md) |
 | **Client-facing composition** | §9 BFF → [fullstack-bff-and-clients](../fullstack-bff-and-clients/README.md) |
 | **Sizing a design before build** | [§13 Capacity estimation](includes/13-capacity-estimation.md) → [HTS §1 Little's Law](../high-throughput-systems/includes/01-measurement-and-slo.md#littles-law-in-practice) → §12 Decision guide |
 
@@ -51,7 +52,8 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [E
 | [resilience-patterns](../resilience-patterns/README.md) | Timeouts, retries, breakers, bulkheads, placement, [checkout example](../resilience-patterns/includes/12-worked-example-checkout.md), observability |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Aggregates, outbox, sagas when boundaries need event history |
 | [apache-kafka](../apache-kafka/README.md) | Event backbone for async integration |
-| [postgresql-performance](../postgresql-performance/README.md) | Consistency costs, RLS(Row Level Security), schema/DB-per-tenant, pooling |
+| [postgresql-performance](../postgresql-performance/README.md) | Consistency costs, RLS(Row-Level Security), schema/DB-per-tenant, pooling |
+| [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) | B2B(Business-to-Business) IdP(Identity Provider) routing, multi-issuer, SSO(Single Sign-On) — [§2d](../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Connection identity per service |
 | [deployment-strategies](../deployment-strategies/README.md) | Safe rollout during strangler and cutovers |
 | [fullstack-bff-and-clients](../fullstack-bff-and-clients/README.md) | Client BFF depth beyond composition pattern |

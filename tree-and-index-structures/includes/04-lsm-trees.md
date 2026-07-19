@@ -113,7 +113,7 @@ No random disk writes to change a page — the main win vs B+ trees.
 - **Write-heavy workloads** — IoT, metrics, logs, clickstreams
 - **Key-value / wide-column at scale** — Cassandra, Scylla, HBase
 - **Embedded engines** — RocksDB, LevelDB (MyRocks, Kafka Streams state, etc.)
-- **Time-series** — append + TTL + compaction (often with time partitioning)
+- **Time-series** — append + TTL(Time To Live) + compaction (often with time partitioning)
 - **Cloud/distributed** — immutable SSTables replicate cleanly
 
 **Poor fits:**

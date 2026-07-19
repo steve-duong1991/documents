@@ -65,6 +65,6 @@ Use scope `user` or `ip` for auth endpoints — not per-endpoint path keys. Laye
 | Mistake | Fix |
 |---------|-----|
 | Storing every timestamp at high RPS | Use sliding window counter (§3) or sample/prune aggressively |
-| Same Redis key without TTL | Set TTL ≥ window size; prune on read |
+| Same Redis key without TTL(Time To Live) | Set TTL ≥ window size; prune on read |
 | Log per IP behind carrier NAT | Combine with per-identity limits ([§6](06-scope-identity.md)) |
 | Key without scope prefix | Use `ratelimit:ip:{ip}:auth` not `ratelimit:{ip}:{window}` |

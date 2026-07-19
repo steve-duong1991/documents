@@ -45,7 +45,7 @@ Throughput work has a **bill** — model before you scale.
 |-------------|-------------|--------|
 | **App replicas** | RPS, CPU | Right-size; autoscale on saturation not CPU alone |
 | **Read replicas** | SELECT volume | Fix queries first — replicas multiply bad query cost |
-| **Redis / cache** | Memory, hot keys | TTL, eviction, separate clusters |
+| **Redis / cache** | Memory, hot keys | TTL(Time To Live), eviction, separate clusters |
 | **Message retention** | Kafka topic size | Retention days, compaction |
 | **CDN(Content Delivery Network) egress** | Bytes out | Cache hit ratio, compress responses |
 | **Cross-region replication** | Write volume, regions | Single write region default — [§13 multi-region](13-multi-region-read-routing.md) |

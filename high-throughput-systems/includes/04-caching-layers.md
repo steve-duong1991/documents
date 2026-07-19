@@ -10,7 +10,7 @@ Caching is often the largest throughput multiplier for read-heavy systems — if
 
 | Layer | Latency | Throughput gain | Staleness |
 |-------|---------|-----------------|-----------|
-| **CDN(Content Delivery Network)** | Edge (~ms) | Very high for cacheable GET | TTL-based |
+| **CDN(Content Delivery Network)** | Edge (~ms) | Very high for cacheable GET | TTL(Time To Live)-based |
 | **Application (Redis)** | Sub-ms to low ms | High for hot keys | TTL or event invalidation |
 | **Materialized view** | Query time | High for heavy aggregations | Refresh interval |
 | **Read replica** | DB round trip | Medium — offloads primary | Replication lag |

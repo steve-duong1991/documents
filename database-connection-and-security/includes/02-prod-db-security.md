@@ -18,7 +18,7 @@ Production database security is **layered** — no single control is enough. Sec
 | 4. Secrets management | No credentials in code or git |
 | 5. Connection proxy | Pooling and credential brokering |
 | 6. Workload identity | IAM / K8s service accounts |
-| 7. Application protections | SQL(Structured Query Language) injection, RLS, read replicas |
+| 7. Application protections | SQL(Structured Query Language) injection, RLS(Row-Level Security), read replicas |
 | 8. Encryption at rest | Disk and backup encryption |
 | 9. Monitoring & audit | Log and alert on connections |
 | 10. Admin vs app access | Separate human and service access |

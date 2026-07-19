@@ -10,7 +10,7 @@ Enforcement lives in the **application**; storage must be **shared** across all 
 
 | Store | Best for | Pros | Cons |
 |-------|----------|------|------|
-| **Redis** | Default for API(Application Programming Interface) idempotency | Fast `SET NX`, TTL, response cache; often colocated with rate limits | Another failure domain; define fail-closed vs fail-open |
+| **Redis** | Default for API(Application Programming Interface) idempotency | Fast `SET NX`, TTL(Time To Live), response cache; often colocated with rate limits | Another failure domain; define fail-closed vs fail-open |
 | **PostgreSQL** | Writes already in same DB transaction | Strong consistency; unique constraint is authoritative | Slower than Redis; couples to DB availability |
 | **Domain table** | Payments, orders with `client_reference_id` | No separate idempotency table; business key is the dedup key | Requires modeling upfront |
 

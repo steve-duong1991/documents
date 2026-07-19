@@ -1,6 +1,6 @@
 # Build vs Buy
 
-Decide when to build in-house, adopt open source, or purchase SaaS — with TCO(Total Cost of Ownership) and exit plans, not hype.
+Decide when to build in-house, adopt open source, or purchase SaaS(Software as a Service) — with TCO(Total Cost of Ownership) and exit plans, not hype.
 
 > **Related:** Architecture trade-offs → [architecture-decisions §6](../../architecture-decisions/includes/06-tradeoff-frameworks.md) · Security/supply chain → [enterprise-security-compliance](../../enterprise-security-compliance/README.md) · Stakeholders → [§7](07-stakeholder-communication.md)
 
@@ -10,7 +10,7 @@ Decide when to build in-house, adopt open source, or purchase SaaS — with TCO(
 
 | Lean **build** when | Lean **buy** when |
 |---------------------|-------------------|
-| Differentiating product logic | Commodity capability (email, auth commodity IdP) |
+| Differentiating product logic | Commodity capability (email, auth commodity IdP(Identity Provider)) |
 | Tight latency/data residency needs | Vendor meets compliance and SLAs |
 | Integration is the product | Time-to-value dominates |
 | Existing team expertise deep | Hiring for commodity is wasteful |

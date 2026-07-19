@@ -16,7 +16,7 @@ Multi-instance APIs cannot rate limit in process memory — counters must live i
 | **Key** | `ratelimit:{scope}:{identity}:{bucket}:{window}` — see [§6 key template](06-scope-identity.md#key-template) |
 | **Algorithm at scale** | Sliding window counter or token bucket in Redis (`INCR`, `GET`, Lua scripts) |
 | **Hot identity** | Sub-shard keys (`user_id % 32`) or local token bucket + periodic sync |
-| **Clock skew** | TTL-based windows — do not assume wall-clock alignment across nodes |
+| **Clock skew** | TTL(Time To Live)-based windows — do not assume wall-clock alignment across nodes |
 | **Global quota** | Single counter per account **or** regional counters + optional global cap |
 | **Store down** | Fail-open + conservative local emergency cap (document policy) |
 
@@ -48,7 +48,7 @@ With N replicas, an in-memory limit of `100/min` becomes `N × 100/min` under ro
 | Topology | Pros | Cons | When |
 |----------|------|------|------|
 | **Single primary + replica** | Simple | Hot key + failover reset risk | Small APIs, dev |
-| **Redis Cluster** | Horizontal shard scale | Hash-slot planning; multi-key Lua care | Production SaaS |
+| **Redis Cluster** | Horizontal shard scale | Hash-slot planning; multi-key Lua care | Production SaaS(Software as a Service) |
 | **Regional Redis per region** | Low cross-region latency | Global quota needs federation | Multi-region APIs |
 | **Gateway-only limits** | No app Redis dependency | Weaker per-endpoint / business rules | MVP |
 

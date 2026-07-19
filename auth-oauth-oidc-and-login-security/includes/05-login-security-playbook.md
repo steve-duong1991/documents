@@ -1,6 +1,6 @@
 # Login Security Playbook
 
-Whether you host passwords yourself or broker login to an IdP, **login is an attack surface**: credential stuffing, brute force, phishing, and account recovery abuse. This playbook covers credential storage, throttling, MFA(Multi-Factor Authentication), device trust, and recovery.
+Whether you host passwords yourself or broker login to an IdP(Identity Provider), **login is an attack surface**: credential stuffing, brute force, phishing, and account recovery abuse. This playbook covers credential storage, throttling, MFA(Multi-Factor Authentication), device trust, and recovery.
 
 > **Scope:** Password hashing, lockout/backoff, MFA, step-up, device/session trust, recovery. Signup / magic link → [§5b](05B-signup-verify-and-magic-links.md). WebAuthn(Web Authentication) / passkeys → [§5c](05C-webauthn-and-passkeys.md). Impersonation → [§5d](05D-impersonation-and-support-access.md). Auth test checklist → [§5a](05A-auth-testing-checklist.md). OAuth(Open Authorization)/OIDC(OpenID Connect) protocol → [§1](01-oauth2-grants-and-flows.md)–[§2](02-oidc-discovery-and-tokens.md). Cookie sessions → [§4](04-cookie-session-and-csrf.md). Org-wide IAM(Identity and Access Management) → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md). OWASP(Open Worldwide Application Security Project) framing → [enterprise-security §3](../../enterprise-security-compliance/includes/03-owasp-and-common-vulns.md).
 
@@ -17,7 +17,7 @@ Whether you host passwords yourself or broker login to an IdP, **login is an att
 | **Recovery** | Time-limited, single-use tokens; step-up before changing email/password |
 | **Monitoring** | Alert on stuffing patterns, MFA fatigue, recovery spikes |
 
-**Rule of thumb:** Prefer **pushing AuthN to a mature IdP** (OIDC) when you can. If you must own passwords, treat the credential store like a payment vault — hashed, rate-limited, audited.
+**Rule of thumb:** Prefer **pushing AuthN(Authentication) to a mature IdP** (OIDC) when you can. If you must own passwords, treat the credential store like a payment vault — hashed, rate-limited, audited.
 
 ---
 
@@ -106,7 +106,7 @@ Store trust as server-side records, not a forgeable "trusted=true" client flag.
 
 | Step | Practice |
 |------|----------|
-| Reset link | Opaque token, ≤15–60 min TTL, single-use, bound to user |
+| Reset link | Opaque token, ≤15–60 min TTL(Time To Live), single-use, bound to user |
 | Delivery | Email/SMS to **already verified** channel |
 | After reset | Destroy all sessions + refresh families; require MFA if enrolled |
 | Change email | Verify **both** old and new (or MFA + new) |
@@ -125,7 +125,7 @@ Recovery is often weaker than login — threat-model it explicitly.
 | Social login is product-critical | Cost/latency of IdP unacceptable (usually isn't) |
 | Small team security bandwidth | You already run a hardened credential service |
 
-Even with an IdP, you still own **session cookies, CSRF(Cross-Site Request Forgery), AuthZ, and recovery of *your* app sessions** — [§4](04-cookie-session-and-csrf.md).
+Even with an IdP, you still own **session cookies, CSRF(Cross-Site Request Forgery), AuthZ(Authorization), and recovery of *your* app sessions** — [§4](04-cookie-session-and-csrf.md).
 
 ---
 

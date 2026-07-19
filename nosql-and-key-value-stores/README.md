@@ -25,7 +25,7 @@ Related: [postgresql-performance](../postgresql-performance/README.md) · [data-
 | If you are… | Read in order |
 |-------------|---------------|
 | **Deciding SQL(Structured Query Language) vs NoSQL for a new service** | Overview → §1 Decision matrix → §6 Decision guide |
-| **Designing a DynamoDB table** | §2 Access-pattern modeling → §3 Multi-tenant (if SaaS) |
+| **Designing a DynamoDB table** | §2 Access-pattern modeling → §3 Multi-tenant (if SaaS(Software as a Service)) |
 | **Evaluating Cassandra for write-heavy telemetry** | §1 Decision matrix → §4 Cassandra |
 | **Comparing MongoDB to PostgreSQL JSONB** | §1 Decision matrix → §5 MongoDB |
 | **Building multi-tenant SaaS on a key-value store** | §3 Multi-tenant → [PG §17 RLS](../postgresql-performance/includes/17-row-level-security-multi-tenant.md) |

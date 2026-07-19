@@ -118,7 +118,7 @@ Short-lived client certs (hours/days) reduce impact of key compromise — simila
 
 - Zero-trust or service mesh (Istio, Linkerd) already issues workload certs
 - Compliance requires certificate-based DB access
-- You want to eliminate passwords entirely and control cert TTL
+- You want to eliminate passwords entirely and control cert TTL(Time To Live)
 
 **Avoid as first choice when:**
 

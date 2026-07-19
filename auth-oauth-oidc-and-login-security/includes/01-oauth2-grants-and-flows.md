@@ -30,7 +30,7 @@ OAuth(Open Authorization) 2.0 is a **delegation** framework: a client obtains an
 |------|-----|
 | **Resource owner** | User who owns the data |
 | **Client** | App requesting access (web, mobile, backend) |
-| **Authorization server (AS)** | Issues tokens after AuthN/consent (often your IdP) |
+| **Authorization server (AS)** | Issues tokens after AuthN(Authentication)/consent (often your IdP(Identity Provider)) |
 | **Resource server** | API that accepts access tokens |
 
 Public clients (SPA, mobile) **cannot** keep a client secret. Confidential clients (BFF(Backend for Frontend), traditional server) can.

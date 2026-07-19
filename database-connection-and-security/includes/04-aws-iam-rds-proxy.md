@@ -165,7 +165,7 @@ Consider Vault (or Pattern B + stricter IAM) when:
 - Multi-cloud or on-prem workloads also need DB access
 - You need **unique temporary DB users** per session/instance
 - You want centralized secrets across non-AWS systems
-- You need Vault-style dynamic user revocation independent of IAM token TTL
+- You need Vault-style dynamic user revocation independent of IAM token TTL(Time To Live)
 
 ## Common mistakes
 

@@ -47,7 +47,7 @@ Coordinate with [deployment-strategies](../../deployment-strategies/README.md) �
 | Pattern | Rotation approach |
 |---------|-------------------|
 | **Static password in Secrets Manager** | Generate new password → update secret → rolling restart → DB user password change |
-| **Vault dynamic credentials** | TTL handles expiry; ensure app renews leases |
+| **Vault dynamic credentials** | TTL(Time To Live) handles expiry; ensure app renews leases |
 | **RDS IAM(Identity and Access Management) auth token** | Short-lived tokens; no manual password rotation |
 | **mTLS(Mutual Transport Layer Security) client certs** | CA + cert expiry alerts; renew before 30-day window |
 | **PaaS connection string** | Provider dashboard rotation; update platform env |

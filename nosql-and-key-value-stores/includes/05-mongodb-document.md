@@ -76,7 +76,7 @@ MongoDB's **16 MB document size limit** is the hard ceiling that turns “just e
 | **Compound** | Filters/sorts across multiple fields (order matters — leading field should be the most selective/equality field) |
 | **Multikey** | Automatically created when indexing an array field |
 | **Text** | Full-text search within a collection (limited compared to a dedicated search engine — see [data-platforms §2](../../data-platforms/includes/02-search-systems.md)) |
-| **TTL** | Auto-expire documents after a timestamp field passes a threshold — sessions, temporary tokens |
+| **TTL(Time To Live)** | Auto-expire documents after a timestamp field passes a threshold — sessions, temporary tokens |
 | **Partial** | Index only documents matching a filter — the MongoDB equivalent of DynamoDB's [sparse index](02-access-pattern-modeling.md#sparse-indexes) |
 
 ```js

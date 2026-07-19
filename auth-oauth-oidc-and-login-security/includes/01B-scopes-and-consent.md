@@ -2,7 +2,7 @@
 
 OAuth(Open Authorization) **scopes** are coarse permissions requested at authorize time. **Consent** is the user (or admin) approving those scopes. Bad scope design causes over-privilege, consent fatigue, or broken clients.
 
-> **Scope:** Product/API(Application Programming Interface) scope taxonomy, consent UX, first-party vs third-party apps. Resource/`aud` depth → [§1d](01D-resource-indicators.md). Grant flows → [§1](01-oauth2-grants-and-flows.md). Client auth → [§1a](01A-client-auth-and-token-exchange.md). PAR(Pushed Authorization Requests) → [§1c](01C-pushed-authorization-requests.md). RBAC(Role-Based Access Control) after scopes → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md). Object-level AuthZ → [api-design §4](../../api-design-and-protection/includes/04-auth-model.md).
+> **Scope:** Product/API(Application Programming Interface) scope taxonomy, consent UX, first-party vs third-party apps. Resource/`aud` depth → [§1d](01D-resource-indicators.md). Grant flows → [§1](01-oauth2-grants-and-flows.md). Client auth → [§1a](01A-client-auth-and-token-exchange.md). PAR(Pushed Authorization Requests) → [§1c](01C-pushed-authorization-requests.md). RBAC(Role-Based Access Control) after scopes → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md). Object-level AuthZ(Authorization) → [api-design §4](../../api-design-and-protection/includes/04-auth-model.md).
 
 ---
 

@@ -89,7 +89,7 @@ Every backplane above shares one failure mode: **one abnormally hot room/channel
 | One Redis instance for both rate limiting/caching and realtime fan-out with no isolation | Bulkhead: dedicated Redis (or cluster) for the realtime backplane |
 | No plan for a viral/hot room | Partition by room; cap fan-out rate; coalesce |
 | Treating Kafka consumer lag as a batch-pipeline metric only | Alert on it as user-facing latency for realtime consumers |
-| Unbounded Redis Streams | Set `MAXLEN`/TTL trimming |
+| Unbounded Redis Streams | Set `MAXLEN`/TTL(Time To Live) trimming |
 
 ## Pros and cons
 

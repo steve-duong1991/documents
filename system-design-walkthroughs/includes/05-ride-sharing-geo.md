@@ -91,7 +91,7 @@ Hot path lives in Redis, not PostgreSQL: `GEOADD drivers:{region} {lon} {lat} {d
 | `POST /drivers/{id}/location` | Update Redis geo index for the driver's region; fire-and-forget durable log |
 | `POST /rides` `{ pickup_lat, pickup_lon }` | Query nearby drivers, filter, rank, propose match, hold a short reservation |
 | `POST /rides/{id}/accept` | Driver accepts; remove from candidate pool; start trip |
-| `GET /rides/{id}/eta` | Query routing/ETA service, cache short-TTL result per route segment |
+| `GET /rides/{id}/eta` | Query routing/ETA service, cache short-TTL(Time To Live) result per route segment |
 
 ---
 

@@ -1,8 +1,8 @@
 # SSO Integration Playbook
 
-End-to-end path from **IdP SSO(Single Sign-On)** to **your app session** to **API(Application Programming Interface) Bearer**: how enterprise and social IdPs differ, how SAML(Security Assertion Markup Language) fits (via bridge), and how to link accounts safely when one user has many IdPs.
+End-to-end path from **IdP(Identity Provider) SSO(Single Sign-On)** to **your app session** to **API(Application Programming Interface) Bearer**: how enterprise and social IdPs differ, how SAML(Security Assertion Markup Language) fits (via bridge), and how to link accounts safely when one user has many IdPs.
 
-> **Scope:** Integration sequence and product choices. Grants → [§1](01-oauth2-grants-and-flows.md). OIDC(OpenID Connect) tokens → [§2](02-oidc-discovery-and-tokens.md). SAML protocol depth → [§2c](02C-saml-protocol.md). B2B multi-tenant IdP routing → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md). Logout → [§2a](02A-oidc-logout-and-step-up.md). BFF(Backend for Frontend) cookie → [§4](04-cookie-session-and-csrf.md). Lifetimes / silent re-auth → [§3d](03D-lifetimes-and-sliding-sessions.md). Groups→roles → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
+> **Scope:** Integration sequence and product choices. Grants → [§1](01-oauth2-grants-and-flows.md). OIDC(OpenID Connect) tokens → [§2](02-oidc-discovery-and-tokens.md). SAML protocol depth → [§2c](02C-saml-protocol.md). B2B(Business-to-Business) multi-tenant IdP routing → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md). Logout → [§2a](02A-oidc-logout-and-step-up.md). BFF(Backend for Frontend) cookie → [§4](04-cookie-session-and-csrf.md). Lifetimes / silent re-auth → [§3d](03D-lifetimes-and-sliding-sessions.md). Groups→roles → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
 
 ---
 
@@ -56,7 +56,7 @@ sequenceDiagram
 | **Who controls account** | Customer’s IT | User + provider |
 | **Typical protocol to you** | OIDC (or SAML → bridge) | OIDC |
 | **MFA(Multi-Factor Authentication) / conditional access** | IdP policy — trust `acr`/`amr` | Provider-dependent; don’t assume |
-| **Claims for AuthZ** | Groups / roles / tenant | Email, `sub`; rarely fine-grained roles |
+| **Claims for AuthZ(Authorization)** | Groups / roles / tenant | Email, `sub`; rarely fine-grained roles |
 | **Email trust** | Usually org-verified | Require `email_verified`; still confirm on link |
 | **Account lifecycle** | JML(Joiner-Mover-Leaver) / SCIM(System for Cross-domain Identity Management) — [§12C](../../api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) | User deletes social ≠ your offboarding |
 | **B2B multi-tenant** | Often one IdP per customer tenant | Usually one global social IdP |

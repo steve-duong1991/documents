@@ -15,7 +15,7 @@ How you respond when a limit is hit is as important as the algorithm itself.
 | **Hard reject** | `429` + `Retry-After` | Must backoff | Yes — public APIs |
 | **Throttle** | `200` after delay | Slower but succeeds | Partner/scrape deterrence |
 | **Queue** | `202` or delayed `200` | Async wait | Job ingestion only |
-| **Graduated** | Warn headers → throttle → `429` | Escalating pressure | Enterprise SaaS |
+| **Graduated** | Warn headers → throttle → `429` | Escalating pressure | Enterprise SaaS(Software as a Service) |
 
 ---
 

@@ -29,7 +29,7 @@ sequenceDiagram
 
 | Approach | Stateless? | Tradeoff |
 |----------|------------|----------|
-| JWT(JSON Web Token) access token (short TTL) | Yes — local validation | Revocation needs denylist or very short TTL |
+| JWT(JSON Web Token) access token (short TTL(Time To Live)) | Yes — local validation | Revocation needs denylist or very short TTL |
 | Opaque token + Redis lookup | Hybrid | DB/cache hit per request; easier revocation |
 | Server-side session cookie | No | Requires sticky sessions or shared session store |
 | API(Application Programming Interface) key in header | Yes | Key rotation and scoping discipline required |
@@ -226,6 +226,6 @@ flowchart TD
 | Store sessions in app memory? | No — use JWT or external session store |
 | Sticky sessions on load balancer? | No — unless legacy migration in progress |
 | Where does durable state live? | PostgreSQL + Redis + object storage + queue |
-| Where is AuthZ enforced? | Application code on every instance ([Auth model](04-auth-model.md)) |
+| Where is AuthZ(Authorization) enforced? | Application code on every instance ([Auth model](04-auth-model.md)) |
 | Can workers share a queue? | Yes — design workers as stateless consumers |
 | Stateless at the gateway too? | Gateway holds policy state (rate limits in Redis), not user sessions |

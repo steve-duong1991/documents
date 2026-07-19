@@ -41,7 +41,7 @@ Details → [API protection §6](02-api-protection.md#6-idempotency-and-replay-p
 
 ## Event-sourced commands
 
-Command APIs (`POST /commands/PlaceOrder`) use the same `Idempotency-Key` header. Store `key → (aggregate_id, resulting_version)` with TTL so duplicate commands do not append duplicate events.
+Command APIs (`POST /commands/PlaceOrder`) use the same `Idempotency-Key` header. Store `key → (aggregate_id, resulting_version)` with TTL(Time To Live) so duplicate commands do not append duplicate events.
 
 Details → [Event Sourcing & CQRS — API design](../../event-sourcing-and-cqrs/includes/04-api-design-implications.md).
 

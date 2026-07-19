@@ -36,7 +36,7 @@ flowchart TD
 
 1. **Claim before side effects** (payment, email, ticket create).
 2. **Store outcome** for replay.
-3. **TTL** long enough for max retry window.
+3. **TTL(Time To Live)** long enough for max retry window.
 4. **Shared store** in multi-instance apps — not memory.
 
 ---

@@ -2,7 +2,7 @@
 
 High throughput systems must **reject, queue, or shed load** when at capacity — not queue unbounded work until they collapse.
 
-> **Related:** Rate limit deployment layers → [api-rate-limiting/includes/07-deployment-layers.md](../../api-rate-limiting/includes/07-deployment-layers.md) · Algorithm choice → [api-rate-limiting/includes/10-decision-guide.md](../../api-rate-limiting/includes/10-decision-guide.md) · Rate tiers → [api-design-and-protection/includes/05-rate-limit-tiers.md](../../api-design-and-protection/includes/05-rate-limit-tiers.md)
+> **Related:** Rate limit deployment layers → [api-rate-limiting/includes/07-deployment-layers.md](../../api-rate-limiting/includes/07-deployment-layers.md) · Algorithm choice → [api-rate-limiting/includes/10-decision-guide.md](../../api-rate-limiting/includes/10-decision-guide.md) · Rate tiers → [api-design-and-protection/includes/05-rate-limit-tiers.md](../../api-design-and-protection/includes/05-rate-limit-tiers.md) · Load shedding / degrade → [resilience §5](../../resilience-patterns/includes/05-load-shedding-and-degradation.md) · Timeouts / retries / breakers → [resilience-patterns](../../resilience-patterns/README.md)
 
 ---
 

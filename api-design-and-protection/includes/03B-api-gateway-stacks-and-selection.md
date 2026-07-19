@@ -33,10 +33,10 @@ flowchart TD
 
 | API type | Stack |
 |----------|-------|
-| **Public SaaS API** | Cloudflare (edge) → Kong or AWS API Gateway → **ALB per service** → pods/VMs |
+| **Public SaaS(Software as a Service) API** | Cloudflare (edge) → Kong or AWS API Gateway → **ALB per service** → pods/VMs |
 | **AWS-native** | Route 53 → CloudFront + WAF → API Gateway → ALB → ECS/EKS/Lambda |
 | **Kubernetes** | Ingress / Gateway API or Kong Ingress → K8s Service (LB) → pods; Istio/Linkerd for east-west |
-| **B2B partner API** | Azure Front Door or Cloudflare → Azure APIM or Kong → ALB + optional client mTLS(Mutual Transport Layer Security) |
+| **B2B(Business-to-Business) partner API** | Azure Front Door or Cloudflare → Azure APIM or Kong → ALB + optional client mTLS(Mutual Transport Layer Security) |
 | **Mobile backend** | Cloudflare + AWS HTTP(Hypertext Transfer Protocol) API + Cognito/OAuth(Open Authorization) → ALB → services |
 | **Internal microservices** | Istio/Linkerd mTLS + ingress gateway for north-south; mesh for east-west |
 | **Startup MVP** | Cloudflare + single gateway (AWS HTTP API or Kong OSS); skip separate LB until you scale |

@@ -1,6 +1,6 @@
 # Impersonation and Support Access
 
-**Impersonation** (“login as user”, “view as customer”) lets support or admins act with another principal’s AuthZ. It is powerful and dangerous: audit gaps, CSRF(Cross-Site Request Forgery) confusion, and accidental lasting privilege. Prefer **read-only break-glass** with dual control over silent full-power impersonation.
+**Impersonation** (“login as user”, “view as customer”) lets support or admins act with another principal’s AuthZ(Authorization). It is powerful and dangerous: audit gaps, CSRF(Cross-Site Request Forgery) confusion, and accidental lasting privilege. Prefer **read-only break-glass** with dual control over silent full-power impersonation.
 
 > **Scope:** Support access patterns, token/session shape, audit, time limits, bans. Concurrent sessions → [§3e](03E-concurrent-sessions-and-devices.md). Force logout → [§3b](03B-revoke-logout-denylist.md). Login recovery override → [§5](05-login-security-playbook.md). RBAC(Role-Based Access Control) → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
 
@@ -37,7 +37,7 @@ flowchart LR
 | **Who can start** | Narrow role; MFA(Multi-Factor Authentication) / WebAuthn(Web Authentication) step-up — [§5c](05C-webauthn-and-passkeys.md) |
 | **Dual control** | Second approver for high-value tenants / production write |
 | **Ticket binding** | Require incident/ticket id; store on grant |
-| **TTL** | Minutes (e.g. 15–60); no refresh or one-shot refresh |
+| **TTL(Time To Live)** | Minutes (e.g. 15–60); no refresh or one-shot refresh |
 | **Scope** | Default read-only; explicit elevate to write |
 | **Banner UX** | Persistent “Acting as user X — End” in UI |
 | **End** | One click → delete impersonation sid; back to support session |

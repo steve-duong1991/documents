@@ -6,7 +6,7 @@
 
 | Principle | Engineering meaning |
 |-----------|---------------------|
-| **Never trust network location alone** | VPN ≠ authorization; still AuthN/AuthZ every hop |
+| **Never trust network location alone** | VPN ≠ authorization; still AuthN(Authentication)/AuthZ(Authorization) every hop |
 | **Verify explicitly** | Strong identity for users and workloads |
 | **Least privilege** | Minimal roles, scopes, and network paths |
 | **Assume breach** | Segment; short credentials; detect lateral movement |
@@ -67,7 +67,7 @@ Quarterly (or per compliance cadence):
 |------|------|
 | Clear attribution and smaller blast radius | More identity plumbing |
 | Better auditor story than “flat VPC trust” | Misconfigured mesh/JWT is painful |
-| Aligns with SaaS multi-tenant reality | Requires platform investment |
+| Aligns with SaaS(Software as a Service) multi-tenant reality | Requires platform investment |
 
 ## Common mistakes
 
@@ -76,5 +76,5 @@ Quarterly (or per compliance cadence):
 | Flat “prod VPC = trusted” | Identity on every service call |
 | Shared service account for all microservices | One identity per workload |
 | Standing broad human admin | JIT + audit |
-| Long-lived static machine keys | Workload identity + short TTL |
+| Long-lived static machine keys | Workload identity + short TTL(Time To Live) |
 | RBAC only at gateway, not object level | App AuthZ still required |

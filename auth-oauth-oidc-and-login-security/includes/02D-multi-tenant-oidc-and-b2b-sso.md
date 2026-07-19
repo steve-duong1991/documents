@@ -1,10 +1,10 @@
 # Multi-Tenant OIDC and B2B SSO
 
-B2B SaaS(Software as a Service) auth is more than putting `tenant_id` in a JWT(JSON Web Token). You must **resolve which customer org** the user is signing into, **route them to the right IdP**, and **bind every token and session to that tenant** so Acme never accepts Globex’s issuer or claims.
+B2B SaaS(Software as a Service) auth is more than putting `tenant_id` in a JWT(JSON Web Token). You must **resolve which customer org** the user is signing into, **route them to the right IdP(Identity Provider)**, and **bind every token and session to that tenant** so Acme never accepts Globex’s issuer or claims.
 
-> **Scope:** Tenant resolution, IdP topology (shared vs per-customer issuer), authorize routing (`login_hint` / domain hints), multi-issuer validation, per-tenant clients, membership + tenant switch. End-to-end SSO(Single Sign-On) sequence → [§2b](02B-sso-integration-playbook.md). OIDC(OpenID Connect) discovery / ID tokens → [§2](02-oidc-discovery-and-tokens.md). Token validation → [§3](03-token-lifecycle-and-validation.md). API(Application Programming Interface)/data isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md). Pool vs silo deployment → [architecture §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). JML(Joiner-Mover-Leaver) / SCIM(System for Cross-domain Identity Management) → [api-design §12C](../../api-design-and-protection/includes/12C-scim-and-jml-provisioning.md). AD(Active Directory)/IdP context → [§12A](../../api-design-and-protection/includes/12A-identity-active-directory.md).
+> **Scope:** Tenant resolution, IdP topology (shared vs per-customer issuer), authorize routing (`login_hint` / domain hints), multi-issuer validation, per-tenant clients, membership + tenant switch. End-to-end SSO(Single Sign-On) sequence → [§2b](02B-sso-integration-playbook.md). OIDC(OpenID Connect) discovery / ID tokens → [§2](02-oidc-discovery-and-tokens.md). Token validation → [§3](03-token-lifecycle-and-validation.md). API(Application Programming Interface)/data isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md). Pool vs silo deployment → [architecture §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). JML(Joiner-Mover-Leaver) / SCIM(System for Cross-domain Identity Management) → [api-design §12C](../../api-design-and-protection/includes/12C-scim-and-jml-provisioning.md). AD(Active Directory)/IdP context → [api-design §12A](../../api-design-and-protection/includes/12A-identity-active-directory.md). Cells / residency → [arch §10A](../../architecture-decisions/includes/10A-regional-cells-and-residency.md).
 
-> **Related:** SSO playbook → [§2b](02B-sso-integration-playbook.md) · SAML(Security Assertion Markup Language) bridge → [§2c](02C-saml-protocol.md) · Logout / step-up → [§2a](02A-oidc-logout-and-step-up.md) · Scopes / admin consent → [§1b](01B-scopes-and-consent.md) · Groups→roles → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md)
+> **Related:** SSO playbook → [§2b](02B-sso-integration-playbook.md) · SAML(Security Assertion Markup Language) bridge → [§2c](02C-saml-protocol.md) · Logout / step-up → [§2a](02A-oidc-logout-and-step-up.md) · Scopes / admin consent → [§1b](01B-scopes-and-consent.md) · Groups→roles → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) · Fine AuthZ(Authorization) → [api-design §12D](../../api-design-and-protection/includes/12D-fine-grained-authz.md)
 
 ---
 
@@ -55,10 +55,10 @@ flowchart TB
 
 | Topology | How it works | Fit |
 |----------|--------------|-----|
-| **Shared IdP + orgs** | One issuer; `org_id` / custom claim selects tenant | SMB, social + light B2B |
+| **Shared IdP + orgs** | One issuer; `org_id` / custom claim selects tenant | SMB(Small and Medium Business), social + light B2B |
 | **Broker** | Customer SAML/OIDC → your broker → OIDC to apps | Many enterprise customers; one protocol in eng — [§2b](02B-sso-integration-playbook.md) |
 | **Per-tenant issuer** | Each customer has own `iss` + JWKS(JSON Web Key Set) | Strict federation; you maintain an issuer allowlist per tenant |
-| **Hybrid** | Default shared IdP; enterprise tier gets BYO IdP | Common SaaS progression |
+| **Hybrid** | Default shared IdP; enterprise tier gets BYO(Bring Your Own) IdP | Common SaaS progression |
 
 Prefer **broker → OIDC to your apps** when you have dozens of customer IdPs. Native per-tenant federation without a broker scales poorly in ops.
 
@@ -73,7 +73,7 @@ Pick an explicit strategy; mix carefully.
 | **Subdomain** `acme.app.com` | Clear UX; easy cookie host | Subdomain takeover if DNS(Domain Name System) not locked; vanity domain ops |
 | **Path** `/t/acme/...` | Simple routing | Easy to forge in links — still resolve server-side |
 | **Email domain** (home-realm discovery) | Familiar enterprise UX | Shared domains (`gmail.com`) must not map to a tenant; collisions need picker |
-| **Org picker** after AuthN | Safe when domain is ambiguous | Extra step; user may pick wrong org |
+| **Org picker** after AuthN(Authentication) | Safe when domain is ambiguous | Extra step; user may pick wrong org |
 | **Invite / magic link** | Strong binding to tenant | Token hygiene — [§5b](05B-signup-verify-and-magic-links.md) |
 
 ### Home-realm discovery (HRD)
@@ -115,7 +115,7 @@ sequenceDiagram
 | Parameter / practice | Use |
 |----------------------|-----|
 | **`state` (and server session)** | Bind `tenant_id` (and `code_verifier`) so the callback cannot switch orgs |
-| **`login_hint`** | Prefill email at IdP |
+| **`login_hint`** | Pre-fill email at IdP |
 | **`domain_hint` / `hd` / `organization`** | Vendor-specific IdP routing (Entra, Google Workspace, Auth0 org, …) — treat as UX, not AuthZ |
 | **`prompt=login` / `select_account`** | Avoid wrong SSO cookie when user has multiple IdP sessions |
 | **Exact `redirect_uri`** | Allowlisted per client; per-tenant clients when BYO IdP |
@@ -134,7 +134,7 @@ Resource servers and BFFs that accept many customer issuers need an **allowlist*
 | **JWKS** | Fetch/cache per issuer; unknown `kid` → refresh that issuer’s JWKS only |
 | **`aud`** | Your API / client — [§1d](01D-resource-indicators.md), [§2](02-oidc-discovery-and-tokens.md) |
 | **`tenant_id` / `org_id` claim** | Must equal active tenant (or mapped external org id) |
-| **Membership** | `(iss, sub)` is a member of that tenant with required role |
+| **Membership** | `(iss, sub)` is a member of that tenant with the required role |
 | **Clock / alg** | Same as [§3](03-token-lifecycle-and-validation.md) — reject `none`, unexpected HS* for public clients |
 
 ```mermaid
@@ -236,7 +236,7 @@ sessions(sid, user_id, active_tenant_id, ...)
 | Approach | Pros | Cons |
 |----------|------|------|
 | Shared IdP + org claim | Fast to ship | Weaker customer IdP control |
-| Broker + OIDC to apps | One eng protocol; many IdPs | Broker cost/ops |
+| Broker + OIDC to apps | One engineering protocol; many IdPs | Broker cost/ops |
 | Native per-tenant issuer | Direct trust with customer IT | JWKS/allowlist complexity |
 | Subdomain per tenant | Clear isolation UX | DNS/cookie/cert ops |
 

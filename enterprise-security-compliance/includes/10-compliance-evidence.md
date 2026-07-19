@@ -13,7 +13,7 @@
 | **Vendor / supply chain** | SBOM(Software Bill of Materials) samples, SCA(Software Composition Analysis) policy, signed deploy admissions |
 | **Risk / vuln** | Threat model register, pen-test report + remediations, CVE SLA(Service Level Agreement) metrics |
 
-**Rule of thumb:** Auditors trust **systems of record** (git, CI(Continuous Integration), IdP, cloud audit) more than slide decks.
+**Rule of thumb:** Auditors trust **systems of record** (git, CI(Continuous Integration), IdP(Identity Provider), cloud audit) more than slide decks.
 
 ## Control → evidence map
 

@@ -64,7 +64,7 @@ Assume a product with:
 
 | Peak shape | Typical multiplier |
 |-------------|---------------------|
-| B2B / business hours only | 2–3× |
+| B2B(Business-to-Business) / business hours only | 2–3× |
 | Consumer, single time zone | 4–6× |
 | Consumer, global, plus a launch/marketing spike | 8–10×+ |
 
@@ -131,7 +131,7 @@ Compare against the pool-sizing guidance in [postgresql-performance §7 Connecti
 |----------------------|----------------------------------|
 | Per-key overhead | Small structs add up fast at millions of keys — do not assume `key + value` size alone |
 | Eviction policy headroom | Cache should not run at 100% memory; leave room before `maxmemory-policy` starts evicting the wrong keys |
-| TTL distribution | If most keys never expire, memory only grows — plan a TTL or eviction policy from day one, not after the first OOM |
+| TTL(Time To Live) distribution | If most keys never expire, memory only grows — plan a TTL or eviction policy from day one, not after the first OOM |
 
 ---
 

@@ -86,7 +86,7 @@ Cassandra is an LSM(Log-Structured Merge) store: writes go to a commit log + mem
 
 | Cassandra knob | Effect |
 |-----------------|--------|
-| `compaction_strategy` (`STCS`, `LCS`, `TWCS`) | Size-tiered (write-heavy), leveled (read-heavy), time-window (time-series with TTL) |
+| `compaction_strategy` (`STCS`, `LCS`, `TWCS`) | Size-tiered (write-heavy), leveled (read-heavy), time-window (time-series with TTL(Time To Live)) |
 | `gc_grace_seconds` | How long tombstones survive before compaction can drop them — must exceed your repair interval |
 | `nodetool compact` | Manual/forced compaction — use sparingly, causes disk and CPU spikes |
 

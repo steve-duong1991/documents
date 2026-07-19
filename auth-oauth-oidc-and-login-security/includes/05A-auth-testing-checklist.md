@@ -2,7 +2,7 @@
 
 What to automate so OAuth(Open Authorization), OIDC(OpenID Connect), cookies, and revoke paths don’t regress. Pair with [testing-strategy](../../testing-strategy/README.md) for pyramid placement.
 
-> **Scope:** Test cases and gates for auth. Protocols → [§1](01-oauth2-grants-and-flows.md)–[§2](02-oidc-discovery-and-tokens.md). CSRF(Cross-Site Request Forgery)/cookies → [§4](04-cookie-session-and-csrf.md). Guest → [§4b](04B-anonymous-and-guest-sessions.md). Revoke/denylist → [§3b](03B-revoke-logout-denylist.md), [§3c](03C-denylist-redis-patterns.md). Lifetimes → [§3d](03D-lifetimes-and-sliding-sessions.md). Concurrent devices → [§3e](03E-concurrent-sessions-and-devices.md). Signup/magic → [§5b](05B-signup-verify-and-magic-links.md). WebAuthn(Web Authentication) → [§5c](05C-webauthn-and-passkeys.md). Impersonation → [§5d](05D-impersonation-and-support-access.md). SAML(Security Assertion Markup Language) → [§2c](02C-saml-protocol.md).
+> **Scope:** Test cases and gates for auth. Protocols → [§1](01-oauth2-grants-and-flows.md)–[§2](02-oidc-discovery-and-tokens.md). CSRF(Cross-Site Request Forgery)/cookies → [§4](04-cookie-session-and-csrf.md). Guest → [§4b](04B-anonymous-and-guest-sessions.md). Revoke/denylist → [§3b](03B-revoke-logout-denylist.md), [§3c](03C-denylist-redis-patterns.md). Lifetimes → [§3d](03D-lifetimes-and-sliding-sessions.md). Concurrent devices → [§3e](03E-concurrent-sessions-and-devices.md). Signup/magic → [§5b](05B-signup-verify-and-magic-links.md). WebAuthn(Web Authentication) → [§5c](05C-webauthn-and-passkeys.md). Impersonation → [§5d](05D-impersonation-and-support-access.md). SAML(Security Assertion Markup Language) → [§2c](02C-saml-protocol.md). B2B(Business-to-Business) multi-tenant → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md).
 
 ---
 
@@ -12,7 +12,7 @@ What to automate so OAuth(Open Authorization), OIDC(OpenID Connect), cookies, an
 |-------|----------------|
 | **Unit** | JWT(JSON Web Token) claim validators; RelayState allowlist; scope parser |
 | **Contract** | Token introspection / JWKS(JSON Web Key Set) shapes; OpenAPI security schemes |
-| **Integration** | Auth Code + PKCE(Proof Key for Code Exchange) against test IdP; session create/destroy |
+| **Integration** | Auth Code + PKCE(Proof Key for Code Exchange) against test IdP(Identity Provider); session create/destroy |
 | **E2E** | Login → call API(Application Programming Interface) → logout; step-up; expired session redirect |
 | **Security / negative** | Tampered JWT; CSRF without token; reused refresh; open redirect |
 
@@ -57,7 +57,7 @@ What to automate so OAuth(Open Authorization), OIDC(OpenID Connect), cookies, an
 
 ## Checklist — revoke / denylist
 
-- [ ] `jti` on denylist → 401 within TTL — [§3c](03C-denylist-redis-patterns.md)  
+- [ ] `jti` on denylist → 401 within TTL(Time To Live) — [§3c](03C-denylist-redis-patterns.md)  
 - [ ] Refresh reuse → family revoke  
 - [ ] User disabled → cannot refresh / new session  
 - [ ] Logout-all invalidates other devices’ `sid`s  
@@ -90,7 +90,7 @@ What to automate so OAuth(Open Authorization), OIDC(OpenID Connect), cookies, an
 - [ ] Token for tenant A used on tenant B URL/session → 401/403  
 - [ ] Client-supplied `tenant_id` alone cannot escalate membership  
 - [ ] Ambiguous email domain → org picker (not silent join)  
-- [ ] Tenant switch re-binds access/refresh (old Bearer fails object AuthZ)  
+- [ ] Tenant switch re-binds access/refresh (old Bearer fails object AuthZ(Authorization))  
 
 ---
 
@@ -106,7 +106,7 @@ What to automate so OAuth(Open Authorization), OIDC(OpenID Connect), cookies, an
 | Gate | Block merge if |
 |------|----------------|
 | Unit + integration auth suite | Any failure on main paths |
-| Contract: security schemes | API adds route without AuthN annotation |
+| Contract: security schemes | API adds route without AuthN(Authentication) annotation |
 | Secret scan | Tokens/certs committed |
 | Periodic | Dependency CVE on SAML/JWT libraries |
 

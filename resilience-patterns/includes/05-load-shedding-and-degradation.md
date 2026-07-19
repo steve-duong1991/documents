@@ -58,7 +58,7 @@ Degradation is a **contract**, not an accident. For each T1/T2 dependency, pick 
 
 | Fallback | Client sees | When acceptable | Risk |
 |----------|-------------|-----------------|------|
-| **Stale cache** | Last good payload + optional `stale: true` / age header | Browse, profiles, catalogs | Wrong price/stock if TTL too long |
+| **Stale cache** | Last good payload + optional `stale: true` / age header | Browse, profiles, catalogs | Wrong price/stock if TTL(Time To Live) too long |
 | **Empty / omit section** | Field absent or `[]`; rest of page OK | Recs, ads, “customers also bought” | Layout shift if UI assumes presence |
 | **Approximate / default** | Estimate, generic copy, offline defaults | Counts, badges, non-binding ETA | Users treat estimate as truth |
 | **Hard error (fail closed)** | 4xx/5xx for that resource | T0 money, authZ, inventory reserve | Better than silent wrong write |

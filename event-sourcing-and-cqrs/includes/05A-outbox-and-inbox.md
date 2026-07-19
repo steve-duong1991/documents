@@ -2,7 +2,9 @@
 
 Reliable **publish** (outbox) and reliable **consume** (inbox) as a pair — schemas, relay operations, CDC(Change Data Capture) alternatives, and how they relate to saga step idempotency.
 
-> **Overview:** [Async integration](05-async-integration.md) · **Sagas:** [§7](07-sagas-and-distributed-workflows.md) · **Kafka:** [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md) · **Idempotency:** [api-design §13](../../api-design-and-protection/includes/13-idempotency.md)
+> **Scope:** Outbox/inbox schemas, relay ops, CDC alternatives, saga overlap. Pair overview → [§5](05-async-integration.md). HTTP(Hypertext Transfer Protocol) async contracts → [api-design §10](../../api-design-and-protection/includes/10-async-patterns.md).
+>
+> **Related:** [Async integration](05-async-integration.md) · Sagas → [§7](07-sagas-and-distributed-workflows.md) · Kafka → [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md) · Idempotency → [api-design §13](../../api-design-and-protection/includes/13-idempotency.md) · Notifications after commit → [api-design §10D](../../api-design-and-protection/includes/10D-notification-delivery.md)
 
 ---
 

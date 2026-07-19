@@ -11,7 +11,7 @@ Automation that does not catch defects or slow every PR is negative ROI. Explici
 | Candidate | Automate? | Prefer |
 |-----------|-----------|--------|
 | Pure business rules | Yes | Unit / table-driven |
-| Third-party SaaS UI | Rarely | Contract mocks + manual smoke |
+| Third-party SaaS(Software as a Service) UI | Rarely | Contract mocks + manual smoke |
 | Exploratory UX | No | Session-based testing |
 | One-off migration dry-run | Script once | Runbook, not CI(Continuous Integration) suite |
 | Visual polish / branding | Selective | Snapshot on critical screens only |

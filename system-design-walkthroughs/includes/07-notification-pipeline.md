@@ -2,7 +2,7 @@
 
 A fan-out and prioritization problem across heterogeneous, unreliable third-party channels — push, email, and SMS(Short Message Service) each have different latency, cost, and failure characteristics, and users must not be double-notified.
 
-> **Related:** Framework → [01-how-to-approach.md](01-how-to-approach.md) · Reliable publish after a DB write → [event-sourcing-and-cqrs §5 async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Message brokers and DLQ(Dead Letter Queue) → [HTS §14](../../high-throughput-systems/includes/14-message-brokers-and-queues.md) · Dedup and idempotency → [resilience-patterns §6](../../resilience-patterns/includes/06-idempotency-systemwide.md) · Bus product choice → [apache-kafka](../../apache-kafka/README.md)
+> **Related:** Framework → [01-how-to-approach.md](01-how-to-approach.md) · Production notifier playbook → [api-design §10D](../../api-design-and-protection/includes/10D-notification-delivery.md) · Reliable publish after a DB write → [event-sourcing-and-cqrs §5 async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Message brokers and DLQ(Dead Letter Queue) → [HTS §14](../../high-throughput-systems/includes/14-message-brokers-and-queues.md) · Dedup and idempotency → [resilience-patterns §6](../../resilience-patterns/includes/06-idempotency-systemwide.md) · Bus product choice → [apache-kafka](../../apache-kafka/README.md)
 
 ---
 
@@ -23,7 +23,7 @@ A fan-out and prioritization problem across heterogeneous, unreliable third-part
 | Events/sec average | 50M / 86,400 | ~580/sec |
 | Notifications/sec (avg 1.5 channels/event) | 580 × 1.5 | ~870/sec average |
 | Bulk campaign burst | 10M notifications over 1 hour | ~2,800/sec sustained — must not starve real-time critical notifications |
-| Dedup window | Same event re-triggered within minutes (retries upstream) | Idempotency key store sized for the dedup TTL, not forever |
+| Dedup window | Same event re-triggered within minutes (retries upstream) | Idempotency key store sized for the dedup TTL(Time To Live), not forever |
 
 **Rule of thumb:** This is a **priority queueing problem** wearing a "notifications" costume — the design lives or dies on keeping low-priority bulk traffic from delaying high-priority alerts.
 

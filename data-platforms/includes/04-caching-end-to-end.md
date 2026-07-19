@@ -10,7 +10,7 @@ Coherence from **CDN(Content Delivery Network) → application cache → databas
 
 ## At a glance
 
-| Layer | Typical TTL | Invalidate how | Serves |
+| Layer | Typical TTL(Time To Live) | Invalidate how | Serves |
 |-------|-------------|----------------|--------|
 | **CDN** | Seconds–hours | Purge by URL/tag | Public/cacheable GET |
 | **App (Redis)** | Seconds–minutes | Key delete on write | Personalized + hot entities |

@@ -71,7 +71,7 @@ Every gateway node subscribes to the topics/channels its connected clients care 
 
 1. Terminate WebSocket or SSE(Server-Sent Events) at a stateless gateway tier — [§1](01-connection-fanout.md)
 2. Fan out through Redis Streams or Kafka depending on replay/ordering needs — [§2](02-pubsub-backplanes.md)
-3. Track presence with TTL heartbeats, not per-event writes — [§3](03-presence-and-typing.md)
+3. Track presence with TTL(Time To Live) heartbeats, not per-event writes — [§3](03-presence-and-typing.md)
 4. Add CRDT/OT only when two users can edit the *same* field concurrently — [§4](04-crdt-and-ot.md)
 5. Confirm transport and reconnect UX with [fullstack §5](../../fullstack-bff-and-clients/includes/05-realtime-ux.md) before building custom protocol logic
 

@@ -1,6 +1,6 @@
 # Row-Level Security for Multi-Tenant Data
 
-PostgreSQL **RLS(Row-Level Security)** adds a database-enforced filter on every row access. Use it as a **safety net** alongside application checks — not as the only AuthZ layer.
+PostgreSQL **RLS(Row-Level Security)** adds a database-enforced filter on every row access. Use it as a **safety net** alongside application checks — not as the only AuthZ(Authorization) layer.
 
 > **Scope:** **Shared-table (pool) isolation** — `tenant_id` + RLS mechanics. Product-level pool vs silo choice → [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). Schema/DB-per-tenant ops → [§18](18-schema-and-database-per-tenant.md).
 >
@@ -215,7 +215,7 @@ RLS on base tables is still recommended when apps query tables directly.
 | **RLS** | DB-wide default deny for wrong tenant | Policy drift; admin role mistakes |
 | **Schema / DB per tenant** | Strongest isolation | Highest ops cost |
 
-Use **JWT claim + app check + RLS** for shared-table B2B SaaS. Enterprise silos may drop shared RLS in favor of dedicated databases.
+Use **JWT claim + app check + RLS** for shared-table B2B(Business-to-Business) SaaS(Software as a Service). Enterprise silos may drop shared RLS in favor of dedicated databases.
 
 ---
 

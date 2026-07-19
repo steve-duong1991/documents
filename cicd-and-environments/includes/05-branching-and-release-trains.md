@@ -13,7 +13,7 @@ Branching policy determines how fast you integrate and how painful releases feel
 | **Trunk-based** | Most product teams | Needs solid CI + flags |
 | **GitHub Flow** | Small teams, continuous deploy | Long-lived PRs still hurt |
 | **Release train** | Multi-team cadence, mobile, regulated | Batching delays learning |
-| **Git Flow** | Rarely ideal for SaaS | Merge debt, hotfix confusion |
+| **Git Flow** | Rarely ideal for SaaS(Software as a Service) | Merge debt, hotfix confusion |
 
 **Rule of thumb:** If a feature branch lives >2–3 days, you are batching risk — split work or hide unfinished behavior behind flags.
 

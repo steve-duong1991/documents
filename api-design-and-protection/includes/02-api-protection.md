@@ -30,7 +30,7 @@ flowchart TB
 | **Gateway** | TLS(Transport Layer Security), authN, rate limits, routing, size limits | Kong, AWS API Gateway, Azure APIM |
 | **Load balancer** | Health checks, scale replicas | AWS ALB/NLB, NGINX, K8s Service |
 | **Application** | authZ, validation, idempotency, business rules | Your service code |
-| **Data** | Encryption at rest, least-privilege DB roles | RDS, PostgreSQL RLS |
+| **Data** | Encryption at rest, least-privilege DB roles | RDS, PostgreSQL RLS(Row-Level Security) |
 | **Operations** | Audit logs, alerting, secret rotation, pen tests | Datadog, SIEM, Vault |
 
 ## 1. Transport security
@@ -38,7 +38,7 @@ flowchart TB
 - **HTTPS only** — reject or redirect HTTP(Hypertext Transfer Protocol)
 - **TLS 1.2+** (prefer 1.3)
 - **HSTS** for browser-facing APIs
-- **mTLS(Mutual Transport Layer Security)** for high-trust B2B or internal service mesh
+- **mTLS(Mutual Transport Layer Security)** for high-trust B2B(Business-to-Business) or internal service mesh
 
 ### Pros
 
@@ -74,7 +74,7 @@ Prove **what** the caller may do — always in the **application layer**, not ga
 
 - Scope-based: `orders:read`, `orders:write`
 - Object-level: user 123 may only access their orders (**BOLA(Broken Object-Level Authorization)** — OWASP(Open Worldwide Application Security Project) API #1)
-- RBAC(Role-Based Access Control) / ABAC as appropriate
+- RBAC(Role-Based Access Control) / ABAC(Attribute-Based Access Control) as appropriate
 
 | Response | When |
 |----------|------|

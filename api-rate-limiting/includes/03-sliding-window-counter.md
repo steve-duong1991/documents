@@ -48,7 +48,7 @@ flowchart TD
 ## When to use
 
 - Public REST(Representational State Transfer) or GraphQL APIs
-- SaaS products with per-plan limits
+- SaaS(Software as a Service) products with per-plan limits
 - API(Application Programming Interface) gateways (Kong, AWS API Gateway, Envoy)
 - Any production API where fairness matters but log-based storage is too costly
 

@@ -1,10 +1,10 @@
 # Multi-Tenant System Models
 
-Isolation models for SaaS — from shared-everything to siloed — and how they couple to API(Application Programming Interface) and database controls.
+Isolation models for SaaS(Software as a Service) — from shared-everything to siloed — and how they couple to API(Application Programming Interface) and database controls.
 
-> **Scope:** **System isolation architecture** (tenancy model choice). HTTP(Hypertext Transfer Protocol) multi-tenant API concerns → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md). B2B IdP / multi-issuer OIDC(OpenID Connect) → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md). PostgreSQL RLS(Row Level Security) mechanics → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md). Schema/DB-per-tenant ops → [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md).
+> **Scope:** **System isolation architecture** (tenancy model choice). HTTP(Hypertext Transfer Protocol) multi-tenant API concerns → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md). B2B(Business-to-Business) IdP(Identity Provider) / multi-issuer OIDC(OpenID Connect) → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md). PostgreSQL RLS(Row-Level Security) mechanics → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md). Schema/DB-per-tenant ops → [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md). Cells / data residency → [§10A](10A-regional-cells-and-residency.md).
 >
-> **Related:** Data ownership → [08-data-ownership.md](08-data-ownership.md) · Failure domains → [11-failure-domains.md](11-failure-domains.md) · Compliance → [enterprise-security-compliance](../../enterprise-security-compliance/README.md) · Auth federation → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md)
+> **Related:** Data ownership → [08-data-ownership.md](08-data-ownership.md) · Failure domains → [11-failure-domains.md](11-failure-domains.md) · Regional cells → [§10A](10A-regional-cells-and-residency.md) · Compliance → [enterprise-security-compliance](../../enterprise-security-compliance/README.md) · Auth federation → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md)
 
 ---
 
@@ -12,7 +12,7 @@ Isolation models for SaaS — from shared-everything to siloed — and how they 
 
 | Model | Isolation | Cost | Typical fit |
 |-------|-----------|------|-------------|
-| **Pool (shared DB + tenant_id)** | Logical | Lowest | SMB SaaS, early stage |
+| **Pool (shared DB + tenant_id)** | Logical | Lowest | SMB(Small and Medium Business) SaaS, early stage |
 | **Pool + RLS** | Logical + DB enforced | Low–medium | Regulated shared tenancy |
 | **Schema per tenant** | Medium | Medium | Mid-market, custom schema drift risk |
 | **Database per tenant** | Strong | High | Enterprise, noisy-neighbor sensitive |

@@ -35,6 +35,9 @@ A practical reference for PostgreSQL performance — measurement, indexing, quer
 | Guide | Topics |
 |-------|--------|
 | [high-throughput-systems](../high-throughput-systems/README.md) | System-wide throughput order: cache, scale, async, backpressure |
+| [architecture-decisions §10](../architecture-decisions/includes/10-multi-tenant-system-models.md) | Pool vs silo vs cells — pairs with §17 RLS(Row-Level Security) / §18 |
+| [architecture §10A residency](../architecture-decisions/includes/10A-regional-cells-and-residency.md) | Region pins and cell routing |
+| [nosql-and-key-value-stores §3](../nosql-and-key-value-stores/includes/03-dynamo-style-multi-tenant.md) | Dynamo-style multi-tenant when not on PostgreSQL |
 | [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM(Log-Structured Merge) storage engines for write-heavy workloads |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Production credentials, IAM(Identity and Access Management), PgBouncer |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limiter algorithms and deployment layers |

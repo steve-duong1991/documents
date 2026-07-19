@@ -44,7 +44,7 @@ https://{issuer}/.well-known/openid-configuration
 | `id_token_signing_alg_values_supported` | Prefer RS256 / ES256; reject `none` and unexpected HS* for public clients |
 | `code_challenge_methods_supported` | Must include `S256` for PKCE(Proof Key for Code Exchange) |
 
-Cache discovery + JWKS with a TTL; refresh on unknown `kid` or validation failure (with rate limits).
+Cache discovery + JWKS with a TTL(Time To Live); refresh on unknown `kid` or validation failure (with rate limits).
 
 ```mermaid
 flowchart LR
@@ -76,10 +76,10 @@ flowchart LR
 | Claim | Meaning | Check |
 |-------|---------|-------|
 | `iss` | Issuer URL | Exact match to discovery `issuer` |
-| `sub` | Subject — stable user id at the IdP | Primary key for linking accounts |
+| `sub` | Subject — stable user id at the IdP(Identity Provider) | Primary key for linking accounts |
 | `aud` | Audience — must include **your client_id** | Reject if only the API audience |
 | `exp` / `iat` / `nbf` | Time bounds | Clock skew tolerance (~60s) |
-| `auth_time` | When AuthN happened | Useful for max-session and step-up |
+| `auth_time` | When AuthN(Authentication) happened | Useful for max-session and step-up |
 | `nonce` | Replay binder from `/authorize` | Must match what you stored |
 | `amr` / `acr` | Auth method / context class | Enforce MFA(Multi-Factor Authentication) policies |
 | `email`, `email_verified`, `name`, … | Profile (if scoped) | Don't trust email alone for account merge without `email_verified` |
@@ -89,7 +89,7 @@ flowchart LR
 | Claim | Check |
 |-------|-------|
 | `aud` | Your API identifier / gateway audience |
-| `scope` or `scp` | Coarse AuthZ at gateway |
+| `scope` or `scp` | Coarse AuthZ(Authorization) at gateway |
 | `client_id` / `azp` | Who obtained the token |
 | Custom `roles` / `tenant_id` | Keep small; re-check object ownership in app — [api-design §12B](../../api-design-and-protection/includes/12B-identity-enterprise-api.md) |
 
@@ -150,7 +150,7 @@ Access-token validation for APIs → [§3](03-token-lifecycle-and-validation.md)
 | Sending ID token to APIs as Bearer | Wrong audience; APIs may accept identity tokens meant for the client | Access token only |
 | Skipping `nonce` | ID token injection / replay across sessions | Always verify |
 | Trusting unverified email claim | Account takeover via IdP misconfig or colliding emails | Require `email_verified` + linking UX |
-| Putting huge authorization graphs in JWT | Header bloat; stale AuthZ | Minimal claims; query AuthZ service or DB for fine-grained rights |
+| Putting huge authorization graphs in JWT | Header bloat; stale AuthZ | Minimal claims; query AuthZ service or DB — [api-design §12D](../../api-design-and-protection/includes/12D-fine-grained-authz.md) |
 | Accepting any `alg` from the header blindly | Algorithm confusion attacks | Whitelist algs from discovery / config |
 
 ---

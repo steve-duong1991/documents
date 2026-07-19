@@ -127,7 +127,7 @@ Content-Type: application/json
 | `Retry-After` | On `202` and in responses while status is non-terminal |
 | Progress | Optional `percent` + `message`; avoid false precision |
 | Result delivery | Signed URL to object storage — not inline megabyte payloads |
-| TTL | Auto-expire jobs and artifacts (e.g. 24h); document in API(Application Programming Interface) |
+| TTL(Time To Live) | Auto-expire jobs and artifacts (e.g. 24h); document in API(Application Programming Interface) |
 | Cancel | `DELETE /v1/jobs/{id}` → `status: cancelled` if not yet started |
 | Idempotency | Same `Idempotency-Key` → return same `job_id`, do not enqueue twice |
 

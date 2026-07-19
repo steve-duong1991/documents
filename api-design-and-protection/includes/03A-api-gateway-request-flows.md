@@ -107,4 +107,4 @@ sequenceDiagram
     GW-->>Client: 200 OK (+ CORS, logging)
 ```
 
-This sequence matches the protected call in [Overview — full flow](00-overview.md#sequence-one-protected-api-call); the overview diagram adds edge WAF(Web Application Firewall) and application AuthZ layers.
+This sequence matches the protected call in [Overview — full flow](00-overview.md#sequence-one-protected-api-call); the overview diagram adds edge WAF(Web Application Firewall) and application AuthZ(Authorization) layers.

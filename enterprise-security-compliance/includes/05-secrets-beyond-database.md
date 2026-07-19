@@ -12,7 +12,7 @@
 | Webhook HMAC(Hash-based Message Authentication Code) secrets | Secret manager; dual-key during rotate | Planned dual-run | Logs, tickets |
 | JWT / OIDC(OpenID Connect) signing keys | KMS(Key Management Service) or HSM(Hardware Security Module)-backed | Key versioning | App config repos |
 | CI deploy credentials | OIDC to cloud (prefer) or short-lived | Prefer federated over PATs | Long-lived PATs in org secrets forever |
-| Service-to-service | mTLS(Mutual Transport Layer Security) or short JWT | Cert/key TTL | Shared static “cluster password” |
+| Service-to-service | mTLS(Mutual Transport Layer Security) or short JWT | Cert/key TTL(Time To Live) | Shared static “cluster password” |
 | DB passwords | → database-connection guide | → §12 there | Duplicated here as second source of truth |
 
 **Rule of thumb:** One secret manager namespace per environment; **apps pull, humans rarely copy**.

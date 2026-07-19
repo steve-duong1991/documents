@@ -69,7 +69,7 @@ WITH (security_barrier) AS
 SELECT * FROM orders WHERE tenant_id = current_setting('app.tenant_id')::int;
 ```
 
-Enable RLS on base tables, policy design, and `BYPASSRLS` roles → [§17 Row-level security for multi-tenant data](17-row-level-security-multi-tenant.md).
+Enable RLS(Row-Level Security) on base tables, policy design, and `BYPASSRLS` roles → [§17 Row-level security for multi-tenant data](17-row-level-security-multi-tenant.md).
 
 ### Materialized views
 

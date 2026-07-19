@@ -46,14 +46,14 @@ flowchart TB
 | Concern | Fullstack TL | API / domain team |
 |---------|--------------|-------------------|
 | Screen-ready DTO shape | Yes (BFF) | Provide stable resources |
-| Object-level AuthZ | Enforce via API; never “UI-only” | Own enforcement |
+| Object-level AuthZ(Authorization) | Enforce via API; never “UI-only” | Own enforcement |
 | OpenAPI for public/partner | Coordinate | Own |
 | Pixel / interaction design | With design system | N/A |
 | DB schema | Consult | Own |
 
 ## Default recommendation
 
-For a typical **SaaS web app**:
+For a typical **SaaS(Software as a Service) web app**:
 
 1. **BFF per experience** (web) that aggregates domain APIs — no browser talking to 12 internal services
 2. **Server-rendered shell** for marketing + authenticated app entry when SEO/LCP(Largest Contentful Paint) matter; client interactivity where needed → [§2](02-rendering-tradeoffs.md)

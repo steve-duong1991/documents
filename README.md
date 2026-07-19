@@ -14,7 +14,7 @@ Practical reference docs for building and operating production APIs and data sys
 | [api-design-and-protection](api-design-and-protection/README.md) | REST(Representational State Transfer) design, protection, gateway, auth, identity, async, idempotency, object storage uploads, stateless architecture |
 | [api-rate-limiting](api-rate-limiting/README.md) | Limiter algorithms, scope, deployment layers, response strategies |
 | [architecture-decisions](architecture-decisions/README.md) | System shape, boundaries, DDD(Domain-Driven Design), strangler, ADRs, tradeoffs, capacity estimation, multi-tenant, failure domains |
-| [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) | OAuth(Open Authorization) 2.0 grants, OIDC(OpenID Connect) discovery/ID tokens, SSO(Single Sign-On)/multi-tenant B2B, token lifecycle, cookie/session CSRF(Cross-Site Request Forgery), login hardening |
+| [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) | OAuth(Open Authorization) 2.0 grants, OIDC(OpenID Connect) discovery/ID tokens, SSO(Single Sign-On)/multi-tenant B2B(Business-to-Business), token lifecycle, cookie/session CSRF(Cross-Site Request Forgery), login hardening |
 | [cicd-and-environments](cicd-and-environments/README.md) | CI(Continuous Integration)/CD(Continuous Delivery) pipelines, env promotion, config vs secrets, flags, branching, rollback, container health, platform boundaries |
 | [cursor-agents](cursor-agents/README.md) | Single vs multi agent, parallel Agents Window, subagents, auto-delegation |
 | [cursor-workflows](cursor-workflows/README.md) | Cursor playbook: design → architecture → coding → review → ship → operate (MCP, mocks, stack rules) |
@@ -165,10 +165,11 @@ Decision-making, resilience, delivery, quality, and leadership — then deepen w
 1. [architecture-decisions](architecture-decisions/README.md) — system shape, boundaries, ADRs → [§12 decision guide](architecture-decisions/includes/12-decision-guide.md) · [§13 capacity](architecture-decisions/includes/13-capacity-estimation.md)
 2. [distributed-systems-primitives](distributed-systems-primitives/README.md) + [resilience-patterns](resilience-patterns/README.md) — mechanisms and failure survival
 3. [sre-and-incidents](sre-and-incidents/README.md) + [cicd-and-environments](cicd-and-environments/README.md) — operate and ship safely → release order [deployment §14 playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md)
-4. [testing-strategy](testing-strategy/README.md) + [enterprise-security-compliance](enterprise-security-compliance/README.md) — quality and enterprise readiness
-5. [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) + [tech-lead-practice](tech-lead-practice/README.md) — client seam and people/process
-6. [finops-and-cost](finops-and-cost/README.md) + [data-platforms](data-platforms/README.md) — cost and data beyond one OLTP DB
-7. Practice designs → [system-design-walkthroughs](system-design-walkthroughs/README.md)
+4. [testing-strategy](testing-strategy/README.md) + [enterprise-security-compliance](enterprise-security-compliance/README.md) — quality and enterprise readiness → erasure [ESC §7A](enterprise-security-compliance/includes/07A-erasure-and-dsar.md)
+5. [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) + [api-design §12](api-design-and-protection/includes/12-identity-rbac-iam-ad.md) — login/SSO; B2B → [§2d](auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · [§12C](api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) · [§12D](api-design-and-protection/includes/12D-fine-grained-authz.md)
+6. [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) + [tech-lead-practice](tech-lead-practice/README.md) — client seam and people/process
+7. [finops-and-cost](finops-and-cost/README.md) + [data-platforms](data-platforms/README.md) — cost and data beyond one OLTP DB
+8. Practice designs → [system-design-walkthroughs](system-design-walkthroughs/README.md)
 
 ### Ship a public API
 
@@ -198,9 +199,10 @@ Optimize in order: measure, reduce work, fix the database hot path, then cache a
 Multi-region reads, consistency promises, and DR before expanding globally.
 
 1. [high-throughput-systems §13 multi-region](high-throughput-systems/includes/13-multi-region-read-routing.md) — active-passive, read-local, geo routing
-2. [postgresql-performance §14 consistency](postgresql-performance/includes/14-consistency-promises-and-costs.md) — read-your-writes, staleness, costs
-3. [database-connection-and-security §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md) — RPO(Recovery Point Objective)/RTO(Recovery Time Objective), failover drills
-4. [deployment-strategies](deployment-strategies/README.md) — safe deploy during regional failover
+2. [architecture §10A cells/residency](architecture-decisions/includes/10A-regional-cells-and-residency.md) — tenant→cell pins, what not to replicate
+3. [postgresql-performance §14 consistency](postgresql-performance/includes/14-consistency-promises-and-costs.md) — read-your-writes, staleness, costs
+4. [database-connection-and-security §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md) — RPO(Recovery Point Objective)/RTO(Recovery Time Objective), failover drills
+5. [deployment-strategies](deployment-strategies/README.md) — safe deploy during regional failover
 
 ### Event-sourced domain
 
@@ -232,9 +234,9 @@ Deep dive on Apache Kafka — setup, schema choice, semantics, and integration w
 Security review, overload protection, and operational safety nets.
 
 1. [api-design-and-protection §2 protection](api-design-and-protection/includes/02-api-protection.md) + [§6 threat model](api-design-and-protection/includes/06-threat-model.md)
-2. [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) + [api-design §12 identity](api-design-and-protection/includes/12-identity-rbac-iam-ad.md) + [§12C SCIM/JML](api-design-and-protection/includes/12C-scim-and-jml-provisioning.md)
+2. [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) + [api-design §12 identity](api-design-and-protection/includes/12-identity-rbac-iam-ad.md) + [§12C SCIM/JML](api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) + [§12D fine AuthZ](api-design-and-protection/includes/12D-fine-grained-authz.md)
 3. [database-connection-and-security](database-connection-and-security/README.md) — network, TLS, secrets, cloud identity
-4. [enterprise-security-compliance](enterprise-security-compliance/README.md) — SDLC gates, supply chain, audit/PII(Personally Identifiable Information), compliance evidence
+4. [enterprise-security-compliance](enterprise-security-compliance/README.md) — SDLC gates, supply chain, audit/PII(Personally Identifiable Information), [§7A erasure/DSAR](enterprise-security-compliance/includes/07A-erasure-and-dsar.md), compliance evidence
 5. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting §12 distributed limiting](api-rate-limiting/includes/12-distributed-rate-limiting.md) (Redis topology, regional quotas, fail-open) + [api-rate-limiting](api-rate-limiting/README.md)
 
 ### Fullstack UI ↔ API
@@ -340,7 +342,7 @@ When PostgreSQL is not the right primary — access patterns first.
 2. [§2 access-pattern modeling](nosql-and-key-value-stores/includes/02-access-pattern-modeling.md) (GSI/LSI(Local Secondary Index), hot partitions)
 3. [§3 multi-tenant Dynamo-style](nosql-and-key-value-stores/includes/03-dynamo-style-multi-tenant.md) vs [PG §17 RLS](postgresql-performance/includes/17-row-level-security-multi-tenant.md) / [PG §18 silos](postgresql-performance/includes/18-schema-and-database-per-tenant.md)
 4. [distributed-systems-primitives §2 consistent hashing](distributed-systems-primitives/includes/02-consistent-hashing.md) when sharding keys matter
-5. Full SaaS path → [Multi-tenant SaaS data](#multi-tenant-saas-data)
+5. Full SaaS(Software as a Service) path → [Multi-tenant SaaS data](#multi-tenant-saas-data)
 
 ### Realtime at scale
 
@@ -400,7 +402,7 @@ Partner auth, quotas, and abuse caps.
 
 1. [api-design-and-protection §4 auth](api-design-and-protection/includes/04-auth-model.md) + [§12 identity](api-design-and-protection/includes/12-identity-rbac-iam-ad.md)
 2. [auth-oauth-oidc-and-login-security §1](auth-oauth-oidc-and-login-security/includes/01-oauth2-grants-and-flows.md) (client credentials) + [§3 tokens](auth-oauth-oidc-and-login-security/includes/03-token-lifecycle-and-validation.md)
-3. Enterprise / BYO IdP → [auth §2b SSO](auth-oauth-oidc-and-login-security/includes/02B-sso-integration-playbook.md) + [§2d multi-tenant OIDC](auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md)
+3. Enterprise / BYO(Bring Your Own) IdP(Identity Provider) → [auth §2b SSO](auth-oauth-oidc-and-login-security/includes/02B-sso-integration-playbook.md) + [§2d multi-tenant OIDC](auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md)
 4. Provisioning / offboarding → [api-design §12C SCIM/JML](api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) + [auth §3b revoke](auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md)
 5. [api-design-and-protection §5 tiers](api-design-and-protection/includes/05-rate-limit-tiers.md)
 6. [api-rate-limiting §6 scope](api-rate-limiting/includes/06-scope-identity.md)
@@ -412,12 +414,14 @@ Partner auth, quotas, and abuse caps.
 Choose isolation model, then enforce it in PostgreSQL (or Dynamo-style keys) and on every API/cache/queue path.
 
 1. [architecture-decisions §10](architecture-decisions/includes/10-multi-tenant-system-models.md) — pool vs schema/DB silo vs cells; restore drills
-2. [auth §2d multi-tenant OIDC](auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) — IdP routing / multi-issuer (if B2B SSO)
-3. [postgresql-performance §17 RLS](postgresql-performance/includes/17-row-level-security-multi-tenant.md) — shared-table `tenant_id`, composite FKs, `SET LOCAL`, poolers
-4. [postgresql-performance §18 silos](postgresql-performance/includes/18-schema-and-database-per-tenant.md) — `search_path`, migration fan-out, pool→silo cutover
-5. [nosql-and-key-value-stores §3](nosql-and-key-value-stores/includes/03-dynamo-style-multi-tenant.md) — when the primary is key-value
-6. [api-design-and-protection §16](api-design-and-protection/includes/16-multi-tenant-apis.md) — claim binding, cache/queue prefixes
-7. Async bus → [apache-kafka §2 multi-tenant](apache-kafka/includes/02-topics-partitions-and-replication.md#multi-tenant-isolation)
+2. [architecture §10A cells/residency](architecture-decisions/includes/10A-regional-cells-and-residency.md) — region pins, routing, forbidden replication
+3. [auth §2d multi-tenant OIDC](auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) — IdP routing / multi-issuer (if B2B SSO)
+4. [api-design §12C SCIM/JML](api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) — provision / offboard
+5. [postgresql-performance §17 RLS](postgresql-performance/includes/17-row-level-security-multi-tenant.md) — shared-table `tenant_id`, composite FKs, `SET LOCAL`, poolers
+6. [postgresql-performance §18 silos](postgresql-performance/includes/18-schema-and-database-per-tenant.md) — `search_path`, migration fan-out, pool→silo cutover
+7. [nosql-and-key-value-stores §3](nosql-and-key-value-stores/includes/03-dynamo-style-multi-tenant.md) — when the primary is key-value
+8. [api-design-and-protection §16](api-design-and-protection/includes/16-multi-tenant-apis.md) — claim binding, cache/queue prefixes
+9. Async bus → [apache-kafka §2 multi-tenant](apache-kafka/includes/02-topics-partitions-and-replication.md#multi-tenant-isolation)
 
 ### Cursor agents
 

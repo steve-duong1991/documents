@@ -176,7 +176,7 @@ Supports **Repudiation** controls in [threat modeling](../../api-design-and-prot
 | Rate limits | Stricter on writes | Higher on reads |
 | Timeouts | Short (append only) | Tuned for list/search |
 | Caching | Never cache POST | CDN(Content Delivery Network)/cache safe on GET |
-| AuthZ | Scope + aggregate ownership | Same BOLA(Broken Object-Level Authorization) checks on read models |
+| AuthZ(Authorization) | Scope + aggregate ownership | Same BOLA(Broken Object-Level Authorization) checks on read models |
 
 Route both through the same gateway; scale query tier independently behind separate upstream pools if needed — see [Load balancer & gateway — Flow 3](../../api-design-and-protection/includes/03A-api-gateway-request-flows.md#flow-3--both-together-common-at-scale).
 
@@ -202,7 +202,7 @@ sequenceDiagram
     A-->>C: 200 version 6 (no duplicate event)
 ```
 
-Store idempotency key → `(aggregate_id, resulting_version)` with TTL.
+Store idempotency key → `(aggregate_id, resulting_version)` with TTL(Time To Live).
 
 ---
 

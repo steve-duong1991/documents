@@ -1,6 +1,6 @@
 # Lifetimes and Sliding Sessions
 
-One place for **how long** each layer lives: access token, refresh token, app session (idle + absolute), cookie `Max-Age`, and IdP SSO(Single Sign-On) session — plus **sliding renewal** and what to do when the app session dies but IdP SSO is still alive.
+One place for **how long** each layer lives: access token, refresh token, app session (idle + absolute), cookie `Max-Age`, and IdP(Identity Provider) SSO(Single Sign-On) session — plus **sliding renewal** and what to do when the app session dies but IdP SSO is still alive.
 
 > **Scope:** Lifetime matrix, sliding rules, silent re-auth vs force login. Token validation → [§3](03-token-lifecycle-and-validation.md). Session store fields → [§4](04-cookie-session-and-csrf.md). Revoke before expiry → [§3b](03B-revoke-logout-denylist.md). SSO integration → [§2b](02B-sso-integration-playbook.md).
 
@@ -22,7 +22,7 @@ Never set cookie `Max-Age` longer than the server session absolute timeout — t
 
 ## Lifetime matrix (starting defaults)
 
-| Clock | SaaS web (BFF(Backend for Frontend) session) | SPA / mobile (refresh) | High-privilege admin |
+| Clock | SaaS(Software as a Service) web (BFF(Backend for Frontend) session) | SPA / mobile (refresh) | High-privilege admin |
 |-------|-----------------------------------------------|------------------------|----------------------|
 | **Access JWT(JSON Web Token)** | 5–10 min (or none if cookie-session only) | 5–15 min | 5 min |
 | **Refresh** | N/A if session-only; else 7–30d absolute | 7–30d absolute, rotate | 8–24h absolute |
@@ -115,7 +115,7 @@ Store `auth_time` from the new ID token on the new session — [§2](02-oidc-dis
 - [ ] Cookie lifetime ≤ session absolute
 - [ ] Refresh absolute ≤ session absolute (if both exist)
 - [ ] Idle slide never extends absolute
-- [ ] Logout deletes server state even if cookie TTL remains — [§3b](03B-revoke-logout-denylist.md)
+- [ ] Logout deletes server state even if cookie TTL(Time To Live) remains — [§3b](03B-revoke-logout-denylist.md)
 - [ ] Document silent vs interactive re-auth for idle vs absolute
 
 ---

@@ -27,7 +27,7 @@ A bidirectional, low-latency fan-out problem: messages must reach connected clie
 | Connections per gateway node | ~50K–100K (OS/socket limited) | ~500–1,000 gateway nodes for 50M connections |
 | Presence heartbeat writes | 50M connections × 1 heartbeat / 15–30s | ~1.7M–3.3M presence writes/sec — this is the real volume problem |
 
-**Rule of thumb:** Presence churns far faster than messages. Design presence as a **high-write, short-TTL, eventually-consistent** system — never route it through the same durable store as message history.
+**Rule of thumb:** Presence churns far faster than messages. Design presence as a **high-write, short-TTL(Time To Live), eventually-consistent** system — never route it through the same durable store as message history.
 
 ---
 
@@ -95,7 +95,7 @@ Presence: `SET presence:{user_id} "online" EX 30` refreshed on each heartbeat; a
 
 | Endpoint / channel | Behavior |
 |---------------------|----------|
-| `WS connect` | AuthN, subscribe to user's conversation channels on the bus |
+| `WS connect` | AuthN(Authentication), subscribe to user's conversation channels on the bus |
 | `WS send {conversation_id, client_msg_id, body}` | Persist async, publish to bus, ack to sender |
 | `GET /conversations/{id}/messages?cursor=` | Paginated history from the message store |
 | `GET /presence/{user_id}` | Read presence key; TTL expiry implies offline |

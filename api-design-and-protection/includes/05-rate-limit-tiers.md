@@ -108,7 +108,7 @@ Full design (job states, webhooks, SSE(Server-Sent Events), OpenAPI) → [Async 
 
 | Mistake | Fix |
 |---------|-----|
-| IP-only limits for authenticated B2B | Rate limit by API key / `client_id` |
+| IP-only limits for authenticated B2B(Business-to-Business) | Rate limit by API key / `client_id` |
 | Enterprise tier with no abuse cap | "Unlimited" still needs ceiling + monitoring |
 | Opaque 429 without `Retry-After` | Standard body + retry header always |
 | Same limit for cheap GET and expensive POST | Per-endpoint multipliers |

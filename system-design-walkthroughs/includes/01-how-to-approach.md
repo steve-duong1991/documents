@@ -79,9 +79,9 @@ flowchart LR
 | Layer | Default choice | Deep dive |
 |-------|-----------------|-----------|
 | Edge / CDN(Content Delivery Network) | Cache static + cacheable GET | [HTS §2 entry and edge](../../high-throughput-systems/includes/02-entry-and-edge.md) |
-| Gateway | AuthN, coarse rate limits, routing | [api-design-and-protection §3](../../api-design-and-protection/includes/03-api-gateway.md) |
+| Gateway | AuthN(Authentication), coarse rate limits, routing | [api-design-and-protection §3](../../api-design-and-protection/includes/03-api-gateway.md) |
 | App tier | Stateless, horizontally scaled | [api-design-and-protection §11](../../api-design-and-protection/includes/11-stateless-architecture.md) |
-| Cache | Cache-aside, TTL by data class | [HTS §4 caching layers](../../high-throughput-systems/includes/04-caching-layers.md) |
+| Cache | Cache-aside, TTL(Time To Live) by data class | [HTS §4 caching layers](../../high-throughput-systems/includes/04-caching-layers.md) |
 | Primary store | PostgreSQL unless a reason to deviate | [postgresql-performance](../../postgresql-performance/README.md) |
 | Async | Queue for anything not needed synchronously | [HTS §6 async, queues, workers](../../high-throughput-systems/includes/06-async-queues-workers.md) |
 

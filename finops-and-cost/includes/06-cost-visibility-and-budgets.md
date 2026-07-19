@@ -111,7 +111,7 @@ Tools do not replace **owners**.
 | One budget for whole org | Per-service budgets |
 | Alert only at 100% | Earlier thresholds |
 | Finance-only dashboards | Eng-facing unit views |
-| Ignore sandbox sprawl | Caps + TTL |
+| Ignore sandbox sprawl | Caps + TTL(Time To Live) |
 
 ---
 

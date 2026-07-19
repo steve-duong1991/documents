@@ -2,7 +2,7 @@
 
 Browser **third-party cookie** restrictions break classic cross-site SSO(Single Sign-On) and some SPA refresh patterns. Mobile **custom URL schemes** for OAuth(Open Authorization) redirects are phishing-prone. Prefer first-party cookies + BFF(Backend for Frontend), and **claimed HTTPS app links** for native callbacks.
 
-> **Scope:** Third-party cookie deprecation, partitioned cookies (CHIPS) in depth, impact on OIDC(OpenID Connect) front-channel logout / cross-site IdP cookies; mobile redirect safety (App Links / Universal Links vs custom schemes). Cookie flags and CSRF(Cross-Site Request Forgery) → [§4](04-cookie-session-and-csrf.md). Guest sessions → [§4b](04B-anonymous-and-guest-sessions.md). OIDC logout channels → [§2a](02A-oidc-logout-and-step-up.md). Auth Code + PKCE(Proof Key for Code Exchange) → [§1](01-oauth2-grants-and-flows.md).
+> **Scope:** Third-party cookie deprecation, partitioned cookies (CHIPS) in depth, impact on OIDC(OpenID Connect) front-channel logout / cross-site IdP(Identity Provider) cookies; mobile redirect safety (App Links / Universal Links vs custom schemes). Cookie flags and CSRF(Cross-Site Request Forgery) → [§4](04-cookie-session-and-csrf.md). Guest sessions → [§4b](04B-anonymous-and-guest-sessions.md). OIDC logout channels → [§2a](02A-oidc-logout-and-step-up.md). Auth Code + PKCE(Proof Key for Code Exchange) → [§1](01-oauth2-grants-and-flows.md).
 
 > **Related:** Browser auth UX → [fullstack §7](../../fullstack-bff-and-clients/includes/07-auth-ux.md)
 

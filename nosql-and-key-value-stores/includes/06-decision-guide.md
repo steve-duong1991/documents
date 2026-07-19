@@ -39,7 +39,7 @@ flowchart TD
 | High-scale key-value lookups, known access patterns, low ops appetite | DynamoDB single-table design — [§2](02-access-pattern-modeling.md) |
 | IoT/telemetry ingest, extreme write rate, in-house ops | Cassandra with TWCS compaction — [§4](04-cassandra-wide-column.md) |
 | Product catalog with per-category varying attributes | MongoDB, or PostgreSQL JSONB if the rest of the data is relational — [§5](05-mongodb-document.md) |
-| Multi-tenant SaaS on a key-value store | `tenant_id` in the key from day one — [§3](03-dynamo-style-multi-tenant.md) |
+| Multi-tenant SaaS(Software as a Service) on a key-value store | `tenant_id` in the key from day one — [§3](03-dynamo-style-multi-tenant.md) |
 | Existing NoSQL table throttling under load | Diagnose hot partition first — [§2](02-access-pattern-modeling.md#hot-partitions-and-write-sharding) |
 | Need cross-tenant/cross-entity analytics on a NoSQL primary | Export via CDC(Change Data Capture)/streams to a warehouse — [§3](03-dynamo-style-multi-tenant.md#cross-tenant-analytics), [data-platforms §7](../../data-platforms/includes/07-analytics-without-harming-oltp.md) |
 | Regulatory requirement for ad-hoc audit queries | PostgreSQL, or export to a queryable store — do not build this on DynamoDB/Cassandra |

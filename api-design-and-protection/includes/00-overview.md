@@ -9,7 +9,7 @@ This guide covers how to **design** public and internal APIs, **protect** them i
 | Layer | Topics |
 |-------|--------|
 | **Design** | Resources, versioning, errors, pagination, idempotency |
-| **Protection** | AuthN/AuthZ, WAF(Web Application Firewall), TLS(Transport Layer Security), validation, logging |
+| **Protection** | AuthN(Authentication)/AuthZ(Authorization), WAF(Web Application Firewall), TLS(Transport Layer Security), validation, logging |
 | **Entry architecture** | Load balancer vs API gateway, flows, tech stacks |
 | **Gateway** | Product choice, routing, policy enforcement |
 | **Auth model** | OAuth(Open Authorization), API keys, mTLS(Mutual Transport Layer Security), webhooks |
@@ -156,7 +156,7 @@ flowchart LR
 
 ## Default recommendation
 
-For most **public SaaS APIs**:
+For most **public SaaS(Software as a Service) APIs**:
 
 1. **Design** contract-first with OpenAPI (`/v1`, consistent errors, cursor pagination)
 2. **Edge**: Cloudflare or equivalent (DDoS + WAF + bot management)
@@ -194,5 +194,5 @@ See [Load Balancer, API Gateway & Entry Architecture](03-api-gateway.md) for flo
 | Full gateway stack on day-one MVP | HTTPS + API key + basic rate limit first |
 | AuthN at gateway without app AuthZ | Object-level checks on every `{id}` route |
 | OpenAPI as docs only, not CI contract | Spectral + breaking diff + contract tests |
-| Rate limits only by IP for B2B APIs | Per API key / user identity |
+| Rate limits only by IP for B2B(Business-to-Business) APIs | Per API key / user identity |
 | No correlation ID across layers | `X-Request-Id` from edge through app |

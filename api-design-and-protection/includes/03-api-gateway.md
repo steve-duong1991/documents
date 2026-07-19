@@ -110,7 +110,7 @@ Modern **L7 load balancers** (AWS ALB, NGINX) can do path routing, TLS, and WAF(
 
 | Mistake | Fix |
 |---------|-----|
-| Gateway as only auth layer | App still enforces object-level AuthZ |
+| Gateway as only auth layer | App still enforces object-level AuthZ(Authorization) |
 | One-time OpenAPI import, never synced | CI(Continuous Integration) verify routes match spec |
 | LB only for public API products | Add gateway for auth, tiers, versioning |
 | Policy junk drawer in gateway | Keep business rules in app; gateway for cross-cutting |

@@ -40,7 +40,7 @@ flowchart TD
 | Trading/price ticker, millions of viewers, one hot symbol | Stateless gateway + Kafka or dedicated backplane; shard hot symbols to isolated partitions |
 | Multiplayer cursor / whiteboard | WebSocket + Redis Pub/Sub (ephemeral) for cursor moves; CRDT(Conflict-free Replicated Data Type) per shape for content |
 | Collaborative document editor | CRDT library (Yjs/Automerge); backplane with replay for reconnect catch-up |
-| "Who's online in this room" | TTL presence keys + per-room fan-out — [§3](03-presence-and-typing.md) |
+| "Who's online in this room" | TTL(Time To Live) presence keys + per-room fan-out — [§3](03-presence-and-typing.md) |
 | Existing ProseMirror app | Keep its OT(Operational Transformation) module unless offline support is now required |
 | Realtime feed that's a projection of a Kafka-backed domain | Kafka as the backplane; reuse existing topics/consumer groups |
 | Team with no Kafka/Redis-Streams expertise, moderate scale | Redis Streams first; revisit Kafka only if scale or audit needs it |

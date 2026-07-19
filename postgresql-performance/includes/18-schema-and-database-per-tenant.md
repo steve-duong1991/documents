@@ -116,7 +116,7 @@ App → tenant router → db_acme | db_globex | db_pool (SMB long tail)
 | **Version skew** | Pin minimum schema version before app deploy; block tenants lagging too far behind |
 | **Observability** | Tag metrics with `tenant_id` **and** `db_name`; watch cardinality |
 
-Hybrid is normal: **pooled DB for SMB**, dedicated DBs for enterprise tier — [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md).
+Hybrid is normal: **pooled DB for SMB(Small and Medium Business)**, dedicated DBs for enterprise tier — [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md).
 
 ---
 

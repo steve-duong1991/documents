@@ -1,12 +1,12 @@
 # Multi-Tenant APIs
 
-SaaS APIs must isolate tenants in auth, data, rate limits, and operations — not only with a `tenant_id` column.
+SaaS(Software as a Service) APIs must isolate tenants in auth, data, rate limits, and operations — not only with a `tenant_id` column.
 
-> **Scope:** **HTTP(Hypertext Transfer Protocol) API(Application Programming Interface), cache, and queue tenancy** — claim binding, URL design, rate limits, cache/queue prefixes. IdP routing, multi-issuer OIDC(OpenID Connect), and B2B SSO(Single Sign-On) tenant resolution → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md). Isolation model choice (pool vs silo) → [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). PostgreSQL RLS(Row-Level Security) → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md). Schema/DB silos → [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md).
+> **Scope:** **HTTP(Hypertext Transfer Protocol) API(Application Programming Interface), cache, and queue tenancy** — claim binding, URL design, rate limits, cache/queue prefixes. IdP(Identity Provider) routing, multi-issuer OIDC(OpenID Connect), and B2B(Business-to-Business) SSO(Single Sign-On) tenant resolution → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md). SCIM(System for Cross-domain Identity Management) / membership lifecycle → [§12C](12C-scim-and-jml-provisioning.md). Isolation model choice (pool vs silo) → [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). Cells / residency → [arch §10A](../../architecture-decisions/includes/10A-regional-cells-and-residency.md). PostgreSQL RLS(Row-Level Security) → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md). Schema/DB silos → [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md).
 >
 > **Deep dive:** Multi-tenant Kafka topic and ACL(Access Control List) patterns → [apache-kafka §2](../../apache-kafka/includes/02-topics-partitions-and-replication.md#multi-tenant-isolation)
 >
-> **Related:** AuthZ / BOLA(Broken Object-Level Authorization) → [04-auth-model.md](04-auth-model.md) · Multi-tenant OIDC / BYO IdP → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · Rate tiers → [05-rate-limit-tiers.md](05-rate-limit-tiers.md) · Idempotency keys → [13-idempotency.md](13-idempotency.md) · Identity → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Consistency → [PG §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md)
+> **Related:** AuthZ(Authorization) / BOLA(Broken Object-Level Authorization) → [04-auth-model.md](04-auth-model.md) · Fine-grained AuthZ → [§12D](12D-fine-grained-authz.md) · Multi-tenant OIDC / BYO(Bring Your Own) IdP → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · SCIM/JML(Joiner-Mover-Leaver) → [§12C](12C-scim-and-jml-provisioning.md) · Rate tiers → [05-rate-limit-tiers.md](05-rate-limit-tiers.md) · Idempotency keys → [13-idempotency.md](13-idempotency.md) · Identity → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Consistency → [PG §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md)
 
 ---
 
@@ -103,7 +103,7 @@ Shared Redis, Memcached, or message brokers are still **multi-tenant**. Prefix e
 | Pattern | Detail |
 |---------|--------|
 | **Key prefix** | `{tenant_id}:{resource}:{id}` — e.g. `acme:user:123`, not `user:123` |
-| **TTL per tenant** | Large tenants may need shorter TTL or separate cache namespace |
+| **TTL(Time To Live) per tenant** | Large tenants may need shorter TTL or separate cache namespace |
 | **Invalidation** | Scope flush to tenant prefix; never `FLUSHALL` in shared clusters |
 | **Stampede** | Per-tenant singleflight — [HTS §4](../../high-throughput-systems/includes/04-caching-layers.md) |
 
@@ -141,9 +141,9 @@ Worker pools and queue depth → [HTS §6 async queues](../../high-throughput-sy
 
 | Need | Approach |
 |------|----------|
-| EU-only data | Region-specific deployment + routing — [HTS §13](../../high-throughput-systems/includes/13-multi-region-read-routing.md) |
+| EU-only data | Region-pinned cells + routing — [arch §10A](../../architecture-decisions/includes/10A-regional-cells-and-residency.md), [HTS §13](../../high-throughput-systems/includes/13-multi-region-read-routing.md) |
 | Noisy neighbor tenant | Per-tenant rate limits; optional dedicated pool |
-| Large enterprise | Dedicated DB or schema silo |
+| Large enterprise | Dedicated DB or schema silo — [arch §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md) |
 
 ---
 

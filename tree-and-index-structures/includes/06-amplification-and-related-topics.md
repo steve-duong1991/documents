@@ -82,7 +82,7 @@ In **InnoDB**, **SQL(Structured Query Language) Server clustered index**, and si
 | Trie for random UUID(Universally Unique Identifier) keys | Huge node count, no prefix benefit | B+ or hash on UUID |
 | B+ mental model for in-RAM `std::map` | Optimizes pages, not cache lines | Red-Black / AVL / skip list in process |
 | Too many secondary indexes on hot write path | Every INSERT/UPDATE touches each index | Index only proven query patterns; partial indexes — [PostgreSQL indexing](../../postgresql-performance/includes/02-indexing.md) |
-| Choosing LSM for “fast deletes” | Space not reclaimed until compaction | Plan TTL + compaction; or B+ with routine maintenance |
+| Choosing LSM for “fast deletes” | Space not reclaimed until compaction | Plan TTL(Time To Live) + compaction; or B+ with routine maintenance |
 | Using heap for keyed lookup | Heaps are not search trees | Map/set or DB index |
 | GiST/R-Tree for non-spatial JSON | Wrong index family | GIN(Generalized Inverted Index) for JSONB — [PostgreSQL indexing](../../postgresql-performance/includes/02-indexing.md) |
 | Ignoring clustered vs secondary cost | Hidden double lookup on wide secondaries | Covering index, narrower secondary keys, or PK redesign |

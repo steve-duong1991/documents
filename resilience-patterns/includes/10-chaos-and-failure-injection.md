@@ -62,7 +62,7 @@ Prefer staging fidelity first — [cicd-and-environments](../../cicd-and-environ
 | Dependency | 5xx, slow body, TLS(Transport Layer Security) errors |
 | Resource | CPU starve, FD limits, pool exhaustion |
 | Data | Replica lag, disk full (careful) |
-| Clock | Skew for lease/TTL bugs — [§7](07-distributed-locks.md) |
+| Clock | Skew for lease/TTL(Time To Live) bugs — [§7](07-distributed-locks.md) |
 
 ---
 

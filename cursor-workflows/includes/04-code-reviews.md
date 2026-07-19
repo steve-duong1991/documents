@@ -7,7 +7,7 @@
 | Review type | Tool | Best for | Default diff scope |
 |-------------|------|----------|-------------------|
 | **Logic / bugs** | Bugbot subagent | Regressions, edge cases, incorrect behavior | `branch changes` |
-| **Security** | Security Review subagent | AuthZ, injection, secrets, unsafe defaults | `branch changes` |
+| **Security** | Security Review subagent | AuthZ(Authorization), injection, secrets, unsafe defaults | `branch changes` |
 | **Standards** | Custom skill + project rules | Team conventions, API(Application Programming Interface) compatibility | `branch changes` |
 | **Pre-commit** | Bugbot | Quick pass before push | `uncommitted changes` |
 

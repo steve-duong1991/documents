@@ -14,7 +14,7 @@ Storage grows silently. **Retention policies** and **tiering** are the primary c
 | **Warehouse** | Stored tables + scanned bytes | Drop unused marts; partition prune |
 | **Kafka** | Retention × RF × produce rate | Time/size retention; compact |
 | **DB** | Live data + indexes + bloat + backups | Archive; vacuum; backup retention |
-| **Search** | Docs × replicas × segments | TTL indexes; shrink replicas |
+| **Search** | Docs × replicas × segments | TTL(Time To Live) indexes; shrink replicas |
 | **Logs / traces** | Ingest rate × retain days | Sample; short hot retain |
 
 **Rule of thumb:** Default is **delete or tier** — infinite retention requires an explicit legal/product owner.

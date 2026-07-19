@@ -34,6 +34,8 @@ A practical reference for building systems that handle high request, event, and 
 |-------|--------|
 | [api-design-and-protection](../api-design-and-protection/README.md) | Gateway, stateless architecture, async API(Application Programming Interface) patterns |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Limiter algorithms, deployment layers |
+| [resilience-patterns](../resilience-patterns/README.md) | Timeouts, retries, breakers, load shedding, drain — pairs with §9 backpressure |
+| [sre-and-incidents](../sre-and-incidents/README.md) | SLOs, error budgets, incident command |
 | [postgresql-performance](../postgresql-performance/README.md) | DB measurement, indexing, replicas, bulk writes |
 | [tree-and-index-structures](../tree-and-index-structures/README.md) | B+ vs LSM(Log-Structured Merge) storage engines |
 | [deployment-strategies](../deployment-strategies/README.md) | Rolling, canary, blue/green deploys |

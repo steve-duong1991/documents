@@ -7,8 +7,8 @@
 | Class | Typical fix | Primary owner |
 |-------|-------------|---------------|
 | Injection (SQL(Structured Query Language), command, template) | Parameterized APIs; never concatenate | App eng |
-| Broken AuthN / session | Short-lived tokens; MFA(Multi-Factor Authentication) for admin | App + identity |
-| Broken AuthZ / BOLA(Broken Object-Level Authorization) | Object ownership checks | App eng |
+| Broken AuthN(Authentication) / session | Short-lived tokens; MFA(Multi-Factor Authentication) for admin | App + identity |
+| Broken AuthZ(Authorization) / BOLA(Broken Object-Level Authorization) | Object ownership checks | App eng |
 | XSS(Cross-Site Scripting) | Encode output; CSP(Content Security Policy) | Frontend + BFF(Backend for Frontend) |
 | CSRF(Cross-Site Request Forgery) | SameSite + anti-CSRF for cookie sessions | Frontend + BFF |
 | SSRF(Server-Side Request Forgery) | Outbound allowlists | App + platform |

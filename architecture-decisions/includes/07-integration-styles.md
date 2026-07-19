@@ -22,7 +22,7 @@ Sync API(Application Programming Interface) vs async events vs batch/files — c
 
 | Good for | Avoid for |
 |----------|-----------|
-| AuthZ checks, price quote, stock check | Fan-out to 5+ services on one click |
+| AuthZ(Authorization) checks, price quote, stock check | Fan-out to 5+ services on one click |
 | Strong read-your-writes UX | Long reports / PDF generation |
 | Simple request/response | Partner systems with poor SLOs |
 

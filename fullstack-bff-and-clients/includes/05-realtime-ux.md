@@ -53,7 +53,7 @@ flowchart TD
 
 - Terminate browser SSE/WebSocket at BFF; subscribe internally to domain events or poll domain APIs.
 - Don’t expose internal broker credentials to the browser.
-- Enforce per-user channel AuthZ on subscribe.
+- Enforce per-user channel AuthZ(Authorization) on subscribe.
 
 ## Common mistakes
 

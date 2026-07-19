@@ -1,6 +1,6 @@
 # OIDC Logout and Step-Up Authentication
 
-OIDC(OpenID Connect) login is only half the session story. **Logout** must clear the app session and, when required, the IdP SSO(Single Sign-On) session. **Step-up** re-challenges the user (MFA(Multi-Factor Authentication) / re-auth) before sensitive actions without a full product redesign.
+OIDC(OpenID Connect) login is only half the session story. **Logout** must clear the app session and, when required, the IdP(Identity Provider) SSO(Single Sign-On) session. **Step-up** re-challenges the user (MFA(Multi-Factor Authentication) / re-auth) before sensitive actions without a full product redesign.
 
 > **Scope:** RP-initiated, front-channel, and back-channel logout; `prompt` / `max_age` / `acr_values` for step-up. Discovery fields → [§2](02-oidc-discovery-and-tokens.md). App session revoke → [§3b](03B-revoke-logout-denylist.md). Cookie clear → [§4](04-cookie-session-and-csrf.md). MFA(Multi-Factor Authentication) product rules → [§5](05-login-security-playbook.md).
 
@@ -14,7 +14,7 @@ OIDC(OpenID Connect) login is only half the session story. **Logout** must clear
 | **RP-initiated logout** | IdP SSO via redirect to `end_session_endpoint` | User clicked “sign out”; single browser |
 | **Front-channel logout** | Other RPs via hidden iframes | Multiple apps, same browser, IdP support |
 | **Back-channel logout** | Other RPs via server POST | Reliable multi-app logout (iframes blocked) |
-| **Step-up** | N/A — raises AuthN strength mid-session | Payments, admin, change-email |
+| **Step-up** | N/A — raises AuthN(Authentication) strength mid-session | Payments, admin, change-email |
 
 **Rule of thumb:** Always destroy **your** session first ([§3b](03B-revoke-logout-denylist.md)). Add IdP logout when shared SSO must die too.
 

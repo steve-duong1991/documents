@@ -2,7 +2,7 @@
 
 Concrete **Redis key shapes** for denylist / revoke checks that complement the policy in [§3b](03B-revoke-logout-denylist.md). Prefer precise keys (`jti`, `sid`, `user`, `family`) over one eternal “blacklist” set.
 
-> **Scope:** Redis key design, TTL rules, basic and advanced patterns, gateway check order. Revoke/logout policy → [§3b](03B-revoke-logout-denylist.md). JWT(JSON Web Token) validation → [§3](03-token-lifecycle-and-validation.md). Session store shape → [§4](04-cookie-session-and-csrf.md).
+> **Scope:** Redis key design, TTL(Time To Live) rules, basic and advanced patterns, gateway check order. Revoke/logout policy → [§3b](03B-revoke-logout-denylist.md). JWT(JSON Web Token) validation → [§3](03-token-lifecycle-and-validation.md). Session store shape → [§4](04-cookie-session-and-csrf.md).
 
 > **Related:** Secrets not in Redis plaintext → [enterprise-security §5](../../enterprise-security-compliance/includes/05-secrets-beyond-database.md)
 
@@ -14,7 +14,7 @@ Concrete **Redis key shapes** for denylist / revoke checks that complement the p
 |----|-------|
 | TTL every deny key to the credential’s remaining life | Grow an unbounded `SADD blacklist *` forever |
 | Store **ids** (`jti`, `sid`, `user_id`, family id) | Store raw access/refresh tokens as keys |
-| Check denylist **after** signature / session load | Treat Redis as the only AuthN |
+| Check denylist **after** signature / session load | Treat Redis as the only AuthN(Authentication) |
 | Prefer **delete session/refresh** for normal logout | Put every logout on a `jti` denylist at high QPS |
 
 ---
@@ -185,7 +185,7 @@ Logout →
   3. POST IdP /revoke (refresh) when available — [§1a](01A-client-auth-and-token-exchange.md)
 ```
 
-Redis is your edge cache of deny decisions; the authorization server remains source of truth for refresh when you use a hosted IdP.
+Redis is your edge cache of deny decisions; the authorization server remains source of truth for refresh when you use a hosted IdP(Identity Provider).
 
 ---
 

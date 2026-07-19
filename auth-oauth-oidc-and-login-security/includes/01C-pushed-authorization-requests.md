@@ -24,7 +24,7 @@ GET /authorize?response_type=code&client_id=…&redirect_uri=…&scope=…&state
 |------|--------|
 | **URL length** | Complex `claims` / many scopes blow past browser/proxy limits |
 | **Leakage** | History, server access logs, analytics, Referer to third parties |
-| **Tampering** | User/malware edits query params before the IdP sees them |
+| **Tampering** | User/malware edits query params before the IdP(Identity Provider) sees them |
 
 PAR binds the full parameter set **server-side** under a one-time `request_uri`.
 
@@ -128,7 +128,7 @@ Related: **JAR(JWT-secured Authorization Request)** and **RAR(Rich Authorization
 | Adopt PAR | Skip for now |
 |-----------|--------------|
 | Large `scope` / `claims` / RAR payloads | Simple `openid profile` BFF login |
-| Regulated / high-assurance AuthN | Authorize URL already short and first-party only |
+| Regulated / high-assurance AuthN(Authentication) | Authorize URL already short and first-party only |
 | AS sets `require_pushed_authorization_requests` | IdP has no PAR endpoint |
 | Worried about proxy/access-log leakage of authorize query | Early MVP with low sensitivity |
 

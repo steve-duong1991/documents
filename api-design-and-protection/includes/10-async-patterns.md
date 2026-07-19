@@ -14,6 +14,7 @@ How to design APIs for work that outlasts connection timeouts: job resources, po
 | [Jobs and polling](10A-async-jobs-polling.md) | `202` job resource, state machine, HTTP contract, polling limits |
 | [Webhooks](10B-async-webhooks.md) | Server push, HMAC, SSRF(Server-Side Request Forgery) on `callback_url`, hybrid fallback |
 | [Streaming and long poll](10C-async-streaming.md) | Long poll, SSE(Server-Sent Events), NDJSON, sync-timeout fallback |
+| [Notification delivery](10D-notification-delivery.md) | Email/push/SMS preferences, dedup, priority queues, provider ops |
 
 ## What it is
 
@@ -60,7 +61,7 @@ flowchart TB
 | Pattern | Direction | Connection | Best for | Complexity |
 |---------|-----------|------------|----------|------------|
 | **Job + poll** | Client pulls | Short | Reports, exports, batch jobs | Low |
-| **Webhooks** | Server pushes | Short (outbound) | B2B integrations | Medium |
+| **Webhooks** | Server pushes | Short (outbound) | B2B(Business-to-Business) integrations | Medium |
 | **Long poll** | Client pulls | Long (held) | Near-real-time status | Medium |
 | **SSE(Server-Sent Events)** | Server pushes | Long | Progress, feeds, LLM tokens | Medium |
 | **WebSockets** | Bidirectional | Long | Chat, live collaboration | High |

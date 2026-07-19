@@ -34,7 +34,7 @@ flowchart LR
 |-------|----------|
 | Intent | Linked ticket/ADR; scope matches description |
 | Correctness | Edge cases, concurrency, null/empty |
-| Security | AuthN/Z, injection, secrets, PII(Personally Identifiable Information) logs |
+| Security | AuthN(Authentication)/Z, injection, secrets, PII(Personally Identifiable Information) logs |
 | Contracts | API(Application Programming Interface)/event compatibility |
 | Tests | Right pyramid layer — [testing-strategy](../../testing-strategy/README.md) |
 | Ops | Metrics, timeouts, feature flag, rollback |

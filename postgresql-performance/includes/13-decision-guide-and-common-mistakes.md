@@ -16,11 +16,11 @@ A practical reference for choosing strategies and avoiding common mistakes.
 | Table growing, queries slowing | Check dead tuples; tune autovacuum |
 | Time-series, 50M+ rows | Range partition on `created_at` + BRIN(Block-Range Index) or B-tree |
 | Dashboard aggregations | [Materialized view](11-read-scaling-and-caching.md#materialized-views) + periodic refresh |
-| Read-heavy SaaS | Optimize primary → read replica → Redis cache |
+| Read-heavy SaaS(Software as a Service) | Optimize primary → read replica → Redis cache |
 | Nightly bulk import | `COPY` → `ANALYZE` → verify indexes |
 | Login brute force (many writes) | Short transactions; partial index on active sessions |
 | JSONB attribute search | GIN(Generalized Inverted Index) index; don't replace relational filters |
-| Multi-tenant SaaS on one DB | `tenant_id` + composite FKs + RLS — [§17](17-row-level-security-multi-tenant.md) |
+| Multi-tenant SaaS on one DB | `tenant_id` + composite FKs + RLS(Row-Level Security) — [§17](17-row-level-security-multi-tenant.md) |
 | Enterprise needs dedicated DB | Schema/DB silo ops — [§18](18-schema-and-database-per-tenant.md); model choice — [arch §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md) |
 | Cross-tenant leak suspicion under PgBouncer | Confirm `SET LOCAL` (not session `SET`) — [§17 poolers](17-row-level-security-multi-tenant.md#pgbouncer-and-poolers) |
 

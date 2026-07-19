@@ -1,8 +1,8 @@
 # Identity — SCIM and JML provisioning
 
-Enterprise B2B SaaS(Software as a Service) needs more than SSO(Single Sign-On) login. Customer IT must **create, move, and disable** users in your app when HR does — often before (or without) the user ever signing in. That lifecycle is **JML(Joiner-Mover-Leaver)**; **SCIM(System for Cross-domain Identity Management)** is the common HTTP(Hypertext Transfer Protocol) API(Application Programming Interface) that automates it.
+Enterprise B2B(Business-to-Business) SaaS(Software as a Service) needs more than SSO(Single Sign-On) login. Customer IT must **create, move, and disable** users in your app when HR does — often before (or without) the user ever signing in. That lifecycle is **JML(Joiner-Mover-Leaver)**; **SCIM(System for Cross-domain Identity Management)** is the common HTTP(Hypertext Transfer Protocol) API(Application Programming Interface) that automates it.
 
-> **Scope:** Provisioning and deprovisioning playbook — JML stages, SCIM Users/Groups, JIT(Just-In-Time) vs pre-provision, group→role sync, lag/revocation races, multi-tenant SCIM tokens. AD(Active Directory)/Entra structure → [§12A](12A-identity-active-directory.md). API RBAC(Role-Based Access Control) takeaways → [§12B](12B-identity-enterprise-api.md). Session/token revoke after disable → [auth §3b](../../auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md). Multi-tenant IdP routing → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md).
+> **Scope:** Provisioning and deprovisioning playbook — JML stages, SCIM Users/Groups, JIT(Just-In-Time) vs pre-provision, group→role sync, lag/revocation races, multi-tenant SCIM tokens. AD(Active Directory)/Entra structure → [§12A](12A-identity-active-directory.md). API RBAC(Role-Based Access Control) takeaways → [§12B](12B-identity-enterprise-api.md). Session/token revoke after disable → [auth §3b](../../auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md). Multi-tenant IdP(Identity Provider) routing → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md).
 >
 > **Related:** Identity hub → [§12](12-identity-rbac-iam-ad.md) · Auth protocols → [§4](04-auth-model.md) · Multi-tenant API claims → [§16](16-multi-tenant-apis.md) · Audit → [enterprise-security §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md) · PII(Personally Identifiable Information) → [§7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md)
 
@@ -17,7 +17,7 @@ Enterprise B2B SaaS(Software as a Service) needs more than SSO(Single Sign-On) l
 | **JIT** | Create local user on first successful SSO | Onboarding without pre-provision |
 | **Group → role** | Map IdP groups to app roles in **your** tables | Authorization after provision |
 
-**Rule of thumb:** For regulated or large enterprise tenants, prefer **SCIM (or equivalent sync) as source of truth for membership**, with **immediate revoke** on disable — not “wait for JWT(JSON Web Token) TTL.” JIT alone is fine for SMB unless you pair it with short sessions and IdP checks.
+**Rule of thumb:** For regulated or large enterprise tenants, prefer **SCIM (or equivalent sync) as source of truth for membership**, with **immediate revoke** on disable — not “wait for JWT(JSON Web Token) TTL(Time To Live).” JIT alone is fine for SMB(Small and Medium Business) unless you pair it with short sessions and IdP checks.
 
 ---
 
@@ -47,7 +47,7 @@ High-level sequence (IdP-centric) also appears in [§12A IAM lifecycle](12A-iden
 | Mode | How users appear | Offboarding strength | Typical fit |
 |------|------------------|----------------------|-------------|
 | **SCIM push** | IdP POSTs/PATCHes `/Users`, `/Groups` | Strong if deactivate → revoke is wired | Enterprise / regulated |
-| **Directory sync** (AD Connect, LDAP job) | Batch pull/push into IdP or app | Depends on lag + revoke | Hybrid AD |
+| **Directory sync** (AD Connect, LDAP(Lightweight Directory Access Protocol) job) | Batch pull/push into IdP or app | Depends on lag + revoke | Hybrid AD |
 | **JIT on SSO** | First login creates user + membership | Weak unless short TTL + IdP session | SMB, self-serve |
 | **Manual / CSV** | Admin UI | Error-prone | Early pilots only |
 
@@ -91,7 +91,7 @@ sequenceDiagram
     participant Rev as Revoke / denylist
 
     IdP->>SCIM: POST /Users (Bearer tenant SCIM token)
-    SCIM->>SCIM: AuthN token + tenant bind
+    SCIM->>SCIM: Verify SCIM token + bind tenant
     SCIM->>DB: Upsert user + membership + groups
     SCIM-->>IdP: 201 User
 
@@ -125,7 +125,7 @@ sequenceDiagram
 | Mistake | Fix |
 |---------|-----|
 | Grant `admin` from one IdP group claim in the JWT alone | Map in your tables; require explicit admin path |
-| Ignore group removals | Mover = drop privileges; treat PATCH members as authoritative when SCIM is SoT |
+| Ignore group removals | Mover = drop privileges; treat PATCH members as authoritative when SCIM is source of truth (SoT) |
 | Duplicate role grants from overlapping groups | Define union rules; document precedence |
 
 API-layer RBAC enforcement → [§12B](12B-identity-enterprise-api.md#rbac-at-the-api-layer).
@@ -140,7 +140,7 @@ Provisioning is eventually consistent with the IdP. Design for the gap.
 |------|------|------------|
 | **Disable → JWT still valid** | Leaver keeps API access until TTL | On SCIM deactivate: revoke refresh + session denylist / user epoch — [auth §3b](../../auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md), [§3c](../../auth-oauth-oidc-and-login-security/includes/03C-denylist-redis-patterns.md) |
 | **SCIM lag after AD disable** | Hybrid sync delay | Monitor lag SLO(Service Level Objective); short access TTL; optional IdP introspection on sensitive routes |
-| **JIT user before SCIM arrives** | Duplicate identities | Link on `(iss, sub)` / `externalId`; merge; prefer one SoT per tenant |
+| **JIT user before SCIM arrives** | Duplicate identities | Link on `(iss, sub)` / `externalId`; merge; prefer one source of truth per tenant |
 | **Delete vs deactivate** | Hard delete breaks audit / rehire | Prefer `active=false`; soft-delete with retention — [ESC §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) |
 
 **Rule:** Deprovisioning is not done until **login is impossible and outstanding credentials are dead**, not merely when the SCIM response returns 200.
@@ -184,7 +184,7 @@ Provisioning is eventually consistent with the IdP. Design for the gap.
 | “Disabled in IdP” but long-lived refresh still works | Wire [§3b](../../auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md) on every disable path |
 | Map groups in JWT only; ignore SCIM group membership | Persist map; recompute on SCIM events |
 | Hard-delete users on SCIM DELETE | Soft-disable; retain audit trail |
-| JIT and SCIM both create conflicting rows | Upsert/merge on stable keys; one SoT policy |
+| JIT and SCIM both create conflicting rows | Upsert/merge on stable keys; one source-of-truth policy |
 | Expose SCIM on the public internet with a guessable token | Rotate, hash at rest, rate-limit, optional mTLS |
 
 ---
@@ -195,7 +195,7 @@ Provisioning is eventually consistent with the IdP. Design for the gap.
 
 **Pros:** Customer IT controls lifecycle in their IdP; audit-friendly; offboarding does not depend on the user logging in; scales across many enterprise tenants.
 
-**Cons:** Endpoint is high-privilege (protect like production admin); attribute/schema mismatches per IdP; sync lag; you must still own revoke and object AuthZ.
+**Cons:** Endpoint is high-privilege (protect like production admin); attribute/schema mismatches per IdP; sync lag; you must still own revoke and object AuthZ(Authorization).
 
 ### JIT-only
 

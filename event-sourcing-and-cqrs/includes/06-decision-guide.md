@@ -127,7 +127,7 @@ Details → [Storage & projections](03-storage-and-projections.md).
 
 | Scenario | API shape |
 |----------|-----------|
-| Public REST(Representational State Transfer) SaaS | Resource POST commands + GET read models |
+| Public REST(Representational State Transfer) SaaS(Software as a Service) | Resource POST commands + GET read models |
 | High write conflict rate | `If-Match` + `409` + idempotency keys |
 | Partners need push | Domain events → webhooks via outbox |
 | Long exports / ML | Event triggers + [job resource](../../api-design-and-protection/includes/10-async-patterns.md) |

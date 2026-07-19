@@ -168,7 +168,7 @@ Some gateways auto-create routes from the spec.
 | Rate limiting | No | API Gateway, Cloudflare |
 | WAF / DDoS | No | Edge provider |
 | JWT(JSON Web Token) validation | No | Gateway / middleware |
-| Object-level AuthZ | No | Application |
+| Object-level AuthZ(Authorization) | No | Application |
 | Idempotency enforcement | No | Application |
 | Secret storage | No | Vault, cloud secret managers |
 

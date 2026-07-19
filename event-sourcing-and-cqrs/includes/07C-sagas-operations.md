@@ -63,7 +63,7 @@ The **protocol** (who listens to what) is the implicit saga definition — docum
 
 - `POST /orders` with `Idempotency-Key` → returns `201` or `202` if async saga
 - `GET /orders/{id}` shows saga-derived status: `PENDING`, `CONFIRMED`, `CANCELLED`, `REFUNDING`
-- Do not expose internal saga steps unless B2B/debug — see [API design implications](04-api-design-implications.md)
+- Do not expose internal saga steps unless B2B(Business-to-Business)/debug — see [API design implications](04-api-design-implications.md)
 
 ---
 

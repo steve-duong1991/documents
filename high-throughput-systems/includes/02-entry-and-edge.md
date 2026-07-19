@@ -98,7 +98,7 @@ Do not duplicate the same rate limit at every layer without reason — **edge (c
 
 | Scenario | Stack |
 |----------|-------|
-| Public SaaS API | Cloudflare → Kong/AWS API Gateway → ALB per service |
+| Public SaaS(Software as a Service) API | Cloudflare → Kong/AWS API Gateway → ALB per service |
 | Internal microservices | Istio/Linkerd east-west; ingress for north-south |
 | Startup MVP | Cloudflare + single gateway; add LB per service at scale |
 
@@ -111,6 +111,6 @@ Full stack tables → [03B-api-gateway-stacks-and-selection.md — Tech stacks b
 | Mistake | Fix |
 |---------|-----|
 | No WAF on public API | Enable edge WAF + bot management |
-| Gateway as policy junk drawer | Business AuthZ stays in app |
+| Gateway as policy junk drawer | Business AuthZ(Authorization) stays in app |
 | Skip health checks on LB | Enable checks; drain unhealthy targets |
 | Same hostname, no path routing | Gateway routes `/users`, `/orders` to correct pools |

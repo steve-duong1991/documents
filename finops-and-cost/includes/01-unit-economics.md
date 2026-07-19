@@ -11,7 +11,7 @@ Express infrastructure spend as **cost per request**, **per tenant**, and **per 
 | Metric | Formula sketch | Use |
 |--------|----------------|-----|
 | **Cost / request** | Service $ / successful requests | API(Application Programming Interface) pricing, cache ROI |
-| **Cost / tenant** | Attributed $ / active tenants | SaaS packaging, noisy neighbors |
+| **Cost / tenant** | Attributed $ / active tenants | SaaS(Software as a Service) packaging, noisy neighbors |
 | **Cost / feature** | Tagged resources for a capability | Kill or redesign expensive features |
 | **Cost / GB processed** | Pipeline $ / data volume | ETL(Extract, Transform, Load) and streaming design |
 

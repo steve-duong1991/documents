@@ -71,7 +71,7 @@ flowchart LR
 
 ## Default recommendation
 
-For a typical **B2B SaaS** product:
+For a typical **B2B(Business-to-Business) SaaS(Software as a Service)** product:
 
 1. **SDLC(Software Development Life Cycle):** PR required reviews, SAST + dependency scanning on every merge, secret scanning in CI
 2. **Threat model:** light STRIDE(Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) per major feature; deep review before first external launch

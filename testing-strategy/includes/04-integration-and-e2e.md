@@ -53,7 +53,7 @@ Outbox + consumer pipelines → [ES §9](../../event-sourcing-and-cqrs/includes/
 |-----------------|--------|
 | Signup → first resource | 2xx, resource visible |
 | Checkout / payment | Idempotent success; ledger consistent |
-| Admin critical action | AuthZ deny + allow paths |
+| Admin critical action | AuthZ(Authorization) deny + allow paths |
 
 ---
 

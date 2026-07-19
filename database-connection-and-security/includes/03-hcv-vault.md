@@ -64,7 +64,7 @@ Response:
 |---------|-------------|
 | No long-lived password | Credentials expire automatically |
 | Per-service creds | Each service/instance gets its own user |
-| Auto-revocation | Vault deletes the DB user after TTL |
+| Auto-revocation | Vault deletes the DB user after TTL(Time To Live) |
 | Audit trail | Every secret access is logged |
 
 ---

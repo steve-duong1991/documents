@@ -1,6 +1,6 @@
 # WebAuthn and Passkeys
 
-**WebAuthn** (W3C) + **FIDO(Fast IDentity Online)2** authenticators give **phishing-resistant** AuthN: the browser/OS proves possession of a private key bound to your **origin**. **Passkeys** are the product name for syncable or device-bound WebAuthn credentials. Prefer them for privileged users and as primary login when you can.
+**WebAuthn** (W3C) + **FIDO(Fast IDentity Online)2** authenticators give **phishing-resistant** AuthN(Authentication): the browser/OS proves possession of a private key bound to your **origin**. **Passkeys** are the product name for syncable or device-bound WebAuthn credentials. Prefer them for privileged users and as primary login when you can.
 
 > **Scope:** Registration/assertion ceremony, discoverable credentials, attestation (when to use), recovery, step-up. Login playbook MFA(Multi-Factor Authentication) overview → [§5](05-login-security-playbook.md). OIDC(OpenID Connect) `acr` / step-up → [§2a](02A-oidc-logout-and-step-up.md). Session after login → [§4](04-cookie-session-and-csrf.md).
 
@@ -39,7 +39,7 @@ sequenceDiagram
 
 | Server must | Detail |
 |-------------|--------|
-| Issue fresh **challenge** | Store server-side; single-use; short TTL |
+| Issue fresh **challenge** | Store server-side; single-use; short TTL(Time To Live) |
 | Bind **rpId** / origin | Match your site; no confusing lookalikes |
 | Store **credential id + public key** | Per user; support multiple passkeys |
 | Check **signCount** (if present) | Clone detection signal |
@@ -94,7 +94,7 @@ Mandate passkeys (or WebAuthn security keys) for **admin** roles when feasible.
 | **Multiple passkeys** | Enroll laptop + phone + backup key |
 | **Bootstrap with MFA** | Add passkey while TOTP still valid |
 | **Recovery codes** | Single-use; hashed; show once |
-| **IdP / SSO(Single Sign-On)** | Enterprise: re-issue via IdP — [§2b](02B-sso-integration-playbook.md) |
+| **IdP(Identity Provider) / SSO(Single Sign-On)** | Enterprise: re-issue via IdP — [§2b](02B-sso-integration-playbook.md) |
 | **Support break-glass** | Dual control — [§5d](05D-impersonation-and-support-access.md) |
 
 Never “email me a permanent bypass link” as the only recovery for high-value accounts.

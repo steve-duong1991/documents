@@ -33,7 +33,7 @@ flowchart LR
 ## Pros
 
 - Simple, fast, low memory
-- Easy to implement in Redis (`INCR` + TTL)
+- Easy to implement in Redis (`INCR` + TTL(Time To Live))
 - Good for coarse quotas (daily/monthly limits)
 
 ## Cons

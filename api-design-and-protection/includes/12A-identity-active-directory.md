@@ -37,7 +37,7 @@ flowchart TB
 | **Security Group** | Collection of principals; permissions and RBAC mapping |
 | **GPO (Group Policy)** | Central config for machines/users (password policy, software) |
 | **Kerberos** | Default AD auth protocol (tickets, mutual auth) |
-| **LDAP** | Directory query protocol (read users, groups, attributes) |
+| **LDAP(Lightweight Directory Access Protocol)** | Directory query protocol (read users, groups, attributes) |
 
 ### AD authentication flow (Kerberos — simplified)
 
@@ -67,7 +67,7 @@ SAML protocol depth (assertions, bindings, SP checklist, SAML→OIDC bridge) →
 
 | | **On-prem AD** | **Microsoft Entra ID** |
 |--|----------------|------------------------|
-| **Primary use** | Windows domain, LAN, legacy apps | Cloud, SaaS, modern auth (OIDC/SAML) |
+| **Primary use** | Windows domain, LAN, legacy apps | Cloud, SaaS(Software as a Service), modern auth (OIDC/SAML) |
 | **Protocol** | Kerberos, NTLM, LDAP | OAuth(Open Authorization) 2.0, OIDC, SAML |
 | **Structure** | Domains, OUs, GPO | Tenants, users, groups, conditional access |
 | **Hybrid** | — | AD Connect syncs on-prem AD ↔ cloud |
@@ -147,7 +147,7 @@ flowchart TD
     Allow --> Audit[Log access decision]
 ```
 
-Aligns with the [layered auth flow](04-auth-model.md#layered-auth-flow): gateway handles AuthN and coarse AuthZ; the app must still run the object check.
+Aligns with the [layered auth flow](04-auth-model.md#layered-auth-flow): gateway handles AuthN(Authentication) and coarse AuthZ(Authorization); the app must still run the object check.
 
 ---
 
@@ -200,7 +200,7 @@ API access checklist and mistakes → [12B — API design takeaways](12B-identit
 |---------|-----|
 | Terminate **Kerberos** at the public API gateway | AD/Entra → OIDC/SAML → JWT at the edge ([Auth model](04-auth-model.md)) |
 | Expose **LDAP** to the internet for app auth | Federation via Entra ID / IdP; LDAP stays internal |
-| Stale **hybrid sync** (AD Connect / SCIM(System for Cross-domain Identity Management)) | Monitor sync lag; on disable revoke sessions — [12C lag/races](12C-scim-and-jml-provisioning.md#lag-races-and-revoke); revoked users still in JWT until TTL otherwise |
+| Stale **hybrid sync** (AD Connect / SCIM(System for Cross-domain Identity Management)) | Monitor sync lag; on disable revoke sessions — [12C lag/races](12C-scim-and-jml-provisioning.md#lag-races-and-revoke); otherwise revoked users remain valid in JWTs until TTL(Time To Live) expires |
 | Treat AD **groups** as app permissions in code | Map groups → roles centrally — see [12B API access mistakes](12B-identity-enterprise-api.md#common-mistakes) |
 | Skip **object-level AuthZ** because RBAC passed | App still checks resource ownership ([Auth model — layered flow](04-auth-model.md#layered-auth-flow)) |
 

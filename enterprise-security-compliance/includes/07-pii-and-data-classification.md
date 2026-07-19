@@ -1,6 +1,6 @@
 # PII and Data Classification
 
-> **Related:** Audit redaction → [§6](06-audit-logging-and-retention.md) · Encryption of sensitive fields → [§8](08-encryption-policy.md) · Multi-tenant isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md) · Event store erasure tension → [event-sourcing decision guide](../../event-sourcing-and-cqrs/includes/06-decision-guide.md) · PII on Kafka topics / catalog classification → [apache-kafka §6](../../apache-kafka/includes/06-serialization-and-schema-evolution.md) · [kafka §9 catalog](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos) · Compaction tombstones → [kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md)
+> **Related:** Erasure / DSAR(Data Subject Access Request) runbook → [§7A](07A-erasure-and-dsar.md) · Audit redaction → [§6](06-audit-logging-and-retention.md) · Encryption of sensitive fields → [§8](08-encryption-policy.md) · Multi-tenant isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md) · Event store erasure tension → [event-sourcing decision guide](../../event-sourcing-and-cqrs/includes/06-decision-guide.md) · PII on Kafka topics / catalog classification → [apache-kafka §6](../../apache-kafka/includes/06-serialization-and-schema-evolution.md) · [kafka §9 catalog](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos) · Compaction tombstones → [kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md)
 
 ## At a glance
 
@@ -8,7 +8,7 @@
 |-------|----------|-------------------|
 | **Public** | Marketing copy, public IDs | CDN(Content Delivery Network) OK |
 | **Internal** | Non-sensitive ops metrics | Corp network / auth |
-| **Confidential** | Business data, emails | AuthZ + encryption in transit |
+| **Confidential** | Business data, emails | AuthZ(Authorization) + encryption in transit |
 | **Restricted / PII(Personally Identifiable Information)** | Government ID, health, precise location, auth secrets | Minimize, encrypt, short retention, access review |
 
 **Rule of thumb (GDPR-style minimization):** Collect the **least** data that still delivers the feature; default retention to **shortest** that still meets legal/ops needs.
@@ -63,7 +63,7 @@ Every new personal data field should answer:
 
 ## Cross-border and vendors
 
-Track **where** processing happens (regions, SaaS tools). New vendor that receives PII is a classification + contract change, not a silent SDK add.
+Track **where** processing happens (regions, SaaS(Software as a Service) tools). New vendor that receives PII is a classification + contract change, not a silent SDK add.
 
 ## Common mistakes
 

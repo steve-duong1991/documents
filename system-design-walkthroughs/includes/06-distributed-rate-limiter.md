@@ -67,7 +67,7 @@ With N stateless replicas behind a load balancer, an in-process counter multipli
 |---------|------------------|-----------|
 | **Store** | Redis Cluster, sharded by identity | [api-rate-limiting §12](../../api-rate-limiting/includes/12-distributed-rate-limiting.md#redis-topologies) |
 | **Key shape** | `ratelimit:{scope}:{identity}:{window}` | [api-rate-limiting §12 key design](../../api-rate-limiting/includes/12-distributed-rate-limiting.md#key-design) |
-| **Clock skew** | TTL-anchored windows, not wall-clock comparison across nodes | [api-rate-limiting §12](../../api-rate-limiting/includes/12-distributed-rate-limiting.md#clock-skew-and-window-boundaries) |
+| **Clock skew** | TTL(Time To Live)-anchored windows, not wall-clock comparison across nodes | [api-rate-limiting §12](../../api-rate-limiting/includes/12-distributed-rate-limiting.md#clock-skew-and-window-boundaries) |
 | **Hot identity** | Sub-shard keys or local approximate + periodic sync | [api-rate-limiting §12](../../api-rate-limiting/includes/12-distributed-rate-limiting.md#key-design) |
 | **Store down** | Fail-open with a conservative local cap (document the policy) | [api-rate-limiting §11](../../api-rate-limiting/includes/11-common-mistakes-and-architecture.md) |
 

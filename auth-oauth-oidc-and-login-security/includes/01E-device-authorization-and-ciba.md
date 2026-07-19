@@ -1,6 +1,6 @@
 # Device Authorization and CIBA
 
-Two OAuth(Open Authorization) patterns for when the **client cannot complete a normal browser redirect**: **Device Authorization** (RFC 8628 — TVs, CLI) and **CIBA(Client-Initiated Backchannel Authentication)** (OIDC(OpenID Connect) CIBA — bank apps, call-center / decoupled AuthN). Prefer Auth Code + PKCE(Proof Key for Code Exchange) whenever a system browser can finish the redirect.
+Two OAuth(Open Authorization) patterns for when the **client cannot complete a normal browser redirect**: **Device Authorization** (RFC 8628 — TVs, CLI) and **CIBA(Client-Initiated Backchannel Authentication)** (OIDC(OpenID Connect) CIBA — bank apps, call-center / decoupled AuthN(Authentication)). Prefer Auth Code + PKCE(Proof Key for Code Exchange) whenever a system browser can finish the redirect.
 
 > **Scope:** Device code polling, user_code UX, CIBA backchannel + notification modes, security limits. Default interactive grant → [§1](01-oauth2-grants-and-flows.md). Client auth → [§1a](01A-client-auth-and-token-exchange.md). Token lifecycle → [§3](03-token-lifecycle-and-validation.md).
 
@@ -54,7 +54,7 @@ sequenceDiagram
 
 | Control | Why |
 |---------|-----|
-| Short `user_code` TTL + rate-limit guesses | Codes are short and human-typed |
+| Short `user_code` TTL(Time To Live) + rate-limit guesses | Codes are short and human-typed |
 | Enforce `interval`; honor `slow_down` | Prevent poll storms |
 | Bound `device_code` to `client_id` | Stolen code useless for another client |
 | Show consent scope clearly on verification page | User authorizes a TV/CLI they may not trust fully |
@@ -167,7 +167,7 @@ flowchart TD
 | Pattern | Pros | Cons |
 |---------|------|------|
 | Device | Works on TVs/CLI | User_code phishing; polling complexity |
-| CIBA | Decoupled high-assurance UX | IdP support varies; harder to operate |
+| CIBA | Decoupled high-assurance UX | IdP(Identity Provider) support varies; harder to operate |
 | Auth Code + PKCE | Simplest secure default | Needs a browser redirect |
 
 **Bottom line:** keep **Auth Code + PKCE** as default; use **Device** for constrained hardware; use **CIBA** when the client must start AuthN out-of-band for a **known user** with a strong backchannel.

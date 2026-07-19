@@ -298,7 +298,7 @@ Dashboards: DLQ rate by topic, retry count histogram, top `error_type` in DLQ he
 
 | Feature | SQS / RabbitMQ | Kafka |
 |---------|----------------|-------|
-| Built-in retry delay | Visibility timeout / TTL | **You implement** (retry topic, scheduler) |
+| Built-in retry delay | Visibility timeout / TTL(Time To Live) | **You implement** (retry topic, scheduler) |
 | Message removed on ack | Yes | Offset advanced; record remains until retention |
 | DLQ | Native queue config | **DLQ topic** pattern |
 | Per-message nack | Yes | Republish to retry/DLQ + commit offset |

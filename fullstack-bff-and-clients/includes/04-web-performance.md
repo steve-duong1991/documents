@@ -47,7 +47,7 @@ Wrong CDN(Content Delivery Network) caching of personalized HTML is a **security
 
 ## Budgets example
 
-| Metric | Budget (example SaaS app) |
+| Metric | Budget (example SaaS(Software as a Service) app) |
 |--------|---------------------------|
 | Route JS (gzipped) | ≤ 200 KB initial |
 | LCP (lab p75) | ≤ 2.5s on mid mobile |

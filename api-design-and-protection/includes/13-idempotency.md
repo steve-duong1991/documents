@@ -9,7 +9,7 @@ How to design writes that are safe to retry: HTTP(Hypertext Transfer Protocol) s
 | Article | Topics |
 |---------|--------|
 | [Client contract and server flow](13A-idempotency-client-and-server-flow.md) | Key scope, response replay, claim-before-side-effects sequence |
-| [Storage patterns](13B-idempotency-storage.md) | Redis, PostgreSQL, natural domain keys, TTL |
+| [Storage patterns](13B-idempotency-storage.md) | Redis, PostgreSQL, natural domain keys, TTL(Time To Live) |
 | [Async, webhooks, and OpenAPI](13C-idempotency-integrations.md) | `202` jobs, inbound webhook dedup, spec modeling, observability |
 
 ---

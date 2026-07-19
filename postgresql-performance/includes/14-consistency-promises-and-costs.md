@@ -53,7 +53,7 @@ flowchart TB
 | Layer | Why reads can be stale |
 |-------|------------------------|
 | **Async read replica** | WAL(Write-Ahead Log) replay lags behind primary |
-| **Application cache** | TTL, missed invalidation, race on write-through |
+| **Application cache** | TTL(Time To Live), missed invalidation, race on write-through |
 | **Materialized view** | Refreshed on schedule, not on every write |
 | **Multi-region replica** | Cross-region replication + routing |
 | **Separate read DB (CQRS)** | Projector processes events after append |
@@ -134,7 +134,7 @@ Sync multi-AZ setups, larger primaries, bypassing cache on critical paths, and f
 |--------|-----|
 | **Payments / ledger** | Double-spend, incorrect balances |
 | **Inventory reservation** | Overselling stock |
-| **AuthZ changes** | Revoked access must not still work |
+| **AuthZ(Authorization) changes** | Revoked access must not still work |
 | **Unique constraints at scale** | Duplicate rows if reads are stale |
 | **Idempotency enforcement** | Retry must see prior write |
 

@@ -113,7 +113,7 @@ PAR (transport) + JAR (integrity) + RAR (fine authz) + PKCE + resource indicator
 → Auth Code → short access token with aud + authorization_details
 ```
 
-Most SaaS products never need the full stack. Add layers when the IdP or regulated API requires them.
+Most SaaS(Software as a Service) products never need the full stack. Add layers when the IdP(Identity Provider) or regulated API requires them.
 
 ---
 

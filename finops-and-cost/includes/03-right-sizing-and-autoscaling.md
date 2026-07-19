@@ -85,7 +85,7 @@ Couple scale-out with **load shedding** — [HTS §9](../../high-throughput-syst
 | **Prod** | HA floor; budget max |
 | **Staging** | Smaller; schedule off-hours shutdown |
 | **Dev** | Scale to zero; shared where safe |
-| **Ephemeral PR** | TTL destroy |
+| **Ephemeral PR** | TTL(Time To Live) destroy |
 
 Dual environments for blue/green are a **deploy cost** — use when risk warrants — [deployment §3](../../deployment-strategies/includes/03-blue-green.md).
 

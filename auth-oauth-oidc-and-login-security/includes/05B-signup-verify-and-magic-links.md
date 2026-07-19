@@ -1,6 +1,6 @@
 # Signup, Email Verification, and Magic Links
 
-Account **creation** and **passwordless email links** are high-abuse surfaces: enumeration, inbox flooding, token theft via Referer, and fixation if you reuse guest cookies. Treat verify and magic-link tokens like recovery tokens — short TTL, single-use, bound to purpose.
+Account **creation** and **passwordless email links** are high-abuse surfaces: enumeration, inbox flooding, token theft via Referer, and fixation if you reuse guest cookies. Treat verify and magic-link tokens like recovery tokens — short TTL(Time To Live), single-use, bound to purpose.
 
 > **Scope:** Signup funnel, email/phone verify, magic-link login, continuation after guest flows. Password hashing / lockout → [§5](05-login-security-playbook.md). Guest promote → [§4b](04B-anonymous-and-guest-sessions.md). OIDC(OpenID Connect) social/enterprise signup → [§2b](02B-sso-integration-playbook.md). Session rotation → [§4](04-cookie-session-and-csrf.md).
 

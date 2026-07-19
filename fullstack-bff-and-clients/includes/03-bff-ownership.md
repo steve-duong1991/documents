@@ -8,8 +8,8 @@
 
 | BFF(Backend for Frontend) owns | Domain API owns |
 |--------------------------------|-----------------|
-| Screen-shaped DTOs / Graph aggregation | Canonical resources and AuthZ |
-| Cookie session bridge for browsers | Token issuance / IdP integration |
+| Screen-shaped DTOs / Graph aggregation | Canonical resources and AuthZ(Authorization) |
+| Cookie session bridge for browsers | Token issuance / IdP(Identity Provider) integration |
 | Fan-out + timeout/fallback per widget | Source-of-truth latency SLOs |
 | CSRF(Cross-Site Request Forgery) for cookie mutates | Idempotency keys on writes |
 | Client-facing error mapping | Stable error codes |

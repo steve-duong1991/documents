@@ -45,7 +45,7 @@ flowchart TD
 
 | Situation | Choice |
 |-----------|--------|
-| First-party SaaS web | HTTP(Hypertext Transfer Protocol)-only session/refresh via BFF |
+| First-party SaaS(Software as a Service) web | HTTP(Hypertext Transfer Protocol)-only session/refresh via BFF |
 | High XSS(Cross-Site Scripting) sensitivity | Avoid JS-readable tokens |
 | Native mobile | OS secure storage + refresh rotation |
 | Third-party embeds | Explicit token postMessage design + threat model |
@@ -79,7 +79,7 @@ flowchart TD
 
 | Question | Guide |
 |----------|-------|
-| Resource design, AuthZ, OpenAPI | [api-design-and-protection](../../api-design-and-protection/README.md) |
+| Resource design, AuthZ(Authorization), OpenAPI | [api-design-and-protection](../../api-design-and-protection/README.md) |
 | Jobs, webhooks, SSE protocols | [api-design §10](../../api-design-and-protection/includes/10-async-patterns.md) |
 | Secrets / CSRF threat class | [enterprise-security-compliance](../../enterprise-security-compliance/README.md) |
 | CDN(Content Delivery Network) / edge throughput | [high-throughput-systems](../../high-throughput-systems/README.md) |

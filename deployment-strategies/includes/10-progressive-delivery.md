@@ -57,7 +57,7 @@ Failed gate → auto-rollback to stable ReplicaSet — wire to [§13 SLO trigger
 
 ## When to use
 
-- Large-scale SaaS, fintech, healthcare
+- Large-scale SaaS(Software as a Service), fintech, healthcare
 - Teams with mature SRE(Site Reliability Engineering) and observability practices
 - **After** basic rolling + feature flags work — not day-one for small teams
 

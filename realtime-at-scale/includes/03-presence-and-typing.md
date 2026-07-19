@@ -10,7 +10,7 @@ Presence ("who's online", "who's in this room", "who's typing") looks like a sim
 
 | Signal | Durability | Mechanism |
 |--------|------------|-----------|
-| **Online/offline** | Ephemeral, derived | TTL key per connection; expire = offline |
+| **Online/offline** | Ephemeral, derived | TTL(Time To Live) key per connection; expire = offline |
 | **Away/idle** | Ephemeral, derived | Last-activity timestamp compared against a threshold, computed on read |
 | **Typing indicator** | Ephemeral, fire-and-forget | Pub/sub event with a client-side auto-expire (no ack needed) |
 | **"Last seen"** | Durable, low write rate | Written on disconnect / periodic flush, not per heartbeat |

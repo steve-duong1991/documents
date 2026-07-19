@@ -10,7 +10,7 @@ Redis is a **multi-role** tool: cache, lock, session, lightweight queue, and rat
 
 | Role | Typical commands | Durability need |
 |------|------------------|-----------------|
-| **Cache** | `GET`/`SET` + TTL | Low — rebuild from DB |
+| **Cache** | `GET`/`SET` + TTL(Time To Live) | Low — rebuild from DB |
 | **Session** | Hash / string + TTL | Medium — sticky UX |
 | **Distributed lock** | `SET NX PX` / Redlock caution | Ephemeral |
 | **Queue** | Lists / Streams | Medium–high — ack semantics |

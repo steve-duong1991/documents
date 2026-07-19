@@ -26,12 +26,14 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | 10A | [Async — jobs and polling](includes/10A-async-jobs-polling.md) |
 | 10B | [Async — webhooks](includes/10B-async-webhooks.md) |
 | 10C | [Async — streaming and long poll](includes/10C-async-streaming.md) |
+| 10D | [Async — notification delivery](includes/10D-notification-delivery.md) |
 | 11 | [Stateless architecture](includes/11-stateless-architecture.md) |
 | 11A | [Stateless — auth and operations](includes/11A-stateless-auth-operations.md) |
 | 12 | [Identity: RBAC, IAM & Active Directory](includes/12-identity-rbac-iam-ad.md) |
 | 12A | [Identity — Active Directory](includes/12A-identity-active-directory.md) |
 | 12B | [Identity — API access](includes/12B-identity-enterprise-api.md) |
 | 12C | [Identity — SCIM and JML provisioning](includes/12C-scim-and-jml-provisioning.md) |
+| 12D | [Identity — Fine-grained AuthZ](includes/12D-fine-grained-authz.md) |
 | 13 | [Idempotency](includes/13-idempotency.md) |
 | 13A | [Idempotency — client and server flow](includes/13A-idempotency-client-and-server-flow.md) |
 | 13B | [Idempotency — storage](includes/13B-idempotency-storage.md) |
@@ -51,12 +53,14 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | **New to API infra** | Overview → [§3 LB vs gateway](includes/03-api-gateway.md) → [3A request flows](includes/03A-api-gateway-request-flows.md) → §11 (stateless) → §8 (reference arch) |
 | **Designing the API contract** | §1 → §7 (OpenAPI) → §15 (contract CI(Continuous Integration)) → §14 (versioning) → [§13 idempotency](includes/13-idempotency.md) + [13A client flow](includes/13A-idempotency-client-and-server-flow.md) → [§10 async](includes/10-async-patterns.md) + [10A jobs](includes/10A-async-jobs-polling.md) · non-REST(Representational State Transfer) → [§17 GraphQL/gRPC](includes/17-graphql-and-grpc.md) |
 | **Hardening for production** | §2 → §3 → §5 → §6 → [§13](includes/13-idempotency.md) + [13A](includes/13A-idempotency-client-and-server-flow.md) → §9 |
-| **B2B / SaaS partner API** | §4 auth → §5 tiers → [§16 multi-tenant](includes/16-multi-tenant-apis.md) → [§12 identity](includes/12-identity-rbac-iam-ad.md) + [§12C SCIM/JML](includes/12C-scim-and-jml-provisioning.md) + [api-rate-limiting §6 scope](../api-rate-limiting/includes/06-scope-identity.md) |
+| **B2B(Business-to-Business) / SaaS(Software as a Service) partner API** | §4 auth → §5 tiers → [§16 multi-tenant](includes/16-multi-tenant-apis.md) → [§12 identity](includes/12-identity-rbac-iam-ad.md) + [§12C SCIM/JML](includes/12C-scim-and-jml-provisioning.md) + [api-rate-limiting §6 scope](../api-rate-limiting/includes/06-scope-identity.md) |
 | **Enterprise provisioning / offboarding** | [§12C SCIM and JML](includes/12C-scim-and-jml-provisioning.md) → [§12A AD/IdP](includes/12A-identity-active-directory.md) → [auth §3b revoke](../auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md) → [auth §2d multi-tenant OIDC](../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) |
 | **OAuth(Open Authorization) / OIDC(OpenID Connect) / login depth** | [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) after §4 |
 | **GraphQL or gRPC API** | [§17 GraphQL and gRPC](includes/17-graphql-and-grpc.md) → §1 (REST baseline) → §7 (OpenAPI) or proto contracts → §15 (contract CI) |
 | **Picking rate limits** | [api-rate-limiting](../api-rate-limiting/README.md) + §5 here |
 | **Long-running or heavy endpoints** | [§10 async](includes/10-async-patterns.md) + [10A jobs + polling](includes/10A-async-jobs-polling.md) + §5 (async escape hatch) |
+| **Email / push / SMS notifications** | [§10D notification delivery](includes/10D-notification-delivery.md) → [§10A](includes/10A-async-jobs-polling.md) → [system-design §7](../system-design-walkthroughs/includes/07-notification-pipeline.md) |
+| **Object-level / sharing AuthZ(Authorization)** | [§12D fine-grained AuthZ](includes/12D-fine-grained-authz.md) → [§12B](includes/12B-identity-enterprise-api.md) → [§4](includes/04-auth-model.md) → [§6 BOLA](includes/06-threat-model.md) |
 | **File uploads / media** | [§18 Object storage and uploads](includes/18-object-storage-and-uploads.md) → §4 (auth) → §6 (SSRF/threat model) → [finops §4](../finops-and-cost/includes/04-storage-and-retention-cost.md) (cost) |
 | **Audit trail / event-sourced writes** | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) + §1 (write safety) + §8 (CQRS(Command Query Responsibility Segregation) diagram) |
 
@@ -70,6 +74,9 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) | OAuth(Open Authorization) grants, OIDC(OpenID Connect), token lifecycle, cookie/session, login hardening |
 | [apache-kafka](../apache-kafka/README.md) | Schema choice, multi-tenant topics, consumer idempotency with Kafka |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event store, CQRS(Command Query Responsibility Segregation), outbox, audit APIs |
+| [architecture-decisions](../architecture-decisions/README.md) | Tenancy models, cells/residency, boundaries, ADRs |
+| [resilience-patterns](../resilience-patterns/README.md) | Timeouts, retries, breakers, load shedding, checkout example |
+| [fullstack-bff-and-clients](../fullstack-bff-and-clients/README.md) | BFF(Backend for Frontend) contracts, auth UX, realtime client seam |
 | [database-connection-and-security](../database-connection-and-security/README.md) | DB credentials, IAM(Identity and Access Management), vault patterns |
 | [deployment-strategies](../deployment-strategies/README.md) | Safe rollout of API changes |
 | [high-throughput-systems](../high-throughput-systems/README.md) | End-to-end throughput: measure, cache, async, backpressure |

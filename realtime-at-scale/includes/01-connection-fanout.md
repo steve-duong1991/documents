@@ -99,4 +99,4 @@ sequenceDiagram
 | Hard-killing nodes on deploy | Graceful close frame + staggered drain |
 | Sticky LB with no rebalance plan | Either accept drop-and-reconnect on scale events, or go stateless + backplane |
 | Counting "requests per second" instead of "concurrent connections" in capacity planning | Budget per-connection memory against peak concurrency |
-| Per-message auth re-check hitting a shared DB | Cache identity/AuthZ decision on the connection object; re-validate on token refresh only |
+| Per-message auth re-check hitting a shared DB | Cache identity/AuthZ(Authorization) decision on the connection object; re-validate on token refresh only |

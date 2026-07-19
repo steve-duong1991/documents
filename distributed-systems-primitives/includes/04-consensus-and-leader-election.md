@@ -97,7 +97,7 @@ flowchart LR
 
 | Temptation | Use instead |
 |------------|----------------|
-| "We'll write our own distributed lock with Redis `SETNX`" | Fine for **advisory**, low-stakes locks with a TTL; for correctness-critical locks, use a consensus-backed lock service (etcd, ZooKeeper) — see [resilience-patterns §7 distributed locks](../../resilience-patterns/includes/07-distributed-locks.md) |
+| "We'll write our own distributed lock with Redis `SETNX`" | Fine for **advisory**, low-stakes locks with a TTL(Time To Live); for correctness-critical locks, use a consensus-backed lock service (etcd, ZooKeeper) — see [resilience-patterns §7 distributed locks](../../resilience-patterns/includes/07-distributed-locks.md) |
 | "We'll implement leader election ourselves for our worker pool" | Use etcd/ZooKeeper leases, or a Kubernetes `Lease` object if already on k8s |
 | "We need a config store that's always consistent across regions" | etcd or Consul — both handle the consensus for you |
 | "We'll build a mini Raft for our own service's internal coordination" | Almost never justified — embed an existing Raft library (e.g. HashiCorp's `raft` package) if you truly need consensus **inside** your own service, rather than the wire protocol and edge cases from scratch |

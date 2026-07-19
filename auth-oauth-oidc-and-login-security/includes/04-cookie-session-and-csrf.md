@@ -2,7 +2,7 @@
 
 For first-party web apps, the safest default is still a **server session** (or BFF(Backend for Frontend)-held refresh) delivered via **HTTP(Hypertext Transfer Protocol)-only Secure cookies**, defended against CSRF(Cross-Site Request Forgery). This section is the mechanics; UX and product patterns live in fullstack.
 
-> **Scope:** Cookie flags, session store design, CSRF patterns, JWT(JSON Web Token)-in-cookie pitfalls. Third-party cookie deprecation and mobile redirects → [§4a](04A-third-party-cookies-and-mobile-redirects.md). Guest / anonymous sessions → [§4b](04B-anonymous-and-guest-sessions.md). Why client edits fail closed (integrity) → [§3a](03A-token-cookie-integrity.md). Browser Auth UX → [fullstack §7](../../fullstack-bff-and-clients/includes/07-auth-ux.md). Token TTL/rotation → [§3](03-token-lifecycle-and-validation.md). Stateless API(Application Programming Interface) tiers → [api-design §11A](../../api-design-and-protection/includes/11A-stateless-auth-operations.md).
+> **Scope:** Cookie flags, session store design, CSRF patterns, JWT(JSON Web Token)-in-cookie pitfalls. Third-party cookie deprecation and mobile redirects → [§4a](04A-third-party-cookies-and-mobile-redirects.md). Guest / anonymous sessions → [§4b](04B-anonymous-and-guest-sessions.md). Why client edits fail closed (integrity) → [§3a](03A-token-cookie-integrity.md). Browser Auth UX → [fullstack §7](../../fullstack-bff-and-clients/includes/07-auth-ux.md). Token TTL(Time To Live)/rotation → [§3](03-token-lifecycle-and-validation.md). Stateless API(Application Programming Interface) tiers → [api-design §11A](../../api-design-and-protection/includes/11A-stateless-auth-operations.md).
 
 > **Related:** Third-party cookies / mobile OAuth(Open Authorization) redirects → [§4a](04A-third-party-cookies-and-mobile-redirects.md) · Guest sessions → [§4b](04B-anonymous-and-guest-sessions.md) · Anti-tamper → [§3a](03A-token-cookie-integrity.md) · BFF token exchange → [§1a](01A-client-auth-and-token-exchange.md) · Concurrent devices → [§3e](03E-concurrent-sessions-and-devices.md)
 
@@ -40,7 +40,7 @@ Set cookies only from trusted responses over TLS(Transport Layer Security). Clea
 
 ## Session store design
 
-Put only a **random session id** in the cookie. Keep identity and AuthZ in the server store — why that defeats client modification → [§3a](03A-token-cookie-integrity.md).
+Put only a **random session id** in the cookie. Keep identity and AuthZ(Authorization) in the server store — why that defeats client modification → [§3a](03A-token-cookie-integrity.md).
 
 ```mermaid
 flowchart LR

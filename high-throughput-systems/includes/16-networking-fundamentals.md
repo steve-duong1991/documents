@@ -12,7 +12,7 @@ Every request pays a networking tax before your application code runs: DNS(Domai
 
 | Concern | Why it matters for throughput | Typical fix |
 |---------|-------------------------------|--------------|
-| **DNS routing** | Wrong record sends traffic to a dead or distant region | Health-checked, latency/geo-based records; short TTL for failover |
+| **DNS routing** | Wrong record sends traffic to a dead or distant region | Health-checked, latency/geo-based records; short TTL(Time To Live) for failover |
 | **Protocol version** | HTTP(Hypertext Transfer Protocol)/1.1 head-of-line blocking vs HTTP/2 multiplexing vs HTTP/3 (QUIC(Quick UDP Internet Connections)) on lossy networks | Terminate HTTP/2 or HTTP/3 at the edge; keep origin on HTTP/1.1 or HTTP/2 if simpler |
 | **TLS termination** | Handshake and cipher CPU cost per connection | Terminate near the user (edge); reuse sessions |
 | **Anycast** | Users route to the nearest healthy point of presence automatically | Use a provider with anycast edge (CDN, DNS, DDoS scrubbing) |

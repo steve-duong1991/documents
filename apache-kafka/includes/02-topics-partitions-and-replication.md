@@ -2,7 +2,7 @@
 
 A **topic** is a logical stream split into **partitions** — each partition is an ordered, replicated log. Partition design drives throughput, ordering, and failure behavior.
 
-> **Related:** Multi-tenant API(Application Programming Interface) isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md) · Saga partition keys → [ES §7C](../../event-sourcing-and-cqrs/includes/07C-sagas-operations.md) · PG tenant RLS → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md)
+> **Related:** Multi-tenant API(Application Programming Interface) isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md) · Saga partition keys → [ES §7C](../../event-sourcing-and-cqrs/includes/07C-sagas-operations.md) · PG tenant RLS(Row-Level Security) → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md)
 
 ---
 

@@ -10,7 +10,7 @@ How tenant isolation differs when the table is DynamoDB-style instead of Postgre
 
 ## At a glance
 
-| Layer | PostgreSQL (pooled + RLS) | DynamoDB-style |
+| Layer | PostgreSQL (pooled + RLS(Row-Level Security)) | DynamoDB-style |
 |-------|----------------------------|-----------------|
 | **Isolation enforcement** | Database-enforced — RLS(Row-Level Security) policy on every query | Application-enforced — `tenant_id` baked into PK/SK, checked by request shape |
 | **Cross-tenant leak vector** | Missing/bypassed policy, `BYPASSRLS` role | `tenant_id` omitted from key, or trusted from request body instead of token |
@@ -55,7 +55,7 @@ There is no `USING (tenant_id = ...)` policy running underneath you. **Every cod
 | What stops a compromised app role from reading another tenant? | `FORCE ROW LEVEL SECURITY` on a non-`BYPASSRLS` role | IAM(Identity and Access Management) fine-grained access control (`dynamodb:LeadingKeys` condition) — must be configured explicitly |
 | How is a mistake caught in testing? | Integration test: switch `app.tenant_id`, assert row invisible ([PG §17 testing](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md#testing-rls)) | Integration test: attempt read/write with wrong tenant's derived key, assert `ConditionalCheckFailedException` or no item |
 
-**IAM(Identity and Access Management) fine-grained access control** can restrict a role's DynamoDB access to items whose key begins with that caller's `tenant_id` (`dynamodb:LeadingKeys`), which is the closest DynamoDB equivalent to an RLS policy — but it requires a distinct IAM role or STS(Security Token Service) session per tenant, which is only practical for a small number of high-trust tenants (e.g. enterprise silos), not thousands of pooled SMB tenants.
+**IAM(Identity and Access Management) fine-grained access control** can restrict a role's DynamoDB access to items whose key begins with that caller's `tenant_id` (`dynamodb:LeadingKeys`), which is the closest DynamoDB equivalent to an RLS policy — but it requires a distinct IAM role or STS(Security Token Service) session per tenant, which is only practical for a small number of high-trust tenants (e.g. enterprise silos), not thousands of pooled SMB(Small and Medium Business) tenants.
 
 ---
 

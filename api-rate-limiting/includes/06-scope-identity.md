@@ -28,8 +28,8 @@ Rate limits can be keyed by different dimensions. Layer them from cheapest to mo
 |------|-----|------|------|-------------|
 | **Global** | Single counter for entire API(Application Programming Interface) | Simple DDoS brake | One noisy client affects everyone | Emergency circuit, small APIs |
 | **Per IP** | Source IP / `X-Forwarded-For` | Easy, no auth needed | Shared NAT, VPN, mobile carriers; spoofable behind bad proxies | Public unauthenticated endpoints |
-| **Per API Key** | `Authorization` header | Ties to billing and plan | Key sharing, leaked keys | B2B APIs, developer portals |
-| **Per User / Account** | User ID from JWT(JSON Web Token)/session | Fair per customer | Requires auth on every request | Logged-in SaaS APIs |
+| **Per API Key** | `Authorization` header | Ties to billing and plan | Key sharing, leaked keys | B2B(Business-to-Business) APIs, developer portals |
+| **Per User / Account** | User ID from JWT(JSON Web Token)/session | Fair per customer | Requires auth on every request | Logged-in SaaS(Software as a Service) APIs |
 | **Per Tenant / Org** | `org_id` | Multi-tenant fairness | Large tenants may need custom limits | B2B multi-tenant platforms |
 | **Per Endpoint** | `method + path` | Protects expensive ops only | Many rules to maintain | Search, export, ML inference |
 | **Per Resource** | `user:123:project:456` | Fine-grained abuse control | Key explosion, storage cost | File uploads, object CRUD |
@@ -51,7 +51,7 @@ ratelimit:{scope}:{identity}:{bucket}:{window_start}
 | `scope` | Limit dimension | `global`, `ip`, `key`, `user`, `org`, `ep` |
 | `identity` | Who or what is limited | `key_abc123`, `usr_9f2a`, `203.0.113.42` |
 | `bucket` | Endpoint class or `global` | `read`, `write`, `export`, `auth` |
-| `window_start` | Fixed UTC minute/hour, or omit when using TTL buckets | `1735689600` |
+| `window_start` | Fixed UTC minute/hour, or omit when using TTL(Time To Live) buckets | `1735689600` |
 
 **Global scope special case:** identity is always `api`, bucket is always `global` — full key `ratelimit:global:api:global:{window}`. Do not omit the bucket segment for global; it keeps parsing consistent with other scopes.
 

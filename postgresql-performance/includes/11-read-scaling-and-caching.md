@@ -58,7 +58,7 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY daily_revenue;
 - Computed values expensive to derive
 - Rate limit counters, feature flags
 
-**Cache invalidation patterns:** TTL, delete-on-write, and event-driven invalidation — full patterns, CDN layer, cache-aside vs write-through, and stampede mitigation → [high-throughput-systems §4 Caching layers](../../high-throughput-systems/includes/04-caching-layers.md).
+**Cache invalidation patterns:** TTL(Time To Live), delete-on-write, and event-driven invalidation — full patterns, CDN layer, cache-aside vs write-through, and stampede mitigation → [high-throughput-systems §4 Caching layers](../../high-throughput-systems/includes/04-caching-layers.md).
 
 ## Layered read path
 

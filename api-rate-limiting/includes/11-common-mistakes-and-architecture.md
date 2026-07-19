@@ -10,7 +10,7 @@ Attackers rotate IPs, API(Application Programming Interface) keys, and accounts.
 
 ### 2. Clock skew
 
-Distributed window counters need synchronized time or TTL-based buckets. Avoid relying on wall-clock alignment across nodes.
+Distributed window counters need synchronized time or TTL(Time To Live)-based buckets. Avoid relying on wall-clock alignment across nodes.
 
 ### 3. Retry storms
 
@@ -117,7 +117,7 @@ Full key design and regional topology → [§12 Distributed rate limiting](12-di
 |---------|-------------------------------------|
 | **Cause** | Strict per-IP on authenticated API |
 | **Mitigation** | Require API key; rate limit by `client_id` not IP |
-| **Prevention** | Never IP-only limits for B2B authenticated APIs |
+| **Prevention** | Never IP-only limits for B2B(Business-to-Business) authenticated APIs |
 
 ### Retry storm after partial outage
 

@@ -22,7 +22,7 @@ When a distributed lock is justified — and when it is a smell for missing owne
 
 | Scenario | Pattern |
 |----------|---------|
-| Nightly singleton report | Lock with TTL + owner token; renew while running |
+| Nightly singleton report | Lock with TTL(Time To Live) + owner token; renew while running |
 | Rare admin mutation | Short lock or DB transaction on one row |
 | Leader for partition set | Ephemeral lock / lease with fencing token |
 

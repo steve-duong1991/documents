@@ -39,7 +39,7 @@ flowchart TD
 | Mobile + web chatty backends | BFF(Backend for Frontend) composition — [§9](09-bff-and-api-composition.md) |
 | BFF fans out to 5+ sync deps | Parallelize under hop budget; bulkhead each dep; omit/degrade T1 — [§9](09-bff-and-api-composition.md), [resilience §4–5](../../resilience-patterns/includes/04-bulkheads.md) |
 | Payments + social feed | Tiered consistency — [§6](06-tradeoff-frameworks.md) |
-| SaaS SMB → enterprise tier | Pool default; silo premium tenants — [§10](10-multi-tenant-system-models.md), [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md)/[§18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md) |
+| SaaS(Software as a Service) SMB(Small and Medium Business) → enterprise tier | Pool default; silo premium tenants — [§10](10-multi-tenant-system-models.md), [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md)/[§18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md) |
 | Tenant needs dedicated DB mid-flight | Pool → silo export/CDC(Change Data Capture)/cutover — [§10 migration](10-multi-tenant-system-models.md#migration-between-models), [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md#pool--silo-migration) |
 | Cross-team “shared tables” request | Deny; offer API(Application Programming Interface)/events — [§8](08-data-ownership.md) |
 | Cascading timeouts in prod | Dependency tiers + resilience stack — [§11](11-failure-domains.md), [resilience §16](../../resilience-patterns/includes/16-decision-guide.md) |

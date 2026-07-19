@@ -53,7 +53,7 @@ flowchart TD
 | Async without await | Poll with timeout; never fixed sleep alone |
 | Order-dependent tests | Forbid shared static state |
 | Parallel workers collide | Shard by tenant or port |
-| External network | Stub; never hit live SaaS in gate |
+| External network | Stub; never hit live SaaS(Software as a Service) in gate |
 
 ---
 

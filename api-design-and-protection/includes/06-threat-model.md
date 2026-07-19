@@ -1,6 +1,6 @@
 # Threat Model
 
-> **Related:** Protection layers → [§2 API protection](02-api-protection.md) · AuthZ gaps (BOLA(Broken Object-Level Authorization)) → [§4 Auth model](04-auth-model.md) · Pre-launch checklist → [§9 Checklist](09-checklist-and-practices.md)
+> **Related:** Protection layers → [§2 API protection](02-api-protection.md) · AuthZ(Authorization) gaps (BOLA(Broken Object-Level Authorization)) → [§4 Auth model](04-auth-model.md) · Pre-launch checklist → [§9 Checklist](09-checklist-and-practices.md)
 
 ## What it is
 
@@ -43,7 +43,7 @@ flowchart TB
 
 | Threat | Definition | API example | Primary control |
 |--------|------------|-------------|-----------------|
-| **Spoofing** | Pretending to be someone else | Stolen API key, forged JWT(JSON Web Token) | Strong authN, short TTL, rotation |
+| **Spoofing** | Pretending to be someone else | Stolen API key, forged JWT(JSON Web Token) | Strong authN, short TTL(Time To Live), rotation |
 | **Tampering** | Modifying data in transit or storage | SQL(Structured Query Language) injection, MITM | TLS(Transport Layer Security), WAF(Web Application Firewall), parameterized queries |
 | **Repudiation** | Denying an action | Partner denies placing order | Audit logs with correlation IDs; append-only domain events ([Event Sourcing](../../event-sourcing-and-cqrs/includes/04-api-design-implications.md#audit-and-history-apis)) |
 | **Information disclosure** | Leaking sensitive data | Verbose errors, BOLA(Broken Object-Level Authorization) | Safe errors, object-level AuthZ |

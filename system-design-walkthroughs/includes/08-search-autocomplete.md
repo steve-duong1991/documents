@@ -98,7 +98,7 @@ Redis value: ["term1", "term2", "term3", ...]  (top-K, precomputed)
 | **Live trie traversal at high QPS** | Serving nodes need a huge, frequently-updated in-memory structure replicated everywhere | Precomputed prefix → top-K cache; push complexity to an offline job |
 | **Cold / rare prefixes** | Cache miss for long-tail prefixes | Fallback to trie/search index for rare prefixes only; most traffic never reaches this path |
 | **Cache staleness on trending topics** | Breaking-news term doesn't show up in suggestions for hours | Streaming increment job on top of the batch rebuild |
-| **Edge latency** | Per-keystroke round trip to origin adds up | Edge/CDN(Content Delivery Network) cache with short TTL for popular prefixes; debounce client-side keystroke requests |
+| **Edge latency** | Per-keystroke round trip to origin adds up | Edge/CDN(Content Delivery Network) cache with short TTL(Time To Live) for popular prefixes; debounce client-side keystroke requests |
 | **Prefix cardinality explosion** | Precomputing every possible prefix wastes storage | Only precompute prefixes above a frequency threshold; shorter prefixes naturally cover more traffic |
 
 ---

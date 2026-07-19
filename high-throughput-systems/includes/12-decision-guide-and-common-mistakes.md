@@ -91,7 +91,7 @@ Use this order — skipping steps wastes effort and money:
 | Per-instance rate limits | Inconsistent limits; 4× effective quota with 4 nodes | Shared Redis counters |
 | No connection pooling | DB melts under connection storms | PgBouncer before raising `max_connections` |
 | Giant transactions on backfill | Long locks, bloat, replication lag | Chunked batches with commits |
-| Cache everything with no TTL plan | Stale data bugs, memory blowup | TTL + invalidation strategy per endpoint |
+| Cache everything with no TTL(Time To Live) plan | Stale data bugs, memory blowup | TTL + invalidation strategy per endpoint |
 | Scale on CPU alone | Misses queue backlog and pool wait | Scale on queue depth, p99, pool saturation |
 | Fail-open rate limits on writes | Abuse during Redis outage | Fail closed on expensive routes |
 | Sticky sessions "just in case" | Blocks elastic scale and safe deploys | Token-based auth + external state |

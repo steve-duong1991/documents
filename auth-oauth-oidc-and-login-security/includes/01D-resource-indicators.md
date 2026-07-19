@@ -12,7 +12,7 @@
 |-----------|---------|
 | **`resource` / `aud`** | *Which API* may accept this access token? |
 | **`scope`** | *What class of operations* within that API (or AS policy)? |
-| **Object AuthZ** | *Which rows* may this user touch? |
+| **Object AuthZ(Authorization)** | *Which rows* may this user touch? |
 
 Always validate **`aud`** at the resource server. Use explicit `resource` at authorize/token time when one AS serves **multiple** APIs.
 
@@ -128,7 +128,7 @@ Extend [§3](03-token-lifecycle-and-validation.md):
 5. Required scopes  
 6. Object-level AuthZ  
 
-Reject tokens whose only `aud` is an IdP issuer or another API’s URI.
+Reject tokens whose only `aud` is an IdP(Identity Provider) issuer or another API’s URI.
 
 ---
 

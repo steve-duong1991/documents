@@ -71,7 +71,7 @@ Still document **why** the model was skipped on the PR so auditors see intention
 | Mistake | Fix |
 |---------|-----|
 | Pasting OWASP list into Confluence once | Living register + delta reviews |
-| Modeling only the happy path | Include abuse, insider, and broken AuthZ |
+| Modeling only the happy path | Include abuse, insider, and broken AuthZ(Authorization) |
 | No link to tickets | Mitigations without owners are theater |
 | Treating api-design §6 as the whole program | Use §6 for APIs; use this file for process |
 | Accepting high risk with no expiry | Time-box acceptances; revisit |

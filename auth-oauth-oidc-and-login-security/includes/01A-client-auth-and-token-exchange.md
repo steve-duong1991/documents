@@ -16,7 +16,7 @@ Public clients prove themselves with **PKCE(Proof Key for Code Exchange)**. Conf
 | **Confidential** (BFF, server) | `client_id` + secret or stronger assertion (below) |
 | **Workload** | Often mTLS(Mutual Transport Layer Security) or cloud workload identity instead of a long-lived secret |
 
-**Rule of thumb:** Never put a client secret in a SPA or mobile binary. Prefer **private_key_jwt** or **mTLS** over shared secrets when the IdP supports them.
+**Rule of thumb:** Never put a client secret in a SPA or mobile binary. Prefer **private_key_jwt** or **mTLS** over shared secrets when the IdP(Identity Provider) supports them.
 
 ---
 
@@ -90,7 +90,7 @@ scope=orders:read
 | **Actor vs subject** | Optional `actor_token` when a service acts on behalf of a user (delegation chain) |
 | **Audience** | Downstream API resource identifier — pairs with resource indicators (RFC 8707) when available |
 | **Scopes** | Least privilege; never wider than the subject held |
-| **TTL** | Minutes; do not mint day-long exchanged tokens |
+| **TTL(Time To Live)** | Minutes; do not mint day-long exchanged tokens |
 
 ### Alternatives when exchange is unavailable
 
@@ -98,7 +98,7 @@ scope=orders:read
 |---------|-------|
 | BFF holds refresh; refreshes access for user | Common; keep refresh HttpOnly / server-side — [§4](04-cookie-session-and-csrf.md) |
 | IdP “OBO” proprietary flow (e.g. Entra OBO) | Same idea; follow vendor constraints |
-| Trusted internal header after gateway AuthN | Only on a locked mesh; never from the public internet |
+| Trusted internal header after gateway AuthN(Authentication) | Only on a locked mesh; never from the public internet |
 
 ---
 
@@ -122,7 +122,7 @@ Discover URLs via OAuth Authorization Server Metadata / OIDC(OpenID Connect) dis
 | One `client_id` for BFF + SPA + M2M | Wrong auth method and blast radius | Split clients |
 | Downstream APIs trust cookie from browser | CSRF(Cross-Site Request Forgery) + wrong trust boundary | Bearer via BFF exchange/refresh |
 | Exchanged token with `aud` = IdP only | APIs reject or accept wrong tokens | Set `audience` / resource to the API |
-| client_credentials used as “the user” | Broken audit and AuthZ | Token exchange or user refresh |
+| client_credentials used as “the user” | Broken audit and AuthZ(Authorization) | Token exchange or user refresh |
 
 ---
 

@@ -94,7 +94,7 @@ Why app instances must not hold session state → [Stateless architecture](11-st
 |-------|----------------|-------------|
 | **OpenAPI spec** | Contract, docs, CI(Continuous Integration) validation | Runtime enforcement |
 | **Edge (CDN(Content Delivery Network)/WAF(Web Application Firewall))** | DDoS, bot rules, geo block | Business logic |
-| **API Gateway** | AuthN, rate limits, routing, size caps | Object-level AuthZ; instance scaling |
+| **API Gateway** | AuthN(Authentication), rate limits, routing, size caps | Object-level AuthZ(Authorization); instance scaling |
 | **Load balancer** | Health checks, distribute to replicas | API keys, tiers, versioning |
 | **Application** | AuthZ, validation, idempotency | TLS(Transport Layer Security) at edge (usually) |
 | **Database** | Persist with encryption + least privilege | Rate limiting |

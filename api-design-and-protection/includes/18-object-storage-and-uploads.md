@@ -2,7 +2,7 @@
 
 Large files (images, video, exports, documents) do not belong in your application database or on your API(Application Programming Interface)'s request thread. Object storage (S3/GCS/Azure Blob) is the durable store; the API's job is **authorization and orchestration**, not moving bytes.
 
-> **Scope:** **API-facing upload/download design** — presigned URLs, multipart, scan pipeline, and AuthZ on objects. General storage tiering/cost policy → [finops-and-cost §4 Storage and retention cost](../../finops-and-cost/includes/04-storage-and-retention-cost.md). CDN(Content Delivery Network) cache mechanics and invalidation → [HTS §4 Caching layers](../../high-throughput-systems/includes/04-caching-layers.md).
+> **Scope:** **API-facing upload/download design** — presigned URLs, multipart, scan pipeline, and AuthZ(Authorization) on objects. General storage tiering/cost policy → [finops-and-cost §4 Storage and retention cost](../../finops-and-cost/includes/04-storage-and-retention-cost.md). CDN(Content Delivery Network) cache mechanics and invalidation → [HTS §4 Caching layers](../../high-throughput-systems/includes/04-caching-layers.md).
 >
 > **Related:** Files as externalized state → [§11 Stateless architecture](11-stateless-architecture.md#3-externalize-all-durable-state) · Async result delivery → [§10 Async patterns](10-async-patterns.md) + [10A jobs and polling](10A-async-jobs-polling.md) · SSRF(Server-Side Request Forgery) and OWASP(Open Worldwide Application Security Project) API #7 → [§6 Threat model](06-threat-model.md#owasp-api-security-top-10-2023) · Auth model → [§4 Auth model](04-auth-model.md) · Idempotent upload intents → [§13 Idempotency](13-idempotency.md) · Tenant-scoped prefixes → [§16 Multi-tenant APIs](16-multi-tenant-apis.md)
 
@@ -12,7 +12,7 @@ Large files (images, video, exports, documents) do not belong in your applicatio
 
 | Flow | Use when | Key control |
 |------|----------|--------------|
-| **Presigned upload** | Client uploads directly to storage | Short-TTL signed URL, size/content-type constraints |
+| **Presigned upload** | Client uploads directly to storage | Short-TTL(Time To Live) signed URL, size/content-type constraints |
 | **Presigned download** | Serve private objects without proxying bytes | Short-TTL signed URL, one object only |
 | **Multipart upload** | Files above ~100MB | Parallel parts, resumable, abort incomplete |
 | **Scan pipeline** | Any user-supplied file | Quarantine until clean, async |

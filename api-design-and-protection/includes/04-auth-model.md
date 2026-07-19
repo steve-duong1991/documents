@@ -1,6 +1,6 @@
 # Auth Model
 
-> **Scope:** **Which auth model per client type** (OAuth(Open Authorization)/API(Application Programming Interface) key/mTLS(Mutual Transport Layer Security)/HMAC(Hash-based Message Authentication Code)) and the AuthN→AuthZ layering at gateway vs app. Grant-type walkthroughs, OIDC(OpenID Connect) discovery/claims, token rotation, cookie/CSRF(Cross-Site Request Forgery) mechanics, and password login hardening → [auth-oauth-oidc-and-login-security](../../auth-oauth-oidc-and-login-security/README.md).
+> **Scope:** **Which auth model per client type** (OAuth(Open Authorization)/API(Application Programming Interface) key/mTLS(Mutual Transport Layer Security)/HMAC(Hash-based Message Authentication Code)) and the AuthN(Authentication)→AuthZ(Authorization) layering at gateway vs app. Grant-type walkthroughs, OIDC(OpenID Connect) discovery/claims, token rotation, cookie/CSRF(Cross-Site Request Forgery) mechanics, and password login hardening → [auth-oauth-oidc-and-login-security](../../auth-oauth-oidc-and-login-security/README.md).
 
 > **Related:** Protocol depth → [auth-oauth-oidc-and-login-security](../../auth-oauth-oidc-and-login-security/README.md) · Enterprise identity → [§12 Identity RBAC / IAM / AD](12-identity-rbac-iam-ad.md) · Gateway enforcement → [§3 Gateway](03-api-gateway.md) · Webhook security → [§10 Async patterns](10-async-patterns.md) · Browser cookie UX → [fullstack §7](../../fullstack-bff-and-clients/includes/07-auth-ux.md)
 
@@ -8,9 +8,11 @@
 
 The **auth model** defines how clients prove identity (authentication) and how the system decides what they may access (authorization). Gateway handles AuthN; services must handle AuthZ — especially **object-level** permissions.
 
-OAuth(Open Authorization) and JWT(JSON Web Token) tell you **who** called; **RBAC(Role-Based Access Control)** and **IAM(Identity and Access Management)** define **what roles and permissions** they have. Enterprise identity often flows from Active Directory (or Entra ID) into token claims and API(Application Programming Interface) policies.
+**OIDC(OpenID Connect) ≈ AuthN story; OAuth(Open Authorization) 2.0 ≈ AuthZ to APIs** — OIDC is an identity layer on OAuth (ID token / login), while access tokens and scopes are the OAuth AuthZ path. Fine object/tenant checks still live in the app — details → [auth overview — AuthN vs AuthZ](../../auth-oauth-oidc-and-login-security/includes/00-overview.md#authn-vs-authz--and-oidc-vs-oauth-20).
 
-Full details → [Identity: RBAC, IAM & Active Directory](12-identity-rbac-iam-ad.md)
+Access tokens and JWT(JSON Web Token) claims tell APIs **which subject/client** called with which **scopes**; **RBAC(Role-Based Access Control)** and **IAM(Identity and Access Management)** define **what roles and permissions** they have. Enterprise identity often flows from Active Directory (or Entra ID) into token claims and API(Application Programming Interface) policies.
+
+Full details → [Identity: RBAC, IAM & Active Directory](12-identity-rbac-iam-ad.md) · object-level → [§12D](12D-fine-grained-authz.md)
 
 ## Auth by client type
 
@@ -83,7 +85,7 @@ flowchart TB
 - Authorization Code + PKCE for public clients
 - Lock redirect URIs exactly
 - Minimal scopes per client
-- Short access token TTL
+- Short access token TTL(Time To Live)
 
 **Deep dive:** grant walkthroughs, OIDC discovery/ID tokens, refresh rotation → [auth-oauth-oidc-and-login-security §1–§3](../../auth-oauth-oidc-and-login-security/README.md)
 
@@ -134,7 +136,7 @@ flowchart TB
 
 ### Pros
 
-- Strong cryptographic identity for B2B and internal calls
+- Strong cryptographic identity for B2B(Business-to-Business) and internal calls
 - No shared secret in every request header
 - Fits zero-trust internal mesh
 

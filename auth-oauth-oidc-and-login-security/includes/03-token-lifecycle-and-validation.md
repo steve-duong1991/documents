@@ -2,9 +2,9 @@
 
 Access tokens should be **short-lived and verifiable**. Refresh tokens should be **rotating and detectable when stolen**. This section is the operational playbook for both authorization servers and resource servers (API(Application Programming Interface) gateways).
 
-> **Scope:** Validation, TTL, refresh rotation, revocation overview, JWKS(JSON Web Key Set) rotation. Lifetimes matrix → [§3d](03D-lifetimes-and-sliding-sessions.md). Force logout / denylist ops playbook → [§3b](03B-revoke-logout-denylist.md). Client-untrusted / anti-tamper framing → [§3a](03A-token-cookie-integrity.md). Grant flows → [§1](01-oauth2-grants-and-flows.md). OIDC(OpenID Connect) ID token checks → [§2](02-oidc-discovery-and-tokens.md). Stateless scaling → [api-design §11A](../../api-design-and-protection/includes/11A-stateless-auth-operations.md). Signing-key secrets → [enterprise-security §5](../../enterprise-security-compliance/includes/05-secrets-beyond-database.md).
+> **Scope:** Validation, TTL(Time To Live), refresh rotation, revocation overview, JWKS(JSON Web Key Set) rotation. Lifetimes matrix → [§3d](03D-lifetimes-and-sliding-sessions.md). Force logout / denylist ops playbook → [§3b](03B-revoke-logout-denylist.md). Client-untrusted / anti-tamper framing → [§3a](03A-token-cookie-integrity.md). Multi-issuer / per-tenant `iss` → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md). Grant flows → [§1](01-oauth2-grants-and-flows.md). OIDC(OpenID Connect) ID token checks → [§2](02-oidc-discovery-and-tokens.md). Stateless scaling → [api-design §11A](../../api-design-and-protection/includes/11A-stateless-auth-operations.md). Signing-key secrets → [enterprise-security §5](../../enterprise-security-compliance/includes/05-secrets-beyond-database.md).
 
-> **Related:** Lifetimes / sliding → [§3d](03D-lifetimes-and-sliding-sessions.md) · Revoke / force logout → [§3b](03B-revoke-logout-denylist.md) · Redis key patterns → [§3c](03C-denylist-redis-patterns.md) · Integrity threat model → [§3a Token and cookie integrity](03A-token-cookie-integrity.md) · Cookie session store → [§4](04-cookie-session-and-csrf.md)
+> **Related:** Lifetimes / sliding → [§3d](03D-lifetimes-and-sliding-sessions.md) · Revoke / force logout → [§3b](03B-revoke-logout-denylist.md) · Redis key patterns → [§3c](03C-denylist-redis-patterns.md) · Integrity threat model → [§3a Token and cookie integrity](03A-token-cookie-integrity.md) · Cookie session store → [§4](04-cookie-session-and-csrf.md) · Multi-tenant issuers → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md)
 
 ---
 
@@ -27,11 +27,11 @@ Run at the gateway or shared middleware:
 
 1. **Signature** — resolve `kid` via JWKS; verify with expected alg (RS256/ES256)
 2. **`exp` / `nbf` / `iat`** — reject expired; allow ~30–60s skew
-3. **`iss`** — exact allowlist (per tenant when B2B multi-issuer — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md))
+3. **`iss`** — exact allowlist (per tenant when B2B(Business-to-Business) multi-issuer — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md))
 4. **`aud`** — must include this API(Application Programming Interface)'s audience (resource indicator) — [§1d](01D-resource-indicators.md)
 5. **`scope` / roles** — coarse gate (e.g. `orders:read`)
 6. Optional **`jti` denylist** — for emergency revoke within TTL
-7. Forward identity headers to the app (`X-User-Id`, `X-Tenant-Id`, scopes) — app still does object-level AuthZ
+7. Forward identity headers to the app (`X-User-Id`, `X-Tenant-Id`, scopes) — app still does object-level AuthZ(Authorization)
 
 ```mermaid
 flowchart TB
@@ -95,7 +95,7 @@ sequenceDiagram
 | Suspected theft | Revoke family; rotate client secrets if confidential client leaked |
 | Key compromise | Rotate signing keys; reject old `kid` after grace — [enterprise-security §5](../../enterprise-security-compliance/includes/05-secrets-beyond-database.md) |
 
-RP-initiated logout (OIDC `end_session_endpoint`) clears the IdP SSO(Single Sign-On) session when you need cross-app logout.
+RP-initiated logout (OIDC `end_session_endpoint`) clears the IdP(Identity Provider) SSO(Single Sign-On) session when you need cross-app logout.
 
 **Full playbook** (validate vs invalidate, logout-all, denylist stores) → [§3b](03B-revoke-logout-denylist.md).
 

@@ -42,7 +42,7 @@ Treat security like any other non-functional requirement:
 
 | Requirement type | Example acceptance criterion |
 |------------------|------------------------------|
-| AuthZ | Object-level check on every `{id}` route (BOLA(Broken Object-Level Authorization) covered) |
+| AuthZ(Authorization) | Object-level check on every `{id}` route (BOLA(Broken Object-Level Authorization) covered) |
 | Secrets | New integration uses secret manager; no plaintext in config maps |
 | Logging | Security events emit `actor`, `action`, `resource`, `correlation_id` — no tokens |
 | PII(Personally Identifiable Information) | New field has classification label and retention note |

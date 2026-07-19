@@ -85,7 +85,7 @@ flowchart TD
 | Label devices | Parse UA carefully; allow user rename |
 | “This device” | Compare cookie `sid` to listed row |
 | Immediate effect | Other devices fail on next API(Application Programming Interface) call / refresh |
-| Access JWT(JSON Web Token) still valid briefly | Short TTL or denylist `jti` if you need instant cut — [§3b](03B-revoke-logout-denylist.md) |
+| Access JWT(JSON Web Token) still valid briefly | Short TTL(Time To Live) or denylist `jti` if you need instant cut — [§3b](03B-revoke-logout-denylist.md) |
 | Multi-tab same browser | Same `sid` — one revoke logs all tabs out |
 
 ---
@@ -95,7 +95,7 @@ flowchart TD
 | Layer | Behavior |
 |-------|----------|
 | **App sessions** | Your `sid` list — primary UX for “devices in *this* app” |
-| **IdP SSO cookie** | May still be alive after app logout-others — next OIDC can silent-SSO unless `prompt=login` / max_age — [§3d](03D-lifetimes-and-sliding-sessions.md) |
+| **IdP(Identity Provider) SSO cookie** | May still be alive after app logout-others — next OIDC can silent-SSO unless `prompt=login` / max_age — [§3d](03D-lifetimes-and-sliding-sessions.md) |
 | **RP-initiated + back-channel** | Use when “logout everywhere” must include other apps — [§2a](02A-oidc-logout-and-step-up.md) |
 
 Document for users: “Signed out of this app” vs “Signed out of company SSO.”

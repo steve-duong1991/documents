@@ -1,8 +1,8 @@
 # SAML Protocol Guide
 
-SAML(Security Assertion Markup Language) 2.0 is an XML-based **federated AuthN** protocol widely used in enterprise SSO(Single Sign-On). Your product should prefer **OIDC(OpenID Connect)** for new apps; use SAML when customers require it — either as a **Service Provider (SP)** or via a **broker** that speaks SAML to them and OIDC to you.
+SAML(Security Assertion Markup Language) 2.0 is an XML-based **federated AuthN(Authentication)** protocol widely used in enterprise SSO(Single Sign-On). Your product should prefer **OIDC(OpenID Connect)** for new apps; use SAML when customers require it — either as a **Service Provider (SP)** or via a **broker** that speaks SAML to them and OIDC to you.
 
-> **Scope:** SAML 2.0 Web Browser SSO profile — roles, assertions, bindings, metadata, signatures/encryption, SP- vs IdP-initiated flows, security checklist, and bridge to OIDC. App integration sequence → [§2b](02B-sso-integration-playbook.md). Per-tenant / BYO IdP → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md). OIDC tokens → [§2](02-oidc-discovery-and-tokens.md). Enterprise AD(Active Directory)/Entra context → [api-design §12A](../../api-design-and-protection/includes/12A-identity-active-directory.md).
+> **Scope:** SAML 2.0 Web Browser SSO profile — roles, assertions, bindings, metadata, signatures/encryption, SP- vs IdP(Identity Provider)-initiated flows, security checklist, and bridge to OIDC. App integration sequence → [§2b](02B-sso-integration-playbook.md). Per-tenant / BYO(Bring Your Own) IdP → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md). OIDC tokens → [§2](02-oidc-discovery-and-tokens.md). Enterprise AD(Active Directory)/Entra context → [api-design §12A](../../api-design-and-protection/includes/12A-identity-active-directory.md).
 
 ---
 

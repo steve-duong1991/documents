@@ -6,6 +6,14 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-07-19
 
+### Identity depth + residency + erasure + notifications
+- **api-design §12D (new):** Fine-grained AuthZ — BOLA, ReBAC/Zanzibar-style, ABAC vs RBAC, AuthZ service vs JWT, caching/tenancy
+- **enterprise-security §7A (new):** Erasure and DSAR playbook — store inventory, crypto-shred, fan-out, legal hold, multi-tenant
+- **architecture §10A (new):** Regional cells and data residency — topology, pins, routing, forbidden replication, cutover/drills
+- **api-design §10D (new):** Notification delivery — preferences, dedup, priority queues, providers, PII in templates
+- **auth overview:** AuthN vs AuthZ mapped to OIDC vs OAuth 2.0 (ID token vs access token); GLOSSARY AuthN/AuthZ; api-design §4 pointer
+- **Corpus polish:** Grammar fixes; acronyms IdP/AuthN/AuthZ/TTL/RLS/B2B/SaaS/ReBAC/DSAR/LDAP/ABAC/BYO/SMB; See also HTS↔resilience, PG→arch/nosql, ESC→§12C, api §16→§12C, ES §5A→api §10; TL Fullstack + Global scale + Multi-tenant paths updated; GLOSSARY JIT/ReBAC/DSAR/cells
+
 ### Auth — multi-tenant OIDC / B2B SSO
 - **auth-oauth-oidc-and-login-security §2d (new):** Multi-tenant OIDC and B2B SSO — tenant resolution (subdomain/path/email HRD), IdP topology (shared/broker/per-issuer), authorize routing, multi-issuer validation, membership + tenant switch, admin consent/SCIM pointers
 - **Cross-links:** §2b pointer + checklist; §2/§2c/§3/§5a/§6; api-design §16 Scope; architecture §10; root Auth + B2B + Multi-tenant SaaS paths; GLOSSARY (HRD, multi-issuer, membership); acronyms HRD/JIT/JML/SCIM

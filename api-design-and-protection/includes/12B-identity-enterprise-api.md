@@ -1,6 +1,6 @@
 # Identity — API access decisions and practices
 
-> **Related:** IAM(Identity and Access Management) and RBAC(Role-Based Access Control) → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Active Directory → [12A-identity-active-directory.md](12A-identity-active-directory.md) · SCIM(System for Cross-domain Identity Management) / JML(Joiner-Mover-Leaver) → [12C-scim-and-jml-provisioning.md](12C-scim-and-jml-provisioning.md) · Multi-tenant → [16-multi-tenant-apis.md](16-multi-tenant-apis.md)
+> **Related:** IAM(Identity and Access Management) and RBAC(Role-Based Access Control) → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Active Directory → [12A-identity-active-directory.md](12A-identity-active-directory.md) · SCIM(System for Cross-domain Identity Management) / JML(Joiner-Mover-Leaver) → [12C-scim-and-jml-provisioning.md](12C-scim-and-jml-provisioning.md) · Fine-grained AuthZ(Authorization) → [12D-fine-grained-authz.md](12D-fine-grained-authz.md) · BYO(Bring Your Own) IdP(Identity Provider) / multi-issuer → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · Multi-tenant → [16-multi-tenant-apis.md](16-multi-tenant-apis.md)
 
 
 ## API design takeaways
@@ -8,13 +8,13 @@
 | Practice | Why |
 |----------|-----|
 | Map AD(Active Directory)/IdP **groups** → app **roles**, not raw group names in app code | Survives reorgs; central mapping table |
-| Put **roles/scopes in JWT(JSON Web Token)** (short TTL) | Stateless validation at gateway |
+| Put **roles/scopes in JWT(JSON Web Token)** (short TTL(Time To Live)) | Stateless validation at gateway |
 | Enforce **object-level AuthZ in app** | RBAC alone does not prevent BOLA(Broken Object-Level Authorization) |
 | Automate **JML(Joiner-Mover-Leaver)** via SCIM(System for Cross-domain Identity Management) (or equivalent) | Orphan accounts are a top audit finding — [12C](12C-scim-and-jml-provisioning.md) |
 | Regular **access reviews** | Least privilege over time |
 | Log **who** (subject), **what** (resource), **decision** | Audit without logging tokens |
 
-Default stack for public SaaS APIs (extends [overview default](00-overview.md#default-recommendation)):
+Default stack for public SaaS(Software as a Service) APIs (extends [overview default](00-overview.md#default-recommendation)):
 
 1. **Entra ID / Okta** (fed from AD if hybrid) for employee SSO(Single Sign-On)
 2. **OAuth(Open Authorization) 2.0 + OIDC(OpenID Connect)** for user-facing apps → JWT with scopes/roles
@@ -54,7 +54,7 @@ sequenceDiagram
 
 Gateway checks **coarse** role/scope; the app still enforces **object ownership** (BOLA) — see [Auth model](04-auth-model.md).
 
-Unified AuthN → AuthZ decision flow (MFA, policies, object check) → [12A — Decision flow](12A-identity-active-directory.md#decision-flow-can-this-user-access-this-api).
+Unified AuthN(Authentication) → AuthZ decision flow (MFA, policies, object check) → [12A — Decision flow](12A-identity-active-directory.md#decision-flow-can-this-user-access-this-api).
 
 ---
 

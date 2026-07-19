@@ -4,7 +4,7 @@ The client (browser, mobile app, partner script) is **untrusted**. You cannot st
 
 > **Scope:** Threat model and per-credential integrity. Validation checklist and refresh rotation → [§3](03-token-lifecycle-and-validation.md). Cookie flags, session store, CSRF(Cross-Site Request Forgery) → [§4](04-cookie-session-and-csrf.md). Browser UX → [fullstack §7](../../fullstack-bff-and-clients/includes/07-auth-ux.md).
 
-> **Related:** JWT(JSON Web Token) signing keys → [enterprise-security §5](../../enterprise-security-compliance/includes/05-secrets-beyond-database.md) · Object-level AuthZ after AuthN → [api-design §4](../../api-design-and-protection/includes/04-auth-model.md)
+> **Related:** JWT(JSON Web Token) signing keys → [enterprise-security §5](../../enterprise-security-compliance/includes/05-secrets-beyond-database.md) · Object-level AuthZ(Authorization) after AuthN(Authentication) → [api-design §4](../../api-design-and-protection/includes/04-auth-model.md)
 
 ---
 
@@ -16,7 +16,7 @@ The client (browser, mobile app, partner script) is **untrusted**. You cannot st
 |------|-----------|
 | **Integrity** (detect modification) | Signature (JWT) or opaque random id + server lookup |
 | **Secrecy** (harder to steal) | HttpOnly cookies, memory-only access tokens, no `localStorage` refresh |
-| **Binding** (stolen token harder to replay elsewhere) | Short TTL, refresh rotation, DPoP(Demonstration of Proof-of-Possession) / mTLS(Mutual Transport Layer Security) |
+| **Binding** (stolen token harder to replay elsewhere) | Short TTL(Time To Live), refresh rotation, DPoP(Demonstration of Proof-of-Possession) / mTLS(Mutual Transport Layer Security) |
 
 HttpOnly stops JavaScript from *reading* a cookie; it does **not** stop modification or replay. CSRF defenses stop *other sites* from using the cookie; they do not prove the cookie value was untampered.
 

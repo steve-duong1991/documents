@@ -37,7 +37,7 @@ flowchart TD
 
 | Stage | Minimum bar |
 |-------|-------------|
-| **MVP / trusted beta** | HTTPS, AuthN, basic AuthZ, secret manager, dependency scan, audit on admin actions |
+| **MVP / trusted beta** | HTTPS, AuthN(Authentication), basic AuthZ(Authorization), secret manager, dependency scan, audit on admin actions |
 | **General availability** | Threat model on public surfaces, SCA(Software Composition Analysis) fail gates, retention policy, access reviews |
 | **Enterprise sales** | Evidence packs, SBOM on request, DPA-ready subprocessors list, pen test cadence |
 

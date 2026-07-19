@@ -55,7 +55,7 @@ flowchart LR
 | Check | Done when |
 |-------|-----------|
 | [ ] API contract reviewed | OpenAPI/proto + versioning — [api-design §7](../../api-design-and-protection/includes/07-openapi-swagger.md) · [§14](../../api-design-and-protection/includes/14-api-versioning-and-deprecation.md) |
-| [ ] AuthZ model clear | Who can call what — [api-design §4](../../api-design-and-protection/includes/04-auth-model.md) · [§12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) |
+| [ ] AuthZ(Authorization) model clear | Who can call what — [api-design §4](../../api-design-and-protection/includes/04-auth-model.md) · [§12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) |
 | [ ] Idempotency for side effects | Client key + server dedup — [api-design §13](../../api-design-and-protection/includes/13-idempotency.md) · money → [payments §2](../../payments-and-fintech/includes/02-idempotency-and-double-charge.md) |
 | [ ] Resilience defaults on dependencies | Timeouts, retries with jitter, breakers — [resilience-patterns](../../resilience-patterns/README.md) |
 | [ ] Threat notes for new attack surface | [api-design §6](../../api-design-and-protection/includes/06-threat-model.md) · [enterprise-security](../../enterprise-security-compliance/README.md) |

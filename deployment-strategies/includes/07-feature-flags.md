@@ -48,7 +48,7 @@ flowchart LR
 | Failure | Symptom | Fix |
 |---------|---------|-----|
 | **Flag service down** | Default path? Document fail-open vs closed | Usually fail → old behavior |
-| **Stale flag cache** | Users see old behavior after toggle | Lower TTL; push invalidation |
+| **Stale flag cache** | Users see old behavior after toggle | Lower TTL(Time To Live); push invalidation |
 | **Flag debt** | Many dead branches | Quarterly inventory + burn-down — [Lifecycle](#lifecycle-and-cleanup) |
 | **Both paths untested** | Bug only when flag ON | CI matrix ON/OFF |
 

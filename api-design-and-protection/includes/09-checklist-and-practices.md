@@ -15,7 +15,7 @@
 | **OpenAPI** | Spec published; Swagger UI or portal live |
 | **OpenAPI** | CI(Continuous Integration) contract tests pass; Spectral lint clean |
 | **Auth** | OAuth(Open Authorization) + PKCE(Proof Key for Code Exchange) for user apps; scoped API(Application Programming Interface) keys for partners |
-| **AuthZ** | Object ownership on every `{id}` route (BOLA(Broken Object-Level Authorization)) |
+| **AuthZ(Authorization)** | Object ownership on every `{id}` route (BOLA(Broken Object-Level Authorization)) |
 | **AuthZ** | Writable field whitelist on PATCH/POST |
 | **Gateway** | Rate tiers configured; `429` + headers returned |
 | **Load balancer** | Health checks enabled; targets only healthy instances |
@@ -50,7 +50,7 @@
 | Mistake | Why it hurts | Fix |
 |--------------|--------------|-----|
 | `200` + `{ success: false }` | Breaks HTTP semantics, caching, monitoring | Proper status codes |
-| AuthN only at gateway | BOLA(Broken Object-Level Authorization) vulnerabilities | Object checks in app |
+| AuthN(Authentication) only at gateway | BOLA(Broken Object-Level Authorization) vulnerabilities | Object checks in app |
 | IP-only rate limits | Bypassed via distributed IPs; unfair shared NAT | Identity-based tiers |
 | Logging Authorization header | Credential leak in logs | Redact sensitive headers |
 | Undocumented breaking changes | Broken clients, angry partners | Version bump + Sunset |

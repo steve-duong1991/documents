@@ -38,7 +38,7 @@ flowchart TD
 | Rolling deploy | Error budget tight → canary ([deployment §4](../../deployment-strategies/includes/04-canary.md)) |
 | Manual prod click | High trust + SLOs → progressive auto |
 | Few flags | Many parallel features → flag platform |
-| Weekly train | SaaS continuous → shorten or drop train |
+| Weekly train | SaaS(Software as a Service) continuous → shorten or drop train |
 | Shared platform templates | Org scale → policy-as-code |
 
 ---

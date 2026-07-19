@@ -1,8 +1,8 @@
 # Anonymous and Guest Sessions
 
-Many products need a **guest session** before login: cart, multi-step signup, “continue as guest,” or a wizard that later becomes an account. Treat guests as a **real session type** with narrow AuthZ — not “no auth, trust the browser.”
+Many products need a **guest session** before login: cart, multi-step signup, “continue as guest,” or a wizard that later becomes an account. Treat guests as a **real session type** with narrow AuthZ(Authorization) — not “no auth, trust the browser.”
 
-> **Scope:** Issue guest `sid`, store workflow state server-side, promote on register/login, TTL/abuse controls. Authenticated cookie/CSRF(Cross-Site Request Forgery) mechanics → [§4](04-cookie-session-and-csrf.md). Integrity → [§3a](03A-token-cookie-integrity.md). Signup / magic link → [§5b](05B-signup-verify-and-magic-links.md). Lifetimes → [§3d](03D-lifetimes-and-sliding-sessions.md). Concurrent devices → [§3e](03E-concurrent-sessions-and-devices.md).
+> **Scope:** Issue guest `sid`, store workflow state server-side, promote on register/login, TTL(Time To Live)/abuse controls. Authenticated cookie/CSRF(Cross-Site Request Forgery) mechanics → [§4](04-cookie-session-and-csrf.md). Integrity → [§3a](03A-token-cookie-integrity.md). Signup / magic link → [§5b](05B-signup-verify-and-magic-links.md). Lifetimes → [§3d](03D-lifetimes-and-sliding-sessions.md). Concurrent devices → [§3e](03E-concurrent-sessions-and-devices.md).
 
 > **Related:** Session fixation / rotate `sid` on login → [§4](04-cookie-session-and-csrf.md) · Rate limits for anonymous → [api-rate-limiting](../../api-rate-limiting/README.md)
 
@@ -31,7 +31,7 @@ Many products need a **guest session** before login: cart, multi-step signup, �
 | Cart / wishlist before login | **Yes** |
 | Multi-step registration wizard | **Yes** (or signed continuation tokens per step) |
 | “Try the product” sandbox | **Yes** with hard quotas |
-| Call privileged APIs(Application Programming Interfaces) | **No** — require real AuthN |
+| Call privileged APIs(Application Programming Interfaces) | **No** — require real AuthN(Authentication) |
 
 ---
 
@@ -112,7 +112,7 @@ Browser storage alone is lost across devices and easy to tamper with — treat i
 | Absolute | 24 h – 7 d |
 | Domain draft GC | Align with absolute; soft-delete then purge |
 
-Authenticated lifetimes stay in [§3d](03D-lifetimes-and-sliding-sessions.md) — do not give guests IdP-length SSO.
+Authenticated lifetimes stay in [§3d](03D-lifetimes-and-sliding-sessions.md) — do not give guests IdP(Identity Provider)-length SSO.
 
 ---
 
