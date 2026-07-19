@@ -2,7 +2,7 @@
 
 Enterprise identity foundations for APIs: how IAM governs access, how RBAC assigns permissions through roles, and how Active Directory (and cloud IdPs) feed tokens and policies your gateway and services enforce.
 
-> **Scope:** **Organizational identity and authorization structure** — IAM, RBAC, AD(Active Directory)/IdP integration. Client auth protocols (OAuth, JWT(JSON Web Token), API(Application Programming Interface) keys) → [Auth model](04-auth-model.md). AD depth, Kerberos, hybrid sync → [12A Active Directory](12A-identity-active-directory.md). API access decisions and mistakes → [12B API access](12B-identity-enterprise-api.md).
+> **Scope:** **Organizational identity and authorization structure** — IAM, RBAC, AD(Active Directory)/IdP integration. Client auth protocols (OAuth, JWT(JSON Web Token), API(Application Programming Interface) keys) → [Auth model](04-auth-model.md). AD depth, Kerberos, hybrid sync → [12A Active Directory](12A-identity-active-directory.md). API access decisions and mistakes → [12B API access](12B-identity-enterprise-api.md). SCIM(System for Cross-domain Identity Management) / JML(Joiner-Mover-Leaver) provisioning → [12C SCIM and JML](12C-scim-and-jml-provisioning.md).
 >
 > **Related:** Gateway enforcement → [Load Balancer & API Gateway](03-api-gateway.md) · Multi-tenant claims → [16-multi-tenant-apis.md](16-multi-tenant-apis.md) · DB connection identity → [database-connection-and-security](../../database-connection-and-security/README.md)
 
@@ -10,8 +10,9 @@ Enterprise identity foundations for APIs: how IAM governs access, how RBAC assig
 
 | Article | Topics |
 |---------|--------|
-| [Active Directory and enterprise IdP](12A-identity-active-directory.md) | AD structure, Kerberos, Entra hybrid, group → role mapping, JML lifecycle |
+| [Active Directory and enterprise IdP](12A-identity-active-directory.md) | AD structure, Kerberos, Entra hybrid, group → role mapping, JML overview |
 | [API access decisions](12B-identity-enterprise-api.md) | RBAC at the gateway, decision flow, takeaways, common mistakes |
+| [SCIM and JML provisioning](12C-scim-and-jml-provisioning.md) | SCIM Users/Groups, JIT(Just-In-Time) vs pre-provision, deactivate → revoke, multi-tenant SCIM |
 
 ## At a glance
 
@@ -35,8 +36,8 @@ For **how clients authenticate** (OAuth, API keys, JWT validation), see [Auth mo
 |------|----------|
 | **Authentication** | Password, MFA(Multi-Factor Authentication), SSO(Single Sign-On), API keys |
 | **Authorization** | RBAC, ABAC, resource policies |
-| **Provisioning** | SCIM, LDAP sync, JIT access |
-| **Governance** | Access reviews, audit logs, JML — see [12A — IAM lifecycle](12A-identity-active-directory.md#iam-lifecycle-joiner-mover-leaver) |
+| **Provisioning** | SCIM, LDAP sync, JIT(Just-In-Time) — [12C SCIM and JML](12C-scim-and-jml-provisioning.md) |
+| **Governance** | Access reviews, audit logs, JML — [12C](12C-scim-and-jml-provisioning.md); AD sequence → [12A lifecycle](12A-identity-active-directory.md#iam-lifecycle-joiner-mover-leaver) |
 | **Cloud control plane** | AWS IAM, Azure RBAC, GCP IAM → [database-connection-and-security](../../database-connection-and-security/README.md) |
 
 ---
@@ -74,7 +75,7 @@ Enterprise AD structure, Entra hybrid, and group → role mapping → [12A Activ
 
 | Mistake | Fix |
 |---------|-----|
-| Confuse **Auth model** (OAuth/JWT) with **IAM program** (JML, audits) | Protocols in §4; org identity here + [12A](12A-identity-active-directory.md) / [12B](12B-identity-enterprise-api.md) |
+| Confuse **Auth model** (OAuth/JWT) with **IAM program** (JML, audits) | Protocols in §4; org identity here + [12A](12A-identity-active-directory.md) / [12B](12B-identity-enterprise-api.md) / [12C](12C-scim-and-jml-provisioning.md) |
 | RBAC at gateway only | Layered AuthZ — [12B common mistakes](12B-identity-enterprise-api.md#common-mistakes) |
 | Cloud IAM vs app RBAC conflated | Cloud IAM = AWS/Azure resources; app RBAC = business operations |
 | No group → role mapping governance | Central mapping table; access reviews |

@@ -2,9 +2,9 @@
 
 Isolation models for SaaS — from shared-everything to siloed — and how they couple to API(Application Programming Interface) and database controls.
 
-> **Scope:** **System isolation architecture** (tenancy model choice). HTTP(Hypertext Transfer Protocol) multi-tenant API concerns → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md). PostgreSQL RLS(Row Level Security) mechanics → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md). Schema/DB-per-tenant ops → [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md).
+> **Scope:** **System isolation architecture** (tenancy model choice). HTTP(Hypertext Transfer Protocol) multi-tenant API concerns → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md). B2B IdP / multi-issuer OIDC(OpenID Connect) → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md). PostgreSQL RLS(Row Level Security) mechanics → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md). Schema/DB-per-tenant ops → [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md).
 >
-> **Related:** Data ownership → [08-data-ownership.md](08-data-ownership.md) · Failure domains → [11-failure-domains.md](11-failure-domains.md) · Compliance → [enterprise-security-compliance](../../enterprise-security-compliance/README.md)
+> **Related:** Data ownership → [08-data-ownership.md](08-data-ownership.md) · Failure domains → [11-failure-domains.md](11-failure-domains.md) · Compliance → [enterprise-security-compliance](../../enterprise-security-compliance/README.md) · Auth federation → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md)
 
 ---
 
@@ -71,7 +71,7 @@ flowchart TB
 |------|-------------|-----------|
 | Pricing plans, feature catalog, geo seeds | Shared tables / config service | App read; admin write |
 | Tenant settings, orders, users | Tenant-scoped store | RLS, schema, or DB boundary |
-| Cache / queue payloads | Shared infra with tenant prefix | Same discipline as SQL — [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md#cache-and-queue-isolation) |
+| Cache / queue payloads | Shared infra with tenant prefix | Same discipline as SQL(Structured Query Language) — [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md#cache-and-queue-isolation) |
 
 Do not put customer PII(Personally Identifiable Information) in “global” tables for convenience.
 
@@ -81,7 +81,7 @@ Do not put customer PII(Personally Identifiable Information) in “global” tab
 
 | Move | Pattern |
 |------|---------|
-| Pool → DB/schema silo | Export tenant slice → provision → dual-run/CDC → cutover router → drain pool — [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md#pool--silo-migration) |
+| Pool → DB/schema silo | Export tenant slice → provision → dual-run/CDC(Change Data Capture) → cutover router → drain pool — [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md#pool--silo-migration) |
 | Silo → pool | Rare; only with strong RLS and customer consent |
 | Add cell | Route by residency; replicate selectively |
 

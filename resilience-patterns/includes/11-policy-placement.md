@@ -11,8 +11,8 @@ Where timeouts, retries, breakers, and shedding should live — so layers do not
 | Layer | Best at | Poor at |
 |-------|---------|---------|
 | **Edge / gateway** | Abuse shedding, TLS(Transport Layer Security) terminate, coarse timeouts, auth | Business degrade UX, per-domain idempotency |
-| **Service mesh** | Uniform connect/request timeouts, mTLS, outlier ejection, observability | Product-aware fallbacks; knowing which POSTs are safe |
-| **App / BFF** | Per-dependency budgets, bulkheads, breakers tied to tiers, fallback contracts | Replacing edge abuse controls |
+| **Service mesh** | Uniform connect/request timeouts, mTLS(Mutual Transport Layer Security), outlier ejection, observability | Product-aware fallbacks; knowing which POSTs are safe |
+| **App / BFF(Backend for Frontend)** | Per-dependency budgets, bulkheads, breakers tied to tiers, fallback contracts | Replacing edge abuse controls |
 | **Worker / consumer** | Redelivery, DLQ(Dead Letter Queue), replay rate limits | Serving interactive deadlines |
 
 **Rule of thumb:** Put **admission and abuse** at the edge; put **dependency policy** next to the call (app or mesh — pick one owner); put **product degrade** in the app/BFF(Backend for Frontend).
@@ -59,7 +59,7 @@ flowchart TB
 |--------------------------|-------------------------|
 | Many languages/services need one baseline | Fallbacks and breakers are product-specific |
 | Platform team owns Envoy/Istio/Linkerd | Few services; library already wraps clients |
-| You need consistent mTLS and RED metrics | Workers and non-HTTP deps need the same rules |
+| You need consistent mTLS and RED(Rate, Errors, Duration) metrics | Workers and non-HTTP(Hypertext Transfer Protocol) deps need the same rules |
 
 Hybrid is fine: **mesh timeouts + app retries/breakers/degrade**, with mesh retries **off**.
 

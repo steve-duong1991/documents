@@ -2,7 +2,7 @@
 
 Where the patterns in this guide usually show up in real stacks — without turning the guide into a library tutorial.
 
-> **Related:** Policy placement → [§11](11-policy-placement.md) · HTTP clients / APIs → [api-design-and-protection](../../api-design-and-protection/README.md) · Mesh discovery → [distributed-systems-primitives §5](../../distributed-systems-primitives/includes/05-service-discovery.md)
+> **Related:** Policy placement → [§11](11-policy-placement.md) · HTTP(Hypertext Transfer Protocol) clients / APIs → [api-design-and-protection](../../api-design-and-protection/README.md) · Mesh discovery → [distributed-systems-primitives §5](../../distributed-systems-primitives/includes/05-service-discovery.md)
 
 ---
 
@@ -32,9 +32,9 @@ Where the patterns in this guide usually show up in real stacks — without turn
 | **Node** | `AbortController` deadlines; `p-retry` / `cockatiel`; undici/connect timeouts |
 | **Python** | `httpx`/`aiohttp` timeouts; `tenacity`; asyncio semaphores |
 | **Envoy / Istio / Linkerd** | Route timeouts, retry budgets, outlier detection — keep aligned with [§11](11-policy-placement.md) |
-| **API gateways** | Coarse timeout, rate limit, 429 — [api-rate-limiting](../../api-rate-limiting/README.md) |
+| **API(Application Programming Interface) gateways** | Coarse timeout, rate limit, 429 — [api-rate-limiting](../../api-rate-limiting/README.md) |
 | **Kubernetes** | readiness/liveness, `terminationGracePeriodSeconds`, PodDisruptionBudget — [cicd §7](../../cicd-and-environments/includes/07-containers-and-health.md) |
-| **Queues** | SQS visibility + DLQ; Kafka max.poll + retry topics — [§8](08-delivery-semantics.md) |
+| **Queues** | SQS visibility + DLQ(Dead Letter Queue); Kafka max.poll + retry topics — [§8](08-delivery-semantics.md) |
 
 Names change; the **controls** (deadline, budget, isolation, owner layer) do not.
 

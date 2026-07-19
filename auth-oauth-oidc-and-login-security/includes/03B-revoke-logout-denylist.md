@@ -4,7 +4,7 @@ How to **validate** credentials on each request, **invalidate** them on logout o
 
 > **Scope:** Operational revoke/logout playbook. Token TTL and validation checklist → [§3](03-token-lifecycle-and-validation.md). Integrity (tamper detect) → [§3a](03A-token-cookie-integrity.md). Concurrent devices / logout-others UX → [§3e](03E-concurrent-sessions-and-devices.md). Cookie flags and session store shape → [§4](04-cookie-session-and-csrf.md). Browser logout UX → [fullstack §7](../../fullstack-bff-and-clients/includes/07-auth-ux.md).
 
-> **Related:** Disabled principals / JML → [api-design §12A](../../api-design-and-protection/includes/12A-identity-active-directory.md) · Audit without logging secrets → [enterprise-security §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md) · Device inventory UX → [§3e](03E-concurrent-sessions-and-devices.md)
+> **Related:** Disabled principals / JML(Joiner-Mover-Leaver) / SCIM(System for Cross-domain Identity Management) → [api-design §12C](../../api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) · AD(Active Directory)/IdP context → [§12A](../../api-design-and-protection/includes/12A-identity-active-directory.md) · Audit without logging secrets → [enterprise-security §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md) · Device inventory UX → [§3e](03E-concurrent-sessions-and-devices.md)
 
 ---
 

@@ -92,7 +92,7 @@ flowchart TD
 | Shared executor | Cascade across features | Bulkheads |
 | Breaker without timeout | Still hangs | Always both |
 | Unbounded queues | Delayed meltdown | Cap + shed |
-| Degrade without contract | UI/API surprise | Document fallback — [§5](05-load-shedding-and-degradation.md) |
+| Degrade without contract | UI/API(Application Programming Interface) surprise | Document fallback — [§5](05-load-shedding-and-degradation.md) |
 | Distributed lock over HTTP call | Deadlocks / expiry hell | Redesign |
 | Trusting broker EOS alone | Duplicate side effects | Dedup effects |
 | Liveness = dep health | Restart storm | Shallow liveness |

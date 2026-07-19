@@ -2,11 +2,11 @@
 
 SaaS APIs must isolate tenants in auth, data, rate limits, and operations — not only with a `tenant_id` column.
 
-> **Scope:** **HTTP(Hypertext Transfer Protocol) API, cache, and queue tenancy** — claim binding, URL design, rate limits, cache/queue prefixes. Isolation model choice (pool vs silo) → [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). PostgreSQL RLS(Row-Level Security) → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md). Schema/DB silos → [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md).
+> **Scope:** **HTTP(Hypertext Transfer Protocol) API(Application Programming Interface), cache, and queue tenancy** — claim binding, URL design, rate limits, cache/queue prefixes. IdP routing, multi-issuer OIDC(OpenID Connect), and B2B SSO(Single Sign-On) tenant resolution → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md). Isolation model choice (pool vs silo) → [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). PostgreSQL RLS(Row-Level Security) → [PG §17](../../postgresql-performance/includes/17-row-level-security-multi-tenant.md). Schema/DB silos → [PG §18](../../postgresql-performance/includes/18-schema-and-database-per-tenant.md).
 >
 > **Deep dive:** Multi-tenant Kafka topic and ACL(Access Control List) patterns → [apache-kafka §2](../../apache-kafka/includes/02-topics-partitions-and-replication.md#multi-tenant-isolation)
 >
-> **Related:** AuthZ / BOLA(Broken Object-Level Authorization) → [04-auth-model.md](04-auth-model.md) · Rate tiers → [05-rate-limit-tiers.md](05-rate-limit-tiers.md) · Idempotency keys → [13-idempotency.md](13-idempotency.md) · Identity → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Consistency → [PG §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md)
+> **Related:** AuthZ / BOLA(Broken Object-Level Authorization) → [04-auth-model.md](04-auth-model.md) · Multi-tenant OIDC / BYO IdP → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · Rate tiers → [05-rate-limit-tiers.md](05-rate-limit-tiers.md) · Idempotency keys → [13-idempotency.md](13-idempotency.md) · Identity → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Consistency → [PG §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md)
 
 ---
 

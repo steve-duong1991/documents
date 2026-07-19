@@ -2,7 +2,7 @@
 
 How event-sourced systems integrate with queues, webhooks, and other services — transactional outbox, idempotent consumers, and overlap with async API(Application Programming Interface) patterns.
 
-> **Deep dive:** Outbox + inbox pair (schemas, relay ops, CDC) → [§5A Outbox and Inbox](05A-outbox-and-inbox.md) · Kafka integration → [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md)
+> **Deep dive:** Outbox + inbox pair (schemas, relay ops, CDC(Change Data Capture)) → [§5A Outbox and Inbox](05A-outbox-and-inbox.md) · Kafka integration → [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md)
 >
 > **Related:** [Async patterns in API design](../../api-design-and-protection/includes/10-async-patterns.md) · [Storage & outbox](03-storage-and-projections.md) · [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md)
 
@@ -93,7 +93,7 @@ flowchart LR
 | **Outbox** | No lost publish after a successful business commit |
 | **Inbox** | No duplicate side effects when the bus redelivers |
 
-Full sequence, SQL with stored `result`, and saga_step_log comparison → [§5A](05A-outbox-and-inbox.md).
+Full sequence, SQL(Structured Query Language) with stored `result`, and saga_step_log comparison → [§5A](05A-outbox-and-inbox.md).
 
 ---
 

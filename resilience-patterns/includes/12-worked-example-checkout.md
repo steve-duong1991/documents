@@ -52,7 +52,7 @@ sequenceDiagram
 
 | Step | Pattern | Concrete choice |
 |------|---------|-----------------|
-| 1 | Deadline propagation — [§1](01-timeouts.md) | User 3s → BFF children sum under 3s; cancel on client gone |
+| 1 | Deadline propagation — [§1](01-timeouts.md) | User 3s → BFF(Backend for Frontend) children sum under 3s; cancel on client gone |
 | 2 | Bulkheads — [§4](04-bulkheads.md) | Separate semaphores: pay, inventory, recs |
 | 3 | Retries — [§2](02-retries-backoff-jitter.md) | Recs: 0–1 GET retry; pay/inventory: **0** unless safe + idempotent |
 | 4 | Breakers — [§3](03-circuit-breakers.md) | Open on sustained pay 5xx/timeouts; fail closed |
@@ -72,7 +72,7 @@ sequenceDiagram
 | Recs pool full | Omit section; checkout continues |
 | Global CPU / DB wait high | Shed anonymous browse first; protect `/checkout` |
 | Payments breaker open | `503` + clear message; **no** silent “success” |
-| Receipt queue deep | Accept order; delay email; alert on lag SLO |
+| Receipt queue deep | Accept order; delay email; alert on lag SLO(Service Level Objective) |
 
 ---
 

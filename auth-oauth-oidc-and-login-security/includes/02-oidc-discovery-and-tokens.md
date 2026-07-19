@@ -2,9 +2,9 @@
 
 OIDC(OpenID Connect) sits on OAuth(Open Authorization) 2.0 and adds **identity**: an ID token that tells the client *who* logged in, plus a discovery document so clients find endpoints and keys without hardcoding.
 
-> **Scope:** Discovery, ID token vs access token, standard claims, `nonce` / `at_hash`, UserInfo. Logout channels and step-up → [§2a](02A-oidc-logout-and-step-up.md). SSO(Single Sign-On) integration → [§2b](02B-sso-integration-playbook.md). SAML(Security Assertion Markup Language) → [§2c](02C-saml-protocol.md). Grant mechanics → [§1](01-oauth2-grants-and-flows.md). Resource-server JWT(JSON Web Token) validation → [§3](03-token-lifecycle-and-validation.md). RBAC(Role-Based Access Control) from claims → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
+> **Scope:** Discovery, ID token vs access token, standard claims, `nonce` / `at_hash`, UserInfo. Logout channels and step-up → [§2a](02A-oidc-logout-and-step-up.md). SSO(Single Sign-On) integration → [§2b](02B-sso-integration-playbook.md). SAML(Security Assertion Markup Language) → [§2c](02C-saml-protocol.md). Multi-tenant / multi-issuer → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md). Grant mechanics → [§1](01-oauth2-grants-and-flows.md). Resource-server JWT(JSON Web Token) validation → [§3](03-token-lifecycle-and-validation.md). RBAC(Role-Based Access Control) from claims → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
 
-> **Related:** OIDC logout / step-up → [§2a](02A-oidc-logout-and-step-up.md) · SSO playbook → [§2b](02B-sso-integration-playbook.md) · SAML → [§2c](02C-saml-protocol.md)
+> **Related:** OIDC logout / step-up → [§2a](02A-oidc-logout-and-step-up.md) · SSO playbook → [§2b](02B-sso-integration-playbook.md) · SAML → [§2c](02C-saml-protocol.md) · Multi-tenant OIDC → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md)
 
 ---
 

@@ -1,6 +1,6 @@
 # Identity — Active Directory and enterprise IdP
 
-> **Related:** IAM(Identity and Access Management) and RBAC(Role-Based Access Control) → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · API(Application Programming Interface) decisions → [12B-identity-enterprise-api.md](12B-identity-enterprise-api.md) · Auth protocols → [04-auth-model.md](04-auth-model.md)
+> **Related:** IAM(Identity and Access Management) and RBAC(Role-Based Access Control) → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · API(Application Programming Interface) decisions → [12B-identity-enterprise-api.md](12B-identity-enterprise-api.md) · SCIM(System for Cross-domain Identity Management) / JML(Joiner-Mover-Leaver) playbook → [12C-scim-and-jml-provisioning.md](12C-scim-and-jml-provisioning.md) · Auth protocols → [04-auth-model.md](04-auth-model.md)
 
 ## What Active Directory is
 
@@ -167,7 +167,7 @@ Hub comparison → [12 — IAM, RBAC, and AD](12-identity-rbac-iam-ad.md#iam-rba
 
 ## IAM lifecycle (joiner-mover-leaver)
 
-Provisioning and offboarding must revoke API and app access when HR disables an account — not only when a JWT expires.
+Provisioning and offboarding must revoke API and app access when HR disables an account — not only when a JWT expires. App-side SCIM contract, JIT(Just-In-Time) vs pre-provision, and deactivate→revoke races → [12C SCIM and JML](12C-scim-and-jml-provisioning.md).
 
 ```mermaid
 sequenceDiagram
@@ -200,7 +200,7 @@ API access checklist and mistakes → [12B — API design takeaways](12B-identit
 |---------|-----|
 | Terminate **Kerberos** at the public API gateway | AD/Entra → OIDC/SAML → JWT at the edge ([Auth model](04-auth-model.md)) |
 | Expose **LDAP** to the internet for app auth | Federation via Entra ID / IdP; LDAP stays internal |
-| Stale **hybrid sync** (AD Connect / SCIM) | Monitor sync lag; revoked AD users still in JWT until TTL expires |
+| Stale **hybrid sync** (AD Connect / SCIM(System for Cross-domain Identity Management)) | Monitor sync lag; on disable revoke sessions — [12C lag/races](12C-scim-and-jml-provisioning.md#lag-races-and-revoke); revoked users still in JWT until TTL otherwise |
 | Treat AD **groups** as app permissions in code | Map groups → roles centrally — see [12B API access mistakes](12B-identity-enterprise-api.md#common-mistakes) |
 | Skip **object-level AuthZ** because RBAC passed | App still checks resource ownership ([Auth model — layered flow](04-auth-model.md#layered-auth-flow)) |
 

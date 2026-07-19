@@ -40,7 +40,7 @@ flowchart LR
 | Kubernetes | Separate service accounts; no cluster-admin for apps |
 | DB | One role per service; read replica role for readers |
 | Secrets | Path-scoped policies; env separation |
-| Human prod access | JIT / break-glass with ticket; not standing admin |
+| Human prod access | JIT(Just-In-Time) / break-glass with ticket; not standing admin |
 | Partner APIs | Scoped keys; per-tenant isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md) |
 
 ## Segmentation

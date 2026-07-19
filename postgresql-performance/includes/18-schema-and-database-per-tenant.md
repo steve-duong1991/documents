@@ -4,7 +4,7 @@ Operational playbook for **schema-per-tenant** and **database-per-tenant** silos
 
 > **Scope:** **Silo mechanics** (`search_path`, connection routing, migration fan-out, restore). Product-level tenancy choice → [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md). Shared-table RLS → [§17](17-row-level-security-multi-tenant.md).
 >
-> **Related:** Migrations → [§15](15-schema-migration-checklist.md) · Backup/PITR → [§16](16-backup-restore-and-pitr.md) · Pooling → [§7](07-connection-management.md) · API tenancy → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md)
+> **Related:** Migrations → [§15](15-schema-migration-checklist.md) · Backup/PITR(Point-in-Time Recovery) → [§16](16-backup-restore-and-pitr.md) · Pooling → [§7](07-connection-management.md) · API(Application Programming Interface) tenancy → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md)
 
 ---
 

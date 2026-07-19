@@ -27,7 +27,7 @@ Run at the gateway or shared middleware:
 
 1. **Signature** — resolve `kid` via JWKS; verify with expected alg (RS256/ES256)
 2. **`exp` / `nbf` / `iat`** — reject expired; allow ~30–60s skew
-3. **`iss`** — exact allowlist
+3. **`iss`** — exact allowlist (per tenant when B2B multi-issuer — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md))
 4. **`aud`** — must include this API(Application Programming Interface)'s audience (resource indicator) — [§1d](01D-resource-indicators.md)
 5. **`scope` / roles** — coarse gate (e.g. `orders:read`)
 6. Optional **`jti` denylist** — for emergency revoke within TTL

@@ -76,7 +76,7 @@ Pair with product **rate tiers** — [api-design §5](../../api-design-and-prote
 
 ### How to test well
 
-1. **Warm up** — JIT, connection pools, cache population
+1. **Warm up** — JIT(Just-In-Time), connection pools, cache population
 2. **Ramp gradually** — find knee of the curve, not instant cliff
 3. **Realistic payloads** — size, headers, auth tokens
 4. **Run long enough** — catch memory leaks, GC pauses, replication lag

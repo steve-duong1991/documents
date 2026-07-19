@@ -2,7 +2,7 @@
 
 Metrics and signals that prove timeouts, retries, breakers, bulkheads, and shed are working — or silently failing.
 
-> **Related:** RED/USE baselines → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · SLOs → [sre-and-incidents](../../sre-and-incidents/README.md) · Cascading detection → [§9](09-cascading-failure.md) · Chaos abort criteria → [§10](10-chaos-and-failure-injection.md)
+> **Related:** RED(Rate, Errors, Duration)/USE(Utilization, Saturation, Errors) baselines → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · SLOs → [sre-and-incidents](../../sre-and-incidents/README.md) · Cascading detection → [§9](09-cascading-failure.md) · Chaos abort criteria → [§10](10-chaos-and-failure-injection.md)
 
 ---
 
@@ -60,10 +60,10 @@ flowchart LR
 
 | Panel group | Includes |
 |-------------|----------|
-| **Journey** | Checkout/browse SLO, error budget burn |
+| **Journey** | Checkout/browse SLO(Service Level Objective), error budget burn |
 | **Protection** | Shed rate, degrade rate by feature |
 | **Dependencies** | Latency, error, timeout, retry ratio, breaker |
-| **Saturation** | CPU, threads, DB/HTTP pool wait |
+| **Saturation** | CPU, threads, DB/HTTP(Hypertext Transfer Protocol) pool wait |
 
 Tie panels to version/build for deploy correlation — [deployment-strategies](../../deployment-strategies/README.md).
 

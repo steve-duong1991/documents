@@ -31,6 +31,7 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | 12 | [Identity: RBAC, IAM & Active Directory](includes/12-identity-rbac-iam-ad.md) |
 | 12A | [Identity — Active Directory](includes/12A-identity-active-directory.md) |
 | 12B | [Identity — API access](includes/12B-identity-enterprise-api.md) |
+| 12C | [Identity — SCIM and JML provisioning](includes/12C-scim-and-jml-provisioning.md) |
 | 13 | [Idempotency](includes/13-idempotency.md) |
 | 13A | [Idempotency — client and server flow](includes/13A-idempotency-client-and-server-flow.md) |
 | 13B | [Idempotency — storage](includes/13B-idempotency-storage.md) |
@@ -50,7 +51,8 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | **New to API infra** | Overview → [§3 LB vs gateway](includes/03-api-gateway.md) → [3A request flows](includes/03A-api-gateway-request-flows.md) → §11 (stateless) → §8 (reference arch) |
 | **Designing the API contract** | §1 → §7 (OpenAPI) → §15 (contract CI(Continuous Integration)) → §14 (versioning) → [§13 idempotency](includes/13-idempotency.md) + [13A client flow](includes/13A-idempotency-client-and-server-flow.md) → [§10 async](includes/10-async-patterns.md) + [10A jobs](includes/10A-async-jobs-polling.md) · non-REST(Representational State Transfer) → [§17 GraphQL/gRPC](includes/17-graphql-and-grpc.md) |
 | **Hardening for production** | §2 → §3 → §5 → §6 → [§13](includes/13-idempotency.md) + [13A](includes/13A-idempotency-client-and-server-flow.md) → §9 |
-| **B2B / SaaS partner API** | §4 auth → §5 tiers → [§16 multi-tenant](includes/16-multi-tenant-apis.md) → [§12 identity](includes/12-identity-rbac-iam-ad.md) + [api-rate-limiting §6 scope](../api-rate-limiting/includes/06-scope-identity.md) |
+| **B2B / SaaS partner API** | §4 auth → §5 tiers → [§16 multi-tenant](includes/16-multi-tenant-apis.md) → [§12 identity](includes/12-identity-rbac-iam-ad.md) + [§12C SCIM/JML](includes/12C-scim-and-jml-provisioning.md) + [api-rate-limiting §6 scope](../api-rate-limiting/includes/06-scope-identity.md) |
+| **Enterprise provisioning / offboarding** | [§12C SCIM and JML](includes/12C-scim-and-jml-provisioning.md) → [§12A AD/IdP](includes/12A-identity-active-directory.md) → [auth §3b revoke](../auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md) → [auth §2d multi-tenant OIDC](../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) |
 | **OAuth(Open Authorization) / OIDC(OpenID Connect) / login depth** | [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) after §4 |
 | **GraphQL or gRPC API** | [§17 GraphQL and gRPC](includes/17-graphql-and-grpc.md) → §1 (REST baseline) → §7 (OpenAPI) or proto contracts → §15 (contract CI) |
 | **Picking rate limits** | [api-rate-limiting](../api-rate-limiting/README.md) + §5 here |

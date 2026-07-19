@@ -50,7 +50,7 @@ What to automate so OAuth(Open Authorization), OIDC(OpenID Connect), cookies, an
 
 - [ ] Access token past `exp` → 401  
 - [ ] Idle expiry → re-auth path (interactive or top-level OIDC) — [§3d](03D-lifetimes-and-sliding-sessions.md)  
-- [ ] Absolute expiry → does **not** silent-SSO(Single Sign-On) into full session without policy  
+- [ ] Absolute expiry → does **not** silently re-establish a full session via SSO(Single Sign-On) without policy  
 - [ ] Sliding idle extends idle but not absolute  
 
 ---
@@ -81,6 +81,16 @@ What to automate so OAuth(Open Authorization), OIDC(OpenID Connect), cookies, an
 - [ ] Account link requires verified email + confirmation — [§2b](02B-sso-integration-playbook.md)  
 - [ ] SAML: unsigned assertion rejected; bad Audience rejected — [§2c](02C-saml-protocol.md)  
 - [ ] SAML RelayState open redirect rejected  
+
+---
+
+## Checklist — multi-tenant OIDC / B2B
+
+- [ ] Callback with wrong `iss` for resolved tenant → reject — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md)  
+- [ ] Token for tenant A used on tenant B URL/session → 401/403  
+- [ ] Client-supplied `tenant_id` alone cannot escalate membership  
+- [ ] Ambiguous email domain → org picker (not silent join)  
+- [ ] Tenant switch re-binds access/refresh (old Bearer fails object AuthZ)  
 
 ---
 

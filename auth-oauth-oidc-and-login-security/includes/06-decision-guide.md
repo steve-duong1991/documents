@@ -2,7 +2,7 @@
 
 Pick a grant, a token/session pattern, and a login hardening level without re-litigating the whole protocol each time.
 
-> **Related:** Overview → [00-overview.md](00-overview.md) · Grants → [§1](01-oauth2-grants-and-flows.md) · Client auth / exchange → [§1a](01A-client-auth-and-token-exchange.md) · Scopes → [§1b](01B-scopes-and-consent.md) · PAR(Pushed Authorization Requests) → [§1c](01C-pushed-authorization-requests.md) · Resource indicators → [§1d](01D-resource-indicators.md) · Device / CIBA(Client-Initiated Backchannel Authentication) → [§1e](01E-device-authorization-and-ciba.md) · JAR(JWT-secured Authorization Request) / RAR(Rich Authorization Requests) → [§1f](01F-jar-and-rar.md) · OIDC(OpenID Connect) → [§2](02-oidc-discovery-and-tokens.md) · Logout / step-up → [§2a](02A-oidc-logout-and-step-up.md) · SSO(Single Sign-On) → [§2b](02B-sso-integration-playbook.md) · SAML(Security Assertion Markup Language) → [§2c](02C-saml-protocol.md) · Tokens → [§3](03-token-lifecycle-and-validation.md) · Integrity → [§3a](03A-token-cookie-integrity.md) · Revoke / logout → [§3b](03B-revoke-logout-denylist.md) · Redis denylist → [§3c](03C-denylist-redis-patterns.md) · Lifetimes → [§3d](03D-lifetimes-and-sliding-sessions.md) · Concurrent devices → [§3e](03E-concurrent-sessions-and-devices.md) · Cookies → [§4](04-cookie-session-and-csrf.md) · Third-party / mobile → [§4a](04A-third-party-cookies-and-mobile-redirects.md) · Guest → [§4b](04B-anonymous-and-guest-sessions.md) · Login → [§5](05-login-security-playbook.md) · Auth tests → [§5a](05A-auth-testing-checklist.md) · Signup / magic → [§5b](05B-signup-verify-and-magic-links.md) · WebAuthn(Web Authentication) → [§5c](05C-webauthn-and-passkeys.md) · Impersonation → [§5d](05D-impersonation-and-support-access.md) · Client matrix → [api-design §4](../../api-design-and-protection/includes/04-auth-model.md)
+> **Related:** Overview → [00-overview.md](00-overview.md) · Grants → [§1](01-oauth2-grants-and-flows.md) · Client auth / exchange → [§1a](01A-client-auth-and-token-exchange.md) · Scopes → [§1b](01B-scopes-and-consent.md) · PAR(Pushed Authorization Requests) → [§1c](01C-pushed-authorization-requests.md) · Resource indicators → [§1d](01D-resource-indicators.md) · Device / CIBA(Client-Initiated Backchannel Authentication) → [§1e](01E-device-authorization-and-ciba.md) · JAR(JWT-secured Authorization Request) / RAR(Rich Authorization Requests) → [§1f](01F-jar-and-rar.md) · OIDC(OpenID Connect) → [§2](02-oidc-discovery-and-tokens.md) · Logout / step-up → [§2a](02A-oidc-logout-and-step-up.md) · SSO(Single Sign-On) → [§2b](02B-sso-integration-playbook.md) · SAML(Security Assertion Markup Language) → [§2c](02C-saml-protocol.md) · Multi-tenant OIDC / B2B SSO → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md) · Tokens → [§3](03-token-lifecycle-and-validation.md) · Integrity → [§3a](03A-token-cookie-integrity.md) · Revoke / logout → [§3b](03B-revoke-logout-denylist.md) · Redis denylist → [§3c](03C-denylist-redis-patterns.md) · Lifetimes → [§3d](03D-lifetimes-and-sliding-sessions.md) · Concurrent devices → [§3e](03E-concurrent-sessions-and-devices.md) · Cookies → [§4](04-cookie-session-and-csrf.md) · Third-party / mobile → [§4a](04A-third-party-cookies-and-mobile-redirects.md) · Guest → [§4b](04B-anonymous-and-guest-sessions.md) · Login → [§5](05-login-security-playbook.md) · Auth tests → [§5a](05A-auth-testing-checklist.md) · Signup / magic → [§5b](05B-signup-verify-and-magic-links.md) · WebAuthn(Web Authentication) → [§5c](05C-webauthn-and-passkeys.md) · Impersonation → [§5d](05D-impersonation-and-support-access.md) · Client matrix → [api-design §4](../../api-design-and-protection/includes/04-auth-model.md)
 
 ---
 
@@ -41,6 +41,9 @@ flowchart TD
 | Multi-app SSO logout | App revoke + RP-initiated + back-channel — [§2a](02A-oidc-logout-and-step-up.md) |
 | App session expired, IdP SSO still alive | Idle → top-level OIDC; absolute → interactive — [§3d](03D-lifetimes-and-sliding-sessions.md) |
 | Customer requires SAML | Broker SAML→OIDC or native SP — [§2c](02C-saml-protocol.md), [§2b](02B-sso-integration-playbook.md) |
+| Customer brings Entra / Okta (BYO IdP) | Per-tenant issuer allowlist + membership — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md); data isolation — [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md) |
+| Email-domain / subdomain SSO | Home-realm discovery then authorize — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md) |
+| User in multiple orgs | Memberships + `active_tenant_id`; switch re-binds tokens — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md) |
 | Designing partner scopes | [§1b](01B-scopes-and-consent.md) |
 | Fat authorize URLs / high-assurance authorize | PAR(Pushed Authorization Requests) — [§1c](01C-pushed-authorization-requests.md); JAR/RAR if required — [§1f](01F-jar-and-rar.md) |
 | One AS, many APIs | Resource indicators + per-API `aud` — [§1d](01D-resource-indicators.md) |
@@ -64,6 +67,7 @@ flowchart TD
 - [ ] Interactive clients use **Authorization Code + PKCE**; Implicit and Password grants banned
 - [ ] Confidential clients use proper client auth (secret / private_key_jwt / mTLS) — [§1a](01A-client-auth-and-token-exchange.md)
 - [ ] OIDC discovery + JWKS(JSON Web Key Set) used; ID token `iss`/`aud`/`nonce` verified
+- [ ] B2B multi-tenant: tenant resolved before authorize; `iss` allowlisted per tenant; membership bound — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md)
 - [ ] Multi-app SSO: back-channel logout planned; not front-channel-only — [§2a](02A-oidc-logout-and-step-up.md)
 - [ ] Access tokens short-lived; refresh **rotates** with reuse detection
 - [ ] Altered credentials fail closed (JWT sig / opaque lookup / session `sid`) — [§3a](03A-token-cookie-integrity.md)
@@ -87,6 +91,7 @@ flowchart TD
 |---------|---------------|-----|
 | Implicit / password grant | Token or password exposure | Auth Code + PKCE — [§1](01-oauth2-grants-and-flows.md) |
 | Access token and ID token confused | Wrong audience, broken AuthZ | [§2](02-oidc-discovery-and-tokens.md) |
+| Any valid JWT accepted across tenants | Cross-tenant AuthN | Per-tenant `iss` allowlist — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md) |
 | “HttpOnly stops clients rewriting the session” | HttpOnly only blocks JS read; integrity is sig/lookup | [§3a](03A-token-cookie-integrity.md) |
 | Days-long access JWT | Theft window huge | Minutes TTL + refresh — [§3](03-token-lifecycle-and-validation.md) |
 | Cookie JWT without CSRF | Cross-site action as user | [§4](04-cookie-session-and-csrf.md) |
@@ -105,6 +110,7 @@ flowchart TD
 | How should a BFF call APIs as the user? | Token exchange or BFF-held refresh — [§1a](01A-client-auth-and-token-exchange.md) |
 | ID token to APIs? | No — access token only |
 | Multi-app SSO logout? | Back-channel (+ RP-initiated); not front-channel alone — [§2a](02A-oidc-logout-and-step-up.md) |
+| B2B per-customer IdP? | Resolve tenant → allowlist `iss` → membership — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md) |
 | Can the client safely edit the token/cookie? | No — design for detect-and-reject ([§3a](03A-token-cookie-integrity.md)) |
 | First-party web credential? | HTTP-only session cookie via BFF |
 | SPA refresh storage? | HTTP-only cookie or platform secure store — not localStorage; no IdP iframe renew — [§4a](04A-third-party-cookies-and-mobile-redirects.md) |

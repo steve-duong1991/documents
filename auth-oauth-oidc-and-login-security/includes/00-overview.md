@@ -27,6 +27,7 @@ Authentication looks simple until you pick a grant, store a refresh token, or sh
 | **OIDC logout / step-up** | RP / front / back-channel logout; `prompt` / `max_age` / `acr_values` | [§2a](02A-oidc-logout-and-step-up.md) |
 | **SSO(Single Sign-On) integration** | IdP → OIDC → app session → API Bearer; enterprise vs social; linking | [§2b](02B-sso-integration-playbook.md) |
 | **SAML(Security Assertion Markup Language)** | Web Browser SSO, assertions, bindings, metadata, SAML→OIDC bridge | [§2c](02C-saml-protocol.md) |
+| **Multi-tenant OIDC / B2B SSO** | Tenant resolution, IdP topology, multi-issuer validation, membership / tenant switch | [§2d](02D-multi-tenant-oidc-and-b2b-sso.md) |
 | **Token lifecycle** | Validation checklist, refresh rotation, revocation, JWKS(JSON Web Key Set) key rotation | [§3](03-token-lifecycle-and-validation.md) |
 | **Integrity / anti-tamper** | Client is untrusted; signature or opaque lookup; cookie `sid` vs forgeable claims | [§3a](03A-token-cookie-integrity.md) |
 | **Revoke / logout / denylist** | Validate vs invalidate; force sign-out; user/`jti`/session block stores | [§3b](03B-revoke-logout-denylist.md) |

@@ -1,10 +1,10 @@
 # OAuth, OIDC & Login Security Guide
 
-A practical deep dive on **how clients authenticate and how logins stay safe**: OAuth(Open Authorization) 2.0 grant types, OIDC(OpenID Connect) discovery and ID tokens, access/refresh lifecycle, cookie/session defenses, and the login playbook (passwords, lockout, MFA(Multi-Factor Authentication), device trust).
+A practical deep dive on **how clients authenticate and how logins stay safe**: OAuth(Open Authorization) 2.0 grant types, OIDC(OpenID Connect) discovery and ID tokens, SSO(Single Sign-On) and B2B multi-tenant IdP routing, access/refresh lifecycle, cookie/session defenses, and the login playbook (passwords, lockout, MFA(Multi-Factor Authentication), device trust).
 
 Related: [api-design-and-protection §4](../api-design-and-protection/includes/04-auth-model.md) (client-type auth matrix) · [§12 identity / RBAC](../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) · [fullstack §7 Auth UX](../fullstack-bff-and-clients/includes/07-auth-ux.md) · [enterprise-security-compliance](../enterprise-security-compliance/README.md) (OWASP(Open Worldwide Application Security Project), secrets, audit)
 
-> **Scope:** This guide owns **protocol depth and login hardening** — grant flows, OIDC discovery/claims, token validation/revocation, cookie CSRF(Cross-Site Request Forgery) mechanics, and credential attack defenses. Client-type selection and gateway AuthN stay in [api-design §4](../api-design-and-protection/includes/04-auth-model.md). Browser UX and BFF(Backend for Frontend) cookie patterns stay in [fullstack §7](../fullstack-bff-and-clients/includes/07-auth-ux.md). Org IAM(Identity and Access Management)/RBAC(Role-Based Access Control)/AD(Active Directory) stay in [api-design §12](../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
+> **Scope:** This guide owns **protocol depth and login hardening** — grant flows, OIDC discovery/claims, SSO/multi-tenant IdP routing, token validation/revocation, cookie CSRF(Cross-Site Request Forgery) mechanics, and credential attack defenses. Client-type selection and gateway AuthN stay in [api-design §4](../api-design-and-protection/includes/04-auth-model.md). Browser UX and BFF(Backend for Frontend) cookie patterns stay in [fullstack §7](../fullstack-bff-and-clients/includes/07-auth-ux.md). Org IAM(Identity and Access Management)/RBAC(Role-Based Access Control)/AD(Active Directory) stay in [api-design §12](../api-design-and-protection/includes/12-identity-rbac-iam-ad.md). API(Application Programming Interface)/data tenancy stays in [api-design §16](../api-design-and-protection/includes/16-multi-tenant-apis.md).
 
 ---
 
@@ -24,6 +24,7 @@ Related: [api-design-and-protection §4](../api-design-and-protection/includes/0
 | 2a | [OIDC logout and step-up](includes/02A-oidc-logout-and-step-up.md) |
 | 2b | [SSO integration playbook](includes/02B-sso-integration-playbook.md) |
 | 2c | [SAML protocol](includes/02C-saml-protocol.md) |
+| 2d | [Multi-tenant OIDC and B2B SSO](includes/02D-multi-tenant-oidc-and-b2b-sso.md) |
 | 3 | [Token lifecycle and validation](includes/03-token-lifecycle-and-validation.md) |
 | 3a | [Token and cookie integrity (anti-tampering)](includes/03A-token-cookie-integrity.md) |
 | 3b | [Revoke, force logout, and denylist](includes/03B-revoke-logout-denylist.md) |
@@ -47,7 +48,8 @@ Related: [api-design-and-protection §4](../api-design-and-protection/includes/0
 | If you are… | Read in order |
 |-------------|---------------|
 | **Adding SSO(Single Sign-On) / social login** | Overview → §1 → [§2b SSO playbook](includes/02B-sso-integration-playbook.md) → §2 OIDC → [§2a logout](includes/02A-oidc-logout-and-step-up.md) → [§3d lifetimes](includes/03D-lifetimes-and-sliding-sessions.md) → §6 |
-| **Enterprise SAML(Security Assertion Markup Language) customer** | [§2c SAML](includes/02C-saml-protocol.md) → [§2b bridge](includes/02B-sso-integration-playbook.md) → §4 session |
+| **B2B SaaS with per-customer IdP** | [§2b SSO](includes/02B-sso-integration-playbook.md) → [§2d multi-tenant OIDC](includes/02D-multi-tenant-oidc-and-b2b-sso.md) → [api-design §12C SCIM/JML](../api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) → [§16](../api-design-and-protection/includes/16-multi-tenant-apis.md) → [§12 identity](../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) → §6 |
+| **Enterprise SAML(Security Assertion Markup Language) customer** | [§2c SAML](includes/02C-saml-protocol.md) → [§2b bridge](includes/02B-sso-integration-playbook.md) → [§2d](includes/02D-multi-tenant-oidc-and-b2b-sso.md) if multi-tenant → §4 session |
 | **First-party web app (cookie session)** | §4 → [§4a](includes/04A-third-party-cookies-and-mobile-redirects.md) → [§4b guest](includes/04B-anonymous-and-guest-sessions.md) → [§3d lifetimes](includes/03D-lifetimes-and-sliding-sessions.md) → [fullstack §7](../fullstack-bff-and-clients/includes/07-auth-ux.md) → §5 |
 | **SPA or mobile with PKCE(Proof Key for Code Exchange)** | §1 → [§4a](includes/04A-third-party-cookies-and-mobile-redirects.md) → §2 → §3 → [§3a](includes/03A-token-cookie-integrity.md) → [§3d](includes/03D-lifetimes-and-sliding-sessions.md) → §6 |
 | **BFF calling APIs as the user** | [§1a](includes/01A-client-auth-and-token-exchange.md) → §4 → §3 |

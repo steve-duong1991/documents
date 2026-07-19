@@ -1,6 +1,6 @@
 # Identity — API access decisions and practices
 
-> **Related:** IAM(Identity and Access Management) and RBAC(Role-Based Access Control) → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Active Directory → [12A-identity-active-directory.md](12A-identity-active-directory.md) · Multi-tenant → [16-multi-tenant-apis.md](16-multi-tenant-apis.md)
+> **Related:** IAM(Identity and Access Management) and RBAC(Role-Based Access Control) → [12-identity-rbac-iam-ad.md](12-identity-rbac-iam-ad.md) · Active Directory → [12A-identity-active-directory.md](12A-identity-active-directory.md) · SCIM(System for Cross-domain Identity Management) / JML(Joiner-Mover-Leaver) → [12C-scim-and-jml-provisioning.md](12C-scim-and-jml-provisioning.md) · Multi-tenant → [16-multi-tenant-apis.md](16-multi-tenant-apis.md)
 
 
 ## API design takeaways
@@ -10,7 +10,7 @@
 | Map AD(Active Directory)/IdP **groups** → app **roles**, not raw group names in app code | Survives reorgs; central mapping table |
 | Put **roles/scopes in JWT(JSON Web Token)** (short TTL) | Stateless validation at gateway |
 | Enforce **object-level AuthZ in app** | RBAC alone does not prevent BOLA(Broken Object-Level Authorization) |
-| Automate **JML** (joiner-mover-leaver) | Orphan accounts are a top audit finding |
+| Automate **JML(Joiner-Mover-Leaver)** via SCIM(System for Cross-domain Identity Management) (or equivalent) | Orphan accounts are a top audit finding — [12C](12C-scim-and-jml-provisioning.md) |
 | Regular **access reviews** | Least privilege over time |
 | Log **who** (subject), **what** (resource), **decision** | Audit without logging tokens |
 
@@ -65,7 +65,7 @@ Unified AuthN → AuthZ decision flow (MFA, policies, object check) → [12A —
 | Checking AD group names hard-coded in every service | Central group → role mapping; roles in token claims |
 | RBAC at gateway only, no object AuthZ in app | Layered AuthZ per [Auth model](04-auth-model.md) |
 | Long-lived JWT with embedded admin role | Short TTL + refresh; minimal claims |
-| No offboarding automation | Disable IdP account → revoke app + API access same day |
+| No offboarding automation | Disable IdP account → SCIM deactivate + revoke same day — [12C](12C-scim-and-jml-provisioning.md), [auth §3b](../../auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md) |
 | Same role for humans and service accounts | Separate service principals with narrower permissions |
 | Confusing cloud IAM with app RBAC | Cloud IAM protects AWS/Azure resources; app RBAC protects business operations |
 

@@ -154,7 +154,7 @@ On publish failure: increment `attempts`, set `last_error`, leave `published_at`
 | Symptom | Action |
 |---------|--------|
 | Payload fails serialization / schema validation | Stop retrying blindly; quarantine |
-| Broker rejects permanently (bad topic ACL) | Alert; fix config; replay |
+| Broker rejects permanently (bad topic ACL(Access Control List)) | Alert; fix config; replay |
 | Transient broker errors | Backoff; keep `published_at` null |
 
 Move exhausted rows to a **poison / DLQ table** (or mark `published_at` with a sentinel status column) so one bad row does not block the unpublished index forever. Align with [HTS DLQ](../../high-throughput-systems/includes/06-async-queues-workers.md#dead-letter-queue-dlq).
@@ -214,7 +214,7 @@ COMMIT;
 -- then commit bus offset / ack
 ```
 
-**Ordering:** Ack the bus **after** the inbox transaction commits. Ack-before-commit recreates lost-update bugs the outbox was meant to fix.
+**Ordering:** Ack the bus **after** the inbox transaction commits. Ack-before-commit recreates lost-update bugs that the outbox was meant to fix.
 
 If the side effect is an external API(Application Programming Interface) that cannot join the DB transaction, use **inbox insert first** (reservation) + idempotency key on the external call + store `result` after success — same discipline as [saga step idempotency](07B-sagas-compensation-idempotency.md#idempotency-patterns-specific-to-sagas).
 
@@ -225,7 +225,7 @@ If the side effect is an external API(Application Programming Interface) that ca
 | **Inbox** | `(consumer_name, message_id)` — transport / event identity | Any consumer (projector, webhook worker, choreography listener) |
 | **saga_step_log** | `(service_name, idempotency_key)` often `saga_id + step_name` — business step | Saga participant APIs |
 
-A saga participant often uses **both**: inbox (or HTTP idempotency) against duplicate messages, and `saga_step_log` so `CapturePayment` for saga X never double-charges even if message ids differ. See [§7C](07C-sagas-operations.md) for ops around stuck sagas; schemas above are the source of truth for the pair.
+A saga participant often uses **both**: inbox (or HTTP(Hypertext Transfer Protocol) idempotency) against duplicate messages, and `saga_step_log` so `CapturePayment` for saga X never double-charges even if message ids differ. See [§7C](07C-sagas-operations.md) for ops around stuck sagas; schemas above are the source of truth for the pair.
 
 ---
 

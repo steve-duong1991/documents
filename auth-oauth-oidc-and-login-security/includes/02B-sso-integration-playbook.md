@@ -2,7 +2,7 @@
 
 End-to-end path from **IdP SSO(Single Sign-On)** to **your app session** to **API(Application Programming Interface) Bearer**: how enterprise and social IdPs differ, how SAML(Security Assertion Markup Language) fits (via bridge), and how to link accounts safely when one user has many IdPs.
 
-> **Scope:** Integration sequence and product choices. Grants → [§1](01-oauth2-grants-and-flows.md). OIDC(OpenID Connect) tokens → [§2](02-oidc-discovery-and-tokens.md). SAML protocol depth → [§2c](02C-saml-protocol.md). Logout → [§2a](02A-oidc-logout-and-step-up.md). BFF(Backend for Frontend) cookie → [§4](04-cookie-session-and-csrf.md). Lifetimes / silent re-auth → [§3d](03D-lifetimes-and-sliding-sessions.md). Groups→roles → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
+> **Scope:** Integration sequence and product choices. Grants → [§1](01-oauth2-grants-and-flows.md). OIDC(OpenID Connect) tokens → [§2](02-oidc-discovery-and-tokens.md). SAML protocol depth → [§2c](02C-saml-protocol.md). B2B multi-tenant IdP routing → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md). Logout → [§2a](02A-oidc-logout-and-step-up.md). BFF(Backend for Frontend) cookie → [§4](04-cookie-session-and-csrf.md). Lifetimes / silent re-auth → [§3d](03D-lifetimes-and-sliding-sessions.md). Groups→roles → [api-design §12](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md).
 
 ---
 
@@ -58,10 +58,16 @@ sequenceDiagram
 | **MFA(Multi-Factor Authentication) / conditional access** | IdP policy — trust `acr`/`amr` | Provider-dependent; don’t assume |
 | **Claims for AuthZ** | Groups / roles / tenant | Email, `sub`; rarely fine-grained roles |
 | **Email trust** | Usually org-verified | Require `email_verified`; still confirm on link |
-| **Account lifecycle** | JML / SCIM — [§12A](../../api-design-and-protection/includes/12A-identity-active-directory.md) | User deletes social ≠ your offboarding |
+| **Account lifecycle** | JML(Joiner-Mover-Leaver) / SCIM(System for Cross-domain Identity Management) — [§12C](../../api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) | User deletes social ≠ your offboarding |
 | **B2B multi-tenant** | Often one IdP per customer tenant | Usually one global social IdP |
 
 **Product rule:** enterprise SSO maps groups → app roles. Social login maps to a **consumer user** with app-local roles — don’t invent admin from “Google said so.”
+
+### B2B multi-tenant (pointer)
+
+When each customer brings their own IdP (or you map email domains / subdomains to orgs), you need **tenant resolution before `/authorize`**, an **issuer allowlist per tenant**, and a **membership** model — not only the SSO sequence above.
+
+Depth → [§2d Multi-tenant OIDC and B2B SSO](02D-multi-tenant-oidc-and-b2b-sso.md). API/data isolation stays in [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md).
 
 ---
 
@@ -128,7 +134,7 @@ Prefer **separate first-party cookies per app** + shared IdP over one `Domain=.e
 - [ ] Enterprise: group→role map; social: local roles
 - [ ] Lifetimes documented — [§3d](03D-lifetimes-and-sliding-sessions.md)
 - [ ] Logout clears app + IdP as required — [§2a](02A-oidc-logout-and-step-up.md), [§3b](03B-revoke-logout-denylist.md)
-- [ ] Tenant isolation if B2B SSO — [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md)
+- [ ] Tenant isolation if B2B SSO — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md) + [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md)
 
 ---
 

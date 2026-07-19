@@ -6,6 +6,14 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-07-19
 
+### Auth — multi-tenant OIDC / B2B SSO
+- **auth-oauth-oidc-and-login-security §2d (new):** Multi-tenant OIDC and B2B SSO — tenant resolution (subdomain/path/email HRD), IdP topology (shared/broker/per-issuer), authorize routing, multi-issuer validation, membership + tenant switch, admin consent/SCIM pointers
+- **Cross-links:** §2b pointer + checklist; §2/§2c/§3/§5a/§6; api-design §16 Scope; architecture §10; root Auth + B2B + Multi-tenant SaaS paths; GLOSSARY (HRD, multi-issuer, membership); acronyms HRD/JIT/JML/SCIM
+
+### Identity — SCIM / JML provisioning
+- **api-design-and-protection §12C (new):** SCIM and JML provisioning — joiner/mover/leaver, SCIM Users/Groups, JIT vs pre-provision, group→role, deactivate→revoke races, multi-tenant SCIM tokens, checklist
+- **Cross-links:** §12 hub / §12A / §12B; auth §2b / §2d / §3b; api-design README reading paths; root B2B path; GLOSSARY SCIM/JML
+
 ### Outbox + Inbox first-class (event-sourcing)
 - **event-sourcing-and-cqrs §5A (new):** Outbox ↔ inbox pair — end-to-end diagrams, relay mark-published races, retention, poison/DLQ, outbox table vs CDC-on-events, inbox schema with stored `result`, vs `saga_step_log`
 - **event-sourcing-and-cqrs §5:** Pair overview + links; §7 Temporal/engine fork; §6 multi-service reading callout; §7C inbox points to §5A
