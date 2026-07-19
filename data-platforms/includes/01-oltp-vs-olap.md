@@ -2,7 +2,7 @@
 
 Separate **transactional** and **analytical** workloads so reporting does not compete with user-facing writes and short reads.
 
-> **Related:** Batch/ETL(Extract, Transform, Load) → [HTS §8](../../high-throughput-systems/includes/08-batch-and-etl.md) · PG replicas → [PG §11](../../postgresql-performance/includes/11-read-scaling-and-caching.md) · Cost of retention → [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md)
+> **Related:** Columnar ops (ClickHouse, warehouse day-2) → [§1A](01A-columnar-olap-operations.md) · Batch/ETL(Extract, Transform, Load) → [HTS §8](../../high-throughput-systems/includes/08-batch-and-etl.md) · PG replicas → [PG §11](../../postgresql-performance/includes/11-read-scaling-and-caching.md) · Cost of retention → [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md)
 
 ---
 
@@ -14,7 +14,7 @@ Separate **transactional** and **analytical** workloads so reporting does not co
 | **Latency** | ms | seconds–minutes OK |
 | **Schema** | Normalized, constraints | Denormalized facts/dims or wide tables |
 | **Freshness** | Current | Minutes to day lag typical |
-| **Examples** | Orders API(Application Programming Interface), payments, inventory adjust | Revenue dashboards, cohort, ML features |
+| **Examples** | Orders API(Application Programming Interface), payments, inventory adjust | Revenue dashboards, cohort, ML(Machine Learning) features |
 
 **Rule of thumb:** If a query needs **yesterday's truth across millions of rows**, it belongs in a **warehouse or lake**, not on the primary.
 

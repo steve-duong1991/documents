@@ -143,7 +143,7 @@ All must be **idempotent** on `event_id` — at-least-once delivery is normal.
 | Pattern | Purpose | Client sees |
 |---------|---------|-------------|
 | **Event store + outbox** | Durable domain state + integration | `201` when command accepted |
-| **Job resource (`202`)** | Long-running work (export, ML) | Poll `/jobs/{id}` until done |
+| **Job resource (`202`)** | Long-running work (export, ML(Machine Learning)) | Poll `/jobs/{id}` until done |
 
 They combine cleanly:
 

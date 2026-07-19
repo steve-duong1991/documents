@@ -13,7 +13,7 @@ Run strangler modernization as a **program**: waves, dual-run KPIs, cutover RACI
 | Element | Meaning |
 |---------|---------|
 | **Wave** | Time-boxed slice with user-visible or ops-visible outcome |
-| **Dual-run KPI** | Parity / error / lag metrics that gate cutover |
+| **Dual-run KPI(Key Performance Indicator)** | Parity / error / lag metrics that gate cutover |
 | **Cutover RACI** | Who decides go/no-go, who executes, who is informed |
 | **Program exit** | Legacy surface retired or formally contained with owner |
 
@@ -78,8 +78,8 @@ Prefer waves that **shrink legacy** measurably (routes, tables, batch jobs retir
 |-----|-----------|
 | Parity diff rate | Under 0.1% material mismatches for N days |
 | Error rate new vs old | New ≤ old baseline |
-| Lag (CDC / sync) | Under agreed RPO-style bound |
-| p99 latency | Within SLO budget for the journey |
+| Lag (CDC / sync) | Under agreed RPO(Recovery Point Objective)-style bound |
+| p99 latency | Within SLO(Service Level Objective) budget for the journey |
 | Shadow mismatch | Trend down before write cutover — [deployment §6](../../deployment-strategies/includes/06-shadow.md) |
 
 Never cut writes with two mutable sources of truth and no reconciliation owner — [§4](04-strangler-and-modernization.md) · [§8](08-data-ownership.md).
@@ -90,7 +90,7 @@ Never cut writes with two mutable sources of truth and no reconciliation owner �
 
 | Activity | Responsible | Accountable | Consulted | Informed |
 |----------|-------------|-------------|-----------|----------|
-| Dual-run health | Stream TL | Program lead | SRE | Support |
+| Dual-run health | Stream TL | Program lead | SRE(Site Reliability Engineering) | Support |
 | Go / no-go | Program lead | Eng director / area owner | Security if regulated | Stakeholders |
 | Traffic / flag flip | On-call + TL | Program lead | Platform | Support |
 | Abort / rollback | On-call | Program lead | SRE | All hands channel |
@@ -105,7 +105,7 @@ Tune names to your org; keep **one** accountable for go/no-go.
 | Prefer earlier waves | Defer |
 |----------------------|-------|
 | High change-rate edges with clear facade | Deep shared transactional core |
-| Read path + CDC to new SoR | Big-bang write cut |
+| Read path + CDC(Change Data Capture) to new SoR | Big-bang write cut |
 | Painful deploy/ops surfaces | Cosmetic rewrites |
 | Compliance / residency blockers | Speculative shared platform with no consumer |
 

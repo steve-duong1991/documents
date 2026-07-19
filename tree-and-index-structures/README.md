@@ -24,11 +24,13 @@ Related: [postgresql-performance](../postgresql-performance/README.md) (PostgreS
 
 | Guide | Topics |
 |-------|--------|
-| [postgresql-performance](../postgresql-performance/README.md) | B-tree, GIN(Generalized Inverted Index), partial, and covering indexes in practice |
-| [high-throughput-systems](../high-throughput-systems/README.md) | Database throughput layer, when to consider LSM engines |
+| [postgresql-performance](../postgresql-performance/README.md) | B-tree, GIN(Generalized Inverted Index), partial, and covering indexes; vacuum/planner when engine choice meets SQL(Structured Query Language) |
+| [high-throughput-systems](../high-throughput-systems/README.md) | Database throughput layer; write amplification when LSM vs B+ matters |
 | [api-design-and-protection](../api-design-and-protection/README.md) | API(Application Programming Interface) caching and read-path design |
+| [nosql-and-key-value-stores](../nosql-and-key-value-stores/README.md) | Access patterns that prefer LSM / wide-column engines |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Event store and append-heavy write paths |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Connection security is independent of index choice |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Overload protection when storage read path saturates |
 | [deployment-strategies](../deployment-strategies/README.md) | Deploy when changing index strategy at scale |
 | [apache-kafka](../apache-kafka/README.md) | LSM in Kafka Streams state stores; log-segment storage |
+| [VISUAL-INDEX](../VISUAL-INDEX.md) | Request / async spines that sit above storage engines |

@@ -67,7 +67,7 @@ Use this order — skipping steps wastes effort:
 |-------|--------------|------------|
 | Index every column | Write slowdown, planner confusion | Index based on EXPLAIN evidence |
 | Raise `max_connections` to 2000 | Memory exhaustion, thrashing | PgBouncer |
-| Global `work_mem = 256MB` | OOM under concurrent load | Conservative global; per-session for reports |
+| Global `work_mem = 256MB` | OOM(Out Of Memory) under concurrent load | Conservative global; per-session for reports |
 | Replicas before query tuning | 10× the same bad query | Optimize on primary first |
 | Partition without pruning key in queries | Scans all partitions | Match schema to query patterns |
 | Everything in JSONB | Slow filters, huge GIN indexes | Relational columns for hot paths |

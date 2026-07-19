@@ -6,6 +6,35 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-07-19
 
+### Visual spines, DR hub, ops depth, diagram debt closed
+- **VISUAL-INDEX:** Expanded 4 → 9 spines (Identity, Data platform, DR/failover, Realtime fan-out, Money movement) + spine picker table
+- **Root README:** New **Visual-first** learning path; Global scale / On-call / Data platform / Specialized / Payments / Ship API / Ship safely / Fullstack paths updated
+- **sre §12A (new):** Disaster recovery playbook — swimlane, RACI, freeze→promote→validate; **§4A (new):** Observability platform product
+- **HTS §13A (new):** Multi-region write and failover — sticky primary, cells vs multi-master
+- **data-platforms:** §01A columnar OLAP ops · §02A search cluster ops · §05A data contracts/registries
+- **specialized §03B (new):** LLM gateway and inference edge
+- **cicd §08A (new):** Paved-road catalog · **deployment §07A (new):** Feature-flag operations
+- **api-design:** §07A developer portal · §10E notification provider ops
+- **fullstack §08A (new):** Mobile API contracts · **payments §03A (new):** Refunds/payouts/settlement
+- **Diagram pack:** ~22 mermaid adds across PG, database-connection, tree; Reading paths on PG + DB-connection; tree See also dedupe
+- **GLOSSARY:** Data contract, Developer portal, Disaster recovery drill, LLM gateway, Observability platform, Paved road; Schema Registry / RPO/RTO links refreshed
+- **acronyms:** LLM, ILM
+
+### Visual spines, diagram debt, and topic expands
+- **VISUAL-INDEX.md (new):** Request / Async / Release / Incident spines with deep links
+- **Root README:** Split guide-relation mermaid into Delivery / Data / Security views; link VISUAL-INDEX
+- **P0 diagrams:** database-connection §0/§4/§9 layered access + IAM sequence; PG §11 read path + RYW sequence; §17/§18 isolation models; §6 vacuum flowchart
+- **High/Med/Low topic expands (NNA):**
+  - HTS §11A OpenTelemetry and cardinality
+  - resilience §11A service mesh topology
+  - HTS §14A queue broker operations (SQS/Rabbit/NATS)
+  - api-design §17A GraphQL production · §17B gRPC and protobuf CI
+  - data-platforms §3A Redis operations
+  - system-design §9A CDN and media delivery
+  - specialized §3A feature stores and ML serving
+- **Cross-links:** cursor-agents ↔ workflows; tree/DB See also denser; learning paths updated
+- **GLOSSARY / acronyms:** OTel, feature store, service mesh; SQS/gRPC/RDB/AOF/LRU/ML/…
+
 ### SA gaps: debt×CX, org fit, hypercare, learning path
 - **tech-lead §5A (new):** Balancing debt, business, and CX — ship-with-degrade vs stop features vs pay debt first
 - **architecture §14 (new):** Org, stage, and pricing fit — people/platform maturity, B2B vs B2C, pricing → defaults; NFR sheet

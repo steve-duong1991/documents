@@ -21,6 +21,19 @@
 
 ## Architecture
 
+```mermaid
+sequenceDiagram
+    participant App as App (EC2/ECS/Lambda/EKS)
+    participant IAM as IAM / STS
+    participant RDS as RDS PostgreSQL
+
+    App->>IAM: Assume role / instance profile
+    App->>IAM: generate-db-auth-token (RDS endpoint, ~15 min TTL)
+    IAM-->>App: Auth token (used as DB password)
+    App->>RDS: TLS connect (token as password)
+    RDS-->>App: Result
+```
+
 ```
 App (EC2 / ECS / Lambda / EKS)
   │

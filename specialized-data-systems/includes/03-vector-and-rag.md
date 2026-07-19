@@ -4,7 +4,7 @@ RAG(Retrieval-Augmented Generation) systems retrieve relevant context by similar
 
 > **Scope:** **Architecture for storing and querying embeddings at scale** — index choice, freshness, hybrid ranking. This is not a product tutorial for any single vector database; evaluate specific products against the criteria here.
 >
-> **Related:** Feeding embeddings from the system of record → [overview](00-overview.md) · Search systems for keyword/faceted search → [data-platforms §2](../../data-platforms/includes/02-search-systems.md) · PII(Personally Identifiable Information) in embeddings → [enterprise-security-compliance §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md)
+> **Related:** Feeding embeddings from the system of record → [overview](00-overview.md) · Online features / ML(Machine Learning) serving → [§3A](03A-feature-stores-and-ml-serving.md) · LLM(Large Language Model) gateway / inference edge (auth, budgets, failover — not retrieval) → [§3B](03B-llm-gateway-and-inference-edge.md) · Search systems for keyword/faceted search → [data-platforms §2](../../data-platforms/includes/02-search-systems.md) · PII(Personally Identifiable Information) in embeddings → [enterprise-security-compliance §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md)
 
 ---
 

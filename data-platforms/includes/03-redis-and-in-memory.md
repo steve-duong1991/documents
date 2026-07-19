@@ -75,7 +75,7 @@ Do not hold DB transactions open while waiting on Redis locks — lock scope sho
 
 | Use | Prefer Redis when | Prefer elsewhere when |
 |-----|-------------------|------------------------|
-| **Jobs** | Low volume, simple retries | Need replay, many consumers → Kafka/SQS |
+| **Jobs** | Low volume, simple retries | Need replay, many consumers → Kafka/SQS(Simple Queue Service) |
 | **Rate limits** | Shared multi-instance counters | Edge-only static limits → CDN(Content Delivery Network)/WAF(Web Application Firewall) |
 
 Rate-limit topology and fail modes: [api-rate-limiting §12](../../api-rate-limiting/includes/12-distributed-rate-limiting.md).
@@ -87,9 +87,9 @@ Rate-limit topology and fail modes: [api-rate-limiting §12](../../api-rate-limi
 | Item | Why |
 |------|-----|
 | Memory + eviction policy (`allkeys-lru` vs `noeviction`) | Cache vs queue need different policies — **split instances** if both |
-| Persistence (AOF/RDB) | Only if role requires restart survival |
+| Persistence (AOF/RDB(Redis Database File)) | Only if role requires restart survival |
 | Replica + failover | Session/lock outage = user impact |
-| Key cardinality alerts | Unbounded user ids → OOM |
+| Key cardinality alerts | Unbounded user ids → OOM(Out Of Memory) |
 | AUTH / TLS(Transport Layer Security) / network isolation | Redis is a high-value target |
 
 ---

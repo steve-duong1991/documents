@@ -75,4 +75,4 @@ Capacity interpretation and headroom → [SRE §3](../../sre-and-incidents/inclu
 | No saturation signals | Watch pools, CPU, queue depth — USE(Utilization, Saturation, Errors) |
 | Resilience = “kill pod once” | Script dependency faults + assert bounded recovery |
 | Treating load pass as functional QA | Still need pyramid for correctness |
-| Ignoring soak leaks until prod OOM | Weekly soak on critical services |
+| Ignoring soak leaks until prod OOM(Out Of Memory) | Weekly soak on critical services |

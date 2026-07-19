@@ -19,6 +19,7 @@ Related: [deployment-strategies](../deployment-strategies/README.md) (how traffi
 | 6 | [Rollback vs forward-fix](includes/06-rollback-vs-forward-fix.md) |
 | 7 | [Containers and health](includes/07-containers-and-health.md) |
 | 8 | [Platform boundaries](includes/08-platform-boundaries.md) |
+| 8A | [Paved-road catalog](includes/08A-paved-road-catalog.md) |
 | 9 | [Decision guide](includes/09-decision-guide.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.

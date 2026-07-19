@@ -6,6 +6,23 @@ Indexing is usually the **highest-ROI** optimization for read-heavy workloads. A
 
 ## Index types
 
+```mermaid
+flowchart TD
+    Q[Query access pattern] --> Eq{Equality / range / sort?}
+    Eq -->|Yes| Bt[B-tree default]
+    Eq -->|No| Sub{Always filter a subset?}
+    Sub -->|Yes| Part[Partial index]
+    Sub -->|No| Json{JSONB / FTS / arrays?}
+    Json -->|Yes| Gin[GIN]
+    Json -->|No| Time{Huge ordered time-series?}
+    Time -->|Yes| Brin[BRIN]
+    Time -->|No| Expr{Filter on expression / function?}
+    Expr -->|Yes| Ex[Expression index]
+    Expr -->|No| Other[GiST / SP-GiST or rethink query]
+    Bt --> Comp{Multi-column filters?}
+    Comp -->|Yes| CompIdx[Composite / covering INCLUDE]
+```
+
 | Type | When to use | Example |
 |------|-------------|---------|
 | **B-tree** (default) | Equality, ranges, sorting, most FK lookups | `WHERE status = 'active' AND created_at > ...` |

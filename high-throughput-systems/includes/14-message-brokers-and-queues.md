@@ -2,7 +2,7 @@
 
 Pick the integration pattern before you pick the product — task queue, log, or outbox relay each solve different throughput problems.
 
-> **Deep dive:** Kafka decision guide and anti-patterns → [apache-kafka §11](../../apache-kafka/includes/11-decision-guide-and-common-mistakes.md)
+> **Deep dive:** Kafka decision guide and anti-patterns → [apache-kafka §11](../../apache-kafka/includes/11-decision-guide-and-common-mistakes.md) · Queue ops (SQS/Rabbit/NATS) → [§14A](14A-queue-broker-operations.md)
 >
 > **Related:** Async workers → [06-async-queues-workers.md](06-async-queues-workers.md) · Streaming → [07-streaming-pipelines.md](07-streaming-pipelines.md) · Outbox → [ES §5 Async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Async jobs → [api-design §10](../../api-design-and-protection/includes/10-async-patterns.md)
 
@@ -12,7 +12,7 @@ Pick the integration pattern before you pick the product — task queue, log, or
 
 | Pattern | Best for | Ordering | Replay | Typical products |
 |---------|----------|----------|--------|------------------|
-| **Task queue** | Job dispatch, retries, DLQ(Dead Letter Queue) | Per queue (optional FIFO(First In, First Out)) | Limited | SQS, RabbitMQ |
+| **Task queue** | Job dispatch, retries, DLQ(Dead Letter Queue) | Per queue (optional FIFO(First In, First Out)) | Limited | SQS(Simple Queue Service), RabbitMQ |
 | **Log / stream** | Fan-out, audit, high volume | Per partition key | Yes (retention window) | Kafka, Kinesis, Pulsar |
 | **Redis Streams / lists** | Low-latency co-located work | Per stream | Trimmed history | Redis |
 | **Transactional outbox** | Reliable publish after DB write | Relay preserves order per aggregate | From event store | App + any bus |

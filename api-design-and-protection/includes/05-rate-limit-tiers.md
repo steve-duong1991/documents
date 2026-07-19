@@ -30,7 +30,7 @@ flowchart LR
 | **Enterprise** | Contract | Custom | Custom | Custom | Custom SLA(Service Level Agreement) | Unlimited† |
 | **Internal** | Your services | 10,000+ | N/A | High | Separate pool | N/A |
 
-\*Expensive: reports, search, bulk export, ML inference, file processing  
+\*Expensive: reports, search, bulk export, ML(Machine Learning) inference, file processing  
 †Still apply abuse caps and cost alerts
 
 ## Per-endpoint multipliers

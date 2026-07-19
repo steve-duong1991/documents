@@ -89,7 +89,7 @@ Cost wins that increase **expected incident cost** are not wins — include risk
 |---------|-------------|
 | 2× traffic | Right-size, cache, commitments |
 | New region | Egress model |
-| New heavy feature (search, ML) | Dedicated unit economics |
+| New heavy feature (search, ML(Machine Learning)) | Dedicated unit economics |
 | Margins compress | Architecture simplification |
 
 ---

@@ -26,7 +26,7 @@ Kafka carries opaque bytes — **serializers** turn objects into values and **Sc
 | **Plain JSON** | Human-readable; zero tooling | No enforcement; large on wire; fragile evolution | Local dev, low-volume internal |
 | **JSON Schema** | JSON ecosystem; readable | Larger than binary; tooling varies | Teams on OpenAPI / JSON Schema already |
 | **Avro** | Compact; excellent Registry integration; evolvable with defaults | Less natural in protobuf-first shops | Kafka + Connect/Debezium; analytics |
-| **Protobuf** | Strong types; gRPC interop; compact | Evolution rules differ; subject naming discipline | gRPC services → Kafka; `.proto` as source of truth |
+| **Protobuf** | Strong types; gRPC(Google Remote Procedure Call) interop; compact | Evolution rules differ; subject naming discipline | gRPC services → Kafka; `.proto` as source of truth |
 
 ```mermaid
 flowchart TD

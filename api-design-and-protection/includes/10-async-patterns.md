@@ -20,7 +20,7 @@ How to design APIs for work that outlasts connection timeouts: job resources, po
 
 **Async API design** moves long or expensive work off the request thread. The client starts work, receives a trackable handle (usually a **job resource**), and retrieves the result via polling, push (webhook), or stream — instead of holding an HTTP connection open for minutes.
 
-**Rule of thumb:** If work might exceed **~10–30 seconds**, or is CPU/IO expensive (exports, ML inference, bulk search), design it async from day one.
+**Rule of thumb:** If work might exceed **~10–30 seconds**, or is CPU/IO expensive (exports, ML(Machine Learning) inference, bulk search), design it async from day one.
 
 ---
 
@@ -63,7 +63,7 @@ flowchart TB
 | **Job + poll** | Client pulls | Short | Reports, exports, batch jobs | Low |
 | **Webhooks** | Server pushes | Short (outbound) | B2B(Business-to-Business) integrations | Medium |
 | **Long poll** | Client pulls | Long (held) | Near-real-time status | Medium |
-| **SSE(Server-Sent Events)** | Server pushes | Long | Progress, feeds, LLM tokens | Medium |
+| **SSE(Server-Sent Events)** | Server pushes | Long | Progress, feeds, LLM(Large Language Model) tokens | Medium |
 | **WebSockets** | Bidirectional | Long | Chat, live collaboration | High |
 | **NDJSON stream** | Server pushes in one request | Long | Search, incremental pipelines | Medium |
 

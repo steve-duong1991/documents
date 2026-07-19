@@ -72,6 +72,23 @@ Private subnet → TLS → least-privilege DB user → password from secret mana
 5. **Inject at runtime** — env vars, mounted file, or SDK fetch on startup.
 6. **Enable automatic rotation** (optional) — secret manager rotates password and updates the secret; app must reconnect or restart.
 
+```mermaid
+sequenceDiagram
+    participant SM as Secret manager
+    participant DB as PostgreSQL
+    participant Old as App pods (old)
+    participant New as App pods (new)
+
+    SM->>DB: Set dual-active password (current + pending)
+    SM->>SM: Publish new secret version
+    Note over Old,New: Rolling restart / reload
+    New->>SM: Fetch new password
+    New->>DB: Connect with new password
+    Old->>DB: Still using old password
+    Note over Old: Drain old pods
+    SM->>DB: Revoke old password
+```
+
 ---
 
 ## Deployment patterns

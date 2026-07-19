@@ -152,7 +152,7 @@ Ship still depends on **your** CD and traffic-splitting platform — Cursor orch
 |---------|-----|
 | Treating merge as production release | Run this §5 after merge |
 | Asking the agent to “just deploy” | Require playbook gate table + abort metrics first |
-| Watching only CPU/health | Include version-tagged errors, latency, business KPI |
+| Watching only CPU/health | Include version-tagged errors, latency, business KPI(Key Performance Indicator) |
 | Skipping runbook because “nothing broke” | Update while context is fresh |
 | Never practicing abort | Schedule [sre §9](../../sre-and-incidents/includes/09-game-days-and-drills.md) game day |
 

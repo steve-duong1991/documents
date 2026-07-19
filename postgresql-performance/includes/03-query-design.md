@@ -17,6 +17,24 @@ Even perfect indexes cannot fix a fundamentally expensive query shape. Query des
 
 ## N+1 problem
 
+```mermaid
+sequenceDiagram
+    participant App
+    participant PG as PostgreSQL
+
+    Note over App,PG: N+1 — one round trip per row
+    App->>PG: SELECT orders for user 1
+    PG-->>App: rows
+    App->>PG: SELECT orders for user 2
+    PG-->>App: rows
+    App->>PG: SELECT orders for user N
+    PG-->>App: rows
+
+    Note over App,PG: Batched — one round trip
+    App->>PG: SELECT … WHERE user_id = ANY($1) or JOIN
+    PG-->>App: all rows
+```
+
 **Bad — one query per row:**
 
 ```text

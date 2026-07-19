@@ -50,6 +50,23 @@ cloud-sql-proxy project:region:my-instance --port 5432
 
 Cloud SQL supports **IAM users** as database principals (PostgreSQL and MySQL).
 
+```mermaid
+sequenceDiagram
+    participant Pod as GKE pod
+    participant WI as Workload Identity
+    participant SA as GCP service account
+    participant Proxy as Cloud SQL Auth Proxy
+    participant SQL as Cloud SQL
+
+    Pod->>WI: Use K8s SA
+    WI->>SA: Federate to GCP SA
+    Pod->>Proxy: Connect localhost:5432
+    Proxy->>SA: Obtain IAM / Cloud SQL credentials
+    Proxy->>SQL: TLS + auth to instance
+    SQL-->>Proxy: Result
+    Proxy-->>Pod: Result
+```
+
 ```
 GKE pod → Workload Identity → GCP SA → IAM token → Cloud SQL
 ```

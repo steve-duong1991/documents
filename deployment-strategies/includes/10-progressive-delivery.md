@@ -40,7 +40,7 @@ flowchart TB
 |------|-------------------|-------------|
 | **Error rate** | Canary 5xx ≤ stable + 0.1% | Prometheus / Datadog by `build_id` |
 | **Latency** | Canary p99 ≤ stable × 1.2 | APM traces |
-| **Business KPI** | Checkout success rate flat | Product metrics (optional, slower) |
+| **Business KPI(Key Performance Indicator)** | Checkout success rate flat | Product metrics (optional, slower) |
 | **Saturation** | CPU < 80%, pool wait flat | USE(Utilization, Saturation, Errors) metrics → [HTS §11](../../high-throughput-systems/includes/11-observability.md) |
 
 Failed gate → auto-rollback to stable ReplicaSet — wire to [§13 SLO triggers](13-slo-rollback-triggers.md).

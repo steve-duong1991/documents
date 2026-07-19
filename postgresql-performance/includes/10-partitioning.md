@@ -59,6 +59,14 @@ Schedule partition creation ahead of time (cron, pg_partman extension).
 
 ## Verify pruning
 
+```mermaid
+flowchart LR
+    Q[Query with partition-key filter] --> Prune[Partition prune]
+    Prune --> Few[Scan few children]
+    Q2[Query without partition key] --> Fan[Fan-out]
+    Fan --> All[Scan all partitions]
+```
+
 ```sql
 EXPLAIN SELECT * FROM events
 WHERE created_at >= '2026-06-01' AND created_at < '2026-06-15';

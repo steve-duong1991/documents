@@ -10,7 +10,7 @@ Use this section when choosing **Kafka vs alternatives**, **managed vs self-host
 
 | Need | Lean toward |
 |------|-------------|
-| Simple background job | **SQS / RabbitMQ** |
+| Simple background job | **SQS(Simple Queue Service) / RabbitMQ** |
 | Fan-out + replay + audit | **Kafka** |
 | AWS-native, few consumers | **Kinesis** or SQS |
 | Reliable publish after PG write | **Outbox → Kafka** — [§8](08-integration-patterns.md) |
@@ -70,7 +70,7 @@ flowchart TD
 | Signal | Better fit |
 |--------|------------|
 | Fire-and-forget emails | SQS + worker |
-| Request/response RPC | HTTP(Hypertext Transfer Protocol)/gRPC |
+| Request/response RPC | HTTP(Hypertext Transfer Protocol)/gRPC(Google Remote Procedure Call) |
 | Primary source of truth | PostgreSQL / event store |
 | Team cannot operate 3+ brokers | Managed Kafka or simpler queue |
 | Global ordering of everything | Redesign boundaries or accept single partition bottleneck |

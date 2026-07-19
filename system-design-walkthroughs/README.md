@@ -20,6 +20,7 @@ Related: [high-throughput-systems](../high-throughput-systems/README.md) (throug
 | 7 | [Notification pipeline](includes/07-notification-pipeline.md) |
 | 8 | [Search autocomplete](includes/08-search-autocomplete.md) |
 | 9 | [Video streaming basics](includes/09-video-streaming-basics.md) |
+| 9A | [CDN and media delivery](includes/09A-cdn-and-media-delivery.md) |
 | 10 | [Decision guide](includes/10-decision-guide.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.

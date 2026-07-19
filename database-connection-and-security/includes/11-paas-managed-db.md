@@ -22,6 +22,21 @@
 
 ## Architecture
 
+```mermaid
+flowchart LR
+    subgraph your [Your control plane]
+        CI[CI / platform secrets]
+        App[App]
+    end
+    subgraph paas [Provider boundary]
+        Dash[Provider dashboard]
+        PG[(Managed Postgres)]
+    end
+    Dash -->|DATABASE_URL| CI
+    CI -->|env inject| App
+    App -->|TLS| PG
+```
+
 ```
 App (Vercel / Railway / Fly / local)
   │

@@ -17,6 +17,21 @@ SELECT ...
 
 ### What to look for
 
+```mermaid
+flowchart TD
+    Plan[EXPLAIN ANALYZE] --> Seq{Seq Scan on large table?}
+    Seq -->|Yes| Idx[Add or fix index]
+    Idx --> Re[Re-EXPLAIN]
+    Seq -->|No| Est{Actual vs estimated rows wildly off?}
+    Est -->|Yes| Stats[ANALYZE / extended stats]
+    Stats --> Re
+    Est -->|No| Shape{Expensive join / sort / N+1 shape?}
+    Shape -->|Yes| Rewrite[Rewrite query]
+    Rewrite --> Re
+    Shape -->|No| Other[Check locks, IO, connections]
+    Re --> Done[Compare before/after]
+```
+
 | Signal | Likely cause | Next step |
 |--------|--------------|-----------|
 | **Seq Scan** on a large table | Missing or unused index | Add or fix index; check selectivity |

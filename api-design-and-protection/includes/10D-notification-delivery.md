@@ -4,7 +4,7 @@ System-design interviews sketch fan-out — [system-design §7](../../system-des
 
 > **Scope:** Product/API(Application Programming Interface) and worker concerns for email, push, SMS — preferences, idempotent send, retries/DLQ(Dead Letter Queue), quiet hours, audit. HTTP(Hypertext Transfer Protocol) job patterns → [§10](10-async-patterns.md) · [§10A](10A-async-jobs-polling.md). Queue throughput → [HTS §6](../../high-throughput-systems/includes/06-async-queues-workers.md) · [§14](../../high-throughput-systems/includes/14-message-brokers-and-queues.md). Interview-scale design → [system-design §7](../../system-design-walkthroughs/includes/07-notification-pipeline.md).
 >
-> **Related:** Idempotency → [§13](13-idempotency.md) · Webhook HMAC(Hash-based Message Authentication Code) (provider callbacks) → [§10B](10B-async-webhooks.md) · Outbox when notify-after-commit → [ES §5A](../../event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md) · PII in content → [ESC §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) · Resilience checkout email tier → [resilience §12](../../resilience-patterns/includes/12-worked-example-checkout.md)
+> **Related:** Idempotency → [§13](13-idempotency.md) · Webhook HMAC(Hash-based Message Authentication Code) (provider callbacks) → [§10B](10B-async-webhooks.md) · Provider ops (bounce, reputation, dual-homing) → [§10E](10E-notification-provider-operations.md) · Outbox when notify-after-commit → [ES §5A](../../event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md) · PII in content → [ESC §7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) · Resilience checkout email tier → [resilience §12](../../resilience-patterns/includes/12-worked-example-checkout.md)
 
 ---
 

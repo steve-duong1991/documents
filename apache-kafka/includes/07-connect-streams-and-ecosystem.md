@@ -64,7 +64,7 @@ Run Connect workers **separate from brokers** in production — [§9 setup](09-c
 
 | Fit | Misfit |
 |-----|--------|
-| Join two Kafka topics | Heavy ML inference |
+| Join two Kafka topics | Heavy ML(Machine Learning) inference |
 | Session windows, aggregations | Non-JVM stack requirement |
 | Compact changelog for KTable | Cross-region active-active (prefer Flink + careful design) |
 

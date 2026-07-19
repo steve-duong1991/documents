@@ -2,9 +2,9 @@
 
 REST(Representational State Transfer) is the default in this corpus — use GraphQL or gRPC when the trade-offs are explicit, not because the name sounds modern.
 
-> **Scope:** **Alternative API(Application Programming Interface) styles** — when to pick GraphQL or gRPC vs REST. Default HTTP(Hypertext Transfer Protocol)/REST patterns → [§1 API design](01-api-design.md). ES/CQRS(Command Query Responsibility Segregation) APIs → [ES §4](../../event-sourcing-and-cqrs/includes/04-api-design-implications.md).
+> **Scope:** **Alternative API(Application Programming Interface) styles** — when to pick GraphQL or gRPC vs REST. Production GraphQL → [§17A](17A-graphql-production.md). gRPC/protobuf CI(Continuous Integration) → [§17B](17B-grpc-and-protobuf-ci.md). Default HTTP(Hypertext Transfer Protocol)/REST patterns → [§1 API design](01-api-design.md). ES/CQRS(Command Query Responsibility Segregation) APIs → [ES §4](../../event-sourcing-and-cqrs/includes/04-api-design-implications.md).
 
-> **Related:** Gateway routing → [03-api-gateway.md](03-api-gateway.md) · Contract testing → [15-contract-and-schema-testing.md](15-contract-and-schema-testing.md) · Internal mesh → [03-api-gateway.md#gateway-vs-load-balancer-vs-service-mesh](03-api-gateway.md)
+> **Related:** Gateway routing → [03-api-gateway.md](03-api-gateway.md) · Contract testing → [15-contract-and-schema-testing.md](15-contract-and-schema-testing.md) · Internal mesh → [resilience §11A](../../resilience-patterns/includes/11A-service-mesh-topology.md)
 
 ---
 

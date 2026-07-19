@@ -4,7 +4,7 @@ Who decides what — lightweight Architecture Review Board (ARB) practice, RFC/A
 
 > **Scope:** Governance process and escalation — not the ADR template itself. ADR/RFC artifacts → [§5](05-adrs-and-design-docs.md). Facilitation of reviews → [tech-lead §2](../../tech-lead-practice/includes/02-design-reviews.md). Org fit constraints → [§14](14-org-stage-and-pricing-fit.md).
 >
-> **Related:** Tradeoffs → [§6](06-tradeoff-frameworks.md) · Decision guide → [§12](12-decision-guide.md) · Secure SDLC gates → [enterprise-security-compliance](../../enterprise-security-compliance/README.md)
+> **Related:** Tradeoffs → [§6](06-tradeoff-frameworks.md) · Decision guide → [§12](12-decision-guide.md) · Secure SDLC(Software Development Life Cycle) gates → [enterprise-security-compliance](../../enterprise-security-compliance/README.md)
 
 ---
 
@@ -26,7 +26,7 @@ Who decides what — lightweight Architecture Review Board (ARB) practice, RFC/A
 | Blast radius | Who decides | Artifact |
 |--------------|-------------|----------|
 | Single service, reversible | Owning TL / seniors | Ticket or short design note |
-| Cross-team API or event contract | Owning TL + consumer TLs | RFC → ADR |
+| Cross-team API(Application Programming Interface) or event contract | Owning TL + consumer TLs | RFC → ADR |
 | New bounded context / data ownership change | Area TL + affected owners | Design review + ADR |
 | Company-wide platform, tenancy, multi-region, security baseline | ARB (or staff+/principal forum) | RFC → ADR; security co-sign if needed |
 | Exception to paved road | Platform + requesting TL | ADR with expiry or revisit date |
@@ -51,7 +51,7 @@ Skip bureaucracy theater. Prefer **office hours + async RFC** over standing comm
 | Element | Guidance |
 |---------|----------|
 | **Membership** | 3–7 people: staff/principal eng, platform, security liaison, rotating product-area TL |
-| **Input** | RFC with options, NFR sheet, cost, rollback — [§14](14-org-stage-and-pricing-fit.md) |
+| **Input** | RFC with options, NFR(Non-Functional Requirement) sheet, cost, rollback — [§14](14-org-stage-and-pricing-fit.md) |
 | **Time-box** | Async comments 3–5 days; live 30–45 min only if contested |
 | **Output** | Accept / revise / defer-with-spike; ADR owner named |
 | **Non-goals** | Approving every story; debating library fashion |

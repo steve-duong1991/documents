@@ -53,7 +53,7 @@ flowchart TB
 | Failure | Symptom | Action |
 |---------|---------|--------|
 | **Canary errors elevated** | 5xx/p99 up on canary slice only | Set canary weight to 0% |
-| **Business KPI drop** | Conversion down on canary | Rollback before latency SLO |
+| **Business KPI(Key Performance Indicator) drop** | Conversion down on canary | Rollback before latency SLO |
 | **Unrepresentative canary** | Internal IPs only | Route real user hash bucket |
 | **Metric delay** | Promote too fast | Minimum bake time per step (e.g. 15 min) |
 

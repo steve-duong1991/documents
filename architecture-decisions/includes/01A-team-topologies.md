@@ -4,7 +4,7 @@ Shape teams so architecture stays changeable — four team types and three inter
 
 > **Scope:** Org design for delivery: stream-aligned, platform, enabling, complicated-subsystem; interaction modes; reverse Conway. System shape defaults → [§1](01-monolith-modular-microservices.md). Fit by stage/pricing → [§14](14-org-stage-and-pricing-fit.md). Platform paved road vs product → [cicd §9](../../cicd-and-environments/includes/09-decision-guide.md).
 >
-> **Related:** Boundaries → [§2](02-service-boundaries-and-decomposition.md) · Cross-team API ownership → [tech-lead §8](../../tech-lead-practice/includes/08-cross-team-api-ownership.md) · Ownership/escalation → [tech-lead §10](../../tech-lead-practice/includes/10-ownership-and-escalation.md)
+> **Related:** Boundaries → [§2](02-service-boundaries-and-decomposition.md) · Cross-team API(Application Programming Interface) ownership → [tech-lead §8](../../tech-lead-practice/includes/08-cross-team-api-ownership.md) · Ownership/escalation → [tech-lead §10](../../tech-lead-practice/includes/10-ownership-and-escalation.md)
 
 ---
 
@@ -15,7 +15,7 @@ Shape teams so architecture stays changeable — four team types and three inter
 | **Stream-aligned** | Deliver a value stream end-to-end | Own a bounded context; prefer modular monolith or few services they can operate |
 | **Platform** | Internal products that reduce cognitive load | Paved road (CI, auth, obs, deploy); self-service > tickets |
 | **Enabling** | Upskill stream teams for a gap | Temporary; leave behind capability, not a permanent bottleneck |
-| **Complicated-subsystem** | Deep specialty (e.g. fraud ML, payments core) | Clear API; do not scatter specialty across every squad |
+| **Complicated-subsystem** | Deep specialty (e.g. fraud ML(Machine Learning), payments core) | Clear API; do not scatter specialty across every squad |
 
 **Rule of thumb:** Architecture that needs more team types than you have **creates waiting**. Prefer fewer deployables until platform and ownership exist — [§1](01-monolith-modular-microservices.md) · [§14](14-org-stage-and-pricing-fit.md).
 
@@ -26,7 +26,7 @@ Shape teams so architecture stays changeable — four team types and three inter
 | Mode | Meaning | Healthy use |
 |------|---------|-------------|
 | **Collaboration** | Two teams work closely for a period | Discovery of a new boundary; early platform adoption |
-| **X-as-a-Service** | Clear API/SLA; minimal sync meetings | Mature platform; stable domain APIs |
+| **X-as-a-Service** | Clear API/SLA(Service Level Agreement); minimal sync meetings | Mature platform; stable domain APIs |
 | **Facilitating** | Enabling team coaches; does not own forever | Migration to new practices (observability, testing) |
 
 ```mermaid
@@ -50,7 +50,7 @@ flowchart TB
 | One squad | Modular monolith (good default) |
 | Squads cut by layer (FE / BE / DB) | Chatty sync, unclear ownership |
 | Squads cut by domain | Cleaner services **if** data ownership follows |
-| Platform missing | Every squad reinvents CI/auth/obs |
+| Platform missing | Every squad reinvents CI(Continuous Integration)/auth/obs |
 
 **Inverse Conway maneuver:** design the **team boundaries you want**, then grow architecture to match — [§2](02-service-boundaries-and-decomposition.md) — instead of copying a slide-deck microservice map onto a layered org.
 
@@ -63,7 +63,7 @@ flowchart TB
 | 1–2 stream teams, no platform | Modular monolith | Many services |
 | Several stream teams + thin platform | Modular + extract measured seams | Premature mesh |
 | Strong platform (X-as-a-Service) | Services at bounded contexts | Shared DB across stream teams |
-| Complicated-subsystem present | Hard API + SLO; bulkheads | Embedding specialty in every BFF |
+| Complicated-subsystem present | Hard API + SLO(Service Level Objective); bulkheads | Embedding specialty in every BFF(Backend for Frontend) |
 
 Failure domains and dependency tiers → [§11](11-failure-domains.md).
 
@@ -108,7 +108,7 @@ Stream-aligned teams should not need to understand the whole estate.
 | Guide | Topics |
 |-------|--------|
 | [§1 Monolith / modular / microservices](01-monolith-modular-microservices.md) | Shape defaults and extraction |
-| [§14 Org/stage/pricing fit](14-org-stage-and-pricing-fit.md) | Stage and GTM constraints |
+| [§14 Org/stage/pricing fit](14-org-stage-and-pricing-fit.md) | Stage and GTM(Go-To-Market) constraints |
 | [§2 Boundaries](02-service-boundaries-and-decomposition.md) | Where to cut services |
 | [tech-lead §8 / §10](../../tech-lead-practice/includes/08-cross-team-api-ownership.md) | Contracts and escalation |
 | [cicd-and-environments](../../cicd-and-environments/README.md) | Platform vs product pipeline ownership |

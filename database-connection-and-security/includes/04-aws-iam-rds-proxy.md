@@ -19,24 +19,29 @@ It is **AWS-managed** — no Vault cluster to run — but **AWS-specific** and l
 
 ## Architecture
 
-```
-App (EC2 / ECS / Lambda / EKS)
-  │
-  │ 1. Assume IAM role (instance profile, task role, IRSA)
-  │ 2. aws rds generate-db-auth-token
-  │ 3. TLS connect — token used as password
-  ▼
-RDS Proxy  ── pool + authenticate ──►  RDS (PostgreSQL / MySQL / Aurora)
-         ▲
-         └── private subnet; app connects to proxy endpoint, not RDS directly
+```mermaid
+sequenceDiagram
+    participant App as App (EC2/ECS/Lambda/EKS)
+    participant IAM as IAM / STS
+    participant Proxy as RDS Proxy
+    participant RDS as RDS PostgreSQL
+
+    App->>IAM: Assume role / use instance profile
+    App->>IAM: generate-db-auth-token (~15 min TTL)
+    IAM-->>App: Auth token (used as DB password)
+    App->>Proxy: TLS connect (token as password)
+    Proxy->>RDS: Pooled server auth + TLS
+    RDS-->>Proxy: Result
+    Proxy-->>App: Result
 ```
 
-**Minimum production stack:**
+App connects to the **proxy endpoint** in a private subnet — never the public RDS endpoint.
 
-```
-Private subnet → TLS → RDS Proxy → RDS
-                    ↑
-              IAM auth token (no static password)
+```mermaid
+flowchart LR
+    App --> Proxy[RDS Proxy]
+    Proxy --> RDS[(RDS / Aurora)]
+    IAM[IAM auth token] -.-> App
 ```
 
 ---

@@ -6,6 +6,18 @@ PostgreSQL uses MVCC(Multi-Version Concurrency Control) — updated and deleted 
 
 ## What autovacuum does
 
+```mermaid
+flowchart LR
+    Write[UPDATE / DELETE] --> Dead[Dead tuples]
+    Dead --> AV[Autovacuum]
+    AV --> Clean[Reclaim + freeze]
+    AV --> VM[Visibility map]
+    AV --> Stats[ANALYZE stats]
+    Clean --> Lean[Lean heap]
+    VM --> IOS[Index-only scans possible]
+    Stats --> Planner[Better plans]
+```
+
 | Task | Purpose |
 |------|---------|
 | **Dead tuple cleanup** | Reclaim space; keep tables lean |

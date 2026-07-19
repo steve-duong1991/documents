@@ -30,7 +30,7 @@ Both can split traffic — the difference is **intent and success criteria**:
 | **Goal** | Product decision (CTR, revenue, retention) | Ops safety (errors, latency, saturation) |
 | **Split basis** | User ID hash → sticky variant | Request % or header → new **version** |
 | **Duration** | Days–weeks until statistical significance | Minutes–hours until promoted or rolled back |
-| **Success** | p-value / Bayesian lift on business KPI | SLO(Service Level Objective) green, error budget intact |
+| **Success** | p-value / Bayesian lift on business KPI(Key Performance Indicator) | SLO(Service Level Objective) green, error budget intact |
 | **Failure action** | Stop experiment; keep stable variant | Roll back traffic to previous **build** |
 
 ---

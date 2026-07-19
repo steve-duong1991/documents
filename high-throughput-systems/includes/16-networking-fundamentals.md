@@ -86,7 +86,7 @@ flowchart LR
 |----------|-----------------|
 | **Public edge** | Terminate HTTP/3 and HTTP/2 at the CDN(Content Delivery Network)/edge — modern browsers and mobile clients benefit most from QUIC on variable networks |
 | **Origin / internal** | HTTP/2 (or HTTP/1.1 with keep-alive) is usually sufficient — the internal network is reliable and low-loss |
-| **gRPC services** | Requires HTTP/2 — see [api-design §17 GraphQL and gRPC](../../api-design-and-protection/includes/17-graphql-and-grpc.md) |
+| **gRPC(Google Remote Procedure Call) services** | Requires HTTP/2 — see [api-design §17 GraphQL and gRPC](../../api-design-and-protection/includes/17-graphql-and-grpc.md) |
 | **Load testing** | Match the protocol version real clients use — HTTP/1.1-only load tests miss HTTP/2 multiplexing behavior |
 
 **Throughput takeaway:** protocol upgrades mainly help on **lossy or high-latency networks** (mobile, satellite, cross-continent). On a healthy internal network, the gain from HTTP/2 → HTTP/3 is small — spend the effort at the public edge, not between internal services.

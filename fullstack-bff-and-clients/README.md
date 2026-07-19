@@ -19,6 +19,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (co
 | 6 | [Accessibility bar](includes/06-accessibility-bar.md) |
 | 7 | [Auth UX](includes/07-auth-ux.md) |
 | 8 | [Offline and flaky network](includes/08-offline-and-flaky-network.md) |
+| 8A | [Mobile API contracts](includes/08A-mobile-api-contracts.md) |
 | 9 | [Design-system boundaries](includes/09-design-system-boundaries.md) |
 | 10 | [Decision guide](includes/10-decision-guide.md) |
 
@@ -31,6 +32,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (co
 | **New fullstack TL on a product** | Overview → §3 BFF → §1 Frontend architecture → §10 |
 | **Choosing SSR(Server-Side Rendering) vs SPA** | §2 Rendering → §4 Performance → §10 |
 | **Shipping browser auth safely** | §7 Auth UX → [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) → [api-design §4](../api-design-and-protection/includes/04-auth-model.md) → [enterprise-security §5](../enterprise-security-compliance/includes/05-secrets-beyond-database.md) |
+| **Native mobile API surface** | [§8A Mobile API contracts](includes/08A-mobile-api-contracts.md) → §8 Offline → [auth §4a](../auth-oauth-oidc-and-login-security/includes/04A-third-party-cookies-and-mobile-redirects.md) → [api-design §14](../api-design-and-protection/includes/14-api-versioning-and-deprecation.md) |
 | **Realtime or live dashboards** | §5 Realtime → [api-design §10 async](../api-design-and-protection/includes/10-async-patterns.md) |
 | **Design system / multi-app UI** | §9 Design-system boundaries → §1 → §6 Accessibility |
 

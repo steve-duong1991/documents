@@ -35,7 +35,10 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Connection pool** | Reuse DB connections (PgBouncer, RDS Proxy) instead of one session per request | [PG §7](postgresql-performance/includes/07-connection-management.md), [database-connection](database-connection-and-security/README.md) |
 | **CQRS(Command Query Responsibility Segregation)** | Separate write model and read models | [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) |
 | **Data platform** | Set of stores beyond one OLTP DB — warehouse/lake, search, cache, bus — with ownership and sync paths | [data-platforms](data-platforms/README.md) |
+| **Data contract** | Explicit producer/consumer schema + ownership + compatibility rules across APIs, events, and marts | [data-platforms §5A](data-platforms/includes/05A-data-contracts-and-registries.md), [Kafka §6](apache-kafka/includes/06-serialization-and-schema-evolution.md) |
 | **Dead letter queue (DLQ)** | Queue for messages that failed max retries | [HTS §6](high-throughput-systems/includes/06-async-queues-workers.md), [§7](high-throughput-systems/includes/07-streaming-pipelines.md) |
+| **Developer portal** | Partner/developer surface for keys, sandboxes, docs, try-it, and change communication | [api-design §7A](api-design-and-protection/includes/07A-developer-portal.md) |
+| **Disaster recovery drill** | Rehearsed region/primary failover against documented RPO(Recovery Point Objective)/RTO(Recovery Time Objective) and RACI | [sre §12A](sre-and-incidents/includes/12A-disaster-recovery-playbook.md), [VISUAL-INDEX — DR](VISUAL-INDEX.md#dr--failover) |
 | **FinOps(Cloud Financial Operations)** | Engineering practice treating cloud cost as a design and ops constraint | [finops-and-cost](finops-and-cost/README.md) |
 | **Error budget** | Allowed unreliability below SLO (100% − SLO) | [HTS §11](high-throughput-systems/includes/11-observability.md) |
 | **Event sourcing** | State from append-only domain events | [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) |
@@ -51,14 +54,15 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Operate and learn** | Post-ramp phase: watch, cleanup, incidents, drills, next backlog | [cursor-workflows §6](cursor-workflows/includes/06-operate-and-learn.md) |
 | **GitOps(Git Operations)** | Declarative infra/app state in git; cluster reconciles to desired state | [deployment-strategies §9](deployment-strategies/includes/09-gitops.md) |
 | **Hot key** | Cache or DB key receiving disproportionate traffic; throughput bottleneck | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
-| **Hypercare** | Structured 24–72 h watch after PROD ramp — SLOs plus business KPI and CX signals before calling a release done | [sre §10A](sre-and-incidents/includes/10A-hypercare-checklist.md) |
+| **Hypercare** | Structured 24–72 h watch after PROD ramp — SLOs plus business KPI(Key Performance Indicator) and CX(Customer Experience) signals before calling a release done | [sre §10A](sre-and-incidents/includes/10A-hypercare-checklist.md) |
 | **JTBD(Jobs To Be Done)** | Frame discovery around the user’s job, not a feature list | [tech-lead §1A](tech-lead-practice/includes/01A-product-discovery.md) |
 | **Idempotency key** | Client header for safe retry of writes | [api-design §13](api-design-and-protection/includes/13-idempotency.md) |
 | **ID token** | OIDC(OpenID Connect) JWT(JSON Web Token) proving who authenticated to the client (not for API(Application Programming Interface) Bearer) | [auth §2](auth-oauth-oidc-and-login-security/includes/02-oidc-discovery-and-tokens.md) |
 | **Inbox pattern** | Consumer dedup table — same TX as side effect; pairs with outbox | [ES §5A](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md), [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
 | **ISR (In-Sync Replicas)** | Kafka followers caught up with partition leader | [apache-kafka §2](apache-kafka/includes/02-topics-partitions-and-replication.md) |
 | **KRaft** | Kafka Raft metadata mode (replaces ZooKeeper) | [apache-kafka §1](apache-kafka/includes/01-commit-log-and-internals.md) |
-| **LSM(Log-Structured Merge) tree** | Log-structured merge; write-optimized storage | [tree-and-index-structures §4](tree-and-index-structures/includes/04-lsm-trees.md) |
+| **LSM(Log-Structured Merge) tree** | Log-structured merge; write-optimized storage | [tree §4](tree-and-index-structures/includes/04-lsm-trees.md) |
+| **LLM(Large Language Model) gateway** | Edge for model inference — auth, budgets, cache, PII(Personally Identifiable Information) redaction, failover (not prompt craft) | [specialized §3B](specialized-data-systems/includes/03B-llm-gateway-and-inference-edge.md) |
 | **Memtable** | In-memory sorted buffer in LSM; absorbs writes before flush to disk | [tree §4](tree-and-index-structures/includes/04-lsm-trees.md) |
 | **Materialized view** | PostgreSQL snapshot of a query; fast reads until `REFRESH` | [PG §11](postgresql-performance/includes/11-read-scaling-and-caching.md#materialized-views), [§9](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md#materialized-views) |
 | **Multi-tenant** | One deployment serves many customer orgs; data isolated per tenant | [arch §10](architecture-decisions/includes/10-multi-tenant-system-models.md), [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md), [auth §2d](auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) |
@@ -77,7 +81,11 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **OLAP(Online Analytical Processing)** | Analytical workloads — scans, aggregates, history; typically warehouse/lake | [data-platforms §1](data-platforms/includes/01-oltp-vs-olap.md) |
 | **OLTP(Online Transaction Processing)** | Transactional workloads — short reads/writes, constraints; typically primary PostgreSQL | [data-platforms §1](data-platforms/includes/01-oltp-vs-olap.md), [postgresql-performance](postgresql-performance/README.md) |
 | **Offset (Kafka)** | Position of a record in a partition log | [apache-kafka §4](apache-kafka/includes/04-consumers-and-consumer-groups.md) |
+| **OpenTelemetry (OTel)** | Vendor-neutral traces, metrics, and logs with shared context — sampling and cardinality budgets matter in prod | [HTS §11A](high-throughput-systems/includes/11A-opentelemetry-and-cardinality.md), [HTS §11](high-throughput-systems/includes/11-observability.md) |
+| **Observability platform** | Shared telemetry product — retention tiers, cardinality budgets, collector HA, cost gates; apps own SLIs | [sre §4A](sre-and-incidents/includes/04A-observability-platform.md) |
 | **Outbox pattern** | DB table + relay for reliable event publish | [ES §5A](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md), [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md), [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
+| **Feature store** | Offline + online feature pipelines so training and serving use the same definitions | [specialized §3A](specialized-data-systems/includes/03A-feature-stores-and-ml-serving.md) |
+| **Service mesh** | Sidecar/proxy data plane for mTLS(Mutual Transport Layer Security), retries, and traffic policy between services — place carefully vs app/gateway | [resilience §11A](resilience-patterns/includes/11A-service-mesh-topology.md), [§11](resilience-patterns/includes/11-policy-placement.md) |
 | **Partition (Kafka)** | Ordered sub-stream within a topic; unit of parallelism | [apache-kafka §2](apache-kafka/includes/02-topics-partitions-and-replication.md) |
 | **PAR(Pushed Authorization Requests)** | POST authorize params to AS first; redirect with short-lived `request_uri` | [auth §1c](auth-oauth-oidc-and-login-security/includes/01C-pushed-authorization-requests.md) |
 | **CIBA(Client-Initiated Backchannel Authentication)** | Client starts AuthN(Authentication) out-of-band; user authenticates on a consumption device | [auth §1e](auth-oauth-oidc-and-login-security/includes/01E-device-authorization-and-ciba.md) |
@@ -85,6 +93,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **RAR(Rich Authorization Requests)** | Structured `authorization_details` beyond flat OAuth scopes | [auth §1f](auth-oauth-oidc-and-login-security/includes/01F-jar-and-rar.md) |
 | **Guest / anonymous session** | Narrow pre-login `sid` for cart/wizard; promote + rotate on register/login | [auth §4b](auth-oauth-oidc-and-login-security/includes/04B-anonymous-and-guest-sessions.md) |
 | **Passkey / WebAuthn(Web Authentication)** | Origin-bound public-key AuthN (FIDO(Fast IDentity Online)2); phishing-resistant | [auth §5c](auth-oauth-oidc-and-login-security/includes/05C-webauthn-and-passkeys.md) |
+| **Paved road** | Platform-supported defaults (modules + SLOs + exception ADR path) teams consume instead of inventing each time | [cicd §8A](cicd-and-environments/includes/08A-paved-road-catalog.md), [architecture §5A](architecture-decisions/includes/05A-architecture-governance.md) |
 | **Magic link** | One-time email link for verify or passwordless login; single-use short TTL(Time To Live) | [auth §5b](auth-oauth-oidc-and-login-security/includes/05B-signup-verify-and-magic-links.md) |
 | **Impersonation (support)** | Actor acts as subject with TTL, ticket, and audit — not a silent user session | [auth §5d](auth-oauth-oidc-and-login-security/includes/05D-impersonation-and-support-access.md) |
 | **Concurrent session / device revoke** | List and kill per-device `sid` / refresh families; logout-others vs everywhere | [auth §3e](auth-oauth-oidc-and-login-security/includes/03E-concurrent-sessions-and-devices.md) |
@@ -93,7 +102,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Projector** | Process that builds read models from events | [event-sourcing-and-cqrs §2](event-sourcing-and-cqrs/includes/02-cqrs-and-read-models.md) |
 | **Process manager** | Central saga orchestrator that sends commands and tracks workflow state | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) |
 | **Projector rebuild** | Recompute read models from full event history; runbook for schema changes | [ES §3](event-sourcing-and-cqrs/includes/03-storage-and-projections.md), [deployment §12](deployment-strategies/includes/12-schema-migrations-and-deploy.md) |
-| **Protobuf** | Binary schema format; common with gRPC and Kafka | [apache-kafka §6](apache-kafka/includes/06-serialization-and-schema-evolution.md) |
+| **Protobuf** | Binary schema format; common with gRPC(Google Remote Procedure Call) and Kafka | [apache-kafka §6](apache-kafka/includes/06-serialization-and-schema-evolution.md) |
 | **Rate limit tier** | Product quota (free/paid/enterprise) | [api-design §5](api-design-and-protection/includes/05-rate-limit-tiers.md) |
 | **Read replica** | Standby replaying WAL; offloads SELECT, adds replication lag | [PG §11](postgresql-performance/includes/11-read-scaling-and-caching.md) |
 | **Read-your-writes** | User sees own write immediately after POST | [PG §14](postgresql-performance/includes/14-consistency-promises-and-costs.md), [api-design §11](api-design-and-protection/includes/11-stateless-architecture.md) |
@@ -105,10 +114,10 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **RLS(Row-Level Security)** | PostgreSQL policy that filters rows per session (e.g. per `tenant_id`) | [PG §17](postgresql-performance/includes/17-row-level-security-multi-tenant.md), [api-design §16](api-design-and-protection/includes/16-multi-tenant-apis.md) |
 | **Schema / DB per tenant** | Silo isolation — one PostgreSQL schema or database per customer org | [PG §18](postgresql-performance/includes/18-schema-and-database-per-tenant.md), [arch §10](architecture-decisions/includes/10-multi-tenant-system-models.md) |
 | **Rolling deploy** | Replace instances incrementally; mixed versions during rollout | [deployment-strategies §2](deployment-strategies/includes/02-rolling.md) |
-| **RPO(Recovery Point Objective)** | Recovery point objective — max data loss | [database-connection §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
-| **RTO(Recovery Time Objective)** | Recovery time objective — max downtime to restore | [database-connection §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
+| **RPO(Recovery Point Objective)** | Recovery point objective — max data loss | [sre §12A](sre-and-incidents/includes/12A-disaster-recovery-playbook.md), [database-connection §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
+| **RTO(Recovery Time Objective)** | Recovery time objective — max downtime to restore | [sre §12A](sre-and-incidents/includes/12A-disaster-recovery-playbook.md), [database-connection §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
 | **Saga** | Sequence of local transactions across services; failure undone via compensating actions | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) |
-| **Schema Registry** | Central store for Kafka schema versions and compatibility | [apache-kafka §6](apache-kafka/includes/06-serialization-and-schema-evolution.md) |
+| **Schema Registry** | Central store for Kafka schema versions and compatibility | [apache-kafka §6](apache-kafka/includes/06-serialization-and-schema-evolution.md), [data-platforms §5A](data-platforms/includes/05A-data-contracts-and-registries.md) |
 | **Sharding** | Horizontal split of data across multiple independent database nodes | [PG §9](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md) |
 | **Singleflight** | Coalesce concurrent cache misses into one origin fetch | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
 | **RED(Rate, Errors, Duration) method** | Rate, errors, duration — monitor request-driven services | [HTS §11](high-throughput-systems/includes/11-observability.md) |

@@ -16,6 +16,8 @@ Related: [data-platforms](../data-platforms/README.md) (OLTP/OLAP split, search,
 | 1 | [Time-series databases](includes/01-time-series.md) |
 | 2 | [Graph databases](includes/02-graph-databases.md) |
 | 3 | [Vector stores and RAG](includes/03-vector-and-rag.md) |
+| 3A | [Feature stores and ML serving](includes/03A-feature-stores-and-ml-serving.md) |
+| 3B | [LLM gateway and inference edge](includes/03B-llm-gateway-and-inference-edge.md) |
 | 4 | [Workflow engines](includes/04-workflow-engines.md) |
 | 5 | [Decision guide](includes/05-decision-guide.md) |
 
@@ -27,7 +29,9 @@ Related: [data-platforms](../data-platforms/README.md) (OLTP/OLAP split, search,
 |-------------|---------------|
 | **Metrics/IoT/telemetry at scale** | Overview → §1 Time-series → [sre-and-incidents §4](../sre-and-incidents/includes/04-observability-practice.md) |
 | **Modeling deeply connected data** | §2 Graph databases → [postgresql-performance §2](../postgresql-performance/includes/02-indexing.md) (recursive CTE(Common Table Expression) baseline) |
-| **Building retrieval for an LLM feature** | §3 Vector stores and RAG → §5 Decision guide |
+| **Building retrieval for an LLM(Large Language Model) feature** | §3 Vector stores and RAG → §5 Decision guide |
+| **Online features / model serving** | §3A Feature stores → §3 if retrieval-heavy → [data-platforms](../data-platforms/README.md) |
+| **Shipping LLM/AI behind a gateway** | [§3B LLM gateway](includes/03B-llm-gateway-and-inference-edge.md) → §3 if retrieval → §3A if features |
 | **Replacing a hand-rolled saga or cron pipeline** | [event-sourcing-and-cqrs §7](../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) → §4 Workflow engines |
 | **Deciding if you need any of this at all** | §5 Decision guide first, then the relevant section |
 

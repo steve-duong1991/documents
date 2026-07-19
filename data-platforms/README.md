@@ -12,10 +12,14 @@ Related: [postgresql-performance](../postgresql-performance/README.md) · [high-
 |---|-------|
 | — | [Overview](includes/00-overview.md) |
 | 1 | [OLTP vs OLAP](includes/01-oltp-vs-olap.md) |
+| 1A | [Columnar OLAP operations](includes/01A-columnar-olap-operations.md) |
 | 2 | [Search systems](includes/02-search-systems.md) |
+| 2A | [Search cluster operations](includes/02A-search-cluster-operations.md) |
 | 3 | [Redis and in-memory](includes/03-redis-and-in-memory.md) |
+| 3A | [Redis operations](includes/03A-redis-operations.md) |
 | 4 | [Caching end to end](includes/04-caching-end-to-end.md) |
 | 5 | [Data ownership, lineage, retention](includes/05-data-ownership-lineage-retention.md) |
+| 5A | [Data contracts and registries](includes/05A-data-contracts-and-registries.md) |
 | 6 | [Migration coordination](includes/06-migration-coordination.md) |
 | 7 | [Analytics without harming OLTP](includes/07-analytics-without-harming-oltp.md) |
 | 8 | [Decision guide](includes/08-decision-guide.md) |

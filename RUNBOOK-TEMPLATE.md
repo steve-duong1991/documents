@@ -49,7 +49,7 @@ flowchart TD
 | Last deploy | _CI / Argo CD(Continuous Delivery) / release dashboard_ |
 | Error by route | _API health dashboard_ |
 | DB pool wait | _pg_stat_activity / pool metrics_ |
-| Consumer lag | _Kafka / SQS dashboard_ |
+| Consumer lag | _Kafka / SQS(Simple Queue Service) dashboard_ |
 | Replication lag | _pg_stat_replication_ |
 
 ---

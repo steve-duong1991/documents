@@ -32,7 +32,7 @@ flowchart TB
 ## Pros
 
 - Validates the new system under real load with zero user impact
-- Great for rewrites, new search backends, and ML models
+- Great for rewrites, new search backends, and ML(Machine Learning) models
 
 ## Cons
 

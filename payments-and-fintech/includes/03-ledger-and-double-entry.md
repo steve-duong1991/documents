@@ -2,7 +2,7 @@
 
 A payments system's source of truth for money is not a `balance` column — it's an **immutable, append-only journal** of entries, with every balance a derived, recomputable value. This is double-entry accounting, and it exists because it makes entire classes of bugs structurally impossible rather than merely unlikely.
 
-> **Related:** ACID(Atomicity, Consistency, Isolation, Durability) transactions and consistency behind the journal → [postgresql-performance §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md) · Append-only event log parallels → [event-sourcing-and-cqrs §1](../../event-sourcing-and-cqrs/includes/01-core-concepts.md) · Reconciliation against this ledger → [§4](04-fraud-and-reconciliation.md)
+> **Related:** ACID(Atomicity, Consistency, Isolation, Durability) transactions and consistency behind the journal → [postgresql-performance §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md) · Append-only event log parallels → [event-sourcing-and-cqrs §1](../../event-sourcing-and-cqrs/includes/01-core-concepts.md) · Refunds / payouts / settlement (ledger-first saga) → [§3A](03A-refunds-payouts-settlement.md) · Reconciliation against this ledger → [§4](04-fraud-and-reconciliation.md)
 
 ---
 

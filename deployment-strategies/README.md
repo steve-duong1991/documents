@@ -18,6 +18,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (st
 | 5 | [A/B testing](includes/05-ab-testing.md) |
 | 6 | [Shadow / mirror / dark launch](includes/06-shadow.md) |
 | 7 | [Feature flags](includes/07-feature-flags.md) |
+| 7A | [Feature flag operations](includes/07A-feature-flag-operations.md) |
 | 8 | [Immutable deployment](includes/08-immutable.md) |
 | 9 | [GitOps](includes/09-gitops.md) |
 | 10 | [Progressive delivery](includes/10-progressive-delivery.md) |

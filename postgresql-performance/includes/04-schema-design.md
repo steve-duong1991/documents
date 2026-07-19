@@ -26,6 +26,15 @@ Good schema design prevents expensive fixes later. Normalize first; denormalize 
 
 ## JSONB
 
+```mermaid
+flowchart TD
+    Col{Filter / join / sort hot path?}
+    Col -->|Yes| Rel[Relational column + index]
+    Col -->|No| Evolving{Schema evolves often?}
+    Evolving -->|Yes| Jb[JSONB + GIN if queried]
+    Evolving -->|No| Rel
+```
+
 Good for semi-structured or evolving attributes. **Not** a replacement for columns you filter and join on constantly.
 
 ```sql

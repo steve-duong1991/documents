@@ -1,10 +1,10 @@
 # Hypercare Checklist (First 72 Hours)
 
-Structured watch after a user-facing PROD(Production) ramp — **tech SLOs and business / CX signals** — before calling the release done.
+Structured watch after a user-facing PROD(Production) ramp — **tech SLOs and business / CX(Customer Experience) signals** — before calling the release done.
 
 > **Scope:** First 24–72 h after canary/flag reaches steady traffic. Deploy mechanics and Gate 7 → [deployment §14](../../deployment-strategies/includes/14-feature-to-prod-playbook.md). Steady-state Cursor workflow → [cursor-workflows §6](../../cursor-workflows/includes/06-operate-and-learn.md). Synthetics design → [§10](10-synthetic-monitoring.md). Signal triage → [HTS §11](../../high-throughput-systems/includes/11-observability.md).
 >
-> **Related:** SLO rollback → [deployment §13](../../deployment-strategies/includes/13-slo-rollback-triggers.md) · Error budgets → [§2](02-error-budgets.md) · Web Vitals → [fullstack §4](../../fullstack-bff-and-clients/includes/04-web-performance.md) · Debt / CX follow-ups → [tech-lead §5A](../../tech-lead-practice/includes/05A-debt-business-cx-balance.md)
+> **Related:** SLO(Service Level Objective) rollback → [deployment §13](../../deployment-strategies/includes/13-slo-rollback-triggers.md) · Error budgets → [§2](02-error-budgets.md) · Web Vitals → [fullstack §4](../../fullstack-bff-and-clients/includes/04-web-performance.md) · Debt / CX follow-ups → [tech-lead §5A](../../tech-lead-practice/includes/05A-debt-business-cx-balance.md)
 
 ---
 
@@ -13,8 +13,8 @@ Structured watch after a user-facing PROD(Production) ramp — **tech SLOs and b
 | Window | Focus | Exit when |
 |--------|-------|-----------|
 | **0–2 h** | Abort readiness, version tags, smoke | No mystery errors; rollback path proven idle |
-| **2–24 h** | RED/USE vs baseline; support spike | SLOs hold; no SEV pattern |
-| **24–72 h** | Business KPI + CX field data; cleanup plan | Hypercare closed or extended in writing |
+| **2–24 h** | RED(Rate, Errors, Duration)/USE(Utilization, Saturation, Errors) vs baseline; support spike | SLOs hold; no SEV pattern |
+| **24–72 h** | Business KPI(Key Performance Indicator) + CX field data; cleanup plan | Hypercare closed or extended in writing |
 
 **Rule of thumb:** If you only watch latency/errors, you will miss “technically fine, users hate it.” Pair SLI(Service Level Indicator)s with at least one **business KPI(Key Performance Indicator)** and one **CX** signal.
 
@@ -57,9 +57,9 @@ Pick **one** primary KPI before ship; argue from that number in abort debates.
 
 | Check | Pass criteria | Link |
 |-------|---------------|------|
-| Web Vitals (LCP/INP/CLS) if web | No field regression beyond budget | [fullstack §4](../../fullstack-bff-and-clients/includes/04-web-performance.md) |
-| RUM(Real User Monitoring) errors | New JS/API error class absent or owned |
-| Support / CSAT spike | No unexplained surge tagged to the release |
+| Web Vitals (LCP/INP(Interaction to Next Paint)/CLS(Cumulative Layout Shift)) if web | No field regression beyond budget | [fullstack §4](../../fullstack-bff-and-clients/includes/04-web-performance.md) |
+| RUM(Real User Monitoring) errors | New JS/API(Application Programming Interface) error class absent or owned |
+| Support / CSAT(Customer Satisfaction) spike | No unexplained surge tagged to the release |
 | Degrade mode rate (if used) | Matches agreed contract; exit dated | [resilience §5](../../resilience-patterns/includes/05-load-shedding-and-degradation.md) |
 
 ### Delivery leftovers

@@ -14,7 +14,7 @@ When to spend, when to cut, and which FinOps(Cloud Financial Operations) moves b
 | Designing a new feature | Unit-cost sketch — [§1](01-unit-economics.md) |
 | Steady high invoice | Right-size + commitments — [§3](03-right-sizing-and-autoscaling.md) |
 | Storage climbing | Retention/tiering — [§4](04-storage-and-retention-cost.md) |
-| Choosing Kafka vs SQS etc. | TCO(Total Cost of Ownership) — [§5](05-build-vs-managed-cost.md) |
+| Choosing Kafka vs SQS(Simple Queue Service) etc. | TCO(Total Cost of Ownership) — [§5](05-build-vs-managed-cost.md) |
 | Multi-region / many stores | Architecture cost — [§7](07-architecture-cost-tradeoffs.md) |
 
 **Rule of thumb:** **Stop hemorrhage** (anomaly) → **remove waste** (right-size, retention) → **change shape** (architecture) → **commit discounts**.

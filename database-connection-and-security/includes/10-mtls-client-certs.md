@@ -21,6 +21,16 @@
 
 ## Architecture
 
+```mermaid
+flowchart LR
+    CA[CA / Vault PKI] --> ClientCert[Client cert + key]
+    CA --> ServerCert[Server cert]
+    ClientCert --> App[App]
+    ServerCert --> PG[(PostgreSQL)]
+    App -->|mTLS handshake| PG
+    PG -->|pg_hba cert map| Role[DB role]
+```
+
 ```
 App                          PostgreSQL
   │                              │

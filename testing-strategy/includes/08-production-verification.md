@@ -36,7 +36,7 @@ flowchart LR
 | Error rate, latency | RED(Rate, Errors, Duration) metrics tagged by version |
 | Saturation | USE(Utilization, Saturation, Errors) — pools, CPU, queue |
 | Journey success | Synthetics — [SRE §10](../../sre-and-incidents/includes/10-synthetic-monitoring.md) |
-| Business KPI | Optional secondary (checkout rate) |
+| Business KPI(Key Performance Indicator) | Optional secondary (checkout rate) |
 
 Canary traffic shifting → [deployment §4](../../deployment-strategies/includes/04-canary.md). Automatic abort → [§13](../../deployment-strategies/includes/13-slo-rollback-triggers.md).
 

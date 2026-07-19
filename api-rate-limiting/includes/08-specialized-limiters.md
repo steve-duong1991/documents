@@ -45,7 +45,7 @@ Different endpoints consume different "weight" from the same bucket.
 
 - GraphQL (query complexity scoring)
 - Search + CRUD on the same API key
-- LLM APIs (tokens as cost unit)
+- LLM(Large Language Model) APIs (tokens as cost unit)
 
 **Example weights:**
 

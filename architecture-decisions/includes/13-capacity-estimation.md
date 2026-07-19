@@ -131,7 +131,7 @@ Compare against the pool-sizing guidance in [postgresql-performance §7 Connecti
 |----------------------|----------------------------------|
 | Per-key overhead | Small structs add up fast at millions of keys — do not assume `key + value` size alone |
 | Eviction policy headroom | Cache should not run at 100% memory; leave room before `maxmemory-policy` starts evicting the wrong keys |
-| TTL(Time To Live) distribution | If most keys never expire, memory only grows — plan a TTL or eviction policy from day one, not after the first OOM |
+| TTL(Time To Live) distribution | If most keys never expire, memory only grows — plan a TTL or eviction policy from day one, not after the first OOM(Out Of Memory) |
 
 ---
 

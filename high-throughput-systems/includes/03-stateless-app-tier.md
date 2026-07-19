@@ -13,7 +13,7 @@ Horizontal throughput requires **interchangeable app instances** — no sticky s
 | Requirement | Why it matters for throughput |
 |-------------|-------------------------------|
 | **Stateless handlers** | Any instance serves any request — LB scales freely |
-| **Bounded concurrency** | Prevents connection storms and OOM |
+| **Bounded concurrency** | Prevents connection storms and OOM(Out Of Memory) |
 | **Connection pooling** | Reuse DB connections — don't open per request |
 | **Cheap requests** | Higher RPS at fixed CPU |
 

@@ -2,7 +2,7 @@
 
 Clear boundaries stop every outage from becoming an identity crisis. Tech leads own **service outcomes**; platform owns **shared leverage** — with an explicit handoff list.
 
-> **Related:** Overview → [§0](00-overview.md) · Observability ownership → [sre §4](../../sre-and-incidents/includes/04-observability-practice.md) · On-call → [sre §8](../../sre-and-incidents/includes/08-on-call-design.md) · Secrets platform → [database-connection-and-security](../../database-connection-and-security/README.md)
+> **Related:** Overview → [§0](00-overview.md) · Paved-road catalog (modules, platform SLOs, exception ADR) → [§8A](08A-paved-road-catalog.md) · Observability ownership → [sre §4](../../sre-and-incidents/includes/04-observability-practice.md) · On-call → [sre §8](../../sre-and-incidents/includes/08-on-call-design.md) · Secrets platform → [database-connection-and-security](../../database-connection-and-security/README.md)
 
 ---
 

@@ -4,7 +4,7 @@ Choose architecture defaults from **people, company stage, go-to-market, and pri
 
 > **Scope:** Decision matrix for Tech Leads / Solution Architects: team size, platform maturity, B2B(Business-to-Business) vs B2C, pricing tiers, stage → default system shape. Technical shape details → [§1](01-monolith-modular-microservices.md) · [§12](12-decision-guide.md). Cost curves → [finops §7](../../finops-and-cost/includes/07-architecture-cost-tradeoffs.md). Build vs buy → [tech-lead §9](../../tech-lead-practice/includes/09-build-vs-buy.md). Tenancy → [§10](10-multi-tenant-system-models.md).
 >
-> **Related:** Team Topologies → [§1A](01A-team-topologies.md) · Capacity → [§13](13-capacity-estimation.md) · Tradeoffs → [§6](06-tradeoff-frameworks.md) · Debt/CX pressure → [tech-lead §5A](../../tech-lead-practice/includes/05A-debt-business-cx-balance.md) · API tiers → [api-design §5](../../api-design-and-protection/includes/05-rate-limit-tiers.md)
+> **Related:** Team Topologies → [§1A](01A-team-topologies.md) · Capacity → [§13](13-capacity-estimation.md) · Tradeoffs → [§6](06-tradeoff-frameworks.md) · Debt/CX(Customer Experience) pressure → [tech-lead §5A](../../tech-lead-practice/includes/05A-debt-business-cx-balance.md) · API(Application Programming Interface) tiers → [api-design §5](../../api-design-and-protection/includes/05-rate-limit-tiers.md)
 
 ---
 
@@ -21,18 +21,18 @@ Choose architecture defaults from **people, company stage, go-to-market, and pri
 
 ---
 
-## NFR(Non-Functional Requirement) sheet (fill before shape debate)
+## NFR sheet (fill before shape debate)
 
 Capture ceilings once; reuse in ADRs and design reviews.
 
 | NFR | Target / constraint | Owner |
 |-----|---------------------|-------|
 | Latency (p95/p99) journeys | e.g. checkout p99 under 800 ms | Product + eng |
-| Availability SLO(Service Level Objective) | e.g. 99.9% monthly | SRE / TL |
+| Availability SLO(Service Level Objective) | e.g. 99.9% monthly | SRE(Site Reliability Engineering) / TL |
 | RPO(Recovery Point Objective) / RTO(Recovery Time Objective) | e.g. 5 min / 1 h | Eng + business |
 | Tenancy / residency | Pool / silo / cells; regions | Security + sales eng |
 | Compliance | PCI / SOC2 / GDPR scope | Security |
-| Cost ceiling | $/active user or $/1k requests | FinOps + TL |
+| Cost ceiling | $/active user or $/1k requests | FinOps(Cloud Financial Operations) + TL |
 | Team ops budget | On-call hours; services per squad | EM / TL |
 
 Capacity math → [§13](13-capacity-estimation.md). Record irreversible picks as ADR — [§5](05-adrs-and-design-docs.md).
@@ -78,8 +78,8 @@ Strangler when modernizing legacy → [§4](04-strangler-and-modernization.md).
 | GTM | Architecture lean | Watch-outs |
 |-----|-------------------|------------|
 | **B2C** | Edge/CDN(Content Delivery Network), cache-heavy reads, strong rate limits, simple tenancy | Viral spikes; abuse; CX latency |
-| **B2B SMB** | Pooled multi-tenant + strong `tenant_id`; self-serve SSO later | Noisy neighbor; cheap tier cost |
-| **Enterprise B2B** | SSO/SCIM, optional silo/cell, audit, support impersonation | Sales-driven exceptions; restore drills |
+| **B2B SMB** | Pooled multi-tenant + strong `tenant_id`; self-serve SSO(Single Sign-On) later | Noisy neighbor; cheap tier cost |
+| **Enterprise B2B** | SSO/SCIM(System for Cross-domain Identity Management), optional silo/cell, audit, support impersonation | Sales-driven exceptions; restore drills |
 | **Hybrid** | One product, tiered isolation | Don’t invent a second architecture per deal — [§10](10-multi-tenant-system-models.md) |
 
 Auth / SSO depth → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · SCIM → [api-design §12C](../../api-design-and-protection/includes/12C-scim-and-jml-provisioning.md).
@@ -92,7 +92,7 @@ Auth / SSO depth → [auth §2d](../../auth-oauth-oidc-and-login-security/includ
 |---------|-----------------|-------------------|
 | **Free / freemium** | Hard quotas, shed free first, cheap path | Unit economics — [finops §1](../../finops-and-cost/includes/01-unit-economics.md) |
 | **Usage / metered** | Accurate metering, idempotent billable events | Cost per request visible to design |
-| **Seat / subscription** | Entitlements in AuthZ; soft abuse caps | Seat ≠ unlimited API fan-out |
+| **Seat / subscription** | Entitlements in AuthZ(Authorization); soft abuse caps | Seat ≠ unlimited API fan-out |
 | **Enterprise contract** | SLA, silo/cell option, audit export | Price isolation; don’t custom-fork core |
 | **Tiered API** | Gateway quotas by plan — [api-design §5](../../api-design-and-protection/includes/05-rate-limit-tiers.md) | Fail-open vs fail-closed by tier |
 
@@ -106,7 +106,7 @@ Auth / SSO depth → [auth §2d](../../auth-oauth-oidc-and-login-security/includ
 |-----------|------------------|
 | Startup, 8 engineers, B2C MVP | Modular monolith + managed Postgres + buy auth |
 | Scale-up, 4 squads, no platform team yet | Stay modular; extract one measured bottleneck; invest in paved road before more services |
-| B2B SaaS(Software as a Service) SMB → first enterprise deal | Pool + RLS; offer silo/cell for premium — [§10](10-multi-tenant-system-models.md) · [§10A](10A-regional-cells-and-residency.md) |
+| B2B SaaS(Software as a Service) SMB → first enterprise deal | Pool + RLS(Row-Level Security); offer silo/cell for premium — [§10](10-multi-tenant-system-models.md) · [§10A](10A-regional-cells-and-residency.md) |
 | Usage-priced API, thin margins | Cache, async non-critical work, FinOps in every ADR — [finops §7](../../finops-and-cost/includes/07-architecture-cost-tradeoffs.md) |
 | Small platform team, Kafka pitch | Prefer managed queue/bus until staffing supports ops — [tech-lead §9](../../tech-lead-practice/includes/09-build-vs-buy.md) |
 | Regulated multi-region | Residency pins before active-active — [§10A](10A-regional-cells-and-residency.md) |
@@ -120,7 +120,7 @@ Auth / SSO depth → [auth §2d](../../auth-oauth-oidc-and-login-security/includ
 | Microservices everywhere | Cannot staff on-call or paved road |
 | Active-active multi-region | Traffic/revenue does not pay 2×; residency forbids |
 | Event-sourced core | Team lacks ops skill and product needs no history |
-| Build custom IdP | B2B needs SSO fast — buy/integrate |
+| Build custom IdP(Identity Provider) | B2B needs SSO fast — buy/integrate |
 | Shared DB for “speed” | Cross-team lockstep already hurts — [§8](08-data-ownership.md) |
 
 ---
@@ -167,6 +167,6 @@ Auth / SSO depth → [auth §2d](../../auth-oauth-oidc-and-login-security/includ
 | [§1 Monolith / modular / microservices](01-monolith-modular-microservices.md) | Team topology and extraction |
 | [§10 / §10A Multi-tenant + cells](10-multi-tenant-system-models.md) | Isolation and residency |
 | [§12 Decision guide](12-decision-guide.md) | Technical scenario picker |
-| [finops-and-cost](../../finops-and-cost/README.md) | Unit economics and TCO |
+| [finops-and-cost](../../finops-and-cost/README.md) | Unit economics and TCO(Total Cost of Ownership) |
 | [tech-lead §5A](../../tech-lead-practice/includes/05A-debt-business-cx-balance.md) | When roadmap pressure changes the call |
 | [tech-lead §9](../../tech-lead-practice/includes/09-build-vs-buy.md) | Staffing and TCO(Total Cost of Ownership) |

@@ -35,6 +35,8 @@ flowchart LR
 
 Run DR drill quarterly → [database-connection-and-security §12](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md).
 
+Write-path home region, sticky primary, and promote sequence → [§13A Multi-region write and failover](13A-multi-region-write-and-failover.md). Orchestrated regional failover (roles, freeze, validate) → [sre §12A](../../sre-and-incidents/includes/12A-disaster-recovery-playbook.md).
+
 ---
 
 ## Read-local, write-global

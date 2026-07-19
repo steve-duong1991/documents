@@ -23,6 +23,22 @@ Production PostgreSQL migrations should be **online**, **backward compatible**, 
 
 ## Expand / contract examples
 
+```mermaid
+sequenceDiagram
+    participant Old as App vN
+    participant New as App vN+1
+    participant DB as PostgreSQL
+
+    Note over DB: Expand — schema accepts both versions
+    DB->>DB: ADD nullable column / new index CONCURRENTLY
+    Old->>DB: Reads/writes old shape
+    New->>DB: Reads/writes old + new columns
+    Note over DB: Backfill batched
+    DB->>DB: UPDATE … WHERE … IS NULL (batches)
+    Note over Old,New: All instances on vN+1
+    New->>DB: Contract — NOT NULL / drop old column
+```
+
 ### Add required column safely
 
 ```sql

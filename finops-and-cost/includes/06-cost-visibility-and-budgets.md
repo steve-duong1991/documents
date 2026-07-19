@@ -48,7 +48,7 @@ Automate via IaC(Infrastructure as Code) policy — manual tagging drifts.
 | Budget type | Use |
 |-------------|-----|
 | **Monthly service** | Primary eng signal |
-| **Project / feature** | Temporary spikes (migration, ML) |
+| **Project / feature** | Temporary spikes (migration, ML(Machine Learning)) |
 | **Sandbox** | Hard cap; auto-shutdown |
 | **Shared platform** | Platform team owns; showback to consumers |
 

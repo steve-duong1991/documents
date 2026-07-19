@@ -58,6 +58,16 @@ Full decision flowchart, scenario table, and common mistakes → **[§13 Decisio
 
 ## Priority order
 
+```mermaid
+flowchart TD
+    M[Measure] --> I[Index]
+    I --> Q[Query / schema]
+    Q --> V[Vacuum / ANALYZE]
+    V --> P[Pool connections]
+    P --> C[Config tune]
+    C --> S[Scale out]
+```
+
 1. **Measure** — never optimize blind
 2. **Index correctly** — partial, composite, covering where needed
 3. **Fix queries and schema** — fewer round trips, right types

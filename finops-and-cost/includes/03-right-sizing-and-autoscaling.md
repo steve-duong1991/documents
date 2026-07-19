@@ -35,7 +35,7 @@ flowchart LR
 | Check | Action |
 |-------|--------|
 | CPU p95 < 30% for weeks | Smaller instance / fewer replicas |
-| Memory OOM with low CPU | Memory-optimized shape or leak fix |
+| Memory OOM(Out Of Memory) with low CPU | Memory-optimized shape or leak fix |
 | Disk IOPS throttled | Storage class / index / query fix |
 | Connection storms | Pool sizing — [PG §7](../../postgresql-performance/includes/07-connection-management.md) |
 

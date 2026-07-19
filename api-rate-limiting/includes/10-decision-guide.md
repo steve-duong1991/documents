@@ -32,7 +32,7 @@ flowchart TD
 | Internal microservices | Gateway global limit + per-service concurrency |
 | GraphQL | Cost-based limiting + query depth/complexity analysis |
 | File upload API | Per-user quota + concurrent upload limit + bandwidth cap |
-| LLM / inference API | Token bucket on tokens/min + per-user daily quota |
+| LLM(Large Language Model) / inference API | Token bucket on tokens/min + per-user daily quota |
 | DDoS / volumetric attack | Edge/CDN(Content Delivery Network) rate limit + WAF(Web Application Firewall) before app logic |
 | Paid API with tiers | Quota system + per API key + graduated response |
 

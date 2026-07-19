@@ -6,6 +6,15 @@ Write-heavy workloads and concurrent access need different strategies than tunin
 
 ## Bulk load and backfill
 
+```mermaid
+flowchart TD
+    Load[Large import] --> Copy[COPY / multi-row INSERT]
+    Copy --> Stage[Staging table optional]
+    Stage --> Merge[INSERT … SELECT into target]
+    Merge --> An[ANALYZE]
+    Row[Row-by-row INSERT] --> Slow[Avoid for bulk]
+```
+
 | Method | Speed | Notes |
 |--------|-------|-------|
 | **`COPY`** | Fastest | Preferred for large imports |

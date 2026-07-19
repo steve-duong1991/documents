@@ -17,6 +17,15 @@ PostgreSQL creates **one process per connection**. Beyond a few hundred active c
 
 ## Solution: connection pooling
 
+```mermaid
+flowchart TD
+    App[App pool<br/>per instance] --> PB[PgBouncer / RDS Proxy]
+    PB --> PG[(PostgreSQL<br/>max_connections)]
+    App -.->|replicas × pool size| Cap{Total app clients}
+    Cap -->|Too high without pooler| Storm[Connection storm]
+    Cap -->|Pooled| OK[Server connections stay bounded]
+```
+
 Use a pooler between apps and PostgreSQL:
 
 | Tool | Notes |

@@ -111,7 +111,7 @@ GitHub Actions: `.github/workflows/documents.yml` — link/anchor validation, RE
 - Capstone, overview, and decision-guide sections: open with **`> **Related:**`** links to sibling guides
 - Sections that overlap a sibling guide (same topic, different lens): add **`> **Scope:**`** before **Related** — state what this file owns and link to the sibling (e.g. HTS §1 system SLOs vs PG §1 `EXPLAIN`; api-design §5 product tiers vs api-rate-limiting §7 layers)
 - Algorithm/strategy card sections: add **Related** (where to enforce) + **Common mistakes** when depth warrants it
-- Use mermaid for flows and architecture
+- Use mermaid for flows and architecture — **every include with ≥2 actors or a state machine should have ≥1 diagram** (exception: pure reference tables such as index-type menus)
 - End sections with **Common mistakes** and **Pros and cons** when depth warrants it
 - Link to sibling guides instead of duplicating full algorithms
 - No `TODO` / placeholder sections — ship complete sections or don't add the file

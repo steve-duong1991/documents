@@ -34,6 +34,19 @@ When data lives entirely in RAM and you need ordered maps or sets, binary tree v
 | **Cons** | Slightly deeper than AVL → marginally slower lookups |
 | **Use when** | **General-purpose ordered map/set** with mixed read/write — default in many standard libraries |
 
+```mermaid
+flowchart TD
+    Need[In-RAM ordered map/set] --> RW{Read-heavy lookups?}
+    RW -->|Yes| AVL[AVL]
+    RW -->|No| Mix{Mixed read/write?}
+    Mix -->|Yes| RB[Red-Black — default]
+    Mix -->|No| Conc{Need concurrent updates?}
+    Conc -->|Yes| Skip[Skip list]
+    Conc -->|No| Local{Strong temporal locality?}
+    Local -->|Yes| Splay[Splay tree]
+    Local -->|No| RB
+```
+
 ---
 
 ## Splay Tree

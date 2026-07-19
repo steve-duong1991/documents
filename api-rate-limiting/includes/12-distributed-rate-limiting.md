@@ -52,7 +52,7 @@ With N replicas, an in-memory limit of `100/min` becomes `N × 100/min` under ro
 | **Regional Redis per region** | Low cross-region latency | Global quota needs federation | Multi-region APIs |
 | **Gateway-only limits** | No app Redis dependency | Weaker per-endpoint / business rules | MVP |
 
-Use **AOF** or **RDB** persistence if counter loss on failover is unacceptable — or accept reset + conservative caps during failover (see [§11 war stories](11-common-mistakes-and-architecture.md#production-war-stories)).
+Use **AOF(Append-Only File)** or **RDB(Redis Database File)** persistence if counter loss on failover is unacceptable — or accept reset + conservative caps during failover (see [§11 war stories](11-common-mistakes-and-architecture.md#production-war-stories)).
 
 ---
 

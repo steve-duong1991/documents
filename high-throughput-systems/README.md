@@ -20,9 +20,12 @@ A practical reference for building systems that handle high request, event, and 
 | 9 | [Backpressure and limits](includes/09-backpressure-and-limits.md) |
 | 10 | [Scale and deploy](includes/10-scale-and-deploy.md) |
 | 11 | [Observability](includes/11-observability.md) |
+| 11A | [OpenTelemetry and cardinality](includes/11A-opentelemetry-and-cardinality.md) |
 | 12 | [Decision guide and common mistakes](includes/12-decision-guide-and-common-mistakes.md) |
 | 13 | [Multi-region read routing](includes/13-multi-region-read-routing.md) |
+| 13A | [Multi-region write and failover](includes/13A-multi-region-write-and-failover.md) |
 | 14 | [Message brokers and queues](includes/14-message-brokers-and-queues.md) |
+| 14A | [Queue broker operations](includes/14A-queue-broker-operations.md) |
 | 15 | [CDC and search indexing](includes/15-cdc-and-search-indexing.md) |
 | 16 | [Networking fundamentals](includes/16-networking-fundamentals.md) |
 

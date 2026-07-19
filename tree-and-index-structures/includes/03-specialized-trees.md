@@ -78,6 +78,21 @@ Not every problem is “sorted key lookup.” These structures optimize for pref
 
 ## Quick reference
 
+```mermaid
+flowchart TD
+    Op[Dominant operation] --> Pref{Prefix / autocomplete / LPM?}
+    Pref -->|Yes| Trie[Trie / Radix]
+    Pref -->|No| Prio{Priority / top-K?}
+    Prio -->|Yes| Heap[Heap]
+    Prio -->|No| Range{Range aggregates on array?}
+    Range -->|Yes| Seg[Segment / Fenwick]
+    Range -->|No| Space{Spatial rectangle / NN?}
+    Space -->|Yes| Spat[R-Tree / KD-Tree]
+    Space -->|No| Proof{Integrity proof?}
+    Proof -->|Yes| Merkle[Merkle tree]
+    Proof -->|No| Other[B+ or LSM for persistence]
+```
+
 | Operation dominates | Structure |
 |---------------------|-----------|
 | Priority / scheduling | Heap |

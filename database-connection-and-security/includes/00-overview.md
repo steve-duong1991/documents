@@ -2,7 +2,38 @@
 
 Production database access is **layered**: network isolation and TLS(Transport Layer Security) first, then authentication, secrets, pooling, and audit. Pick a connection pattern based on cloud, scale, and compliance — not on what is easiest in dev.
 
-> **Related:** Pool sizing and `max_connections` → [postgresql-performance §7](../../postgresql-performance/includes/07-connection-management.md) · Service identity → [api-design §12 Identity](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) · Pattern picker → [§13 Decision guide](13-decision-guide.md)
+> **Related:** Pool sizing and `max_connections` → [postgresql-performance §7](../../postgresql-performance/includes/07-connection-management.md) · Service identity → [api-design §12 Identity](../../api-design-and-protection/includes/12-identity-rbac-iam-ad.md) · Pattern picker → [§13 Decision guide](13-decision-guide.md) · Request spine → [VISUAL-INDEX — Request path](../../VISUAL-INDEX.md#request-path)
+
+## Layered access (visual)
+
+Every production path stacks network, TLS(Transport Layer Security), identity/secrets, and pooling before SQL(Structured Query Language) reaches PostgreSQL:
+
+```mermaid
+flowchart TB
+    subgraph edge [App tier]
+        App[Service / Lambda / pod]
+    end
+    subgraph identity [Identity and secrets]
+        IAM[IAM token or secret manager / Vault]
+    end
+    subgraph pool [Pooler]
+        Proxy[RDS Proxy / PgBouncer]
+    end
+    subgraph data [Data plane]
+        PG[(PostgreSQL — private subnet)]
+    end
+    App -->|1 mint short-lived cred or fetch secret| IAM
+    App -->|2 TLS connect with token or password| Proxy
+    Proxy -->|3 pooled server connections + TLS| PG
+```
+
+| Hop | Owns | Fail closed when |
+|-----|------|------------------|
+| **App → identity** | Role assumption, secret fetch | Identity provider or Vault unreachable (no fallback static password in image) |
+| **App → pooler** | Client TLS, auth to proxy | Wrong CA / expired token |
+| **Pooler → DB** | Server pool, auth to Postgres | `max_connections` / auth storms |
+
+IAM(Identity and Access Management) + Proxy detail → [§4](04-aws-iam-rds-proxy.md). PgBouncer → [§9](09-pgbouncer-proxy-password.md).
 
 ## Security layers at a glance
 

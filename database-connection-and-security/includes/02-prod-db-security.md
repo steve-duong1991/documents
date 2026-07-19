@@ -10,6 +10,17 @@ Production database security is **layered** — no single control is enough. Sec
 
 ## Security layers at a glance
 
+```mermaid
+flowchart TD
+    App[App / admin] --> Net[Network isolation]
+    Net --> TLS[TLS / mTLS]
+    TLS --> Auth[AuthN — IAM / password / cert]
+    Auth --> Secrets[Secrets / short-lived creds]
+    Secrets --> Proxy[Pooler / proxy]
+    Proxy --> DB[(PostgreSQL)]
+    DB --> Audit[Audit + monitoring]
+```
+
 | Layer | Focus |
 |-------|--------|
 | 1. Network isolation | Keep the DB off the public internet |

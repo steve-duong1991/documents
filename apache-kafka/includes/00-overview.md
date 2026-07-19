@@ -50,7 +50,7 @@ flowchart LR
 | Store | Strength | Weakness for events |
 |-------|----------|---------------------|
 | **PostgreSQL** | ACID(Atomicity, Consistency, Isolation, Durability), queries, source of truth | Poor fan-out; not an event bus |
-| **Redis / SQS** | Simple job dispatch | No durable shared replay log |
+| **Redis / SQS(Simple Queue Service)** | Simple job dispatch | No durable shared replay log |
 | **Kafka** | High-throughput fan-out + replay | No SQL(Structured Query Language); eventual consistency downstream |
 
 Typical architecture: **PostgreSQL = source of truth** → **outbox or CDC** → **Kafka = integration bus** → consumers update read models, search, analytics.

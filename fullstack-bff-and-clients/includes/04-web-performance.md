@@ -10,7 +10,7 @@
 | **INP(Interaction to Next Paint)** | UI reacts to input | Less main-thread JS, break long tasks |
 | **CLS(Cumulative Layout Shift)** | Layout jumps | Sizes on images/embeds; reserve space |
 
-**Rule of thumb:** Set **budgets in CI(Continuous Integration)** (bundle bytes + lab vitals); field data (CrUX/RUM) settles arguments.
+**Rule of thumb:** Set **budgets in CI(Continuous Integration)** (bundle bytes + lab vitals); field data (CrUX/RUM(Real User Monitoring)) settles arguments.
 
 ## Performance path
 

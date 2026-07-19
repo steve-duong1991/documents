@@ -161,7 +161,7 @@ flowchart TD
 
 ## Retry and DLQ deep dive
 
-Kafka has **no native delayed retry** (unlike SQS visibility timeout). Retries are an **application pattern**.
+Kafka has **no native delayed retry** (unlike SQS(Simple Queue Service) visibility timeout). Retries are an **application pattern**.
 
 ### End-to-end flow
 

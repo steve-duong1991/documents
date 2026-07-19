@@ -132,7 +132,7 @@ Rebuild test: wipe read table → replay full stream → compare to snapshot CSV
 |-----------|--------|
 | **Orchestrator unit** | Mock participant APIs; assert command order and compensation LIFO |
 | **In-memory bus** | Choreography with synchronous handlers |
-| **Outbox integration** | Real PG + test Kafka/SQS; assert message after TX commit |
+| **Outbox integration** | Real PG + test Kafka/SQS(Simple Queue Service); assert message after TX commit |
 | **Failure injection** | Fail step 3 → assert compensate 2, 1 |
 
 Propagate `saga_id` in test traces — same as production — [§7 Observability](07C-sagas-operations.md#observability-and-operations).

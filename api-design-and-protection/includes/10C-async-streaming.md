@@ -28,7 +28,7 @@ sequenceDiagram
 
 ## Pattern 4 — Server-Sent Events (SSE)
 
-**One-way server → client stream** over HTTP(Hypertext Transfer Protocol). Good for progress logs, live feeds, LLM token streaming.
+**One-way server → client stream** over HTTP(Hypertext Transfer Protocol). Good for progress logs, live feeds, LLM(Large Language Model) token streaming.
 
 ```mermaid
 sequenceDiagram

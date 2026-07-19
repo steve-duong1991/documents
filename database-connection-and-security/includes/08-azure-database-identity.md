@@ -19,6 +19,20 @@
 
 Azure Database for PostgreSQL (Flexible Server) supports **Azure AD authentication** — the database accepts tokens from Azure AD principals.
 
+```mermaid
+sequenceDiagram
+    participant App as App Service / AKS pod
+    participant MI as Managed Identity
+    participant AAD as Microsoft Entra ID
+    participant PG as Azure PostgreSQL
+
+    App->>MI: Request token (DefaultAzureCredential)
+    MI->>AAD: Acquire access token for DB
+    AAD-->>App: Azure AD token
+    App->>PG: TLS connect (token as password)
+    PG-->>App: Result
+```
+
 ```
 App Service / AKS pod → Managed Identity → Azure AD token → Azure PostgreSQL
 ```

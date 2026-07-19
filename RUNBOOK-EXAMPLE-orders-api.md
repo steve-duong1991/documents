@@ -21,7 +21,7 @@ Filled example for [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md). Copy structure, r
 
 - Alert `orders-api-p99-high`: p99 > 2s on `GET /v1/orders`, `POST /v1/orders`
 - Alert `orders-api-5xx-rate`: 5xx > 1% on checkout routes
-- Alert `orders-worker-lag`: SQS `orders-export` depth > 10k for 15 min
+- Alert `orders-worker-lag`: SQS(Simple Queue Service) `orders-export` depth > 10k for 15 min
 
 **Dashboards:** Grafana `commerce/orders-api` · Datadog `orders-api-production`
 

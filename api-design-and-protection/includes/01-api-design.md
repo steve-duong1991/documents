@@ -149,7 +149,7 @@ Event-sourced write models use the same headers for command APIs — see [Event 
 | **REST (resource-oriented)** | Predictable, cacheable, standard tooling | Awkward for complex actions | Default for most HTTP APIs |
 | **RPC-style** (`POST /createOrder`) | Familiar to some teams | Inconsistent, poor cache semantics | Legacy integrations only |
 | **GraphQL** | Flexible queries, one endpoint | Complexity, caching, authorization per field | Mobile/apps with varied data needs |
-| **gRPC** | Performance, strong contracts | Not browser-native | Internal microservices |
+| **gRPC(Google Remote Procedure Call)** | Performance, strong contracts | Not browser-native | Internal microservices |
 
 ## Common mistakes
 

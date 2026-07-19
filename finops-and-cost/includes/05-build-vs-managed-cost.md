@@ -50,7 +50,7 @@ flowchart TB
 | **Skills** | Do you already run this well? |
 | **Portability** | Multi-cloud / exit plan? |
 
-Example: **Amazon SQS** vs **self-managed Kafka** for simple jobs — SQS usually wins until fan-out/replay dominate ([HTS §14](../../high-throughput-systems/includes/14-message-brokers-and-queues.md)).
+Example: **Amazon SQS(Simple Queue Service)** vs **self-managed Kafka** for simple jobs — SQS usually wins until fan-out/replay dominate ([HTS §14](../../high-throughput-systems/includes/14-message-brokers-and-queues.md)).
 
 ---
 

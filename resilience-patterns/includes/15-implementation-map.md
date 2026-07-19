@@ -10,7 +10,7 @@ Where the patterns in this guide usually show up in real stacks — without turn
 
 | Pattern | Typical knobs |
 |---------|----------------|
-| **Timeouts** | HTTP client connect/request; gRPC deadlines; context/cancellation |
+| **Timeouts** | HTTP client connect/request; gRPC(Google Remote Procedure Call) deadlines; context/cancellation |
 | **Retries + jitter** | Client middleware; queue visibility + max receive count |
 | **Circuit breakers** | App libraries; mesh outlier ejection |
 | **Bulkheads** | Semaphores, bounded executors, per-host pools |
@@ -34,7 +34,7 @@ Where the patterns in this guide usually show up in real stacks — without turn
 | **Envoy / Istio / Linkerd** | Route timeouts, retry budgets, outlier detection — keep aligned with [§11](11-policy-placement.md) |
 | **API(Application Programming Interface) gateways** | Coarse timeout, rate limit, 429 — [api-rate-limiting](../../api-rate-limiting/README.md) |
 | **Kubernetes** | readiness/liveness, `terminationGracePeriodSeconds`, PodDisruptionBudget — [cicd §7](../../cicd-and-environments/includes/07-containers-and-health.md) |
-| **Queues** | SQS visibility + DLQ(Dead Letter Queue); Kafka max.poll + retry topics — [§8](08-delivery-semantics.md) |
+| **Queues** | SQS(Simple Queue Service) visibility + DLQ(Dead Letter Queue); Kafka max.poll + retry topics — [§8](08-delivery-semantics.md) |
 
 Names change; the **controls** (deadline, budget, isolation, owner layer) do not.
 

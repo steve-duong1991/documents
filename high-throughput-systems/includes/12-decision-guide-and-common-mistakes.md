@@ -53,7 +53,7 @@ System-wide scenarios (cache, scale, async, overload). Database-only tuning → 
 | **System** | Global low-latency reads | CDN(Content Delivery Network) for cacheable GET → regional read replica → [PG §11](../../postgresql-performance/includes/11-read-scaling-and-caching.md) |
 | **Stream** | Audit log at high volume | Event stream → partitioned topic → async projections |
 | **Batch** | Nightly ETL(Extract, Transform, Load) | Staging + `COPY` → validate → merge → `ANALYZE` |
-| **Async** | ML inference at scale | Job queue → GPU worker pool → result in object storage |
+| **Async** | ML(Machine Learning) inference at scale | Job queue → GPU worker pool → result in object storage |
 | **App** | GraphQL expensive queries | Cost-based limits + depth cap → cache persisted queries |
 | **Cache** | Redis hot key saturation | Key sharding → local shadow cache → pre-warm on deploy |
 | **Deploy** | Deploy during peak | Rolling or canary → never recreate on production API |

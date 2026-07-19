@@ -17,7 +17,7 @@ Decouple **accept rate** from **process rate** — the API(Application Programmi
 | **Throughput** | Limited by slowest work | API accepts; workers scale separately |
 | **Client pattern** | Wait for 200 | `202` + poll, webhook, or SSE(Server-Sent Events) |
 
-**Rule of thumb:** If work might exceed **~10–30 seconds**, or is CPU/IO expensive (exports, ML, bulk search), design **async from day one**.
+**Rule of thumb:** If work might exceed **~10–30 seconds**, or is CPU/IO expensive (exports, ML(Machine Learning), bulk search), design **async from day one**.
 
 ---
 
@@ -117,7 +117,7 @@ Workers are **stateless** — any worker processes any job. Job state in DB + re
 
 | Need | Options |
 |------|---------|
-| Simple task queue | SQS, RabbitMQ, Redis streams |
+| Simple task queue | SQS(Simple Queue Service), RabbitMQ, Redis streams |
 | Delay / visibility timeout | SQS |
 | Priority queues | RabbitMQ, custom |
 | High throughput fan-out | Kafka — see [07-streaming-pipelines.md](07-streaming-pipelines.md) |

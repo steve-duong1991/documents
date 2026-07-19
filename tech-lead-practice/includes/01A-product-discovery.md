@@ -2,7 +2,7 @@
 
 Find evidence for the **right problem** before solution design — so EPICs are not guesses dressed as plans.
 
-> **Scope:** TL partnership with product on discovery methods, success metrics, and kill criteria. Solution design / EPIC breakdown → [cursor-workflows §1](../../cursor-workflows/includes/01-solution-design.md) · [§1A templates](../../cursor-workflows/includes/01A-epic-feature-user-story-templates.md). Vision once bets are clear → [§1](01-technical-vision-and-roadmap.md). Debt × CX tradeoffs → [§5A](05A-debt-business-cx-balance.md).
+> **Scope:** TL partnership with product on discovery methods, success metrics, and kill criteria. Solution design / EPIC breakdown → [cursor-workflows §1](../../cursor-workflows/includes/01-solution-design.md) · [§1A templates](../../cursor-workflows/includes/01A-epic-feature-user-story-templates.md). Vision once bets are clear → [§1](01-technical-vision-and-roadmap.md). Debt × CX(Customer Experience) tradeoffs → [§5A](05A-debt-business-cx-balance.md).
 >
 > **Related:** Stakeholders → [§7](07-stakeholder-communication.md) · Estimation → [§6](06-estimation-and-risk.md) · Org/stage fit → [architecture §14](../../architecture-decisions/includes/14-org-stage-and-pricing-fit.md)
 
@@ -47,10 +47,10 @@ flowchart LR
 | Method | Use when | TL role |
 |--------|----------|---------|
 | **Support / SEV mining** | Ops pain or CX debt | Quantify frequency and cost |
-| **Funnel / KPI drop** | Growth or conversion bet | Pair with analytics owner |
+| **Funnel / KPI(Key Performance Indicator) drop** | Growth or conversion bet | Pair with analytics owner |
 | **5–8 user interviews** | New workflow unclear | Join 2+; push for jobs not feature lists |
 | **JTBD(Jobs To Be Done) sketch** | Competing solutions exist | Keep “job” separate from UI |
-| **Shadow / ride-along** | B2B workflow opaque | Note system handoffs and workarounds |
+| **Shadow / ride-along** | B2B(Business-to-Business) workflow opaque | Note system handoffs and workarounds |
 | **Prototype / fake door** | Demand unknown | Instrument; pre-agree kill criteria |
 | **Technical spike** | Feasibility unknown | Time-box; produce options not production |
 
@@ -64,13 +64,13 @@ Fill before [cursor-workflows §1](../../cursor-workflows/includes/01-solution-d
 
 | Field | Example |
 |-------|---------|
-| User / persona | SMB admin onboarding teammates |
+| User / persona | SMB(Small and Medium Business) admin onboarding teammates |
 | Job / pain | Invite fails; support tickets spike |
 | Evidence | 120 tickets/mo; 18% activate drop |
 | Success metric | Activate rate +2 pts; tickets −40% |
-| Non-goals | Full IdP rebuild this quarter |
+| Non-goals | Full IdP(Identity Provider) rebuild this quarter |
 | Constraints | Date, compliance, stack |
-| Open questions | SSO required for tier? |
+| Open questions | SSO(Single Sign-On) required for tier? |
 | Kill / pivot | If activate flat after 4 weeks, roll back flag |
 
 ---

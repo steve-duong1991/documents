@@ -34,7 +34,7 @@ flowchart TD
 | Scenario | Recommended approach |
 |----------|----------------------|
 | Early product, 1–2 teams | Modular monolith; ADR only for irreversible choices — confirm with [§14](14-org-stage-and-pricing-fit.md) |
-| Org/pricing/stage unclear | Fill NFR sheet + people/GTM matrix — [§14](14-org-stage-and-pricing-fit.md) |
+| Org/pricing/stage unclear | Fill NFR(Non-Functional Requirement) sheet + people/GTM(Go-To-Market) matrix — [§14](14-org-stage-and-pricing-fit.md) |
 | One module needs 10× scale | Extract that capability; keep rest modular |
 | Legacy core blocking delivery | Strangler facade + one slice — [§4](04-strangler-and-modernization.md); multi-quarter → [§4A](04A-modernization-program.md) |
 | Team cuts fight the architecture | Team Topologies + reverse Conway — [§1A](01A-team-topologies.md) |

@@ -13,7 +13,7 @@ Practical reference docs for building and operating production APIs and data sys
 | [apache-kafka](apache-kafka/README.md) | Distributed commit log: internals, schema formats, setup, producers/consumers, integration, DR, testing |
 | [api-design-and-protection](api-design-and-protection/README.md) | REST(Representational State Transfer) design, protection, gateway, auth, identity, async, idempotency, object storage uploads, stateless architecture |
 | [api-rate-limiting](api-rate-limiting/README.md) | Limiter algorithms, scope, deployment layers, response strategies |
-| [architecture-decisions](architecture-decisions/README.md) | System shape, Team Topologies, strangler/program modernization, ADRs/ARB, tradeoffs, capacity, multi-tenant, failure domains, org/stage/pricing fit |
+| [architecture-decisions](architecture-decisions/README.md) | System shape, Team Topologies, strangler/program modernization, ADRs/ARB(Architecture Review Board), tradeoffs, capacity, multi-tenant, failure domains, org/stage/pricing fit |
 | [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) | OAuth(Open Authorization) 2.0 grants, OIDC(OpenID Connect) discovery/ID tokens, SSO(Single Sign-On)/multi-tenant B2B(Business-to-Business), token lifecycle, cookie/session CSRF(Cross-Site Request Forgery), login hardening |
 | [cicd-and-environments](cicd-and-environments/README.md) | CI(Continuous Integration)/CD(Continuous Delivery) pipelines, env promotion, config vs secrets, flags, branching, rollback, container health, platform boundaries |
 | [cursor-agents](cursor-agents/README.md) | Single vs multi agent, parallel Agents Window, subagents, auto-delegation |
@@ -35,128 +35,103 @@ Practical reference docs for building and operating production APIs and data sys
 | [specialized-data-systems](specialized-data-systems/README.md) | Time-series, graph DBs, vector/RAG(Retrieval-Augmented Generation), workflow engines (Temporal / Step Functions) |
 | [sre-and-incidents](sre-and-incidents/README.md) | SLIs/SLOs, error budgets, observability culture, alerting, incident command, postmortems, on-call, drills, hypercare |
 | [system-design-walkthroughs](system-design-walkthroughs/README.md) | End-to-end designs: URL shortener, feed, chat, geo, rate limiter, notifications, autocomplete, video |
-| [tech-lead-practice](tech-lead-practice/README.md) | Vision/roadmap, product discovery, design & code reviews, mentoring, debt, debt×business×CX, estimation, stakeholders, API ownership, build vs buy |
+| [tech-lead-practice](tech-lead-practice/README.md) | Vision/roadmap, product discovery, design & code reviews, mentoring, debt, debt×business×CX(Customer Experience), estimation, stakeholders, API ownership, build vs buy |
 | [testing-strategy](testing-strategy/README.md) | Pyramid/diamond, what not to automate, contracts, E2E, load/chaos, flakes, quality gates, production verification |
 | [tree-and-index-structures](tree-and-index-structures/README.md) | B+, LSM(Log-Structured Merge), in-memory trees, specialized structures, decision guides |
 
 ---
 
+<a id="how-the-guides-relate"></a>
 ## How the guides relate
+
+End-to-end **request / async / release / incident** pictures → [VISUAL-INDEX.md](VISUAL-INDEX.md). Guide relationships are split below so each view stays readable.
+
+### Delivery view
+
+Ship and operate: design → protect → deploy → watch.
 
 ```mermaid
 flowchart LR
-    subgraph api [Public API]
-        A[api-design-and-protection]
-        R[api-rate-limiting]
-        D[deployment-strategies]
-        CD[cicd-and-environments]
-    end
-    subgraph authn [Auth protocols]
-        AUTH[auth-oauth-oidc-and-login-security]
-    end
-    subgraph perf [Performance]
-        H[high-throughput-systems]
-        P[postgresql-performance]
-        T[tree-and-index-structures]
-    end
-    subgraph advanced [Advanced patterns]
-        E[event-sourcing-and-cqrs]
-        K[apache-kafka]
-        DP[data-platforms]
-        AD[architecture-decisions]
-        NS[nosql-and-key-value-stores]
-        SDS[specialized-data-systems]
-    end
-    subgraph foundations [Foundations]
-        DSP[distributed-systems-primitives]
-        SDW[system-design-walkthroughs]
-    end
-    subgraph realtime [Realtime and money]
-        RT[realtime-at-scale]
-        PAY[payments-and-fintech]
-    end
-    subgraph ops [Data layer security]
-        S[database-connection-and-security]
-    end
-    subgraph clients [Clients]
-        FB[fullstack-bff-and-clients]
-    end
-    subgraph sec [Org security]
-        ESC[enterprise-security-compliance]
-    end
-    subgraph cost [Cost]
-        F[finops-and-cost]
-    end
-    subgraph reliability [Reliability]
-        SRE[sre-and-incidents]
-        RP[resilience-patterns]
-    end
-    subgraph quality [Quality and leadership]
-        TS[testing-strategy]
-        TLP[tech-lead-practice]
-    end
-    subgraph tooling [Tooling — meta]
-        C[cursor-agents]
-        CW[cursor-workflows]
-    end
-    A --> R
-    A --> H
-    A --> FB
-    A --> PAY
-    A --> AUTH
-    FB --> AUTH
-    AUTH --> ESC
-    H --> P
-    P --> T
-    P --> NS
-    A --> E
-    H --> K
-    E --> K
-    H --> DP
+    AD[architecture-decisions] --> A[api-design-and-protection]
+    A --> R[api-rate-limiting]
+    A --> AUTH[auth-oauth-oidc]
+    A --> FB[fullstack-bff]
+    CD[cicd-and-environments] --> D[deployment-strategies]
+    A --> D
+    TS[testing-strategy] --> CD
+    D --> SRE[sre-and-incidents]
+    CD --> SRE
+    RP[resilience-patterns] --> SRE
+    RP --> A
+    TLP[tech-lead-practice] --> AD
+    TLP --> TS
+    CW[cursor-workflows] --> AD
+    C[cursor-agents] --> CW
+```
+
+### Data view
+
+Throughput, stores, and platforms beyond one OLTP(Online Transaction Processing) database.
+
+```mermaid
+flowchart LR
+    H[high-throughput-systems] --> P[postgresql-performance]
+    P --> T[tree-and-index-structures]
+    P --> NS[nosql-and-key-value]
+    P --> S[database-connection]
+    H --> K[apache-kafka]
+    E[event-sourcing-cqrs] --> K
+    A2[api-design] --> E
+    H --> DP[data-platforms]
     P --> DP
     K --> DP
-    DP --> F
-    DP --> SDS
+    DP --> SDS[specialized-data]
+    DP --> F[finops-and-cost]
     H --> F
-    P --> S
-    A --> S
-    A --> ESC
-    S --> ESC
-    FB --> ESC
-    FB --> RT
-    H --> D
-    A --> D
-    CD --> D
-    CD --> TS
-    D --> SRE
-    H --> SRE
-    CD --> SRE
-    AD --> A
-    AD --> E
-    AD --> H
-    AD --> RP
-    AD --> FB
-    AD --> TLP
-    AD --> DSP
-    AD --> SDW
+    DSP[distributed-primitives] --> H
     DSP --> NS
-    DSP --> H
-    SDW --> H
-    SDW --> RT
-    RP --> H
-    RP --> R
-    RP --> SRE
-    RP --> PAY
-    TS --> CD
-    TS --> SRE
-    TLP --> AD
-    TLP --> SRE
-    TLP --> TS
+    SDW[system-design-walkthroughs] --> H
+    SDW --> RT[realtime-at-scale]
+    FB2[fullstack-bff] --> RT
+    RP2[resilience] --> H
+    PAY[payments-fintech] --> RP2
+```
+
+### Security view
+
+Identity, compliance, and data-plane hardening.
+
+```mermaid
+flowchart LR
+    AUTH[auth-oauth-oidc] --> ESC[enterprise-security]
+    A3[api-design] --> AUTH
+    A3 --> ESC
+    S2[database-connection] --> ESC
+    FB3[fullstack-bff] --> AUTH
+    FB3 --> ESC
+    A3 --> S2
+    Mesh[resilience mesh §11A] --> A3
 ```
 
 ---
 
 ## Learning paths
+
+<a id="visual-first"></a>
+
+### Visual-first
+
+Pictures before prose — walk the [VISUAL-INDEX](VISUAL-INDEX.md) spines, then open one deep include each.
+
+1. [Request path](VISUAL-INDEX.md#request-path) → [API gateway flows](api-design-and-protection/includes/03A-api-gateway-request-flows.md) · [DB connection overview](database-connection-and-security/includes/00-overview.md)
+2. [Async write](VISUAL-INDEX.md#async-write) → [outbox/inbox](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md)
+3. [Release](VISUAL-INDEX.md#release) → [feature→PROD playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md) · [hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md)
+4. [Incident](VISUAL-INDEX.md#incident) → [incident command](sre-and-incidents/includes/06-incident-command.md)
+5. [Identity](VISUAL-INDEX.md#identity) → [OAuth grants](auth-oauth-oidc-and-login-security/includes/01-oauth2-grants-and-flows.md) · [fine AuthZ](api-design-and-protection/includes/12D-fine-grained-authz.md)
+6. [Data platform](VISUAL-INDEX.md#data-platform) → [OLTP vs OLAP](data-platforms/includes/01-oltp-vs-olap.md) · [search ops](data-platforms/includes/02A-search-cluster-operations.md)
+7. [DR / failover](VISUAL-INDEX.md#dr--failover) → [DR playbook](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) · [multi-region write](high-throughput-systems/includes/13A-multi-region-write-and-failover.md)
+8. [Realtime fan-out](VISUAL-INDEX.md#realtime-fan-out) → [connection fan-out](realtime-at-scale/includes/01-connection-fanout.md)
+9. [Money movement](VISUAL-INDEX.md#money-movement) → [ledger](payments-and-fintech/includes/03-ledger-and-double-entry.md) · [refunds](payments-and-fintech/includes/03A-refunds-payouts-settlement.md)
 
 ### Tech Lead Fullstack (start here)
 
@@ -192,20 +167,23 @@ Cursor-specific agent loop (optional) → [cursor-workflows](cursor-workflows/RE
 
 Design the contract, protect the edge, connect to the database safely, and deploy without downtime.
 
-1. [api-design-and-protection](api-design-and-protection/README.md) — design, gateway ([§3 hub](api-design-and-protection/includes/03-api-gateway.md), [3A request flows](api-design-and-protection/includes/03A-api-gateway-request-flows.md)), auth, checklist
+1. [api-design-and-protection](api-design-and-protection/README.md) — design, gateway ([§3 hub](api-design-and-protection/includes/03-api-gateway.md), [3A request flows](api-design-and-protection/includes/03A-api-gateway-request-flows.md)), auth, checklist · portal → [§7A](api-design-and-protection/includes/07A-developer-portal.md)
 2. [api-rate-limiting](api-rate-limiting/README.md) — algorithms and where to enforce limits; multi-instance → [§12 distributed](api-rate-limiting/includes/12-distributed-rate-limiting.md)
 3. [database-connection-and-security](database-connection-and-security/README.md) — production credentials and IAM
 4. Large uploads → [api-design §18 object storage](api-design-and-protection/includes/18-object-storage-and-uploads.md)
-5. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green → end-to-end order [§14 playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md)
-6. [resilience-patterns](resilience-patterns/README.md) — timeouts/retries/breakers; [§11 placement](resilience-patterns/includes/11-policy-placement.md); [§12 checkout](resilience-patterns/includes/12-worked-example-checkout.md)
+5. Notifications → [§10D delivery](api-design-and-protection/includes/10D-notification-delivery.md) · [§10E provider ops](api-design-and-protection/includes/10E-notification-provider-operations.md)
+6. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green → end-to-end order [§14 playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md)
+7. [resilience-patterns](resilience-patterns/README.md) — timeouts/retries/breakers; [§11 placement](resilience-patterns/includes/11-policy-placement.md); [§12 checkout](resilience-patterns/includes/12-worked-example-checkout.md)
+8. Spine → [VISUAL-INDEX — Request path](VISUAL-INDEX.md#request-path) · [Identity](VISUAL-INDEX.md#identity)
 
 ### Make it fast
 
 Optimize in order: measure, reduce work, fix the database hot path, then cache and scale.
 
 1. [high-throughput-systems](high-throughput-systems/README.md) — system-wide throughput order and layers
-   - Async brokers and queues → [HTS §14 message brokers](high-throughput-systems/includes/14-message-brokers-and-queues.md)
+   - Async brokers and queues → [HTS §14 message brokers](high-throughput-systems/includes/14-message-brokers-and-queues.md) · queue ops → [§14A](high-throughput-systems/includes/14A-queue-broker-operations.md)
    - CDC(Change Data Capture) and search indexing → [HTS §15 CDC](high-throughput-systems/includes/15-cdc-and-search-indexing.md)
+   - Spines → [VISUAL-INDEX](VISUAL-INDEX.md)
 2. [postgresql-performance](postgresql-performance/README.md) — indexes, queries, pooling, replicas
    - Read [§9 scale-out terminology](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md) first if partitioning vs replication vs sharding is unclear
 3. [tree-and-index-structures](tree-and-index-structures/README.md) — B+ vs LSM when writes dominate
@@ -216,10 +194,13 @@ Optimize in order: measure, reduce work, fix the database hot path, then cache a
 Multi-region reads, consistency promises, and DR before expanding globally.
 
 1. [high-throughput-systems §13 multi-region](high-throughput-systems/includes/13-multi-region-read-routing.md) — active-passive, read-local, geo routing
-2. [architecture §10A cells/residency](architecture-decisions/includes/10A-regional-cells-and-residency.md) — tenant→cell pins, what not to replicate
-3. [postgresql-performance §14 consistency](postgresql-performance/includes/14-consistency-promises-and-costs.md) — read-your-writes, staleness, costs
-4. [database-connection-and-security §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md) — RPO(Recovery Point Objective)/RTO(Recovery Time Objective), failover drills
-5. [deployment-strategies](deployment-strategies/README.md) — safe deploy during regional failover
+2. [HTS §13A write/failover](high-throughput-systems/includes/13A-multi-region-write-and-failover.md) — sticky primary, cells vs multi-master, promote sequence
+3. [architecture §10A cells/residency](architecture-decisions/includes/10A-regional-cells-and-residency.md) — tenant→cell pins, what not to replicate
+4. [postgresql-performance §14 consistency](postgresql-performance/includes/14-consistency-promises-and-costs.md) — read-your-writes, staleness, costs
+5. [sre §12A DR playbook](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) — orchestrated region/primary failover + RACI
+6. [database-connection-and-security §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md) — RPO(Recovery Point Objective)/RTO(Recovery Time Objective), credential drills
+7. [deployment-strategies](deployment-strategies/README.md) — safe deploy during regional failover
+8. Spine → [VISUAL-INDEX — DR / failover](VISUAL-INDEX.md#dr--failover)
 
 ### Event-sourced domain
 
@@ -255,6 +236,7 @@ Security review, overload protection, and operational safety nets.
 3. [database-connection-and-security](database-connection-and-security/README.md) — network, TLS, secrets, cloud identity
 4. [enterprise-security-compliance](enterprise-security-compliance/README.md) — SDLC gates, supply chain, audit/PII(Personally Identifiable Information), [§7A erasure/DSAR](enterprise-security-compliance/includes/07A-erasure-and-dsar.md), compliance evidence
 5. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting §12 distributed limiting](api-rate-limiting/includes/12-distributed-rate-limiting.md) (Redis topology, regional quotas, fail-open) + [api-rate-limiting](api-rate-limiting/README.md)
+6. Mesh vs gateway vs app retries → [resilience §11A service mesh](resilience-patterns/includes/11A-service-mesh-topology.md)
 
 ### Fullstack UI ↔ API
 
@@ -263,7 +245,8 @@ Own the client seam: BFF(Backend for Frontend) contracts, rendering, performance
 1. [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) — overview → [§3 BFF](fullstack-bff-and-clients/includes/03-bff-ownership.md) → [§1 architecture](fullstack-bff-and-clients/includes/01-frontend-architecture.md)
 2. [fullstack §2 rendering](fullstack-bff-and-clients/includes/02-rendering-tradeoffs.md) + [§4 Web Vitals](fullstack-bff-and-clients/includes/04-web-performance.md)
 3. [fullstack §7 auth UX](fullstack-bff-and-clients/includes/07-auth-ux.md) + [api-design §4 auth](api-design-and-protection/includes/04-auth-model.md) + [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) (grants, OIDC, cookies, login hardening)
-4. Live updates → [fullstack §5](fullstack-bff-and-clients/includes/05-realtime-ux.md) + [api-design §10 async](api-design-and-protection/includes/10-async-patterns.md)
+4. Live updates → [fullstack §5](fullstack-bff-and-clients/includes/05-realtime-ux.md) + [api-design §10 async](api-design-and-protection/includes/10-async-patterns.md) · spine → [VISUAL-INDEX — Realtime](VISUAL-INDEX.md#realtime-fan-out)
+5. Mobile clients → [fullstack §8A mobile API contracts](fullstack-bff-and-clients/includes/08A-mobile-api-contracts.md) (beyond OAuth redirects)
 
 ### Auth / login / SSO
 
@@ -281,12 +264,13 @@ OAuth(Open Authorization) grants, OIDC(OpenID Connect), cookies/sessions, and pa
 
 Warehouse/lake, search, Redis roles, caching coherence, and analytics that do not starve OLTP.
 
-1. [data-platforms](data-platforms/README.md) — overview → [§8 decision guide](data-platforms/includes/08-decision-guide.md)
-2. [data-platforms §1 OLTP vs OLAP](data-platforms/includes/01-oltp-vs-olap.md) + [§7 analytics isolation](data-platforms/includes/07-analytics-without-harming-oltp.md)
-3. [high-throughput-systems §15 CDC/search](high-throughput-systems/includes/15-cdc-and-search-indexing.md) + [data-platforms §2 search](data-platforms/includes/02-search-systems.md)
-4. [data-platforms §4 caching coherence](data-platforms/includes/04-caching-end-to-end.md) vs [HTS §4 cache algorithms](high-throughput-systems/includes/04-caching-layers.md)
-5. [data-platforms §6 migration coordination](data-platforms/includes/06-migration-coordination.md) + [PG §15](postgresql-performance/includes/15-schema-migration-checklist.md)
-6. [finops-and-cost §4 retention cost](finops-and-cost/includes/04-storage-and-retention-cost.md)
+1. [data-platforms](data-platforms/README.md) — overview → [§8 decision guide](data-platforms/includes/08-decision-guide.md) · spine → [VISUAL-INDEX — Data platform](VISUAL-INDEX.md#data-platform)
+2. [data-platforms §1 OLTP vs OLAP](data-platforms/includes/01-oltp-vs-olap.md) + [§1A columnar OLAP ops](data-platforms/includes/01A-columnar-olap-operations.md) + [§7 analytics isolation](data-platforms/includes/07-analytics-without-harming-oltp.md)
+3. [high-throughput-systems §15 CDC/search](high-throughput-systems/includes/15-cdc-and-search-indexing.md) + [data-platforms §2 search](data-platforms/includes/02-search-systems.md) + [§2A search cluster ops](data-platforms/includes/02A-search-cluster-operations.md)
+4. [data-platforms §3 Redis roles](data-platforms/includes/03-redis-and-in-memory.md) + [§3A Redis ops](data-platforms/includes/03A-redis-operations.md) · [§4 caching coherence](data-platforms/includes/04-caching-end-to-end.md) vs [HTS §4](high-throughput-systems/includes/04-caching-layers.md)
+5. [data-platforms §5 ownership](data-platforms/includes/05-data-ownership-lineage-retention.md) + [§5A data contracts/registries](data-platforms/includes/05A-data-contracts-and-registries.md)
+6. [data-platforms §6 migration coordination](data-platforms/includes/06-migration-coordination.md) + [PG §15](postgresql-performance/includes/15-schema-migration-checklist.md)
+7. [finops-and-cost §4 retention cost](finops-and-cost/includes/04-storage-and-retention-cost.md)
 
 ### FinOps / cost-aware design
 
@@ -316,18 +300,19 @@ Triage saturation-first, rollback, and DR when alerts fire.
 
 1. [sre-and-incidents](sre-and-incidents/README.md) — SLOs, error budgets, alerting, incident command, postmortems, on-call
 2. [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md) or [example orders-api runbook](RUNBOOK-EXAMPLE-orders-api.md)
-3. [high-throughput-systems §11 observability](high-throughput-systems/includes/11-observability.md) — triage order, RED(Rate, Errors, Duration)/USE(Utilization, Saturation, Errors), tracing
-4. After a ship → [sre §10A hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md) (SLOs + business KPI + CX)
-5. [deployment-strategies §13 SLO rollback](deployment-strategies/includes/13-slo-rollback-triggers.md) + [cicd-and-environments §6](cicd-and-environments/includes/06-rollback-vs-forward-fix.md)
-6. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) + [database-connection §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md)
+3. [high-throughput-systems §11 observability](high-throughput-systems/includes/11-observability.md) — triage order, RED(Rate, Errors, Duration)/USE(Utilization, Saturation, Errors), tracing · [§11A OTel/cardinality](high-throughput-systems/includes/11A-opentelemetry-and-cardinality.md) · platform product → [sre §4A](sre-and-incidents/includes/04A-observability-platform.md)
+4. Spines → [VISUAL-INDEX — Incident](VISUAL-INDEX.md#incident) · After a ship → [sre §10A hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md) (SLOs + business KPI(Key Performance Indicator) + CX)
+5. Region/primary down → [sre §12A DR playbook](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) · [VISUAL-INDEX — DR](VISUAL-INDEX.md#dr--failover)
+6. [deployment-strategies §13 SLO rollback](deployment-strategies/includes/13-slo-rollback-triggers.md) + [cicd-and-environments §6](cicd-and-environments/includes/06-rollback-vs-forward-fix.md)
+7. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) + [database-connection §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md)
 
 ### Ship safely (CI/CD)
 
 Build once, promote digests, progressive expose, and undo safely.
 
 1. [deployment-strategies §14 feature to PROD playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md) — ordered gates design → canary → runbook/drill
-2. [cicd-and-environments](cicd-and-environments/README.md) — pipeline, promotion, config/secrets, flags, rollback
-3. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green, progressive delivery
+2. [cicd-and-environments](cicd-and-environments/README.md) — pipeline, promotion, config/secrets, flags, rollback · paved road → [§8A](cicd-and-environments/includes/08A-paved-road-catalog.md)
+3. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green, progressive delivery · flag ops → [§7A](deployment-strategies/includes/07A-feature-flag-operations.md)
 4. [testing-strategy](testing-strategy/README.md) — pyramid, gates, production verification
 5. [sre-and-incidents §1–§2](sre-and-incidents/includes/01-sli-slo-sla.md) — SLOs and error-budget gates on release
 6. [sre §10A hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md) — first 72h SLOs + business KPI + CX
@@ -341,7 +326,7 @@ Choose system shape, then survive partial failure.
 
 1. [architecture-decisions](architecture-decisions/README.md) — monolith↔services, DDD, ADRs, data ownership → [§1A Team Topologies](architecture-decisions/includes/01A-team-topologies.md) · [§5A ARB](architecture-decisions/includes/05A-architecture-governance.md) · [§13 capacity](architecture-decisions/includes/13-capacity-estimation.md) · [§14 org/stage/pricing](architecture-decisions/includes/14-org-stage-and-pricing-fit.md) · legacy programs [§4A](architecture-decisions/includes/04A-modernization-program.md)
 2. [distributed-systems-primitives](distributed-systems-primitives/README.md) — hashing, IDs, consensus, clocks (mechanisms under CAP/PACELC)
-3. [resilience-patterns](resilience-patterns/README.md) — timeouts, retries, breakers, bulkheads, placement, checkout example, chaos
+3. [resilience-patterns](resilience-patterns/README.md) — timeouts, retries, breakers, bulkheads, placement ([§11A mesh](resilience-patterns/includes/11A-service-mesh-topology.md)), checkout example, chaos
 4. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting](api-rate-limiting/README.md)
 5. [sre-and-incidents](sre-and-incidents/README.md) — error budgets when resilience is not enough alone
 
@@ -374,28 +359,32 @@ Fan-out architecture beyond client UX contracts.
 
 ### Specialized data systems
 
-Time-series, graph, vector/RAG, and durable workflows — only when OLTP + search are not enough.
+Time-series, graph, vector/RAG, feature serving, and durable workflows — only when OLTP + search are not enough.
 
 1. [specialized-data-systems](specialized-data-systems/README.md) → [§5 decision guide](specialized-data-systems/includes/05-decision-guide.md)
-2. Observability metrics → [§1 time-series](specialized-data-systems/includes/01-time-series.md) + [sre-and-incidents §4](sre-and-incidents/includes/04-observability-practice.md)
+2. Observability metrics → [§1 time-series](specialized-data-systems/includes/01-time-series.md) + [sre-and-incidents §4](sre-and-incidents/includes/04-observability-practice.md) · OTel(OpenTelemetry) ops → [HTS §11A](high-throughput-systems/includes/11A-opentelemetry-and-cardinality.md) · platform → [sre §4A](sre-and-incidents/includes/04A-observability-platform.md)
 3. Saga vs Temporal → [§4 workflow engines](specialized-data-systems/includes/04-workflow-engines.md) + [event-sourcing §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
+4. Online features / ML(Machine Learning) serving → [§3A feature stores](specialized-data-systems/includes/03A-feature-stores-and-ml-serving.md)
+5. LLM(Large Language Model) edge → [§3B LLM gateway](specialized-data-systems/includes/03B-llm-gateway-and-inference-edge.md) (auth, budgets, PII, failover — not prompt craft)
 
 ### Payments / fintech
 
 Money movement hardening beyond generic idempotency.
 
 1. [payments-and-fintech](payments-and-fintech/README.md) — [§1 PCI scope](payments-and-fintech/includes/01-pci-scope-reduction.md) → [§2 double-charge](payments-and-fintech/includes/02-idempotency-and-double-charge.md)
-2. [§3 ledger](payments-and-fintech/includes/03-ledger-and-double-entry.md) + [event-sourcing §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
+2. [§3 ledger](payments-and-fintech/includes/03-ledger-and-double-entry.md) + [§3A refunds/payouts/settlement](payments-and-fintech/includes/03A-refunds-payouts-settlement.md) + [event-sourcing §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
 3. [§4 fraud/reconciliation](payments-and-fintech/includes/04-fraud-and-reconciliation.md) + [enterprise-security-compliance](enterprise-security-compliance/README.md)
+4. Spine → [VISUAL-INDEX — Money movement](VISUAL-INDEX.md#money-movement)
 
 ### Media uploads and edge networking
 
-Large files, object storage, and the network path that carries them.
+Large files, object storage, CDN(Content Delivery Network) delivery, and the network path that carries them.
 
 1. [api-design §18 object storage](api-design-and-protection/includes/18-object-storage-and-uploads.md) — presigned uploads, multipart, virus scan
-2. [high-throughput-systems §16 networking](high-throughput-systems/includes/16-networking-fundamentals.md) — DNS(Domain Name System), HTTP(Hypertext Transfer Protocol)/2/3, TLS, draining
-3. [HTS §2 entry and edge](high-throughput-systems/includes/02-entry-and-edge.md) + [finops §4 retention cost](finops-and-cost/includes/04-storage-and-retention-cost.md)
-4. Practice → [system-design §9 video](system-design-walkthroughs/includes/09-video-streaming-basics.md)
+2. [system-design §9A CDN and media delivery](system-design-walkthroughs/includes/09A-cdn-and-media-delivery.md) — edge cache, ABR(Adaptive Bitrate), transcoding placement
+3. [high-throughput-systems §16 networking](high-throughput-systems/includes/16-networking-fundamentals.md) — DNS(Domain Name System), HTTP(Hypertext Transfer Protocol)/2/3, TLS, draining
+4. [HTS §2 entry and edge](high-throughput-systems/includes/02-entry-and-edge.md) + [finops §4 retention cost](finops-and-cost/includes/04-storage-and-retention-cost.md)
+5. Practice → [system-design §9 video](system-design-walkthroughs/includes/09-video-streaming-basics.md)
 
 ### Testing strategy
 
@@ -494,6 +483,7 @@ documents/
 ├── CHANGELOG.md
 ├── RUNBOOK-TEMPLATE.md
 ├── acronyms.json          ← acronym registry for expand-acronyms.py
+├── VISUAL-INDEX.md        ← nine system spines (request / async / release / incident / identity / data / DR / realtime / money)
 ├── Makefile
 ├── .cursor/               ← agent rules, hooks, doc-reviewer (see cursor-agents guide)
 ├── scripts/

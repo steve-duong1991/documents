@@ -2,7 +2,7 @@
 
 An asynchronous pipeline problem end to end: uploads must be resumable, transcoding is CPU-heavy and must run off the request path, and playback must adapt to the viewer's network rather than serving one fixed quality.
 
-> **Related:** Framework → [01-how-to-approach.md](01-how-to-approach.md) · Resumable/chunked uploads → [api-design-and-protection §18](../../api-design-and-protection/includes/18-object-storage-and-uploads.md) · Async worker scaling → [HTS §6](../../high-throughput-systems/includes/06-async-queues-workers.md) · CDN(Content Delivery Network) caching → [HTS §4](../../high-throughput-systems/includes/04-caching-layers.md) · Storage/retention cost → [finops-and-cost §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md)
+> **Related:** Framework → [01-how-to-approach.md](01-how-to-approach.md) · CDN(Content Delivery Network) and media delivery → [§9A](09A-cdn-and-media-delivery.md) · Resumable/chunked uploads → [api-design-and-protection §18](../../api-design-and-protection/includes/18-object-storage-and-uploads.md) · Async worker scaling → [HTS §6](../../high-throughput-systems/includes/06-async-queues-workers.md) · CDN(Content Delivery Network) caching → [HTS §4](../../high-throughput-systems/includes/04-caching-layers.md) · Storage/retention cost → [finops-and-cost §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md)
 
 ---
 

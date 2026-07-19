@@ -2,7 +2,7 @@
 
 Throughput work fails in production when you watch **CPU only**. Alert on **saturation** — pool wait, queue depth, replication lag, cache miss storms — before users notice.
 
-> **Related:** API(Application Programming Interface) checklist observability → [api-design-and-protection/includes/09-checklist-and-practices.md](../../api-design-and-protection/includes/09-checklist-and-practices.md) · Measurement → [01-measurement-and-slo.md](01-measurement-and-slo.md)
+> **Related:** API(Application Programming Interface) checklist observability → [api-design-and-protection/includes/09-checklist-and-practices.md](../../api-design-and-protection/includes/09-checklist-and-practices.md) · Measurement → [01-measurement-and-slo.md](01-measurement-and-slo.md) · OTel(OpenTelemetry) sampling and cardinality → [§11A](11A-opentelemetry-and-cardinality.md) · Culture/alerts → [sre §4](../../sre-and-incidents/includes/04-observability-practice.md)
 
 ---
 

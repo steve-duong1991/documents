@@ -17,6 +17,32 @@ Operational playbook for **schema-per-tenant** and **database-per-tenant** silos
 
 **Rule of thumb:** Stay on **pool + RLS** ([§17](17-row-level-security-multi-tenant.md)) until a concrete driver (contract, residency, performance isolation) forces a silo. Schema-per-tenant looks cheap and often becomes the most expensive ops model.
 
+## Request routing (visual)
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant API as API
+    participant Reg as Tenant registry
+    participant PG as PostgreSQL
+
+    C->>API: Request + tenant context
+    API->>Reg: Resolve isolation mode
+    alt Pool + RLS
+        API->>PG: BEGIN; SET LOCAL app.tenant_id
+        API->>PG: SQL on shared tables
+    else Schema silo
+        API->>PG: BEGIN; SET LOCAL search_path TO tenant_x, public
+        API->>PG: SQL resolves to tenant_x.*
+    else Database silo
+        API->>PG: Connect to tenant DB endpoint / pool
+        API->>PG: SQL in that database
+    end
+    API-->>C: Response
+```
+
+Side-by-side model diagram → [§17 Isolation models](17-row-level-security-multi-tenant.md#isolation-models-visual).
+
 ---
 
 ## When to choose which

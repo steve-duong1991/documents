@@ -22,6 +22,7 @@ Related: [High Throughput Systems](../high-throughput-systems/README.md) · [API
 | 9 | [Cascading failure](includes/09-cascading-failure.md) |
 | 10 | [Chaos and failure injection](includes/10-chaos-and-failure-injection.md) |
 | 11 | [Policy placement (app / gateway / mesh)](includes/11-policy-placement.md) |
+| 11A | [Service mesh topology](includes/11A-service-mesh-topology.md) |
 | 12 | [Worked example — checkout](includes/12-worked-example-checkout.md) |
 | 13 | [Observability for resilience](includes/13-observability-for-resilience.md) |
 | 14 | [Graceful shutdown and drain](includes/14-graceful-shutdown-and-drain.md) |

@@ -21,23 +21,26 @@
 
 ## Architecture
 
-```
-App 1 ──┐
-App 2 ──┼──► PgBouncer (pool) ──► PostgreSQL
-App N ──┘         ↑
-            password from secret manager
-            (PgBouncer auth or passthrough)
-```
-
-**Stack:**
-
-```
-Private subnet → TLS → PgBouncer → Postgres
-                           ↑
-                    DB password from secret manager
+```mermaid
+flowchart LR
+    App1[App 1] --> PB[PgBouncer]
+    App2[App 2] --> PB
+    AppN[App N] --> PB
+    Secret[Secret manager password] -.-> PB
+    PB -->|TLS pooled| PG[(PostgreSQL)]
 ```
 
-**With RDS Proxy (AWS):** same idea but managed — see [04-aws-iam-rds-proxy.md](04-aws-iam-rds-proxy.md) or [05-secret-manager-password.md](05-secret-manager-password.md) (Proxy + Secrets Manager, password auth).
+Many app clients share a small pool of real server connections. Credentials still come from a secret manager — see [§5](05-secret-manager-password.md).
+
+**With RDS Proxy (AWS):** same idea but managed — see [§4](04-aws-iam-rds-proxy.md) or [§5](05-secret-manager-password.md) (Proxy + Secrets Manager, password auth).
+
+| `pool_mode` | Server connection held | Prefer when |
+|-------------|------------------------|-------------|
+| **session** | Whole client session | Rare — needs session state |
+| **transaction** | Until COMMIT/ROLLBACK | Typical HTTP(Hypertext Transfer Protocol) APIs |
+| **statement** | Single statement | Strictest; breaks multi-statement units |
+
+Prefer **transaction** mode for typical APIs; avoid session-sticky features (`SET`, temp tables, prepared statements across requests) unless you stay in session mode — [postgresql-performance §7](../../postgresql-performance/includes/07-connection-management.md).
 
 ---
 

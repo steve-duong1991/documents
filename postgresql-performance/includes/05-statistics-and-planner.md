@@ -12,6 +12,17 @@ PostgreSQL's planner chooses join order, scan types, and parallel workers based 
 
 ## When estimates are wrong
 
+```mermaid
+flowchart TD
+    Bad[Bad plan in EXPLAIN] --> Off{Actual ≫ estimated?}
+    Off -->|Yes| Stale[Stale or weak stats]
+    Stale --> An[ANALYZE]
+    An --> Ext{Correlated columns?}
+    Ext -->|Yes| ES[Extended statistics]
+    Ext -->|No| Target[Raise column statistics target]
+    Off -->|No| Cost[Check costs / indexes / SSD settings]
+```
+
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
 | Nested loop on huge set | Underestimated rows | `ANALYZE`; increase statistics target |

@@ -20,6 +20,30 @@ PostgreSQL **RLS(Row-Level Security)** adds a database-enforced filter on every 
 
 **Rule of thumb:** RLS catches forgotten `WHERE tenant_id = ?` in ad-hoc queries and ORM bugs. It does **not** replace token validation, object ownership checks, or gateway AuthZ.
 
+## Isolation models (visual)
+
+Compare **pool + RLS** (this section) with silos ([§18](18-schema-and-database-per-tenant.md)) before you pick ops cost:
+
+```mermaid
+flowchart TB
+    Req[Request + tenant claim] --> Auth[API AuthN / AuthZ]
+    Auth --> Model{Isolation model}
+    Model -->|Pool| RLS[SET LOCAL app.tenant_id]
+    RLS --> Shared[(Shared tables + RLS policies)]
+    Model -->|Schema silo| SP[SET LOCAL search_path]
+    SP --> Schema[(tenant_acme.* schemas)]
+    Model -->|DB silo| Route[Route to tenant DB / instance]
+    Route --> DB[(Dedicated database)]
+```
+
+| Model | Boundary | Ops cost | Typical trigger |
+|-------|----------|----------|-----------------|
+| **Pool + RLS** | Row filter in shared schema | Lowest | Default multi-tenant SaaS(Software as a Service) |
+| **Schema silo** | PostgreSQL schema | High (migration fan-out) | Soft compliance / customization |
+| **DB silo** | Database or instance | Highest | Contract, residency, noisy neighbor |
+
+Product-level choice → [architecture-decisions §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md).
+
 ---
 
 ## Schema baseline

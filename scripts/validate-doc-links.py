@@ -42,14 +42,16 @@ def heading_anchors(md_path: Path) -> set[str]:
     anchors: set[str] = set()
     for line in md_path.read_text(encoding="utf-8").splitlines():
         m = re.match(r"^#{1,6}\s+(.+)$", line)
-        if not m:
-            continue
-        heading = m.group(1)
-        slug = slugify_heading(heading)
-        if slug:
-            anchors.add(slug)
-            anchors.add(normalize_anchor(slug))
-        anchors.add(normalize_anchor(heading))
+        if m:
+            heading = m.group(1)
+            slug = slugify_heading(heading)
+            if slug:
+                anchors.add(slug)
+                anchors.add(normalize_anchor(slug))
+            anchors.add(normalize_anchor(heading))
+        for html_id in re.findall(r"""<(?:a|span)\s+[^>]*\bid=["']([^"']+)["']""", line, re.I):
+            anchors.add(html_id)
+            anchors.add(normalize_anchor(html_id))
     return anchors
 
 

@@ -2,9 +2,9 @@
 
 Full-text, fuzzy, and faceted search usually live in **Elasticsearch / OpenSearch**. Treat them as **derived indexes** synced via CDC(Change Data Capture) or outbox — not a second write path in the request.
 
-> **Scope:** Product search roles, mapping, reindex, and staleness UX. Pipeline depth and reindex runbook → [HTS §15 CDC and search indexing](../../high-throughput-systems/includes/15-cdc-and-search-indexing.md).
+> **Scope:** Product search roles, mapping, reindex, and staleness UX. Pipeline depth and reindex runbook → [HTS §15 CDC and search indexing](../../high-throughput-systems/includes/15-cdc-and-search-indexing.md). Day-2 cluster ops (shards, ILM(Index Lifecycle Management), alias cutover, latency triage) → [§2A](02A-search-cluster-operations.md).
 >
-> **Related:** Kafka Connect/integration → [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md) · Outbox → [ES §5](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · PG GIN(Generalized Inverted Index) limits → [PG §2](../../postgresql-performance/includes/02-indexing.md)
+> **Related:** Cluster ops → [§2A](02A-search-cluster-operations.md) · Kafka Connect/integration → [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md) · Outbox → [ES §5](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · PG GIN(Generalized Inverted Index) limits → [PG §2](../../postgresql-performance/includes/02-indexing.md)
 
 ---
 

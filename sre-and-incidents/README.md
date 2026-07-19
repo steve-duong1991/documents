@@ -15,6 +15,7 @@ Related: [high-throughput-systems §11](../high-throughput-systems/includes/11-o
 | 2 | [Error budgets](includes/02-error-budgets.md) |
 | 3 | [Capacity and load testing](includes/03-capacity-and-load-testing.md) |
 | 4 | [Observability practice](includes/04-observability-practice.md) |
+| 4A | [Observability platform](includes/04A-observability-platform.md) |
 | 5 | [Alerting and paging](includes/05-alerting-and-paging.md) |
 | 6 | [Incident command](includes/06-incident-command.md) |
 | 7 | [Postmortems](includes/07-postmortems.md) |
@@ -23,6 +24,7 @@ Related: [high-throughput-systems §11](../high-throughput-systems/includes/11-o
 | 10 | [Synthetic monitoring](includes/10-synthetic-monitoring.md) |
 | 10A | [Hypercare checklist (first 72h)](includes/10A-hypercare-checklist.md) |
 | 11 | [Decision guide](includes/11-decision-guide.md) |
+| 12A | [Disaster recovery playbook](includes/12A-disaster-recovery-playbook.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
@@ -43,3 +45,4 @@ Related: [high-throughput-systems §11](../high-throughput-systems/includes/11-o
 | [api-rate-limiting](../api-rate-limiting/README.md) | Overload protection at the edge |
 | [apache-kafka](../apache-kafka/README.md) | Consumer lag, ops and DR when streams are in path |
 | [RUNBOOK-TEMPLATE.md](../RUNBOOK-TEMPLATE.md) | Per-service incident runbook skeleton |
+| [VISUAL-INDEX.md](../VISUAL-INDEX.md) | Cross-guide spines (incident, DR / failover) |

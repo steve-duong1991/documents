@@ -76,7 +76,7 @@ Complexity tax is real — [finops §5](../../finops-and-cost/includes/05-build-
 | Infinite retained everything | Cost + risk | [§5](05-data-ownership-lineage-retention.md) |
 | Uncoordinated drops | Broken CDC | [§6](06-migration-coordination.md) + [PG §15](../../postgresql-performance/includes/15-schema-migration-checklist.md) |
 | Cache without freshness class | Confusing UX | [§4](04-caching-end-to-end.md) |
-| Kafka for one email worker | Ops > benefit | SQS — [kafka §11](../../apache-kafka/includes/11-decision-guide-and-common-mistakes.md) |
+| Kafka for one email worker | Ops > benefit | SQS(Simple Queue Service) — [kafka §11](../../apache-kafka/includes/11-decision-guide-and-common-mistakes.md) |
 
 ---
 

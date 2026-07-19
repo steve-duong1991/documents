@@ -13,11 +13,11 @@ When to lean into Tech Lead practices — and common failure modes when the role
 | Ambiguous multi-quarter bet | Vision one-pager + ADR — [§1](01-technical-vision-and-roadmap.md), [architecture §5](../../architecture-decisions/includes/05-adrs-and-design-docs.md) |
 | Problem unclear / feature theater | Product discovery — [§1A](01A-product-discovery.md) |
 | Risky design in flight | Facilitate design review — [§2](02-design-reviews.md) |
-| Cross-team / high blast-radius call | ARB / decision rights — [architecture §5A](../../architecture-decisions/includes/05A-architecture-governance.md) |
+| Cross-team / high blast-radius call | ARB(Architecture Review Board) / decision rights — [architecture §5A](../../architecture-decisions/includes/05A-architecture-governance.md) |
 | Quality slipping / rubber stamps | Raise review bar — [§3](03-code-review-standards.md) |
 | Uneven growth on team | Mentoring plan — [§4](04-mentoring-and-leveling.md) |
 | Features blocked by drag | Debt portfolio negotiation — [§5](05-tech-debt-portfolio.md) |
-| Date vs quality vs UX fight | Debt × business × CX triangle — [§5A](05A-debt-business-cx-balance.md) |
+| Date vs quality vs UX fight | Debt × business × CX(Customer Experience) triangle — [§5A](05A-debt-business-cx-balance.md) |
 | Date pressure with unknowns | Ranges + risk register — [§6](06-estimation-and-risk.md) |
 | Exec / PM misaligned | Stakeholder update skeleton — [§7](07-stakeholder-communication.md) |
 | Cross-team breakages | API(Application Programming Interface) ownership + versioning — [§8](08-cross-team-api-ownership.md) |

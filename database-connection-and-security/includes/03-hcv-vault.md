@@ -36,6 +36,23 @@ App → authenticates to Vault → reads secret → connects to DB
 
 Vault's **Database Secrets Engine** creates a **temporary DB user** for each request.
 
+```mermaid
+sequenceDiagram
+    participant App
+    participant Vault as HashiCorp Vault
+    participant PG as PostgreSQL
+
+    App->>Vault: Authenticate (K8s SA / IAM / AppRole)
+    Vault-->>App: Lease + temp DB user/password
+    App->>PG: TLS connect with leased creds
+    loop Before lease TTL
+        App->>Vault: Renew lease
+        Vault-->>App: Extended TTL
+    end
+    Note over Vault,PG: Lease expires or not renewed
+    Vault->>PG: REVOKE / DROP temp user
+```
+
 ```
 1. App starts
 2. App authenticates to Vault (K8s SA / IAM / AppRole)

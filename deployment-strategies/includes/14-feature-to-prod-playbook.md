@@ -43,7 +43,7 @@ flowchart LR
 | Check | Done when |
 |-------|-----------|
 | [ ] Peak QPS / storage / fan-out estimated | Numbers in design or ADR; see [architecture §13](../../architecture-decisions/includes/13-capacity-estimation.md) |
-| [ ] SLIs/SLOs for the new path named | Latency, error, and at least one business KPI if user-visible |
+| [ ] SLIs/SLOs for the new path named | Latency, error, and at least one business KPI(Key Performance Indicator) if user-visible |
 | [ ] Failure domains listed | What breaks if this feature or its dependency dies — [architecture §11](../../architecture-decisions/includes/11-failure-domains.md) |
 | [ ] Overload story | Rate limit / shed / queue — [HTS §9](../../high-throughput-systems/includes/09-backpressure-and-limits.md) · [api-rate-limiting](../../api-rate-limiting/README.md) |
 | [ ] Global users (if applicable) | Consistency + region story — [HTS §13](../../high-throughput-systems/includes/13-multi-region-read-routing.md) · [PG §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md) |
@@ -125,7 +125,7 @@ Skip only for pure config/flag or code-only changes with **no** schema or event 
 
 | Check | Done when |
 |-------|-----------|
-| [ ] Hypercare 24–72 h complete (or written extension) | SLOs + business KPI + CX glance — [SRE §10A](../../sre-and-incidents/includes/10A-hypercare-checklist.md) |
+| [ ] Hypercare 24–72 h complete (or written extension) | SLOs + business KPI + CX(Customer Experience) glance — [SRE §10A](../../sre-and-incidents/includes/10A-hypercare-checklist.md) |
 | [ ] Runbook updated same day | Symptoms, dashboards, rollback, contacts — [RUNBOOK-TEMPLATE](../../RUNBOOK-TEMPLATE.md) |
 | [ ] Feature fully ramped or flag cleaned up | No permanent 5% canary leftover; release flag on cleanup track — [§7 lifecycle](07-feature-flags.md#lifecycle-and-cleanup) |
 | [ ] Next drill on calendar | Bad deploy / kill switch / dependency loss — [SRE §9](../../sre-and-incidents/includes/09-game-days-and-drills.md) |

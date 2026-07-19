@@ -51,7 +51,7 @@ Flag: alert gaps, noisy pages, missing version tags.
 Propose alert threshold tweaks — do not silence without a ticket.
 ```
 
-Signals and triage order → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · [sre §4–5](../../sre-and-incidents/includes/04-observability-practice.md). Full first-72h checklist (SLOs + business KPI + CX) → [sre §10A](../../sre-and-incidents/includes/10A-hypercare-checklist.md).
+Signals and triage order → [HTS §11](../../high-throughput-systems/includes/11-observability.md) · [sre §4–5](../../sre-and-incidents/includes/04-observability-practice.md). Full first-72h checklist (SLOs + business KPI(Key Performance Indicator) + CX(Customer Experience)) → [sre §10A](../../sre-and-incidents/includes/10A-hypercare-checklist.md).
 
 ### 2. Cleanup
 

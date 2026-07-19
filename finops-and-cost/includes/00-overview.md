@@ -36,7 +36,7 @@ flowchart LR
 | Cache vs always-origin | Redis/CDN(Content Delivery Network) vs DB CPU |
 | Multi-region active-active | ~2× compute + egress |
 | Infinite retention | Storage + scan cost |
-| Managed Kafka vs SQS | Ops time vs $ / message |
+| Managed Kafka vs SQS(Simple Queue Service) | Ops time vs $ / message |
 
 ---
 

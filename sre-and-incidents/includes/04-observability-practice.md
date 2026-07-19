@@ -4,7 +4,7 @@ Observability is a **practice**, not a vendor checkbox. Metrics, logs, and trace
 
 > **Scope:** **Culture and operating model** — what to measure, how to alert, how on-call uses signals. Layer-by-layer throughput metrics, RED(Rate, Errors, Duration)/USE(Utilization, Saturation, Errors) menus, and triage order → [high-throughput-systems §11 Observability](../../high-throughput-systems/includes/11-observability.md).
 >
-> **Related:** SLIs → [§1](01-sli-slo-sla.md) · Alerting → [§5](05-alerting-and-paging.md) · Synthetics → [§10](10-synthetic-monitoring.md) · Runbooks → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md)
+> **Related:** SLIs → [§1](01-sli-slo-sla.md) · Observability as platform product (retention, cardinality, collectors) → [§4A](04A-observability-platform.md) · Alerting → [§5](05-alerting-and-paging.md) · Synthetics → [§10](10-synthetic-monitoring.md) · Runbooks → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md)
 
 ---
 

@@ -4,6 +4,58 @@ When query optimization and indexing aren't enough for read load, scale reads ho
 
 > **Related:** Replication vs sharding vs partitioning → [09-views-functions-and-scale-out-terminology.md](09-views-functions-and-scale-out-terminology.md) · What strong consistency promises, what it costs, and when to require it → [Strong consistency — promises and costs](14-consistency-promises-and-costs.md)
 
+## Read path (visual)
+
+```mermaid
+flowchart LR
+    subgraph writePath [Write path]
+        W[API write] --> P[(Primary)]
+        P -->|WAL stream| R1[(Replica A)]
+        P -->|WAL stream| R2[(Replica B)]
+    end
+    subgraph readPath [Read path]
+        Client[API read] --> Cache{Redis hit?}
+        Cache -->|yes| Hit[Return cached]
+        Cache -->|no| Route{Strong consistency?}
+        Route -->|yes / read-your-writes| P
+        Route -->|lag OK| R1
+        P --> Fill[Fill cache]
+        R1 --> Fill
+    end
+```
+
+| Path | When | Risk |
+|------|------|------|
+| **Cache hit** | Hot keys, TTL(Time To Live) or delete-on-write | Stale until invalidation |
+| **Primary** | Post-write session, inventory, authZ(Authorization) checks | Load on writer |
+| **Replica** | Dashboards, search, reporting | Replication lag |
+
+Consistency promises and costs → [§14](14-consistency-promises-and-costs.md).
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant API as API
+    participant Redis as Redis
+    participant Prim as Primary
+    participant Rep as Replica
+
+    C->>API: POST /orders (write)
+    API->>Prim: INSERT … COMMIT
+    Prim-->>API: OK
+    API-->>C: 201 + order id
+    C->>API: GET /orders/:id (same session)
+    API->>Prim: SELECT (read-your-writes)
+    Note over API,Rep: Do not route this GET to replica yet
+    C->>API: GET /reports/daily
+    API->>Redis: GET report:daily
+    Redis-->>API: miss
+    API->>Rep: SELECT aggregate
+    Rep-->>API: rows (may lag seconds)
+    API->>Redis: SET report:daily TTL
+    API-->>C: 200
+```
+
 ## Read replicas
 
 Streaming replication sends WAL(Write-Ahead Log) changes to one or more standby servers.

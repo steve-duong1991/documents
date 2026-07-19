@@ -6,6 +6,14 @@ PostgreSQL performance depends heavily on memory settings and planner cost const
 
 ## Key parameters
 
+```mermaid
+flowchart LR
+    RAM[Host RAM] --> SB[shared_buffers]
+    RAM --> OS[OS page cache]
+    OS -.->|hint| ECS[effective_cache_size]
+    Conn[Per connection] --> WM[work_mem per sort/hash]
+```
+
 | Parameter | Rule of thumb | Purpose |
 |-----------|---------------|---------|
 | **`shared_buffers`** | ~25% of RAM (cap ~8–16 GB) | PostgreSQL page cache |
@@ -63,7 +71,7 @@ Spiky write latency during checkpoints? Increase `max_wal_size` and tune checkpo
 | Sorts spill to disk (`external merge`) | Raise `work_mem` (carefully) |
 | Slow index builds | Raise `maintenance_work_mem` |
 | Large table scans on analytics | Raise `max_parallel_workers_per_gather` |
-| OOM under load | Lower `work_mem`; add pooling |
+| OOM(Out Of Memory) under load | Lower `work_mem`; add pooling |
 
 ## Common mistakes
 

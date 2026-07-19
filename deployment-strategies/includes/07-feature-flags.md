@@ -1,6 +1,6 @@
 # Feature Flags (Toggle-Based Release)
 
-> **Related:** Canary routing → [§4 Canary](04-canary.md) · Progressive delivery → [§10](10-progressive-delivery.md) · Rollback → [§13](13-slo-rollback-triggers.md) · Flags as control → [cicd §4](../../cicd-and-environments/includes/04-feature-flags-as-control.md) · Operate cleanup → [cursor-workflows §6](../../cursor-workflows/includes/06-operate-and-learn.md)
+> **Related:** Canary routing → [§4 Canary](04-canary.md) · Progressive delivery → [§10](10-progressive-delivery.md) · Rollback → [§13](13-slo-rollback-triggers.md) · Flag platform ops (eval latency, sticky assignment, kill switch) → [§7A](07A-feature-flag-operations.md) · Flags as control → [cicd §4](../../cicd-and-environments/includes/04-feature-flags-as-control.md) · Operate cleanup → [cursor-workflows §6](../../cursor-workflows/includes/06-operate-and-learn.md)
 
 ## What it is
 
@@ -97,7 +97,7 @@ Do **not** wait six months or a year to remove a release flag unless you explici
 
 | Step | Action |
 |------|--------|
-| 1 | Confirm 100% exposure and bake window passed (errors, latency, business KPI stable) |
+| 1 | Confirm 100% exposure and bake window passed (errors, latency, business KPI(Key Performance Indicator) stable) |
 | 2 | Open/complete cleanup ticket (created at flag birth) |
 | 3 | PR removes **evaluations**, **old branch**, and **ON/OFF-only tests**; default = new behavior |
 | 4 | Deploy cleanup (canary if the delete touches a hot path) |

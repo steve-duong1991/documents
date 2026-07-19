@@ -31,7 +31,7 @@ Rate limits can be keyed by different dimensions. Layer them from cheapest to mo
 | **Per API Key** | `Authorization` header | Ties to billing and plan | Key sharing, leaked keys | B2B(Business-to-Business) APIs, developer portals |
 | **Per User / Account** | User ID from JWT(JSON Web Token)/session | Fair per customer | Requires auth on every request | Logged-in SaaS(Software as a Service) APIs |
 | **Per Tenant / Org** | `org_id` | Multi-tenant fairness | Large tenants may need custom limits | B2B multi-tenant platforms |
-| **Per Endpoint** | `method + path` | Protects expensive ops only | Many rules to maintain | Search, export, ML inference |
+| **Per Endpoint** | `method + path` | Protects expensive ops only | Many rules to maintain | Search, export, ML(Machine Learning) inference |
 | **Per Resource** | `user:123:project:456` | Fine-grained abuse control | Key explosion, storage cost | File uploads, object CRUD |
 
 ---

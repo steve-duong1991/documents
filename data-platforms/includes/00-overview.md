@@ -37,7 +37,7 @@ flowchart TB
 | Store | Role | Not for |
 |-------|------|---------|
 | **PostgreSQL** | Transactions, constraints, source of truth | Ad-hoc BI(Business Intelligence) on hot tables |
-| **Warehouse / lake** | Aggregations, history, ML features | Low-latency user-facing writes |
+| **Warehouse / lake** | Aggregations, history, ML(Machine Learning) features | Low-latency user-facing writes |
 | **Search** | Relevance, facets, fuzzy match | Authoritative inventory counts |
 | **Redis** | Cache, session, lock, queue, rate limit | Durable business state without persistence plan |
 | **Kafka** | Fan-out, replay, CDC backbone | Primary CRUD store |

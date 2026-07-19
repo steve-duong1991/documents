@@ -77,7 +77,7 @@ Use only when product agrees the **fallback is the product** for that window.
 | **Risk** | “Shipping without X makes peak SEV-2 likely” | Vague “quality concerns” |
 | **CX** | “Funnel drops ~Y% when Z is slow; here’s RUM” | Taste arguments without data |
 | **Speed** | “Paying A now cuts cycle time ~30% for Q3” | Endless rewrite as the only plan |
-| **Budget** | “Error budget burned — freeze matches our SRE policy” | Heroics without a written freeze |
+| **Budget** | “Error budget burned — freeze matches our SRE(Site Reliability Engineering) policy” | Heroics without a written freeze |
 | **Deal** | “We can hit the date if we cut B and degrade C” | Silent quality cuts |
 
 Stakeholder update skeleton → [§7](07-stakeholder-communication.md).

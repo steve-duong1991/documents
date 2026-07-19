@@ -2,7 +2,7 @@
 
 Practical reference for **single-agent** vs **multi-agent** workflows in Cursor — when to use each, how to run parallel agents and subagents, and how to configure automatic subagent delegation.
 
-Related: [Cursor subagents docs](https://cursor.com/docs/agent/subagents) · [Agents Window docs](https://cursor.com/docs/agent/agents-window)
+Related: [Cursor Workflows](../cursor-workflows/README.md) (design → ship → operate loop) · [Cursor subagents docs](https://cursor.com/docs/agent/subagents) · [Agents Window docs](https://cursor.com/docs/agent/agents-window)
 
 ---
 
@@ -22,8 +22,12 @@ Related: [Cursor subagents docs](https://cursor.com/docs/agent/subagents) · [Ag
 
 | Resource | Topics |
 |----------|--------|
+| [cursor-workflows](../cursor-workflows/README.md) | Full delivery loop using Cursor (MCP, reviews, ship, operate) |
 | [Engineering Guides](../README.md) | This corpus — edit and validate per [CONTRIBUTING](../CONTRIBUTING.md) |
+| [VISUAL-INDEX](../VISUAL-INDEX.md) | Request / async / release / incident spines |
 | [Repo `.cursor/`](../.cursor/rules/engineering-guides.mdc) | Project rules, validate hook, doc-reviewer subagent |
+| [Architecture decisions](../architecture-decisions/README.md) | ADRs and governance when agents draft design docs |
+| [Testing strategy](../testing-strategy/README.md) | Quality gates agents should not skip |
 | [Cursor Agent overview](https://cursor.com/docs/agent/overview) | Tools, checkpoints, queued messages |
 | [Cursor subagents](https://cursor.com/docs/agent/subagents) | Built-in subagents, custom agents, cloud subagents |
 | [Cursor Agents Window](https://cursor.com/docs/agent/agents-window) | Parallel agents, worktrees, cloud handoff |

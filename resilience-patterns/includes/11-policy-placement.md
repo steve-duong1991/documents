@@ -2,7 +2,7 @@
 
 Where timeouts, retries, breakers, and shedding should live — so layers do not fight each other.
 
-> **Related:** Layer ownership of retries → [§2](02-retries-backoff-jitter.md) · Discovery / mesh → [distributed-systems-primitives §5](../../distributed-systems-primitives/includes/05-service-discovery.md) · Edge limits → [api-rate-limiting](../../api-rate-limiting/README.md) · Implementation knobs → [§15](15-implementation-map.md)
+> **Related:** Layer ownership of retries → [§2](02-retries-backoff-jitter.md) · Mesh topology deep dive → [§11A](11A-service-mesh-topology.md) · Discovery / mesh → [distributed-systems-primitives §5](../../distributed-systems-primitives/includes/05-service-discovery.md) · Edge limits → [api-rate-limiting](../../api-rate-limiting/README.md) · Implementation knobs → [§15](15-implementation-map.md)
 
 ---
 

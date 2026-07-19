@@ -22,6 +22,17 @@ Trees organize data hierarchically. The right structure depends on **access patt
 
 Most production storage falls into one of two designs:
 
+```mermaid
+flowchart TD
+    Need[Storage engine choice] --> W{Write-heavy append / KV?}
+    W -->|No — OLTP SQL, ranges| BP[B+ Tree path]
+    BP --> BPW[Update pages in place]
+    BPW --> BPR[Few page lookups + linked leaves]
+    W -->|Yes — logs, metrics, LSM stores| LSM[LSM Tree path]
+    LSM --> LSMW[WAL + memtable + flush]
+    LSMW --> LSMR[Memtable + filters + SSTables]
+```
+
 | | **B+ Tree** | **LSM Tree** |
 |--|-------------|--------------|
 | **Write model** | Update pages in place | Append to WAL(Write-Ahead Log) + memtable; merge later |
