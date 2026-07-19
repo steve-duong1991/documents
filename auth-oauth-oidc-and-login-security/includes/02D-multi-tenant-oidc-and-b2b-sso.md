@@ -163,7 +163,7 @@ If you mint **your own** access tokens after IdP login (BFF pattern), validate t
 |---------|------|-------|
 | **One app client + org claim** | Shared / broker IdP | Simpler secrets; org chosen via HRD or IdP org feature |
 | **Per-tenant OIDC client** | BYO IdP | Separate `client_id` / secret or private_key_jwt; redirect URIs per customer |
-| **SAML SP per tenant** | Customer-only SAML | Prefer broker — [§2c](02C-saml-protocol.md) |
+| **SAML SP(Savings Plan) per tenant** | Customer-only SAML | Prefer broker — [§2c](02C-saml-protocol.md) |
 | **Admin consent** | Enterprise app install | Tenant admin grants org-wide — [§1b](01B-scopes-and-consent.md) |
 
 Store IdP metadata (issuer, JWKS URI, client auth, claim maps) in a **tenant auth config** table. Rotate secrets like any credential — [enterprise-security §5](../../enterprise-security-compliance/includes/05-secrets-beyond-database.md).

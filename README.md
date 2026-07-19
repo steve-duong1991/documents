@@ -44,7 +44,7 @@ Practical reference docs for building and operating production APIs and data sys
 <a id="how-the-guides-relate"></a>
 ## How the guides relate
 
-End-to-end pictures → [VISUAL-INDEX.md](VISUAL-INDEX.md) (12 spines). Guide relationships are split below so each view stays readable. Overlapping topics → [Topic ownership](#topic-ownership).
+End-to-end pictures → [VISUAL-INDEX.md](VISUAL-INDEX.md) (17 spines). Guide relationships are split below so each view stays readable. Overlapping topics → [Topic ownership](#topic-ownership).
 
 ### Delivery view
 
@@ -135,6 +135,11 @@ Pictures before prose — walk the [VISUAL-INDEX](VISUAL-INDEX.md) spines, then 
 10. [Schema migrate + deploy](VISUAL-INDEX.md#schema-migrate--deploy) → [deploy §12](deployment-strategies/includes/12-schema-migrations-and-deploy.md) · [PG §15](postgresql-performance/includes/15-schema-migration-checklist.md)
 11. [Cache coherence](VISUAL-INDEX.md#cache-coherence) → [HTS §4](high-throughput-systems/includes/04-caching-layers.md) · [data-platforms §4](data-platforms/includes/04-caching-end-to-end.md) · [api §1A](api-design-and-protection/includes/01A-http-caching-and-conditional-requests.md)
 12. [Multi-tenant request](VISUAL-INDEX.md#multi-tenant-request) → [auth §2d](auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · [api §16](api-design-and-protection/includes/16-multi-tenant-apis.md) · [PG §17](postgresql-performance/includes/17-row-level-security-multi-tenant.md)
+13. [Entitlement gate](VISUAL-INDEX.md#entitlement-gate) → [metering §5A](api-design-and-protection/includes/05A-metering-entitlements-and-billable-events.md) · [subscriptions §5A](payments-and-fintech/includes/05A-subscription-billing-and-dunning.md)
+14. [CDC → search lag](VISUAL-INDEX.md#cdc--search-lag) → [HTS §15A](high-throughput-systems/includes/15A-cdc-connector-operations.md) · [search ops §2A](data-platforms/includes/02A-search-cluster-operations.md)
+15. [Subscription / dunning](VISUAL-INDEX.md#subscription--dunning) → [payments §5A](payments-and-fintech/includes/05A-subscription-billing-and-dunning.md)
+16. [ATO response](VISUAL-INDEX.md#ato-response) → [auth §5E](auth-oauth-oidc-and-login-security/includes/05E-account-takeover-response.md) · [comms §6A](sre-and-incidents/includes/06A-incident-communications.md)
+17. [Tenant lifecycle](VISUAL-INDEX.md#tenant-lifecycle) → [arch §10B](architecture-decisions/includes/10B-tenant-lifecycle-provision-suspend-delete.md) · [api §16A](api-design-and-protection/includes/16A-tenant-lifecycle-apis.md)
 
 <a id="topic-ownership"></a>
 
@@ -154,6 +159,13 @@ When the same concern appears in multiple guides, prefer this home (siblings are
 | DR / failover | [sre §12](sre-and-incidents/includes/12-disaster-recovery.md) | Playbook → [§12A](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) · Credentials → [DB §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
 | Metering / entitlements | [api-design §5A](api-design-and-protection/includes/05A-metering-entitlements-and-billable-events.md) | Unit economics → [finops §1](finops-and-cost/includes/01-unit-economics.md) · Pricing fit → [arch §14](architecture-decisions/includes/14-org-stage-and-pricing-fit.md) |
 | Edge abuse / WAF(Web Application Firewall) | [api-design §2A](api-design-and-protection/includes/02A-edge-abuse-waf-and-bots.md) | Limiters → [api-rate-limiting](api-rate-limiting/README.md) · Login → [auth §5](auth-oauth-oidc-and-login-security/includes/05-login-security-playbook.md) |
+| CDC(Change Data Capture) / search sync | [HTS §15](high-throughput-systems/includes/15-cdc-and-search-indexing.md) · [§15A ops](high-throughput-systems/includes/15A-cdc-connector-operations.md) | Cluster ops → [data-platforms §2A](data-platforms/includes/02A-search-cluster-operations.md) · Relevance → [§2B](data-platforms/includes/02B-search-relevance-and-ranking.md) |
+| Notifications | [api-design §10D](api-design-and-protection/includes/10D-notification-delivery.md) · [§10E](api-design-and-protection/includes/10E-notification-provider-operations.md) | Walkthrough → [system-design §7](system-design-walkthroughs/includes/07-notification-pipeline.md) |
+| Encryption / KMS(Key Management Service) | [ESC §8A](enterprise-security-compliance/includes/08A-application-encryption-and-kms.md) | Policy → [ESC §8](enterprise-security-compliance/includes/08-encryption-policy.md) · DB TLS → [database-connection](database-connection-and-security/README.md) |
+| Feature flags vs experiments | [deployment §7](deployment-strategies/includes/07-feature-flags.md) · [§7A ops](deployment-strategies/includes/07A-feature-flag-operations.md) | Experiment platform → [§5A](deployment-strategies/includes/05A-experimentation-platform.md) |
+| Subscriptions / dunning | [payments §5A](payments-and-fintech/includes/05A-subscription-billing-and-dunning.md) | Entitlements → [api §5A](api-design-and-protection/includes/05A-metering-entitlements-and-billable-events.md) |
+| Tenant lifecycle | [architecture §10B](architecture-decisions/includes/10B-tenant-lifecycle-provision-suspend-delete.md) | API → [§16A](api-design-and-protection/includes/16A-tenant-lifecycle-apis.md) · Erasure → [ESC §7A](enterprise-security-compliance/includes/07A-erasure-and-dsar.md) |
+| ATO(Account Takeover) response | [auth §5E](auth-oauth-oidc-and-login-security/includes/05E-account-takeover-response.md) | Prevention → [api §2A](api-design-and-protection/includes/02A-edge-abuse-waf-and-bots.md) · [auth §5](auth-oauth-oidc-and-login-security/includes/05-login-security-playbook.md) |
 
 ### Tech Lead Fullstack (start here)
 
@@ -398,8 +410,9 @@ Money movement hardening beyond generic idempotency.
 1. [payments-and-fintech](payments-and-fintech/README.md) — [§1 PCI scope](payments-and-fintech/includes/01-pci-scope-reduction.md) → [§2 double-charge](payments-and-fintech/includes/02-idempotency-and-double-charge.md)
 2. [§3 ledger](payments-and-fintech/includes/03-ledger-and-double-entry.md) + [§3A refunds/payouts/settlement](payments-and-fintech/includes/03A-refunds-payouts-settlement.md) + [§3B multi-currency/FX](payments-and-fintech/includes/03B-multi-currency-and-fx.md) + [event-sourcing §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
 3. [§4 fraud/reconciliation](payments-and-fintech/includes/04-fraud-and-reconciliation.md) + [§4A disputes/chargebacks](payments-and-fintech/includes/04A-disputes-and-chargebacks.md) + [enterprise-security-compliance](enterprise-security-compliance/README.md)
-4. Practice → [system-design §11 checkout/inventory](system-design-walkthroughs/includes/11-checkout-and-inventory.md)
-5. Spine → [VISUAL-INDEX — Money movement](VISUAL-INDEX.md#money-movement)
+4. Subscriptions → [§5A billing/dunning](payments-and-fintech/includes/05A-subscription-billing-and-dunning.md) · KYC(Know Your Customer) → [§4B](payments-and-fintech/includes/04B-kyc-aml-and-sanctions-screening.md)
+5. Practice → [system-design §11 checkout/inventory](system-design-walkthroughs/includes/11-checkout-and-inventory.md)
+6. Spine → [VISUAL-INDEX — Money movement](VISUAL-INDEX.md#money-movement) · [Subscription / dunning](VISUAL-INDEX.md#subscription--dunning) · [Entitlement gate](VISUAL-INDEX.md#entitlement-gate)
 
 ### Media uploads and edge networking
 
@@ -457,7 +470,8 @@ Choose isolation model, then enforce it in PostgreSQL (or Dynamo-style keys) and
 7. [nosql-and-key-value-stores §3](nosql-and-key-value-stores/includes/03-dynamo-style-multi-tenant.md) — when the primary is key-value
 8. [api-design-and-protection §16](api-design-and-protection/includes/16-multi-tenant-apis.md) — claim binding, cache/queue prefixes
 9. Async bus → [apache-kafka §2 multi-tenant](apache-kafka/includes/02-topics-partitions-and-replication.md#multi-tenant-isolation)
-10. Spine → [VISUAL-INDEX — Multi-tenant request](VISUAL-INDEX.md#multi-tenant-request)
+10. Lifecycle → [architecture §10B](architecture-decisions/includes/10B-tenant-lifecycle-provision-suspend-delete.md) · [api §16A](api-design-and-protection/includes/16A-tenant-lifecycle-apis.md)
+11. Spine → [VISUAL-INDEX — Multi-tenant request](VISUAL-INDEX.md#multi-tenant-request) · [Tenant lifecycle](VISUAL-INDEX.md#tenant-lifecycle)
 
 ### Cursor agents
 
@@ -509,7 +523,7 @@ documents/
 ├── CHANGELOG.md
 ├── RUNBOOK-TEMPLATE.md
 ├── acronyms.json          ← acronym registry for expand-acronyms.py
-├── VISUAL-INDEX.md        ← twelve system spines (+ migrate/deploy, cache, multi-tenant)
+├── VISUAL-INDEX.md        ← seventeen system spines (+ entitlement, CDC/search, dunning, ATO, tenant lifecycle)
 ├── Makefile
 ├── .cursor/               ← agent rules, hooks, doc-reviewer (see cursor-agents guide)
 ├── scripts/

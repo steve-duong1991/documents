@@ -39,6 +39,7 @@ Related: [api-design-and-protection §4](../api-design-and-protection/includes/0
 | 5b | [Signup, email verification, and magic links](includes/05B-signup-verify-and-magic-links.md) |
 | 5c | [WebAuthn and passkeys](includes/05C-webauthn-and-passkeys.md) |
 | 5d | [Impersonation and support access](includes/05D-impersonation-and-support-access.md) |
+| 5e | [Account takeover response](includes/05E-account-takeover-response.md) |
 | 6 | [Decision guide](includes/06-decision-guide.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
@@ -59,6 +60,7 @@ Related: [api-design-and-protection §4](../api-design-and-protection/includes/0
 | **Guest cart / signup wizard** | [§4b Anonymous/guest](includes/04B-anonymous-and-guest-sessions.md) → [§5b Signup/magic link](includes/05B-signup-verify-and-magic-links.md) → §4 |
 | **Passkeys / phishing-resistant MFA** | [§5c WebAuthn](includes/05C-webauthn-and-passkeys.md) → §5 → [§2a step-up](includes/02A-oidc-logout-and-step-up.md) |
 | **Support “login as user”** | [§5d Impersonation](includes/05D-impersonation-and-support-access.md) → [§3e sessions](includes/03E-concurrent-sessions-and-devices.md) |
+| **Account takeover / incident auth response** | [§5e Account takeover response](includes/05E-account-takeover-response.md) → [§3b revoke/denylist](includes/03B-revoke-logout-denylist.md) → [§3e sessions](includes/03E-concurrent-sessions-and-devices.md) → [§5 login security](includes/05-login-security-playbook.md) → [sre-and-incidents](../sre-and-incidents/README.md) |
 | **Logout other devices / session caps** | [§3e](includes/03E-concurrent-sessions-and-devices.md) → [§3b](includes/03B-revoke-logout-denylist.md) |
 | **Multi-app SSO logout / step-up MFA** | [§2a](includes/02A-oidc-logout-and-step-up.md) → [§3b](includes/03B-revoke-logout-denylist.md) → §5 |
 | **Hardening password login** | §5 → [§5b](includes/05B-signup-verify-and-magic-links.md) → [enterprise-security §3](../enterprise-security-compliance/includes/03-owasp-and-common-vulns.md) → §6 |

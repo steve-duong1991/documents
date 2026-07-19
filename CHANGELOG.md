@@ -6,6 +6,14 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-07-19
 
+### Residual SaaS/ops pack: subscriptions, tenant lifecycle, ATO, 17 spines
+- **VISUAL-INDEX:** 12 → **17** spines — Entitlement gate, CDC→search lag, Subscription/dunning, ATO response, Tenant lifecycle
+- **Root README:** Visual-first steps 13–17; Topic ownership expanded (CDC/search, notifications, encryption, flags, subscriptions, tenant lifecycle, ATO)
+- **P0:** payments §05A subscription/dunning · architecture §10B + api §16A tenant lifecycle · auth §05E ATO response
+- **P1:** HTS §15A CDC connector ops · data-platforms §02B search relevance · ESC §10A vendor risk · cicd §02B scrubbed test data · specialized §03C RAG/LLM eval
+- **P2:** HTS §16A public TLS/ACME · finops §03A commitments · data-platforms §05C soft-delete/purge · payments §04B KYC/AML · api §18A UGC moderation
+- **GLOSSARY / acronyms:** subscription/dunning, tenant lifecycle, ATO response, CDC connector ops, search relevance, vendor risk, ACME, UGC, RI/SP/CUD, …
+
 ### P0–P2 backlog: articles, 12 spines, diagram debt, topic ownership
 - **VISUAL-INDEX:** 9 → **12** spines — Schema migrate + deploy, Cache coherence, Multi-tenant request
 - **Root README:** Visual-first steps 10–12; **Topic ownership** matrix; layout note updated

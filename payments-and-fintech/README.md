@@ -20,6 +20,8 @@ Related: [resilience-patterns](../resilience-patterns/README.md) (idempotency, d
 | 3B | [Multi-currency and FX](includes/03B-multi-currency-and-fx.md) |
 | 4 | [Fraud and reconciliation](includes/04-fraud-and-reconciliation.md) |
 | 4A | [Disputes and chargebacks](includes/04A-disputes-and-chargebacks.md) |
+| 4B | [KYC, AML and sanctions screening](includes/04B-kyc-aml-and-sanctions-screening.md) |
+| 5A | [Subscription billing and dunning](includes/05A-subscription-billing-and-dunning.md) |
 | 5 | [Decision guide](includes/05-decision-guide.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
@@ -32,6 +34,8 @@ Related: [resilience-patterns](../resilience-patterns/README.md) (idempotency, d
 | **Designing the money-movement write path** | §2 Double-charge prevention → §3 Ledger and double-entry → [event-sourcing §7](../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) |
 | **Refunds / payouts / settlement** | §3 Ledger → [§3A Refunds and payouts](includes/03A-refunds-payouts-settlement.md) → §4 Fraud and reconciliation |
 | **Building chargeback/reconciliation operations** | §4 Fraud and reconciliation → [§3A](includes/03A-refunds-payouts-settlement.md) → §5 Decision guide |
+| **Subscriptions / recurring billing** | [§5A Subscription billing and dunning](includes/05A-subscription-billing-and-dunning.md) → §2 Double-charge prevention → §3 Ledger → [api-design §5A metering](../api-design-and-protection/includes/05A-metering-entitlements-and-billable-events.md) |
+| **KYC(Know Your Customer) / AML(Anti-Money Laundering) before go-live** | [§4B KYC, AML and sanctions screening](includes/04B-kyc-aml-and-sanctions-screening.md) → §1 PCI scope → [enterprise-security §10A vendor risk](../enterprise-security-compliance/includes/10A-vendor-risk-and-subprocessors.md) |
 | **Security/compliance review before launch** | §1 PCI scope → [enterprise-security-compliance §8](../enterprise-security-compliance/includes/08-encryption-policy.md) → [§10 compliance evidence](../enterprise-security-compliance/includes/10-compliance-evidence.md) |
 
 ---

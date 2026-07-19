@@ -25,6 +25,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (th
 | 9 | [Zero trust and least privilege](includes/09-zero-trust-least-privilege.md) |
 | 9A | [Workload identity and mTLS](includes/09A-workload-identity-and-mtls.md) |
 | 10 | [Compliance evidence](includes/10-compliance-evidence.md) |
+| 10A | [Vendor risk and subprocessors](includes/10A-vendor-risk-and-subprocessors.md) |
 | 11 | [Decision guide](includes/11-decision-guide.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
@@ -35,7 +36,8 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (th
 |-------------|---------------|
 | **New to org security expectations** | Overview → §1 Secure SDLC(Software Development Life Cycle) → §10 Compliance evidence → §11 |
 | **Hardening a product before launch** | §2 Threat modeling → §3 OWASP(Open Worldwide Application Security Project) → §5 Secrets → §9 Zero trust |
-| **Preparing for SOC 2 / customer questionnaires** | §6 Audit → §7 PII → [§7A erasure/DSAR](includes/07A-erasure-and-dsar.md) → §8 Encryption → §10 Evidence |
+| **Preparing for SOC 2 / customer questionnaires** | §6 Audit → §7 PII → [§7A erasure/DSAR](includes/07A-erasure-and-dsar.md) → §8 Encryption → §10 Evidence → [§10A Vendor risk](includes/10A-vendor-risk-and-subprocessors.md) |
+| **Vendor / subprocessor diligence** | [§10A Vendor risk and subprocessors](includes/10A-vendor-risk-and-subprocessors.md) → §4 Supply chain → §10 Compliance evidence |
 | **Fulfilling access / erasure requests** | [§7A Erasure and DSAR](includes/07A-erasure-and-dsar.md) → §7 classification → [api-design §12C](../api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) |
 | **Owning CI(Continuous Integration)/CD(Continuous Delivery) and dependencies** | §1 Secure SDLC → §4 Supply chain → §5 Secrets |
 

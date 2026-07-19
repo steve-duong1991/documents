@@ -40,7 +40,7 @@ flowchart TD
 | BFF calling domain APIs as the user | Token exchange (RFC 8693) or BFF-held refresh — [§1a](01A-client-auth-and-token-exchange.md) |
 | Multi-app SSO logout | App revoke + RP-initiated + back-channel — [§2a](02A-oidc-logout-and-step-up.md) |
 | App session expired, IdP SSO still alive | Idle → top-level OIDC; absolute → interactive — [§3d](03D-lifetimes-and-sliding-sessions.md) |
-| Customer requires SAML | Broker SAML→OIDC or native SP — [§2c](02C-saml-protocol.md), [§2b](02B-sso-integration-playbook.md) |
+| Customer requires SAML | Broker SAML→OIDC or native SP(Savings Plan) — [§2c](02C-saml-protocol.md), [§2b](02B-sso-integration-playbook.md) |
 | Customer brings Entra / Okta (BYO IdP) | Per-tenant issuer allowlist + membership — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md); data isolation — [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md) |
 | Email-domain / subdomain SSO | Home-realm discovery then authorize — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md) |
 | User in multiple orgs | Memberships + `active_tenant_id`; switch re-binds tokens — [§2d](02D-multi-tenant-oidc-and-b2b-sso.md) |

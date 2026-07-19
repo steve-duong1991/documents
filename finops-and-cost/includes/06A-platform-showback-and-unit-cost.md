@@ -92,5 +92,5 @@ Publish **methodology notes** ( amortized RIs(Reserved Instances), shared load b
 | Chargeback without warning | Showback first; alerts |
 | Shared services untagged | Default platform bucket + escalation |
 | Unit cost using revenue requests only | Define successful vs total consistently — [§1](01-unit-economics.md) |
-| One-time RI benefit hidden | Document amortization in methodology |
+| One-time RI(Reserved Instance) benefit hidden | Document amortization in methodology |
 | FinOps only at month-end | Weekly anomaly + deploy correlation |

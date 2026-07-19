@@ -1,6 +1,6 @@
 # Visual Index
 
-Twelve reusable system spines connect the guides in this corpus. They are intentionally simplified: use the linked sections for security, capacity, and failure behavior.
+Seventeen reusable system spines connect the guides in this corpus. They are intentionally simplified: use the linked sections for security, capacity, and failure behavior.
 
 Guide-to-guide maps (Delivery / Data / Security) live in the root README under [How the guides relate](./README.md#how-the-guides-relate). Prefer the [Visual-first learning path](./README.md#visual-first) when you want pictures before prose.
 
@@ -18,6 +18,11 @@ Guide-to-guide maps (Delivery / Data / Security) live in the root README under [
 | [Schema migrate + deploy](#schema-migrate--deploy) | Expand/contract schema with rolling app versions |
 | [Cache coherence](#cache-coherence) | Write path, invalidation, CDN purge, stampede |
 | [Multi-tenant request](#multi-tenant-request) | Host/HRD → tenant claim → AuthZ → RLS → prefixes |
+| [Entitlement gate](#entitlement-gate) | Plan/quota check before work + billable meter |
+| [CDC → search lag](#cdc--search-lag) | WAL → connector → Kafka → indexer → alias |
+| [Subscription / dunning](#subscription--dunning) | Invoice → charge → retry → suspend entitlements |
+| [ATO response](#ato-response) | Detect takeover → revoke → step-up → comms |
+| [Tenant lifecycle](#tenant-lifecycle) | Provision → suspend → delete / export fan-out |
 
 ---
 
@@ -268,3 +273,94 @@ sequenceDiagram
 ```
 
 Resolve tenant early (HRD(Home-Realm Discovery) / subdomain / claim); bind AuthZ(Authorization) to that tenant; enforce isolation in the DB (RLS(Row-Level Security) or silo) and on every cache/queue key. Cells and residency → [architecture §10A](architecture-decisions/includes/10A-regional-cells-and-residency.md).
+
+---
+
+## Entitlement gate
+
+> **Related:** [Metering and entitlements](api-design-and-protection/includes/05A-metering-entitlements-and-billable-events.md) · [Rate-limit tiers](api-design-and-protection/includes/05-rate-limit-tiers.md) · [Fine-grained AuthZ](api-design-and-protection/includes/12D-fine-grained-authz.md) · [Subscription / dunning](payments-and-fintech/includes/05A-subscription-billing-and-dunning.md) · [Unit economics](finops-and-cost/includes/01-unit-economics.md)
+
+```mermaid
+flowchart LR
+    Req[API request] --> Plan[Resolve plan / tenant]
+    Plan --> Ent[Entitlement check]
+    Ent -->|deny| Deny[402 / 403 / 429]
+    Ent -->|allow| Work[Do work]
+    Work --> Meter[Emit billable event]
+    Meter --> Agg[Aggregator / invoice]
+```
+
+AuthZ(Authorization) answers “may this subject act?”; entitlements answer “does this plan still allow this unit of work?” Emit meters **after** successful admission (or with clear fail/refund rules). Product quotas → [api-design §5](api-design-and-protection/includes/05-rate-limit-tiers.md).
+
+---
+
+## CDC → search lag
+
+> **Related:** [CDC and search indexing](high-throughput-systems/includes/15-cdc-and-search-indexing.md) · [CDC connector ops](high-throughput-systems/includes/15A-cdc-connector-operations.md) · [Search cluster ops](data-platforms/includes/02A-search-cluster-operations.md) · [Search relevance](data-platforms/includes/02B-search-relevance-and-ranking.md) · [Outbox/inbox](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md)
+
+```mermaid
+flowchart LR
+    OLTP[(OLTP WAL)] --> Conn[CDC connector]
+    Conn --> Kafka[Kafka]
+    Kafka --> Idx[Indexer]
+    Idx --> Alias[Search alias]
+    Alias --> Apps[Product search APIs]
+    Conn -.->|lag SLO| Watch[Ops watch]
+    Idx -.->|reindex / blue-green| Alias
+```
+
+Protect the OLTP(Online Transaction Processing) primary: one CDC(Change Data Capture) path out, not dual writes. Own connector lag, slot growth, and alias cutover separately from relevance tuning — [HTS §15A](high-throughput-systems/includes/15A-cdc-connector-operations.md) · [data-platforms §2B](data-platforms/includes/02B-search-relevance-and-ranking.md).
+
+---
+
+## Subscription / dunning
+
+> **Related:** [Subscription billing and dunning](payments-and-fintech/includes/05A-subscription-billing-and-dunning.md) · [Metering](api-design-and-protection/includes/05A-metering-entitlements-and-billable-events.md) · [Ledger](payments-and-fintech/includes/03-ledger-and-double-entry.md) · [Double-charge prevention](payments-and-fintech/includes/02-idempotency-and-double-charge.md) · [Tenant lifecycle](architecture-decisions/includes/10B-tenant-lifecycle-provision-suspend-delete.md)
+
+```mermaid
+flowchart LR
+    Due[Invoice due] --> Charge[Charge PSP]
+    Charge -->|ok| Active[Keep entitlements]
+    Charge -->|fail| Retry[Retry / dunning]
+    Retry -->|recover| Active
+    Retry -->|exhaust| Suspend[Suspend entitlements]
+    Suspend --> Cancel{Cancel / collect?}
+    Cancel -->|cancel| End[Churn + export path]
+```
+
+Billing state drives entitlements — do not leave “past_due” tenants with full product access. Ledger and Idempotency-Key rules still apply on every charge — [payments §2](payments-and-fintech/includes/02-idempotency-and-double-charge.md).
+
+---
+
+## ATO response
+
+> **Related:** [Account takeover response](auth-oauth-oidc-and-login-security/includes/05E-account-takeover-response.md) · [Login security](auth-oauth-oidc-and-login-security/includes/05-login-security-playbook.md) · [Revoke / denylist](auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md) · [Edge abuse / WAF](api-design-and-protection/includes/02A-edge-abuse-waf-and-bots.md) · [Incident communications](sre-and-incidents/includes/06A-incident-communications.md)
+
+```mermaid
+flowchart TD
+    Signal[ATO signal] --> Triage[Security / IC triage]
+    Triage --> Revoke[Force logout + denylist]
+    Revoke --> StepUp[Step-up / password reset]
+    StepUp --> Comms[Customer + status update]
+    Comms --> Post[Postmortem + control debt]
+```
+
+Prevention (edge + login) and response (revoke + step-up + comms) are different runbooks. Prefer session/refresh kill and `jti` denylist over waiting for access-token expiry — [auth §3b](auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md).
+
+---
+
+## Tenant lifecycle
+
+> **Related:** [Tenant lifecycle](architecture-decisions/includes/10B-tenant-lifecycle-provision-suspend-delete.md) · [Tenant lifecycle APIs](api-design-and-protection/includes/16A-tenant-lifecycle-apis.md) · [Multi-tenant models](architecture-decisions/includes/10-multi-tenant-system-models.md) · [SCIM / JML](api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) · [Erasure / DSAR](enterprise-security-compliance/includes/07A-erasure-and-dsar.md) · [Soft-delete / purge](data-platforms/includes/05C-soft-delete-retention-and-purge.md)
+
+```mermaid
+flowchart LR
+    Create[Create tenant] --> Prov[Provision IdP / schema / keys]
+    Prov --> Live[Active traffic]
+    Live --> Susp[Suspend writes]
+    Susp --> Exp[Export / legal hold]
+    Exp --> Del[Delete / crypto-shred fan-out]
+    Del --> Done[Verify stores empty]
+```
+
+Isolation models (pool/silo/cells) are not a lifecycle. Own provision, suspend, and erasure as explicit states with API(Application Programming Interface) contracts — [api §16A](api-design-and-protection/includes/16A-tenant-lifecycle-apis.md) · [ESC §7A](enterprise-security-compliance/includes/07A-erasure-and-dsar.md).

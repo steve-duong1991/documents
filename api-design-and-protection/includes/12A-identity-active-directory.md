@@ -61,7 +61,7 @@ sequenceDiagram
 
 Modern APIs rarely terminate Kerberos at the gateway directly. Typical pattern: AD → Entra ID / IdP → **OIDC(OpenID Connect)/SAML(Security Assertion Markup Language)** → JWT(JSON Web Token) with groups/roles → gateway + app.
 
-SAML protocol depth (assertions, bindings, SP checklist, SAML→OIDC bridge) → [auth §2c](../../auth-oauth-oidc-and-login-security/includes/02C-saml-protocol.md). SSO(Single Sign-On) integration playbook → [auth §2b](../../auth-oauth-oidc-and-login-security/includes/02B-sso-integration-playbook.md).
+SAML protocol depth (assertions, bindings, SP(Savings Plan) checklist, SAML→OIDC bridge) → [auth §2c](../../auth-oauth-oidc-and-login-security/includes/02C-saml-protocol.md). SSO(Single Sign-On) integration playbook → [auth §2b](../../auth-oauth-oidc-and-login-security/includes/02B-sso-integration-playbook.md).
 
 ### AD vs Microsoft Entra ID
 

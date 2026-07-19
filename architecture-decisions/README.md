@@ -25,6 +25,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [E
 | 9 | [BFF and API composition](includes/09-bff-and-api-composition.md) |
 | 10 | [Multi-tenant system models](includes/10-multi-tenant-system-models.md) |
 | 10A | [Regional cells and data residency](includes/10A-regional-cells-and-residency.md) |
+| 10B | [Tenant lifecycle (provision, suspend, delete)](includes/10B-tenant-lifecycle-provision-suspend-delete.md) |
 | 11 | [Failure domains](includes/11-failure-domains.md) |
 | 12 | [Decision guide](includes/12-decision-guide.md) |
 | 13 | [Capacity estimation](includes/13-capacity-estimation.md) |
@@ -41,7 +42,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [E
 | **Modernizing a legacy core** | §4 Strangler → [§4A program](includes/04A-modernization-program.md) → §7 Integration → [deployment-strategies](../deployment-strategies/README.md) |
 | **Recording a hard call** | §5 ADRs → [§5A governance](includes/05A-architecture-governance.md) → §6 Tradeoffs → §12 Decision guide |
 | **Aligning teams and architecture** | [§1A Team Topologies](includes/01A-team-topologies.md) → §1 → [§14](includes/14-org-stage-and-pricing-fit.md) |
-| **Multi-tenant SaaS(Software as a Service)** | §10 Multi-tenant → [§10A cells/residency](includes/10A-regional-cells-and-residency.md) → [auth §2d](../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) → [PG §17 RLS](../postgresql-performance/includes/17-row-level-security-multi-tenant.md) → [PG §18 silos](../postgresql-performance/includes/18-schema-and-database-per-tenant.md) → [api-design §16](../api-design-and-protection/includes/16-multi-tenant-apis.md) |
+| **Multi-tenant SaaS(Software as a Service)** | §10 Multi-tenant → [§10A cells/residency](includes/10A-regional-cells-and-residency.md) → [§10B tenant lifecycle](includes/10B-tenant-lifecycle-provision-suspend-delete.md) → [api-design §16A](../api-design-and-protection/includes/16A-tenant-lifecycle-apis.md) → [auth §2d](../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) → [PG §17 RLS](../postgresql-performance/includes/17-row-level-security-multi-tenant.md) → [PG §18 silos](../postgresql-performance/includes/18-schema-and-database-per-tenant.md) → [api-design §16](../api-design-and-protection/includes/16-multi-tenant-apis.md) |
 | **Client-facing composition** | §9 BFF → [fullstack-bff-and-clients](../fullstack-bff-and-clients/README.md) |
 | **Sizing a design before build** | [§13 Capacity estimation](includes/13-capacity-estimation.md) → [HTS §1 Little's Law](../high-throughput-systems/includes/01-measurement-and-slo.md#littles-law-in-practice) → §12 Decision guide |
 | **Fitting shape to the company** | [§14 Org/stage/pricing](includes/14-org-stage-and-pricing-fit.md) → §1 → [finops §7](../finops-and-cost/includes/07-architecture-cost-tradeoffs.md) → ADR |

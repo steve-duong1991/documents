@@ -47,11 +47,13 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | 14 | [API versioning & deprecation](includes/14-api-versioning-and-deprecation.md) |
 | 15 | [Contract & schema testing](includes/15-contract-and-schema-testing.md) |
 | 16 | [Multi-tenant APIs](includes/16-multi-tenant-apis.md) |
+| 16A | [Tenant lifecycle APIs](includes/16A-tenant-lifecycle-apis.md) |
 | 17 | [GraphQL and gRPC](includes/17-graphql-and-grpc.md) |
 | 17A | [GraphQL in production](includes/17A-graphql-production.md) |
 | 17B | [gRPC and Protobuf CI](includes/17B-grpc-and-protobuf-ci.md) |
 | 17C | [GraphQL federation and schema ownership](includes/17C-graphql-federation-and-schema-ownership.md) |
 | 18 | [Object storage and uploads](includes/18-object-storage-and-uploads.md) |
+| 18A | [UGC moderation and abuse](includes/18A-ugc-moderation-and-abuse.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
@@ -62,7 +64,9 @@ Related: [API Rate Limiting](../api-rate-limiting/README.md) (algorithms and dep
 | **New to API infra** | Overview → [§3 LB vs gateway](includes/03-api-gateway.md) → [3A request flows](includes/03A-api-gateway-request-flows.md) → §11 (stateless) → §8 (reference arch) |
 | **Designing the API contract** | §1 → §7 (OpenAPI) → §15 (contract CI(Continuous Integration)) → §14 (versioning) → [§13 idempotency](includes/13-idempotency.md) + [13A client flow](includes/13A-idempotency-client-and-server-flow.md) → [§10 async](includes/10-async-patterns.md) + [10A jobs](includes/10A-async-jobs-polling.md) · non-REST(Representational State Transfer) → [§17 GraphQL/gRPC](includes/17-graphql-and-grpc.md) |
 | **Hardening for production** | §2 → [§2A edge abuse](includes/02A-edge-abuse-waf-and-bots.md) → §3 → §5 → §6 → [§13](includes/13-idempotency.md) + [13A](includes/13A-idempotency-client-and-server-flow.md) → §9 |
-| **B2B(Business-to-Business) / SaaS(Software as a Service) partner API** | §4 auth → §5 tiers → [§16 multi-tenant](includes/16-multi-tenant-apis.md) → [§12 identity](includes/12-identity-rbac-iam-ad.md) + [§12C SCIM/JML](includes/12C-scim-and-jml-provisioning.md) + [api-rate-limiting §6 scope](../api-rate-limiting/includes/06-scope-identity.md) |
+| **B2B(Business-to-Business) / SaaS(Software as a Service) partner API** | §4 auth → §5 tiers → [§16 multi-tenant](includes/16-multi-tenant-apis.md) → [§16A tenant lifecycle](includes/16A-tenant-lifecycle-apis.md) → [§12 identity](includes/12-identity-rbac-iam-ad.md) + [§12C SCIM/JML](includes/12C-scim-and-jml-provisioning.md) + [api-rate-limiting §6 scope](../api-rate-limiting/includes/06-scope-identity.md) |
+| **Tenant provision / suspend / delete** | [§16A Tenant lifecycle APIs](includes/16A-tenant-lifecycle-apis.md) → [§16 multi-tenant](includes/16-multi-tenant-apis.md) → [architecture §10B](../architecture-decisions/includes/10B-tenant-lifecycle-provision-suspend-delete.md) → [§12C SCIM/JML](includes/12C-scim-and-jml-provisioning.md) |
+| **UGC(User-Generated Content) uploads / moderation** | [§18A UGC moderation and abuse](includes/18A-ugc-moderation-and-abuse.md) → [§18 Object storage](includes/18-object-storage-and-uploads.md) → [§2A edge abuse](includes/02A-edge-abuse-waf-and-bots.md) → §6 threat model |
 | **Enterprise provisioning / offboarding** | [§12C SCIM and JML](includes/12C-scim-and-jml-provisioning.md) → [§12A AD/IdP](includes/12A-identity-active-directory.md) → [auth §3b revoke](../auth-oauth-oidc-and-login-security/includes/03B-revoke-logout-denylist.md) → [auth §2d multi-tenant OIDC](../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) |
 | **OAuth(Open Authorization) / OIDC(OpenID Connect) / login depth** | [auth-oauth-oidc-and-login-security](../auth-oauth-oidc-and-login-security/README.md) after §4 |
 | **GraphQL or gRPC(Google Remote Procedure Call) API** | [§17](includes/17-graphql-and-grpc.md) → [§17A GraphQL production](includes/17A-graphql-production.md) / [§17B gRPC + protobuf CI](includes/17B-grpc-and-protobuf-ci.md) → §1 (REST baseline) → §15 (contract CI) |

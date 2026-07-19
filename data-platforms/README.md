@@ -16,12 +16,14 @@ Related: [postgresql-performance](../postgresql-performance/README.md) · [high-
 | 1B | [Lakehouse table formats and ops](includes/01B-lakehouse-table-formats-and-ops.md) |
 | 2 | [Search systems](includes/02-search-systems.md) |
 | 2A | [Search cluster operations](includes/02A-search-cluster-operations.md) |
+| 2B | [Search relevance and ranking](includes/02B-search-relevance-and-ranking.md) |
 | 3 | [Redis and in-memory](includes/03-redis-and-in-memory.md) |
 | 3A | [Redis operations](includes/03A-redis-operations.md) |
 | 4 | [Caching end to end](includes/04-caching-end-to-end.md) |
 | 5 | [Data ownership, lineage, retention](includes/05-data-ownership-lineage-retention.md) |
 | 5A | [Data contracts and registries](includes/05A-data-contracts-and-registries.md) |
 | 5B | [Data quality and pipeline testing](includes/05B-data-quality-and-pipeline-testing.md) |
+| 5C | [Soft-delete, retention and purge](includes/05C-soft-delete-retention-and-purge.md) |
 | 6 | [Migration coordination](includes/06-migration-coordination.md) |
 | 7 | [Analytics without harming OLTP](includes/07-analytics-without-harming-oltp.md) |
 | 8 | [Decision guide](includes/08-decision-guide.md) |
@@ -33,8 +35,9 @@ Related: [postgresql-performance](../postgresql-performance/README.md) · [high-
 | If you are… | Read in order |
 |-------------|---------------|
 | **Adding analytics off OLTP** | [§1 OLTP vs OLAP](includes/01-oltp-vs-olap.md) → [§1A Columnar OLAP](includes/01A-columnar-olap-operations.md) → [§1B Lakehouse](includes/01B-lakehouse-table-formats-and-ops.md) → [§7 Analytics without harming OLTP](includes/07-analytics-without-harming-oltp.md) |
-| **Search and discovery** | [§2 Search systems](includes/02-search-systems.md) → [§2A Search cluster ops](includes/02A-search-cluster-operations.md) → [high-throughput §15 CDC/search](../high-throughput-systems/includes/15-cdc-and-search-indexing.md) |
+| **Search and discovery** | [§2 Search systems](includes/02-search-systems.md) → [§2A Search cluster ops](includes/02A-search-cluster-operations.md) → [§2B Search relevance](includes/02B-search-relevance-and-ranking.md) → [high-throughput §15 CDC/search](../high-throughput-systems/includes/15-cdc-and-search-indexing.md) |
 | **Data contracts and quality** | [§5A Data contracts](includes/05A-data-contracts-and-registries.md) → [§5B Data quality](includes/05B-data-quality-and-pipeline-testing.md) → [§5 Ownership/lineage](includes/05-data-ownership-lineage-retention.md) |
+| **Soft-delete / retention / purge** | [§5C Soft-delete, retention and purge](includes/05C-soft-delete-retention-and-purge.md) → [§5 Ownership/lineage](includes/05-data-ownership-lineage-retention.md) → [enterprise-security §7A erasure](../enterprise-security-compliance/includes/07A-erasure-and-dsar.md) |
 | **Platform migration** | [§6 Migration coordination](includes/06-migration-coordination.md) → [PG §15](../postgresql-performance/includes/15-schema-migration-checklist.md) → [§8 Decision guide](includes/08-decision-guide.md) |
 
 ## See also

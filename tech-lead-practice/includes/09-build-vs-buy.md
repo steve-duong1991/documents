@@ -36,7 +36,7 @@ flowchart TD
 |--------|-----------|
 | **TCO** | License, impl, ops, training, renewals (3 years) |
 | **Risk** | Lock-in, outages, roadmap misalignment |
-| **Compliance** | Data residency, SOC2, DPA, subprocessors |
+| **Compliance** | Data residency, SOC2, DPA(Data Processing Agreement), subprocessors |
 | **Integration** | APIs, events, SSO(Single Sign-On), audit logs |
 | **Exit** | Export formats, dual-run period, rewrite cost |
 

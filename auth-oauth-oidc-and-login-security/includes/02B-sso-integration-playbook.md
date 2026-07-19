@@ -77,7 +77,7 @@ Prefer **OIDC to your app**. When a customer only offers SAML:
 
 | Pattern | Description |
 |---------|-------------|
-| **IdP speaks SAML → your app is SP** | You implement SAML ACS — full protocol → [§2c](02C-saml-protocol.md) |
+| **IdP speaks SAML → your app is SP(Savings Plan)** | You implement SAML ACS — full protocol → [§2c](02C-saml-protocol.md) |
 | **Bridge** | Customer SAML → your IdP/broker → **OIDC to your apps** (recommended at scale) |
 
 ```mermaid

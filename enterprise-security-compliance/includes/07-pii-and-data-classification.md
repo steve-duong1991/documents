@@ -47,7 +47,7 @@ Every new personal data field should answer:
 | Control | Practice |
 |---------|----------|
 | RBAC(Role-Based Access Control) | Role → class mapping; break-glass logged |
-| Vendor DPA | Processors listed; subprocessors reviewed |
+| Vendor DPA(Data Processing Agreement) | Processors listed; subprocessors reviewed |
 | Export | Rate-limit and audit bulk export APIs |
 | Support views | Mask by default; reveal with reason code |
 

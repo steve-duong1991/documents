@@ -29,7 +29,9 @@ A practical reference for building systems that handle high request, event, and 
 | 14A | [Queue broker operations](includes/14A-queue-broker-operations.md) |
 | 14B | [Queue fairness and priority](includes/14B-queue-fairness-and-priority.md) |
 | 15 | [CDC and search indexing](includes/15-cdc-and-search-indexing.md) |
+| 15A | [CDC connector operations](includes/15A-cdc-connector-operations.md) |
 | 16 | [Networking fundamentals](includes/16-networking-fundamentals.md) |
+| 16A | [Public TLS and certificate lifecycle](includes/16A-public-tls-and-certificate-lifecycle.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
@@ -41,6 +43,8 @@ A practical reference for building systems that handle high request, event, and 
 | **Queue / worker scaling** | [§6 Async](includes/06-async-queues-workers.md) → [§6A Scheduled jobs](includes/06A-scheduled-and-recurring-jobs.md) → [§14 Message brokers](includes/14-message-brokers-and-queues.md) → [§14A Broker ops](includes/14A-queue-broker-operations.md) → [§14B Fairness](includes/14B-queue-fairness-and-priority.md) |
 | **Multi-region / DR(Disaster Recovery)** | [§13 Multi-region read routing](includes/13-multi-region-read-routing.md) → [§13A Write and failover](includes/13A-multi-region-write-and-failover.md) → [§10 Scale and deploy](includes/10-scale-and-deploy.md) |
 | **Overload protection** | [§9 Backpressure](includes/09-backpressure-and-limits.md) → [api-rate-limiting](../api-rate-limiting/README.md) → [resilience-patterns](../resilience-patterns/README.md) |
+| **CDC(Change Data Capture) / search indexing ops** | [§15 CDC and search indexing](includes/15-cdc-and-search-indexing.md) → [§15A CDC connector operations](includes/15A-cdc-connector-operations.md) → [data-platforms §2](../data-platforms/includes/02-search-systems.md) |
+| **TLS(Transport Layer Security) / certificate lifecycle** | [§16A Public TLS and certificate lifecycle](includes/16A-public-tls-and-certificate-lifecycle.md) → [§16 Networking fundamentals](includes/16-networking-fundamentals.md) → [enterprise-security §8](../enterprise-security-compliance/includes/08-encryption-policy.md) |
 
 ## See also
 

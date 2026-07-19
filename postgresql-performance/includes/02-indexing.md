@@ -30,7 +30,7 @@ flowchart TD
 | **Composite index** | Multi-column filters; order matters | `(tenant_id, created_at DESC)` |
 | **Covering index** (`INCLUDE`) | Avoid heap lookups for extra columns | `CREATE INDEX ... INCLUDE (name, email)` |
 | **GIN(Generalized Inverted Index)** | Full-text search, JSONB containment, arrays | `WHERE data @> '{"key": "val"}'` |
-| **GiST / SP-GiST** | Geospatial, range types, nearest-neighbor | PostGIS, `tsrange` |
+| **GiST / SP(Savings Plan)-GiST** | Geospatial, range types, nearest-neighbor | PostGIS, `tsrange` |
 | **BRIN(Block-Range Index)** | Very large, naturally ordered data | Time-series timestamps, monotonic IDs |
 
 ## Column order in composite indexes

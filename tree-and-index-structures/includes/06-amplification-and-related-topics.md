@@ -98,7 +98,7 @@ PostgreSQL uses several index access methods. Not all are B-trees:
 | **B-tree** (default) | B+ style | Equality, ranges, sort, most FKs |
 | **Hash** | Hash table | Equality only; rare in practice |
 | **GIN** | Inverted index | JSONB `@>`, full-text, arrays |
-| **GiST / SP-GiST** | Generalized search trees | PostGIS, ranges, NN |
+| **GiST / SP(Savings Plan)-GiST** | Generalized search trees | PostGIS, ranges, NN |
 | **BRIN(Block-Range Index)** | Block range summaries | Very large, naturally ordered columns |
 
 Full detail → [postgresql-performance/includes/02-indexing.md](../../postgresql-performance/includes/02-indexing.md)
