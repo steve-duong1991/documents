@@ -84,7 +84,7 @@ Prefer capability first; adjust with team topology second — [§1](01-monolith-
 | 2 hops | Acceptable with tight timeouts + bulkhead |
 | 3+ hops | Redesign — BFF(Backend for Frontend) compose in parallel or go async |
 
-See [BFF composition](09-bff-and-api-composition.md) and [resilience-patterns](../../resilience-patterns/README.md).
+See [BFF composition](09-bff-and-api-composition.md), [failure domains §11](11-failure-domains.md), and [resilience §12 checkout](../../resilience-patterns/includes/12-worked-example-checkout.md) / [§16](../../resilience-patterns/includes/16-decision-guide.md).
 
 ---
 

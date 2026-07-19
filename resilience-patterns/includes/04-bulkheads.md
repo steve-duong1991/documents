@@ -65,6 +65,20 @@ Prevent a DLQ(Dead Letter Queue) replay from starving live traffic (separate poo
 
 ---
 
+## Health checks are not bulkheads
+
+Orchestrator probes route traffic and restart processes — they do **not** replace per-dependency concurrency caps.
+
+| Probe | Ask | Never |
+|-------|-----|-------|
+| **Liveness** | Is this process wedged? | Deep-call payment/DB as the only check |
+| **Readiness** | Should this instance take traffic? | Stay “ready” while critical pools are exhausted without shedding |
+| **Startup** | Finished init? | Share blindly with liveness |
+
+Pointing **liveness** at a sick dependency causes restart storms under the exact outage bulkheads are meant to survive. Full probe guidance → [cicd §7](../../cicd-and-environments/includes/07-containers-and-health.md). Shutdown drain → [§14](14-graceful-shutdown-and-drain.md).
+
+---
+
 ## Common mistakes
 
 | Mistake | Fix |
@@ -73,6 +87,7 @@ Prevent a DLQ(Dead Letter Queue) replay from starving live traffic (separate poo
 | Bulkhead larger than dependency capacity | Size to protect the smaller side |
 | No timeout on semaphore acquire | Fail fast |
 | Ignoring DB pool as bulkhead | Tune pools deliberately |
+| Liveness = dependency health | Shallow process check — [cicd §7](../../cicd-and-environments/includes/07-containers-and-health.md) |
 | Cell architecture without request routing | Route consistently — [architecture §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md) |
 
 ## Pros and cons

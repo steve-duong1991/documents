@@ -48,7 +48,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [E
 | [api-design-and-protection](../api-design-and-protection/README.md) | Contracts, gateway, async, idempotency, multi-tenant APIs |
 | [api-rate-limiting](../api-rate-limiting/README.md) | Quotas and fairness at the edge |
 | [high-throughput-systems](../high-throughput-systems/README.md) | Scale order, async, backpressure |
-| [resilience-patterns](../resilience-patterns/README.md) | Timeouts, retries, circuit breakers, bulkheads |
+| [resilience-patterns](../resilience-patterns/README.md) | Timeouts, retries, breakers, bulkheads, placement, [checkout example](../resilience-patterns/includes/12-worked-example-checkout.md), observability |
 | [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) | Aggregates, outbox, sagas when boundaries need event history |
 | [apache-kafka](../apache-kafka/README.md) | Event backbone for async integration |
 | [postgresql-performance](../postgresql-performance/README.md) | Consistency costs, RLS(Row Level Security), pooling |

@@ -2,7 +2,7 @@
 
 Prove resilience with controlled failure — game days, fault injection, and continuous experiments.
 
-> **Related:** Cascading failure → [09-cascading-failure.md](09-cascading-failure.md) · Incidents → [sre-and-incidents](../../sre-and-incidents/README.md) · Testing strategy → [testing-strategy](../../testing-strategy/README.md) · Environments → [cicd-and-environments](../../cicd-and-environments/README.md)
+> **Related:** Cascading failure → [09-cascading-failure.md](09-cascading-failure.md) · Resilience metrics → [13-observability-for-resilience.md](13-observability-for-resilience.md) · Incidents → [sre-and-incidents](../../sre-and-incidents/README.md) · Testing strategy → [testing-strategy](../../testing-strategy/README.md) · Environments → [cicd-and-environments](../../cicd-and-environments/README.md)
 
 ---
 

@@ -2,7 +2,7 @@
 
 How small dependency problems become site-wide outages — and the pattern stack that stops the spread.
 
-> **Related:** Failure domains → [architecture §11](../../architecture-decisions/includes/11-failure-domains.md) · Overview stack → [00-overview.md](00-overview.md) · Backpressure → [HTS §9](../../high-throughput-systems/includes/09-backpressure-and-limits.md)
+> **Related:** Failure domains → [architecture §11](../../architecture-decisions/includes/11-failure-domains.md) · Overview stack → [00-overview.md](00-overview.md) · Observability signals → [13-observability-for-resilience.md](13-observability-for-resilience.md) · Backpressure → [HTS §9](../../high-throughput-systems/includes/09-backpressure-and-limits.md) · Decision guide → [16-decision-guide.md](16-decision-guide.md)
 
 ---
 

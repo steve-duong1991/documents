@@ -2,7 +2,7 @@
 
 Deadlines for connects, requests, and end-to-end budgets — the foundation every other resilience pattern assumes.
 
-> **Related:** Retries → [02-retries-backoff-jitter.md](02-retries-backoff-jitter.md) · Cascading failure → [09-cascading-failure.md](09-cascading-failure.md) · Hop budget → [architecture §2](../../architecture-decisions/includes/02-service-boundaries-and-decomposition.md)
+> **Related:** Retries → [02-retries-backoff-jitter.md](02-retries-backoff-jitter.md) · Policy placement → [11-policy-placement.md](11-policy-placement.md) · Cascading failure → [09-cascading-failure.md](09-cascading-failure.md) · Hop budget → [architecture §2](../../architecture-decisions/includes/02-service-boundaries-and-decomposition.md)
 
 ---
 

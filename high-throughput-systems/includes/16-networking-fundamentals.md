@@ -169,7 +169,7 @@ sequenceDiagram
 | **App-level graceful shutdown** | On `SIGTERM`, stop accepting new work, finish in-flight requests, then exit — do not `SIGKILL` immediately |
 | **Health check transition** | Readiness probe fails immediately on shutdown signal so orchestrators (Kubernetes, ECS) stop routing traffic before the drain window even starts |
 
-This is the same mechanism that makes [deployment-strategies §3 Blue/green](../../deployment-strategies/includes/03-blue-green.md) and rolling deploys safe — connection draining is the networking half of a graceful deploy.
+This is the same mechanism that makes [deployment-strategies §3 Blue/green](../../deployment-strategies/includes/03-blue-green.md) and rolling deploys safe — connection draining is the networking half of a graceful deploy. App-side SIGTERM / worker drain checklist → [resilience-patterns §14](../../resilience-patterns/includes/14-graceful-shutdown-and-drain.md).
 
 ---
 

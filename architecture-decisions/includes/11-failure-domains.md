@@ -2,7 +2,7 @@
 
 Blast radius, dependency tiers, and how architecture decisions contain (or amplify) outages.
 
-> **Related:** Resilience patterns → [resilience-patterns](../../resilience-patterns/README.md) · Incident response → [sre-and-incidents](../../sre-and-incidents/README.md) · Backpressure → [HTS §9](../../high-throughput-systems/includes/09-backpressure-and-limits.md)
+> **Related:** Resilience patterns → [resilience-patterns](../../resilience-patterns/README.md) · Fallback contracts → [resilience §5](../../resilience-patterns/includes/05-load-shedding-and-degradation.md) · Policy placement → [resilience §11](../../resilience-patterns/includes/11-policy-placement.md) · Checkout example → [resilience §12](../../resilience-patterns/includes/12-worked-example-checkout.md) · Incident response → [sre-and-incidents](../../sre-and-incidents/README.md) · Backpressure → [HTS §9](../../high-throughput-systems/includes/09-backpressure-and-limits.md)
 
 ---
 
@@ -36,7 +36,7 @@ flowchart TD
     T0 -->|T0 fail| Err[Error budget burn]
 ```
 
-Document tiers in the service README; enforce with bulkheads and deadlines — [resilience-patterns](../../resilience-patterns/README.md).
+Document tiers in the service README; enforce with bulkheads and deadlines — [resilience-patterns](../../resilience-patterns/README.md). For each T1/T2, agree a **fallback contract** (stale / omit / fail-closed) — [resilience §5](../../resilience-patterns/includes/05-load-shedding-and-degradation.md).
 
 ---
 
@@ -50,6 +50,7 @@ Document tiers in the service README; enforce with bulkheads and deadlines — [
 | **Load shedding** | Protect T0 under overload |
 | **Multi-AZ / region** | Survive infrastructure domains |
 | **Data ownership** | Avoid shared-DB cascade — [§8](08-data-ownership.md) |
+| **Single retry/timeout owner** | Stop amplification across app/gateway/mesh — [resilience §11](../../resilience-patterns/includes/11-policy-placement.md) |
 
 ---
 
@@ -57,7 +58,7 @@ Document tiers in the service README; enforce with bulkheads and deadlines — [
 
 1. List user journeys and their T0 dependencies.
 2. Draw sync call graphs; mark cycles and deep chains.
-3. Identify shared infrastructure (one Redis, one Kafka cluster, one PG).
+3. Identify shared infrastructure (one Redis, one Kafka cluster, one PG) — treat each as a failure domain **and** name who owns retries/timeouts against it.
 4. Ask: “If X dies, who else dies?” Shrink that set.
 5. Validate with game days — [resilience §10](../../resilience-patterns/includes/10-chaos-and-failure-injection.md).
 
@@ -79,10 +80,10 @@ Document tiers in the service README; enforce with bulkheads and deadlines — [
 
 | Mistake | Fix |
 |---------|-----|
-| All dependencies treated equal | Tier and degrade |
-| No deadline budget on fan-out | End-to-end timeout |
-| Retry storms across domains | Jitter + breaker — [resilience §2–3](../../resilience-patterns/includes/02-retries-backoff-jitter.md) |
-| Ignoring shared infra as a domain | Diagram platforms too |
+| All dependencies treated equal | Tier and degrade + fallback contract — [resilience §5](../../resilience-patterns/includes/05-load-shedding-and-degradation.md) |
+| No deadline budget on fan-out | End-to-end timeout — [§2 hop budget](02-service-boundaries-and-decomposition.md#sync-dependency-budget) |
+| Retry storms across domains | One retry owner + jitter + breaker — [resilience §2](../../resilience-patterns/includes/02-retries-backoff-jitter.md), [§11](../../resilience-patterns/includes/11-policy-placement.md) |
+| Ignoring shared infra as a domain | Diagram platforms; assign retry/timeout owner |
 
 ## Pros and cons
 

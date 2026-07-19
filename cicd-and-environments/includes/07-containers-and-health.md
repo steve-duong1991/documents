@@ -2,7 +2,7 @@
 
 Containers make artifacts portable; **health contracts** make them operable. This section stays at decision level — enough for tech leads to demand the right checks and resources without a deep Kubernetes digression.
 
-> **Related:** Promotion → [§2](02-cd-and-promotion.md) · Rollback → [§6](06-rollback-vs-forward-fix.md) · Stateless apps → [api-design §11](../../api-design-and-protection/includes/11-stateless-architecture.md) · Deploy strategies → [deployment-strategies](../../deployment-strategies/README.md)
+> **Related:** Promotion → [§2](02-cd-and-promotion.md) · Rollback → [§6](06-rollback-vs-forward-fix.md) · Stateless apps → [api-design §11](../../api-design-and-protection/includes/11-stateless-architecture.md) · Deploy strategies → [deployment-strategies](../../deployment-strategies/README.md) · Graceful drain → [resilience-patterns §14](../../resilience-patterns/includes/14-graceful-shutdown-and-drain.md) · Liveness vs bulkheads → [resilience-patterns §4](../../resilience-patterns/includes/04-bulkheads.md)
 
 ---
 

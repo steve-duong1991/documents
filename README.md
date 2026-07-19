@@ -31,7 +31,7 @@ Practical reference docs for building and operating production APIs and data sys
 | [payments-and-fintech](payments-and-fintech/README.md) | PCI(Payment Card Industry) scope reduction, double-charge prevention, ledgers, fraud and reconciliation |
 | [postgresql-performance](postgresql-performance/README.md) | Measurement, indexing, queries, vacuum, pooling, replicas, bulk ops, consistency |
 | [realtime-at-scale](realtime-at-scale/README.md) | WebSocket fan-out, pub/sub backplanes, presence, CRDT(Conflict-free Replicated Data Type)/OT(Operational Transformation) |
-| [resilience-patterns](resilience-patterns/README.md) | Timeouts, retries, circuit breakers, bulkheads, load shedding, idempotency, locks, delivery semantics, cascading failure, chaos |
+| [resilience-patterns](resilience-patterns/README.md) | Timeouts, retries, circuit breakers, bulkheads, load shedding, idempotency, locks, delivery, cascades, chaos, policy placement, observability, drain |
 | [specialized-data-systems](specialized-data-systems/README.md) | Time-series, graph DBs, vector/RAG(Retrieval-Augmented Generation), workflow engines (Temporal / Step Functions) |
 | [sre-and-incidents](sre-and-incidents/README.md) | SLIs/SLOs, error budgets, observability culture, alerting, incident command, postmortems, on-call, drills |
 | [system-design-walkthroughs](system-design-walkthroughs/README.md) | End-to-end designs: URL shortener, feed, chat, geo, rate limiter, notifications, autocomplete, video |
@@ -179,7 +179,7 @@ Design the contract, protect the edge, connect to the database safely, and deplo
 3. [database-connection-and-security](database-connection-and-security/README.md) — production credentials and IAM
 4. Large uploads → [api-design §18 object storage](api-design-and-protection/includes/18-object-storage-and-uploads.md)
 5. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green → end-to-end order [§14 playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md)
-6. [resilience-patterns](resilience-patterns/README.md) — timeouts/retries/breakers on every dependency
+6. [resilience-patterns](resilience-patterns/README.md) — timeouts/retries/breakers; [§11 placement](resilience-patterns/includes/11-policy-placement.md); [§12 checkout](resilience-patterns/includes/12-worked-example-checkout.md)
 
 ### Make it fast
 
@@ -317,7 +317,7 @@ Choose system shape, then survive partial failure.
 
 1. [architecture-decisions](architecture-decisions/README.md) — monolith↔services, DDD, ADRs, data ownership → [§13 capacity estimation](architecture-decisions/includes/13-capacity-estimation.md)
 2. [distributed-systems-primitives](distributed-systems-primitives/README.md) — hashing, IDs, consensus, clocks (mechanisms under CAP/PACELC)
-3. [resilience-patterns](resilience-patterns/README.md) — timeouts, retries, circuit breakers, bulkheads, chaos
+3. [resilience-patterns](resilience-patterns/README.md) — timeouts, retries, breakers, bulkheads, placement, checkout example, chaos
 4. [high-throughput-systems §9 backpressure](high-throughput-systems/includes/09-backpressure-and-limits.md) + [api-rate-limiting](api-rate-limiting/README.md)
 5. [sre-and-incidents](sre-and-incidents/README.md) — error budgets when resilience is not enough alone
 
@@ -379,7 +379,7 @@ What to automate, where, and how gates stay honest.
 1. [testing-strategy](testing-strategy/README.md) — overview → [§9 decision guide](testing-strategy/includes/09-decision-guide.md)
 2. [api-design §15 contracts](api-design-and-protection/includes/15-contract-and-schema-testing.md) + [testing-strategy §3](testing-strategy/includes/03-contract-testing-boundaries.md)
 3. [cicd-and-environments §1](cicd-and-environments/includes/01-ci-pipeline-design.md) + [testing-strategy §7 quality gates](testing-strategy/includes/07-quality-gates.md)
-4. [resilience-patterns §10 chaos](resilience-patterns/includes/10-chaos-and-failure-injection.md) + [testing-strategy §5 load/soak](testing-strategy/includes/05-load-soak-resilience-tests.md)
+4. [resilience-patterns §10 chaos](resilience-patterns/includes/10-chaos-and-failure-injection.md) + [§13 observability](resilience-patterns/includes/13-observability-for-resilience.md) + [testing-strategy §5 load/soak](testing-strategy/includes/05-load-soak-resilience-tests.md)
 
 ### Tech Lead practice
 

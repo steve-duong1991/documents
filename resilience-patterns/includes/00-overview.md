@@ -9,7 +9,9 @@ Resilience is the ability to **stay useful when dependencies fail or overload** 
 > - Rate limits and 429 → [api-rate-limiting](../../api-rate-limiting/README.md)
 > - HTTP(Hypertext Transfer Protocol) contracts → [api-design-and-protection](../../api-design-and-protection/README.md)
 > - Failure domains → [architecture-decisions §11](../../architecture-decisions/includes/11-failure-domains.md)
-> - Capstone → [11-decision-guide.md](11-decision-guide.md)
+> - Policy placement → [11-policy-placement.md](11-policy-placement.md)
+> - Worked example → [12-worked-example-checkout.md](12-worked-example-checkout.md)
+> - Capstone → [16-decision-guide.md](16-decision-guide.md)
 
 ---
 
@@ -24,6 +26,9 @@ Resilience is the ability to **stay useful when dependencies fail or overload** 
 | **Load shedding / degrade** | Protect core journeys under overload |
 | **Idempotency** | Make retries safe |
 | **Delivery semantics** | Define async truth (at-least-once + dedup) |
+| **Policy placement** | One owner per control across app/gateway/mesh |
+| **Observability** | See retry ratio, breakers, pool wait, shed |
+| **Graceful drain** | Survive deploys without partial writes |
 | **Chaos** | Prove the above before customers do |
 
 ---
@@ -41,7 +46,7 @@ flowchart TD
     CB --> Dep[Dependency]
 ```
 
-Pair edge limits ([api-rate-limiting](../../api-rate-limiting/README.md)) with in-process patterns here.
+Pair edge limits ([api-rate-limiting](../../api-rate-limiting/README.md)) with in-process patterns here. Decide **which layer owns** retries and timeouts — [§11](11-policy-placement.md).
 
 ---
 
@@ -59,17 +64,25 @@ Pair edge limits ([api-rate-limiting](../../api-rate-limiting/README.md)) with i
 | 8 | Delivery semantics | [08-delivery-semantics.md](08-delivery-semantics.md) |
 | 9 | Cascading failure | [09-cascading-failure.md](09-cascading-failure.md) |
 | 10 | Chaos and failure injection | [10-chaos-and-failure-injection.md](10-chaos-and-failure-injection.md) |
-| 11 | Decision guide | [11-decision-guide.md](11-decision-guide.md) |
+| 11 | Policy placement | [11-policy-placement.md](11-policy-placement.md) |
+| 12 | Worked example — checkout | [12-worked-example-checkout.md](12-worked-example-checkout.md) |
+| 13 | Observability for resilience | [13-observability-for-resilience.md](13-observability-for-resilience.md) |
+| 14 | Graceful shutdown and drain | [14-graceful-shutdown-and-drain.md](14-graceful-shutdown-and-drain.md) |
+| 15 | Implementation map | [15-implementation-map.md](15-implementation-map.md) |
+| 16 | Decision guide | [16-decision-guide.md](16-decision-guide.md) |
 
 ---
 
 ## Default stack (sync dependency)
 
 1. Set connect + request timeouts shorter than caller budget — [§1](01-timeouts.md)
-2. Retry only idempotent / explicitly safe calls — [§2](02-retries-backoff-jitter.md) + [§6](06-idempotency-systemwide.md)
+2. Retry only idempotent / explicitly safe calls; **one** retry owner — [§2](02-retries-backoff-jitter.md) + [§6](06-idempotency-systemwide.md) + [§11](11-policy-placement.md)
 3. Trip a breaker on sustained errors — [§3](03-circuit-breakers.md)
 4. Cap concurrency per dependency — [§4](04-bulkheads.md)
-5. Degrade T1 features before failing T0 — [§5](05-load-shedding-and-degradation.md)
+5. Degrade T1 features before failing T0 (with a fallback contract) — [§5](05-load-shedding-and-degradation.md)
+6. Instrument and drain cleanly — [§13](13-observability-for-resilience.md), [§14](14-graceful-shutdown-and-drain.md)
+
+End-to-end example → [§12 checkout](12-worked-example-checkout.md).
 
 ---
 
@@ -80,5 +93,7 @@ Pair edge limits ([api-rate-limiting](../../api-rate-limiting/README.md)) with i
 | Infinite waits on HTTP clients | Explicit timeouts everywhere |
 | Eager retries without jitter | Exponential backoff + jitter |
 | Retries on non-idempotent POSTs | Idempotency keys or no retry |
+| Retries at mesh **and** app | Single owner — [§11](11-policy-placement.md) |
 | One shared thread pool for all deps | Bulkheads |
+| Patterns without dashboards | [§13](13-observability-for-resilience.md) |
 | No game days | Chaos drills — [§10](10-chaos-and-failure-injection.md) |

@@ -4,6 +4,27 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ---
 
+## 2026-07-19
+
+### Architecture ↔ resilience bridge
+- **architecture-decisions §12:** Sync path = hop budget + tiers + resilience stack; BFF fan-out scenario; concrete checklist (fallback contracts, retry owner, chaos, drain); See also refreshed
+- **architecture-decisions §11:** Fallback contracts + policy placement links; shared infra needs a retry/timeout owner; mistake table tightened
+- **architecture-decisions §2 / README:** Hop-budget and See also point at resilience checkout example
+
+### Resilience patterns — design + ops gaps closed
+- **resilience-patterns §2:** Layer ownership (one retry owner); hedged/speculative reads with cancel
+- **resilience-patterns §4:** Liveness vs readiness vs bulkheads (restart-storm trap)
+- **resilience-patterns §5:** Fallback contracts (stale / omit / approximate / fail-closed / async) by tier
+- **resilience-patterns §11:** Policy placement — app vs gateway vs mesh; stacked-retry anti-pattern
+- **resilience-patterns §12:** Worked example — checkout journey applying the full stack
+- **resilience-patterns §13:** Observability for resilience (retry ratio, breaker, pool wait, shed/degrade)
+- **resilience-patterns §14:** Graceful shutdown and drain
+- **resilience-patterns §15:** Implementation map (illustrative library/platform knobs; design-first)
+- **resilience-patterns §16:** Decision guide renumbered from §11; checklist/scenarios updated
+- **Cross-links:** architecture-decisions §12 → resilience §16; root index blurb; HTS/cicd/payments see-also via new sections
+
+---
+
 ## 2026-07-12
 
 ### Auth / OAuth / OIDC / login security (new guide)
