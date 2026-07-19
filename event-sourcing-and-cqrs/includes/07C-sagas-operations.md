@@ -1,6 +1,6 @@
 # Sagas — operations, inbox, and testing
 
-> **Deep dive:** Kafka partition keys for saga ordering → [apache-kafka §2](../../apache-kafka/includes/02-topics-partitions-and-replication.md)
+> **Deep dive:** Kafka partition keys for saga ordering → [apache-kafka §2](../../apache-kafka/includes/02-topics-partitions-and-replication.md) · Outbox/inbox → [§5A](05A-outbox-and-inbox.md)
 >
 > **Related:** Overview → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md) · Compensation → [07B-sagas-compensation-idempotency.md](07B-sagas-compensation-idempotency.md) · Testing → [09-testing-and-verification.md](09-testing-and-verification.md)
 
@@ -149,26 +149,15 @@ At-least-once delivery can reorder messages unless you design for it:
 
 ## Inbox pattern (consumer dedup)
 
-The **outbox** ([§5 Async integration](05-async-integration.md#transactional-outbox-pattern)) ensures reliable **publish** after a local write. The **inbox** ensures reliable **consume** — dedup before side effects:
-
-```sql
-CREATE TABLE inbox (
-    consumer_name TEXT NOT NULL,
-    message_id    TEXT NOT NULL,
-    received_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
-    PRIMARY KEY (consumer_name, message_id)
-);
-```
-
-In the consumer: `BEGIN` → `INSERT INTO inbox … ON CONFLICT DO NOTHING` → if inserted, apply side effect → `COMMIT`. If conflict, return stored outcome.
+Saga participants sit on an at-least-once bus. Pair **outbox** (reliable publish) with **inbox** (reliable consume):
 
 | Pattern | Role |
 |---------|------|
 | **Outbox** | Producer — same TX as business write + event row |
-| **Inbox** | Consumer — same TX as dedup + side effect |
+| **Inbox** | Consumer — same TX as dedup + side effect; store `result` for retries |
 | **saga_step_log** | Saga participant — idempotency keyed by `(saga_id, step)` |
 
-All three prevent duplicate side effects under at-least-once delivery.
+Schemas, end-to-end sequence, relay ops, and inbox vs `saga_step_log` → [§5A Outbox and Inbox](05A-outbox-and-inbox.md).
 
 ---
 

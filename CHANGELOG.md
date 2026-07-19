@@ -6,6 +6,11 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-07-19
 
+### Outbox + Inbox first-class (event-sourcing)
+- **event-sourcing-and-cqrs §5A (new):** Outbox ↔ inbox pair — end-to-end diagrams, relay mark-published races, retention, poison/DLQ, outbox table vs CDC-on-events, inbox schema with stored `result`, vs `saga_step_log`
+- **event-sourcing-and-cqrs §5:** Pair overview + links; §7 Temporal/engine fork; §6 multi-service reading callout; §7C inbox points to §5A
+- **Corpus:** ES README TOC/reading paths; root Event-sourced + Kafka learning paths; GLOSSARY Outbox/Inbox/Transactional outbox → §5A; apache-kafka §8/§13 cross-links
+
 ### Multi-tenant database design gaps closed
 - **postgresql-performance §17:** Composite `(tenant_id, …)` PK/FK/unique; shared vs tenant-scoped tables; PgBouncer/`SET LOCAL`; RLS performance; expanded testing and mistakes
 - **postgresql-performance §18 (new):** Schema and database per tenant — `search_path`, provisioning, migration fan-out, pool→silo cutover, tenant restore drills

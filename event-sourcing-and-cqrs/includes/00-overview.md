@@ -69,7 +69,11 @@ flowchart LR
 | 3 | Storage, snapshots, projections | [03-storage-and-projections.md](03-storage-and-projections.md) |
 | 4 | API(Application Programming Interface) design implications | [04-api-design-implications.md](04-api-design-implications.md) |
 | 5 | Async integration — outbox, bus, consumers | [05-async-integration.md](05-async-integration.md) |
+| 5A | Outbox and Inbox — reliable publish/consume pair | [05A-outbox-and-inbox.md](05A-outbox-and-inbox.md) |
 | 6 | Decision guide — pros, cons, when to use | [06-decision-guide.md](06-decision-guide.md) |
+| 7 | Sagas and distributed workflows | [07-sagas-and-distributed-workflows.md](07-sagas-and-distributed-workflows.md) |
+| 8 | Event schema evolution | [08-event-schema-evolution.md](08-event-schema-evolution.md) |
+| 9 | Testing and verification | [09-testing-and-verification.md](09-testing-and-verification.md) |
 
 ---
 

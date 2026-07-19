@@ -57,7 +57,7 @@ When Kafka misbehaves in production, symptoms span **brokers**, **clients**, **s
 | Frequent rebalance on deploy | New members join constantly | Processing pauses | Static membership (`group.instance.id`) — [§4](04-consumers-and-consumer-groups.md) |
 | Deserialization error | Schema incompatible deploy | Consumer loop errors | Roll back consumer or register compatible schema |
 | Offset commit after crash | Auto-commit or commit-before-write | **Lost** messages (committed but not processed) | Manual commit after side effect — [§4](04-consumers-and-consumer-groups.md) |
-| Duplicate side effects | Commit-after-write without idempotency | Double emails, double charges | Inbox pattern — [§8 inbox](08-integration-patterns.md#inbox-pattern-consumer-dedup) |
+| Duplicate side effects | Commit-after-write without idempotency | Double emails, double charges | Inbox pattern — [§8 inbox](08-integration-patterns.md#inbox-pattern-consumer-dedup), [ES §5A](../../event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md#inbox-pattern-consumer) |
 
 ### Schema Registry
 

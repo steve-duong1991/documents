@@ -1,6 +1,6 @@
 # Event Sourcing & CQRS Guide
 
-A practical reference for Event Sourcing and CQRS — append-only event stores, aggregates, read projections, storage choices, API(Application Programming Interface) design, async integration (outbox), sagas, and when to adopt vs stay with CRUD.
+A practical reference for Event Sourcing and CQRS — append-only event stores, aggregates, read projections, storage choices, API(Application Programming Interface) design, async integration (outbox/inbox), sagas, and when to adopt vs stay with CRUD.
 
 Related: [API Design & Protection](../api-design-and-protection/README.md) · [PostgreSQL Performance](../postgresql-performance/README.md)
 
@@ -16,6 +16,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [P
 | 3 | [Storage and projections](includes/03-storage-and-projections.md) |
 | 4 | [API design implications](includes/04-api-design-implications.md) |
 | 5 | [Async integration](includes/05-async-integration.md) |
+| 5A | [Outbox and Inbox](includes/05A-outbox-and-inbox.md) |
 | 6 | [Decision guide](includes/06-decision-guide.md) |
 | 7 | [Sagas and distributed workflows](includes/07-sagas-and-distributed-workflows.md) |
 | 7A | [Sagas — choreography vs orchestration](includes/07A-sagas-choreography-orchestration.md) |
@@ -25,15 +26,18 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [P
 | 9 | [Testing and verification](includes/09-testing-and-verification.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
+>
+> **Note:** §6 is the adopt/avoid guide; for multi-service reliability read §5 → §5A → §7 before or with §6.
 
 ## Reading paths
 
 | If you are… | Read in order |
 |-------------|---------------|
-| **Evaluating Event Sourcing** | Overview → §6 Decision guide |
+| **Evaluating Event Sourcing** | Overview → §6 Decision guide (and §5A/§7 if cross-service) |
 | **Implementing write path** | §1 Core concepts → §3 Storage |
 | **Building public APIs on ES** | §4 API design → [api-design-and-protection](../api-design-and-protection/README.md) §1, §10 |
-| **Microservice integration** | §5 Async integration → §7 Sagas → [async patterns](../api-design-and-protection/includes/10-async-patterns.md) |
+| **Microservice integration** | §5 Async → §5A Outbox/Inbox → §7 Sagas → [async patterns](../api-design-and-protection/includes/10-async-patterns.md) |
+| **Many long-running workflows** | §7 Sagas → [workflow engines](../specialized-data-systems/includes/04-workflow-engines.md) |
 
 ---
 
@@ -44,6 +48,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [P
 | [api-design-and-protection](../api-design-and-protection/README.md) | HTTP(Hypertext Transfer Protocol) contracts, async, idempotency, audit APIs |
 | [apache-kafka](../apache-kafka/README.md) | Outbox → Kafka, schema formats, saga partition keys, testing |
 | [high-throughput-systems](../high-throughput-systems/README.md) | Streaming, outbox at scale, read-model throughput |
+| [specialized-data-systems](../specialized-data-systems/README.md) | Workflow engines vs hand-rolled sagas |
 | [database-connection-and-security](../database-connection-and-security/README.md) | Event store connection identity and secrets |
 | [deployment-strategies](../deployment-strategies/README.md) | Rolling deploys with projector compatibility |
 | [deployment-strategies §12](../deployment-strategies/includes/12-schema-migrations-and-deploy.md) | Projector order during rollout |

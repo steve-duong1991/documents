@@ -2,7 +2,7 @@
 
 How event-sourced systems integrate with queues, webhooks, and other services — transactional outbox, idempotent consumers, and overlap with async API(Application Programming Interface) patterns.
 
-> **Deep dive:** Kafka outbox and integration patterns → [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md)
+> **Deep dive:** Outbox + inbox pair (schemas, relay ops, CDC) → [§5A Outbox and Inbox](05A-outbox-and-inbox.md) · Kafka integration → [apache-kafka §8](../../apache-kafka/includes/08-integration-patterns.md)
 >
 > **Related:** [Async patterns in API design](../../api-design-and-protection/includes/10-async-patterns.md) · [Storage & outbox](03-storage-and-projections.md) · [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md)
 
@@ -13,6 +13,8 @@ How event-sourced systems integrate with queues, webhooks, and other services �
 After appending events to the store, other systems need to react: update read models, send emails, call payment providers, push **webhooks** to partners. This is **async integration** — decoupled from the HTTP(Hypertext Transfer Protocol) command response.
 
 Event Sourcing does **not** replace job queues or webhooks. It complements them: the event store is durable truth; the bus delivers copies to consumers.
+
+**Producer + consumer reliability:** use a **transactional outbox** on write and an **inbox** (or equivalent idempotency) on consume — [§5A](05A-outbox-and-inbox.md).
 
 ---
 
@@ -63,7 +65,35 @@ CREATE TABLE outbox (
 | **CDC (Debezium)** | Near real-time | Extra infra |
 | **In-process after commit** | Easy in dev | Not durable across crashes |
 
-Multi-service workflows (order → payment → inventory) → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md). Consumer dedup (inbox) → [Inbox pattern](07C-sagas-operations.md#inbox-pattern-consumer-dedup).
+Relay mark-published races, retention, poison rows, and outbox vs CDC-on-events → [§5A Outbox and Inbox](05A-outbox-and-inbox.md).
+
+Multi-service workflows (order → payment → inventory) → [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md). Consumer dedup → [Inbox pattern](05A-outbox-and-inbox.md#inbox-pattern-consumer).
+
+---
+
+## Outbox ↔ inbox (pair)
+
+```mermaid
+flowchart LR
+    subgraph prodTX [Producer — one TX]
+        W[Business write]
+        O[Outbox row]
+    end
+    R[Relay / CDC] --> B[Bus]
+    subgraph consTX [Consumer — one TX]
+        I[Inbox + result]
+        S[Side effect]
+    end
+    prodTX --> R
+    B --> consTX
+```
+
+| Side | Guarantees |
+|------|------------|
+| **Outbox** | No lost publish after a successful business commit |
+| **Inbox** | No duplicate side effects when the bus redelivers |
+
+Full sequence, SQL with stored `result`, and saga_step_log comparison → [§5A](05A-outbox-and-inbox.md).
 
 ---
 
@@ -189,8 +219,9 @@ See [Decision guide](06-decision-guide.md).
 | Mistake | Fix |
 |---------|-----|
 | Publish to bus outside DB transaction | Transactional outbox pattern |
-| Non-idempotent consumers | Dedup by `event_id` |
+| Non-idempotent consumers | Inbox / dedup by `event_id` — [§5A](05A-outbox-and-inbox.md#inbox-pattern-consumer) |
 | In-process publish after commit only | Crashes lose messages — use relay/CDC |
 | No DLQ for failed side effects | Retry + dead-letter queue |
 | Webhooks without partner dedup header | Include `event_id` in payload |
 | Ignore outbox / projector lag metrics | Alert on growing backlog |
+| Assume outbox relay is exactly-once | Consumers must tolerate duplicates |

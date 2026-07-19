@@ -115,7 +115,7 @@ flowchart TB
 
 ### Domain events and transactional outbox
 
-Job queues handle **long work** (`202` + poll). **Transactional outbox** handles **reliable delivery** after a write: append domain events and outbox rows in one DB transaction; a relay publishes to Kafka or workers. Used heavily in [Event Sourcing & CQRS](../../event-sourcing-and-cqrs/includes/05-async-integration.md) — combine with job resources when an event triggers minutes-long processing.
+Job queues handle **long work** (`202` + poll). **Transactional outbox** handles **reliable delivery** after a write: append domain events and outbox rows in one DB transaction; a relay publishes to Kafka or workers. Pair with an **inbox** on consume — [ES §5](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · [ES §5A](../../event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md). Combine with job resources when an event triggers minutes-long processing.
 
 `POST` with `Idempotency-Key` that returns `202` must not enqueue twice on retry — see [13A client and server flow](13A-idempotency-client-and-server-flow.md) and [Async jobs + idempotency](13C-idempotency-integrations.md#async-jobs).
 

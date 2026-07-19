@@ -2,7 +2,9 @@
 
 When to adopt Event Sourcing and CQRS(Command Query Responsibility Segregation), when to avoid them, and a concise pros/cons reference.
 
-> **Related:** [Overview](00-overview.md) · [API design implications](04-api-design-implications.md) · [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md)
+> **Related:** [Overview](00-overview.md) · [API design implications](04-api-design-implications.md) · [Async integration](05-async-integration.md) · [Outbox and Inbox](05A-outbox-and-inbox.md) · [Sagas and distributed workflows](07-sagas-and-distributed-workflows.md)
+
+> **Read before deciding on multi-service platforms:** Cross-service workflows need [§5 async](05-async-integration.md) → [§5A outbox/inbox](05A-outbox-and-inbox.md) → [§7 sagas](07-sagas-and-distributed-workflows.md) (numbered after this guide for historical reasons; treat them as prerequisites for integration-heavy ES).
 
 ---
 

@@ -50,7 +50,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Hot key** | Cache or DB key receiving disproportionate traffic; throughput bottleneck | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) |
 | **Idempotency key** | Client header for safe retry of writes | [api-design §13](api-design-and-protection/includes/13-idempotency.md) |
 | **ID token** | OIDC(OpenID Connect) JWT(JSON Web Token) proving who authenticated to the client (not for API(Application Programming Interface) Bearer) | [auth §2](auth-oauth-oidc-and-login-security/includes/02-oidc-discovery-and-tokens.md) |
-| **Inbox pattern** | Consumer dedup table — same TX as side effect; pairs with outbox | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md), [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
+| **Inbox pattern** | Consumer dedup table — same TX as side effect; pairs with outbox | [ES §5A](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md), [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
 | **ISR (In-Sync Replicas)** | Kafka followers caught up with partition leader | [apache-kafka §2](apache-kafka/includes/02-topics-partitions-and-replication.md) |
 | **KRaft** | Kafka Raft metadata mode (replaces ZooKeeper) | [apache-kafka §1](apache-kafka/includes/01-commit-log-and-internals.md) |
 | **LSM(Log-Structured Merge) tree** | Log-structured merge; write-optimized storage | [tree-and-index-structures §4](tree-and-index-structures/includes/04-lsm-trees.md) |
@@ -61,7 +61,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **OLAP(Online Analytical Processing)** | Analytical workloads — scans, aggregates, history; typically warehouse/lake | [data-platforms §1](data-platforms/includes/01-oltp-vs-olap.md) |
 | **OLTP(Online Transaction Processing)** | Transactional workloads — short reads/writes, constraints; typically primary PostgreSQL | [data-platforms §1](data-platforms/includes/01-oltp-vs-olap.md), [postgresql-performance](postgresql-performance/README.md) |
 | **Offset (Kafka)** | Position of a record in a partition log | [apache-kafka §4](apache-kafka/includes/04-consumers-and-consumer-groups.md) |
-| **Outbox pattern** | DB table + relay for reliable event publish | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md), [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
+| **Outbox pattern** | DB table + relay for reliable event publish | [ES §5A](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md), [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md), [api-design §10](api-design-and-protection/includes/10-async-patterns.md) |
 | **Partition (Kafka)** | Ordered sub-stream within a topic; unit of parallelism | [apache-kafka §2](apache-kafka/includes/02-topics-partitions-and-replication.md) |
 | **PAR(Pushed Authorization Requests)** | POST authorize params to AS first; redirect with short-lived `request_uri` | [auth §1c](auth-oauth-oidc-and-login-security/includes/01C-pushed-authorization-requests.md) |
 | **CIBA(Client-Initiated Backchannel Authentication)** | Client starts AuthN out-of-band; user authenticates on a consumption device | [auth §1e](auth-oauth-oidc-and-login-security/includes/01E-device-authorization-and-ciba.md) |
@@ -115,7 +115,7 @@ Terms reused across guides. For guide-specific terms, see each guide's includes.
 | **Token / cookie integrity** | Detect client tampering via JWT signature or opaque server lookup — not by trusting the client | [auth §3a](auth-oauth-oidc-and-login-security/includes/03A-token-cookie-integrity.md) |
 | **Token exchange (OBO)** | OAuth grant that swaps a subject token for a new audience-scoped access token (BFF→API) | [auth §1a](auth-oauth-oidc-and-login-security/includes/01A-client-auth-and-token-exchange.md) |
 | **Third-party cookie deprecation** | Browsers block/partition cross-site cookies — breaks iframe silent renew and front-channel logout | [auth §4a](auth-oauth-oidc-and-login-security/includes/04A-third-party-cookies-and-mobile-redirects.md) |
-| **Transactional outbox** | Same transaction: business write + outbox row | [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
+| **Transactional outbox** | Same transaction: business write + outbox row | [ES §5A](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md), [ES §5](event-sourcing-and-cqrs/includes/05-async-integration.md) |
 | **Two-phase commit (2PC)** | Distributed commit protocol across nodes; avoided for microservice sagas | [ES §7](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) |
 | **Unit economics (infra)** | Cost per request, tenant, or feature used to judge design margin | [finops §1](finops-and-cost/includes/01-unit-economics.md) |
 | **Upcasting** | Transform historical event schema on read (v1 → v2) | [ES §8](event-sourcing-and-cqrs/includes/08-event-schema-evolution.md) |

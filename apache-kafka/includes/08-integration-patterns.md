@@ -2,7 +2,7 @@
 
 Production Kafka usage almost always sits **between** a durable write (database or event store) and **idempotent consumers** — not as a lone source of truth.
 
-> **Related:** Outbox detail → [ES §5 async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · CDC(Change Data Capture) pipeline → [HTS §15 CDC](../../high-throughput-systems/includes/15-cdc-and-search-indexing.md) · Async API(Application Programming Interface) hub → [api-design §10](../../api-design-and-protection/includes/10-async-patterns.md) · Idempotency → [api-design §13](../../api-design-and-protection/includes/13-idempotency.md) · Failure runbooks → [§13](13-failure-modes-troubleshooting-and-recovery.md)
+> **Related:** Outbox detail → [ES §5 async integration](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · Outbox + inbox pair → [ES §5A](../../event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md) · CDC(Change Data Capture) pipeline → [HTS §15 CDC](../../high-throughput-systems/includes/15-cdc-and-search-indexing.md) · Async API(Application Programming Interface) hub → [api-design §10](../../api-design-and-protection/includes/10-async-patterns.md) · Idempotency → [api-design §13](../../api-design-and-protection/includes/13-idempotency.md) · Failure runbooks → [§13](13-failure-modes-troubleshooting-and-recovery.md)
 
 ---
 
@@ -53,7 +53,7 @@ sequenceDiagram
 | **Debezium on outbox table** | Low lag | Connector ops |
 | **In-process after commit** | Dev only | Not crash-safe |
 
-Full SQL(Structured Query Language) and architecture → [ES §5](../../event-sourcing-and-cqrs/includes/05-async-integration.md).
+Full SQL(Structured Query Language) and architecture → [ES §5](../../event-sourcing-and-cqrs/includes/05-async-integration.md) · [ES §5A](../../event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md).
 
 **Produce settings:** idempotent producer, `acks=all`, partition key = `aggregate_id` or `tenant_id`.
 
@@ -99,7 +99,7 @@ COMMIT;
 commit Kafka offset;
 ```
 
-Pairs with at-least-once delivery — [ES §7C inbox](../../event-sourcing-and-cqrs/includes/07C-sagas-operations.md#inbox-pattern-consumer-dedup).
+Pairs with at-least-once delivery — [ES §5A inbox](../../event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md#inbox-pattern-consumer).
 
 ---
 

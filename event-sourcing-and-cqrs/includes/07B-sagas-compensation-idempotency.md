@@ -121,10 +121,10 @@ On duplicate delivery: return stored `result` without re-executing side effects.
 
 | Role | Pattern |
 |------|---------|
-| **Orchestrator** | Persist before send: outbox + saga state in same TX — see [Transactional outbox](05-async-integration.md#transactional-outbox-pattern); dedupe replies by `(saga_id, step, message_id)` |
+| **Orchestrator** | Persist before send: outbox + saga state in same TX — see [§5A Outbox and Inbox](05A-outbox-and-inbox.md); dedupe replies by `(saga_id, step, message_id)` |
 | **Participant** | `INSERT ... ON CONFLICT DO NOTHING` on step log; then execute or skip |
 | **Compensation** | Same idempotency key namespace — `RefundPayment` for saga X must not double-refund |
-| **Choreography** | Consumer dedupes on `event_id` — see [Projectors vs integration consumers](05-async-integration.md#projectors-vs-integration-consumers) |
+| **Choreography** | Consumer inbox / dedupe on `event_id` — see [§5A Inbox](05A-outbox-and-inbox.md#inbox-pattern-consumer) |
 
 ### Late or duplicate replies
 

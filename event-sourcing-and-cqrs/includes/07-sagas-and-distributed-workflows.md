@@ -2,7 +2,7 @@
 
 Coordinate multi-service business processes with local transactions, compensating actions, and durable saga state — without distributed two-phase commit.
 
-> **Related:** [Core concepts — aggregates](01-core-concepts.md#aggregates-and-streams) · [Async integration — outbox](05-async-integration.md) · [Strong consistency — promises and costs](../../postgresql-performance/includes/14-consistency-promises-and-costs.md) · [Idempotency](../../api-design-and-protection/includes/13-idempotency.md) · [Async patterns](../../api-design-and-protection/includes/10-async-patterns.md)
+> **Related:** [Core concepts — aggregates](01-core-concepts.md#aggregates-and-streams) · [Async integration — outbox](05-async-integration.md) · [Outbox and Inbox](05A-outbox-and-inbox.md) · [Strong consistency — promises and costs](../../postgresql-performance/includes/14-consistency-promises-and-costs.md) · [Idempotency](../../api-design-and-protection/includes/13-idempotency.md) · [Async patterns](../../api-design-and-protection/includes/10-async-patterns.md) · [Workflow engines vs hand-rolled saga](../../specialized-data-systems/includes/04-workflow-engines.md)
 
 ---
 
@@ -14,14 +14,18 @@ Coordinate multi-service business processes with local transactions, compensatin
 | **When to use?** | Cross-service workflows (order → payment → inventory → shipping) where one ACID(Atomicity, Consistency, Isolation, Durability) transaction across DBs is impossible |
 | **How are transactions handled?** | **Local ACID** per service — no 2PC(Two-Phase Commit) across DBs; see [Transactions and distributed databases](#transactions-and-distributed-databases) |
 | **When not to use?** | Single service + one DB → normal ACID; see [When not to use a saga](07C-sagas-operations.md#when-not-to-use-a-saga) |
+| **Hand-rolled vs engine?** | One or two simple flows → this section; many long-running workflows with timers/human waits → [workflow engines](../../specialized-data-systems/includes/04-workflow-engines.md) (Temporal, Step Functions, Camunda) |
 | **Retry vs compensate?** | Transient → retry with cap; permanent → compensate; see [Retry vs compensate](07C-sagas-operations.md#retry-vs-compensate) |
 | **How to operate?** | Stuck-saga metrics, DLQ(Dead Letter Queue), `saga_id` in traces — see [Observability and operations](07C-sagas-operations.md#observability-and-operations) |
 | **Choreography vs orchestration?** | Events-only vs central **process manager** — see [Which one to choose?](07A-sagas-choreography-orchestration.md#which-one-to-choose) |
 | **How to undo?** | Compensating transactions in **reverse order** (LIFO) — not a distributed `ROLLBACK` |
-| **Critical requirement?** | **Idempotent** steps + persisted saga state + correlation IDs |
+| **Critical requirement?** | **Idempotent** steps + persisted saga state + correlation IDs + [outbox/inbox](05A-outbox-and-inbox.md) |
 
 **Rule of thumb:** One local transaction per service; the saga coordinates. Never hold locks across service boundaries.
 
+### Hand-rolled saga vs workflow engine
+
+This section is the **hand-rolled** baseline (app-owned state machine, outbox, compensation). Adopt a **workflow engine** when you repeatedly rebuild timers, human-in-the-loop waits, and versioning across many flows — decision and comparison → [specialized-data-systems §4 Workflow engines](../../specialized-data-systems/includes/04-workflow-engines.md). Engines do not remove the need for idempotent activities or compensating business actions.
 
 ## Articles in this section
 
@@ -29,7 +33,8 @@ Coordinate multi-service business processes with local transactions, compensatin
 |---------|--------|
 | [Choreography vs orchestration](07A-sagas-choreography-orchestration.md) | Event-driven vs process manager, decision flow |
 | [Compensation and idempotency](07B-sagas-compensation-idempotency.md) | LIFO compensation, saga state, step idempotency |
-| [Operations and testing](07C-sagas-operations.md) | Observability, inbox, deploy versioning, test matrix |
+| [Operations and testing](07C-sagas-operations.md) | Observability, inbox pointer, deploy versioning, test matrix |
+| [Outbox and Inbox](05A-outbox-and-inbox.md) | Reliable publish/consume pair used by every saga step |
 
 ## What a saga is
 
@@ -93,7 +98,7 @@ Typical contents of that one `COMMIT`:
 
 1. **Business write** — e.g. `INSERT INTO payments …`
 2. **Idempotency record** — `saga_step_log` so retries do not double-charge — see [Idempotency patterns](07B-sagas-compensation-idempotency.md#idempotency-patterns-specific-to-sagas)
-3. **Outbox row** (when publishing) — reliable event after commit — see [Transactional outbox](05-async-integration.md#transactional-outbox-pattern)
+3. **Outbox row** (when publishing) — reliable event after commit — see [Transactional outbox](05-async-integration.md#transactional-outbox-pattern) and [§5A](05A-outbox-and-inbox.md)
 
 If anything fails → `ROLLBACK` **only within that service**. Other databases are unaffected until the saga drives the next step or compensation.
 

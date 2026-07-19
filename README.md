@@ -23,7 +23,7 @@ Practical reference docs for building and operating production APIs and data sys
 | [deployment-strategies](deployment-strategies/README.md) | Rolling, blue/green, canary, feature flags, GitOps(Git Operations), progressive delivery, feature→PROD playbook |
 | [distributed-systems-primitives](distributed-systems-primitives/README.md) | CAP(Consistency, Availability, Partition Tolerance)/PACELC mechanisms, consistent hashing, unique IDs, consensus, service discovery, Bloom/HLL, clocks |
 | [enterprise-security-compliance](enterprise-security-compliance/README.md) | Secure SDLC(Software Development Life Cycle), threat process, supply chain, secrets, audit/PII(Personally Identifiable Information), encryption, zero trust, compliance evidence |
-| [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) | Event store, aggregates, CQRS(Command Query Responsibility Segregation), projections, outbox, sagas, API(Application Programming Interface) implications |
+| [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) | Event store, aggregates, CQRS(Command Query Responsibility Segregation), projections, outbox/inbox, sagas, API(Application Programming Interface) implications |
 | [finops-and-cost](finops-and-cost/README.md) | Cost as design constraint: unit economics, drivers, right-sizing, retention, build vs managed, budgets |
 | [fullstack-bff-and-clients](fullstack-bff-and-clients/README.md) | Fullstack TL ownership of UI↔API: BFF(Backend for Frontend), rendering, Web Vitals, realtime UX, a11y, browser auth |
 | [high-throughput-systems](high-throughput-systems/README.md) | End-to-end throughput: measure, cache, async, streaming, backpressure, networking fundamentals, scale |
@@ -208,12 +208,13 @@ Append-only writes, read projections, and reliable async integration.
 
 1. [event-sourcing-and-cqrs](event-sourcing-and-cqrs/README.md) — core concepts and decision guide
 2. [event-sourcing-and-cqrs §5 async](event-sourcing-and-cqrs/includes/05-async-integration.md) — outbox, reliable publish
-3. [event-sourcing-and-cqrs §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) — cross-service workflows, compensation, ops
-4. [event-sourcing-and-cqrs §8 schema evolution](event-sourcing-and-cqrs/includes/08-event-schema-evolution.md) — upcasting, projector compatibility
-5. [event-sourcing-and-cqrs §9 testing](event-sourcing-and-cqrs/includes/09-testing-and-verification.md) — aggregate, projector, and saga tests
-6. [api-design-and-protection §10 async](api-design-and-protection/includes/10-async-patterns.md) — hub; [10A jobs + polling](api-design-and-protection/includes/10A-async-jobs-polling.md), [10B webhooks](api-design-and-protection/includes/10B-async-webhooks.md)
-7. [api-design-and-protection §13 idempotency](api-design-and-protection/includes/13-idempotency.md) — hub; [13A client and server flow](api-design-and-protection/includes/13A-idempotency-client-and-server-flow.md)
-8. [postgresql-performance §2 indexing](postgresql-performance/includes/02-indexing.md) — event table performance
+3. [event-sourcing-and-cqrs §5A outbox/inbox](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md) — publish/consume pair, relay ops, consumer dedup
+4. [event-sourcing-and-cqrs §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) — cross-service workflows, compensation, ops
+5. [event-sourcing-and-cqrs §8 schema evolution](event-sourcing-and-cqrs/includes/08-event-schema-evolution.md) — upcasting, projector compatibility
+6. [event-sourcing-and-cqrs §9 testing](event-sourcing-and-cqrs/includes/09-testing-and-verification.md) — aggregate, projector, and saga tests
+7. [api-design-and-protection §10 async](api-design-and-protection/includes/10-async-patterns.md) — hub; [10A jobs + polling](api-design-and-protection/includes/10A-async-jobs-polling.md), [10B webhooks](api-design-and-protection/includes/10B-async-webhooks.md)
+8. [api-design-and-protection §13 idempotency](api-design-and-protection/includes/13-idempotency.md) — hub; [13A client and server flow](api-design-and-protection/includes/13A-idempotency-client-and-server-flow.md)
+9. [postgresql-performance §2 indexing](postgresql-performance/includes/02-indexing.md) — event table performance
 
 ### Event streaming with Kafka
 
@@ -222,8 +223,9 @@ Deep dive on Apache Kafka — setup, schema choice, semantics, and integration w
 1. [apache-kafka](apache-kafka/README.md) — overview → [§9 setup](apache-kafka/includes/09-cluster-setup-and-requirements.md) → [§6 schema formats](apache-kafka/includes/06-serialization-and-schema-evolution.md) → [§3 producers](apache-kafka/includes/03-producers-and-delivery-guarantees.md) / [§4 consumers](apache-kafka/includes/04-consumers-and-consumer-groups.md) → [§12 testing](apache-kafka/includes/12-testing-and-verification.md)
 2. [high-throughput-systems §14 message brokers](high-throughput-systems/includes/14-message-brokers-and-queues.md) + [§15 CDC](high-throughput-systems/includes/15-cdc-and-search-indexing.md) — when Kafka fits the system
 3. [event-sourcing-and-cqrs §5 async](event-sourcing-and-cqrs/includes/05-async-integration.md) — transactional outbox → Kafka
-4. [event-sourcing-and-cqrs §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) — partition keys and ordering
-5. [api-design-and-protection §13 idempotency](api-design-and-protection/includes/13-idempotency.md) — consumer dedup
+4. [event-sourcing-and-cqrs §5A outbox/inbox](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md) — relay ops, inbox dedup, poison rows
+5. [event-sourcing-and-cqrs §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) — partition keys and ordering
+6. [api-design-and-protection §13 idempotency](api-design-and-protection/includes/13-idempotency.md) — consumer dedup
 
 ### Production hardening
 
