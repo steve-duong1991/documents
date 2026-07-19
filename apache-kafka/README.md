@@ -1,6 +1,6 @@
 # Apache Kafka Guide
 
-A practical deep dive into Apache Kafka — commit log internals, topics and replication, producers and consumers, schema formats, cluster setup, operations, integration patterns, retry/DLQ(Dead Letter Queue), failure recovery, and testing. Platform angle: topic governance and event catalog SLOs, client quotas, tiered storage, and multi-region DR / active-active.
+A practical deep dive into Apache Kafka — commit log internals, topics and replication, producers and consumers, schema formats, cluster setup, operations, integration patterns, retry/DLQ(Dead Letter Queue), failure recovery, and testing. Platform angle: topic governance and event catalog SLOs, client quotas, tiered storage, and multi-region DR(Disaster Recovery) / active-active.
 
 Related: [high-throughput-systems](../high-throughput-systems/README.md) (when to stream, system throughput) · [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) (outbox, sagas, domain schema evolution) · [enterprise-security-compliance](../enterprise-security-compliance/README.md) (audit/PII(Personally Identifiable Information) on the bus)
 
@@ -26,6 +26,15 @@ Related: [high-throughput-systems](../high-throughput-systems/README.md) (when t
 | 13 | [Failure modes, troubleshooting, and recovery](includes/13-failure-modes-troubleshooting-and-recovery.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
+
+## Reading paths
+
+| If you are… | Read in order |
+|-------------|---------------|
+| **New to Kafka** | Overview → [§1 commit log](includes/01-commit-log-and-internals.md) → [§2 topics](includes/02-topics-partitions-and-replication.md) → [§3 producers](includes/03-producers-and-delivery-guarantees.md) → [§4 consumers](includes/04-consumers-and-consumer-groups.md) |
+| **Platform / ops** | [§9 cluster setup](includes/09-cluster-setup-and-requirements.md) → [§10 ops/DR](includes/10-operations-dr-security-and-observability.md) → [§13 failure modes](includes/13-failure-modes-troubleshooting-and-recovery.md) → [§5 retention](includes/05-retention-compaction-and-storage.md) |
+| **App integration** | [§8 integration](includes/08-integration-patterns.md) → [§6 schema](includes/06-serialization-and-schema-evolution.md) → [ES §5A outbox/inbox](../event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md) → [§12 testing](includes/12-testing-and-verification.md) |
+| **Choosing vs queues** | [§11 decision guide](includes/11-decision-guide-and-common-mistakes.md) → [HTS §14 brokers](../high-throughput-systems/includes/14-message-brokers-and-queues.md) |
 
 ## See also
 

@@ -18,6 +18,14 @@ Related: [Cursor Workflows](../cursor-workflows/README.md) (design → ship → 
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
+## Reading paths
+
+| If you are… | Read in order |
+|-------------|---------------|
+| **Default workflow** | Overview → [§1 single agent](includes/01-single-agent.md) → [§4 decision](includes/04-decision-guide.md) → [cursor-workflows](../cursor-workflows/README.md) |
+| **Parallelizing work** | [§2 multi agent](includes/02-multi-agent.md) → [§3 subagents](includes/03-subagents-and-auto-delegation.md) → [§4](includes/04-decision-guide.md) |
+| **Configuring auto-delegation** | [§3](includes/03-subagents-and-auto-delegation.md) → repo [`.cursor/`](../.cursor/rules/engineering-guides.mdc) |
+
 ## See also
 
 | Resource | Topics |

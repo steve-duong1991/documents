@@ -127,7 +127,7 @@ Reconciliation and chargeback ops → [§4](04-fraud-and-reconciliation.md). Ret
 |---------|----------------|
 | **Auth vs capture vs settle** | Refundable amount depends on state |
 | **Batch settlement** | Payouts may clear T+N; ledger should show pending vs settled |
-| **FX and fees** | Post fee and FX lines explicitly |
+| **FX(Foreign Exchange) and fees** | Post fee and FX lines explicitly |
 | **Merchant net** | Marketplace payouts need platform fee accounts |
 
 Do not show “refunded” in the product UI until the ledger (and, if required, processor) state matches your published meaning of refunded.

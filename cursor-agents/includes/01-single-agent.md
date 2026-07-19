@@ -4,6 +4,18 @@
 
 > **Related:** Multi agent → [§2](02-multi-agent.md) · Decision guide → [§4](04-decision-guide.md)
 
+```mermaid
+flowchart TD
+    Open[Cmd+I — open Agent] --> Prompt[Describe task + constraints]
+    Prompt --> Loop{Agent loop}
+    Loop --> Read[Read / search files]
+    Read --> Edit[Edit code or run shell]
+    Edit --> Review[You review diffs]
+    Review -->|approve| Loop
+    Review -->|reject or redirect| Prompt
+    Loop --> Done[Task complete or checkpoint restore]
+```
+
 ---
 
 ## What it is

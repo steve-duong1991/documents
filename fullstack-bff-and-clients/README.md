@@ -20,6 +20,8 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (co
 | 7 | [Auth UX](includes/07-auth-ux.md) |
 | 8 | [Offline and flaky network](includes/08-offline-and-flaky-network.md) |
 | 8A | [Mobile API contracts](includes/08A-mobile-api-contracts.md) |
+| 8B | [i18n locale and timezones](includes/08B-i18n-locale-and-timezones.md) |
+| 8C | [Offline sync and conflicts](includes/08C-offline-sync-and-conflicts.md) |
 | 9 | [Design-system boundaries](includes/09-design-system-boundaries.md) |
 | 10 | [Decision guide](includes/10-decision-guide.md) |
 

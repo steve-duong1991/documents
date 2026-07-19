@@ -72,7 +72,7 @@ flowchart TD
 | WebSocket by default | Start with poll/SSE(Server-Sent Events) |
 | localStorage refresh tokens | §7 cookie pattern |
 | CSR-only marketing site | SSG/SSR for LCP(Largest Contentful Paint)/SEO |
-| No owner for UI↔API seam | Name fullstack TL; use §0 RACI |
+| No owner for UI↔API seam | Name fullstack TL; use §0 RACI(Responsible, Accountable, Consulted, Informed) |
 | Skipping a11y until lawsuit | §6 bar in DoD |
 
 ## Quick reference — which guide?

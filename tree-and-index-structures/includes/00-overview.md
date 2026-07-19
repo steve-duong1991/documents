@@ -70,7 +70,7 @@ flowchart TD
 
 | Mistake | Fix |
 |---------|-----|
-| Pick LSM for read-heavy OLTP SQL | B+ tree (PostgreSQL, InnoDB) |
+| Pick LSM for read-heavy OLTP(Online Transaction Processing) SQL | B+ tree (PostgreSQL, InnoDB) |
 | Use B+ tree for in-app ordered map in RAM | Red-black / AVL |
 | Trie for numeric primary-key lookups | B+ tree or hash |
 | Ignore read/write amplification trade-offs | See [§6](06-amplification-and-related-topics.md) |

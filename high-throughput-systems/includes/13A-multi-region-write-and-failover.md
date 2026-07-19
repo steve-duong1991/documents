@@ -2,7 +2,7 @@
 
 Write-path decisions when reads are already regional. Own sticky primary, cell-pinned writes, and the promote sequence — not read-routing algorithms.
 
-> **Scope:** Where writes go, when cells beat multi-master, and how to fail over the write path (app config, poolers, DNS(Domain Name System)). Multi-region **reads** → [§13](13-multi-region-read-routing.md). Orchestrated DR swimlane / RACI → [sre §12A](../../sre-and-incidents/includes/12A-disaster-recovery-playbook.md). Consistency costs → [postgresql-performance §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md).
+> **Scope:** Where writes go, when cells beat multi-master, and how to fail over the write path (app config, poolers, DNS(Domain Name System)). Multi-region **reads** → [§13](13-multi-region-read-routing.md). Orchestrated DR(Disaster Recovery) swimlane / RACI(Responsible, Accountable, Consulted, Informed) → [sre §12A](../../sre-and-incidents/includes/12A-disaster-recovery-playbook.md). Consistency costs → [postgresql-performance §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md).
 >
 > **Related:** Read routing → [§13](13-multi-region-read-routing.md) · Cells / residency → [architecture §10A](../../architecture-decisions/includes/10A-regional-cells-and-residency.md) · Kafka active-active / MM2(MirrorMaker 2) → [apache-kafka §10](../../apache-kafka/includes/10-operations-dr-security-and-observability.md) · PG consistency → [postgresql-performance §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md) · DR playbook → [sre §12A](../../sre-and-incidents/includes/12A-disaster-recovery-playbook.md) · DR spine → [VISUAL-INDEX — DR / failover](../../VISUAL-INDEX.md#dr--failover)
 

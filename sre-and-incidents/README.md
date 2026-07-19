@@ -12,21 +12,33 @@ Related: [high-throughput-systems §11](../high-throughput-systems/includes/11-o
 |---|-------|
 | — | [SRE for Tech Leads](includes/00-overview.md) |
 | 1 | [SLI, SLO, and SLA](includes/01-sli-slo-sla.md) |
+| 1A | [Critical journeys and SEV catalog](includes/01A-critical-journeys-and-sev-catalog.md) |
 | 2 | [Error budgets](includes/02-error-budgets.md) |
 | 3 | [Capacity and load testing](includes/03-capacity-and-load-testing.md) |
 | 4 | [Observability practice](includes/04-observability-practice.md) |
 | 4A | [Observability platform](includes/04A-observability-platform.md) |
 | 5 | [Alerting and paging](includes/05-alerting-and-paging.md) |
 | 6 | [Incident command](includes/06-incident-command.md) |
+| 6A | [Incident communications](includes/06A-incident-communications.md) |
 | 7 | [Postmortems](includes/07-postmortems.md) |
 | 8 | [On-call design](includes/08-on-call-design.md) |
+| 8A | [Toil and operational load](includes/08A-toil-and-operational-load.md) |
 | 9 | [Game days and drills](includes/09-game-days-and-drills.md) |
 | 10 | [Synthetic monitoring](includes/10-synthetic-monitoring.md) |
 | 10A | [Hypercare checklist (first 72h)](includes/10A-hypercare-checklist.md) |
 | 11 | [Decision guide](includes/11-decision-guide.md) |
+| 12 | [Disaster recovery hub](includes/12-disaster-recovery.md) |
 | 12A | [Disaster recovery playbook](includes/12A-disaster-recovery-playbook.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
+
+## Reading paths
+
+| If you are… | Read in order |
+|-------------|---------------|
+| **On-call engineer** | [§8 On-call design](includes/08-on-call-design.md) → [§8A Toil](includes/08A-toil-and-operational-load.md) → [§5 Alerting](includes/05-alerting-and-paging.md) → [§4 Observability](includes/04-observability-practice.md) |
+| **Incident commander** | [§6 Incident command](includes/06-incident-command.md) → [§6A Incident communications](includes/06A-incident-communications.md) → [§7 Postmortems](includes/07-postmortems.md) → [§1A SEV catalog](includes/01A-critical-journeys-and-sev-catalog.md) |
+| **Disaster recovery / failover** | [§12 Disaster recovery hub](includes/12-disaster-recovery.md) → [§12A DR playbook](includes/12A-disaster-recovery-playbook.md) → [§9 Game days](includes/09-game-days-and-drills.md) |
 
 ## See also
 
@@ -37,7 +49,7 @@ Related: [high-throughput-systems §11](../high-throughput-systems/includes/11-o
 | [cicd-and-environments](../cicd-and-environments/README.md) | Promotion, rollback vs forward-fix, health checks |
 | [testing-strategy](../testing-strategy/README.md) | Load/soak/resilience tests, quality gates, prod verification |
 | [resilience-patterns](../resilience-patterns/README.md) | Timeouts, retries, circuit breakers, failure domains |
-| [database-connection-and-security](../database-connection-and-security/README.md) | Credential rotation, DR vocabulary, restore drills |
+| [database-connection-and-security](../database-connection-and-security/README.md) | Credential rotation, DR(Disaster Recovery) vocabulary, restore drills |
 | [postgresql-performance](../postgresql-performance/README.md) | Backup/PITR(Point-in-Time Recovery), connection saturation |
 | [api-design-and-protection](../api-design-and-protection/README.md) | Protection, threat model, checklist observability |
 | [enterprise-security-compliance](../enterprise-security-compliance/README.md) | Secure SDLC(Software Development Life Cycle), audit logging, compliance evidence |

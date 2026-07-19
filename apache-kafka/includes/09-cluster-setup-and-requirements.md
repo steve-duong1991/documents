@@ -204,7 +204,7 @@ Treat the topic manifest set as the **event catalog**: discoverable contracts fo
 | **Classification** | PII(Personally Identifiable Information) and audit retention — [ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md) / [§7](../../enterprise-security-compliance/includes/07-pii-and-data-classification.md) |
 | **Freshness SLO(Service Level Objective)** | Max acceptable consumer lag (e.g. p99 < 60s) — page when breached |
 | **Schema subject + compatibility** | CI gate before deploy — [§6](06-serialization-and-schema-evolution.md) |
-| **Delete / erasure path** | How GDPR-style deletes reach consumers and warehouses — [data-platforms §5](../../data-platforms/includes/05-data-ownership-lineage-retention.md) |
+| **Delete / erasure path** | How GDPR(General Data Protection Regulation)-style deletes reach consumers and warehouses — [data-platforms §5](../../data-platforms/includes/05-data-ownership-lineage-retention.md) |
 
 ### Platform ownership model
 

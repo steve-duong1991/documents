@@ -13,7 +13,7 @@ Absorb traffic **before it hits origin** — CDN(Content Delivery Network) cache
 | Layer | Throughput job |
 |-------|----------------|
 | **CDN / Edge** | Cache responses; block abuse; terminate TLS near users |
-| **WAF / DDoS** | Drop malicious traffic before app CPU |
+| **WAF / DDoS(Distributed Denial of Service)** | Drop malicious traffic before app CPU |
 | **API Gateway** | Auth, routing, tier rate limits, request size caps |
 | **Load Balancer** | Distribute to healthy app instances |
 

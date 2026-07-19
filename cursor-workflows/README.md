@@ -21,6 +21,14 @@ Related: [Cursor Agents guide](../cursor-agents/README.md) · [Feature to PROD p
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
+## Reading paths
+
+| If you are… | Read in order |
+|-------------|---------------|
+| **Full delivery loop** | Overview → [§1 design](includes/01-solution-design.md) → [§2 architecture](includes/02-solution-architecture.md) → [§3 coding](includes/03-coding.md) → [§4 reviews](includes/04-code-reviews.md) → [§5 ship](includes/05-ship-to-prod.md) → [§6 operate](includes/06-operate-and-learn.md) |
+| **Writing epics / stories** | [§1A templates](includes/01A-epic-feature-user-story-templates.md) → [§1](includes/01-solution-design.md) → [tech-lead §1A discovery](../tech-lead-practice/includes/01A-product-discovery.md) |
+| **Ship + hypercare** | [§5](includes/05-ship-to-prod.md) → [deployment §14](../deployment-strategies/includes/14-feature-to-prod-playbook.md) → [sre §10A](../sre-and-incidents/includes/10A-hypercare-checklist.md) → [§6](includes/06-operate-and-learn.md) |
+
 ## See also
 
 | Resource | Topics |

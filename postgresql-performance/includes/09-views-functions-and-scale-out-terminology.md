@@ -103,7 +103,7 @@ CREATE RECURSIVE VIEW org_tree AS
 
 Simple views on a single table with no aggregates can be updatable via `INSERT`/`UPDATE`/`DELETE`. Complex views need `INSTEAD OF` triggers.
 
-**Rule of thumb:** Prefer updating base tables in hot OLTP paths. Views are fine for admin tools and controlled APIs.
+**Rule of thumb:** Prefer updating base tables in hot OLTP(Online Transaction Processing) paths. Views are fine for admin tools and controlled APIs.
 
 ### Choosing a view type
 

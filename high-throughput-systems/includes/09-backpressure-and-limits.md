@@ -32,7 +32,7 @@ flowchart LR
 
 | Concern | Best layer |
 |---------|------------|
-| Block garbage / DDoS | Edge / CDN(Content Delivery Network) |
+| Block garbage / DDoS(Distributed Denial of Service) | Edge / CDN(Content Delivery Network) |
 | Enforce API(Application Programming Interface) key validity + global quota | API Gateway |
 | Per-plan business quotas | App middleware |
 | Protect database writes | App semaphore or leaky bucket near DB |

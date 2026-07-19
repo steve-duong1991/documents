@@ -4,6 +4,19 @@
 
 > **Related:** Single agent → [§1](01-single-agent.md) · Subagents → [§3](03-subagents-and-auto-delegation.md) · Decision guide → [§4](04-decision-guide.md)
 
+```mermaid
+flowchart LR
+    You[You] --> A1[Agent A — e.g. frontend]
+    You --> A2[Agent B — e.g. backend]
+    You --> A3[Agent C — e.g. tests / CI]
+    A1 --> WT1[(Worktree 1)]
+    A2 --> WT2[(Worktree 2)]
+    A3 --> Cloud[Cloud VM / background]
+    WT1 --> Merge[Review diffs per agent]
+    WT2 --> Merge
+    Cloud --> Merge
+```
+
 ---
 
 ## Pattern 1 — Parallel agents (Agents Window)

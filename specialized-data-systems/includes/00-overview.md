@@ -5,7 +5,7 @@ Most products run on PostgreSQL plus a warehouse and never need anything else. T
 **Rule of thumb:** Adopting a specialized store is an operational cost, not just a feature. Justify it with a workload property PostgreSQL (or your existing warehouse) structurally cannot serve — not with "this is what the tutorial used."
 
 > **Related:**
-> - OLTP vs OLAP baseline → [data-platforms §1](../../data-platforms/includes/01-oltp-vs-olap.md)
+> - OLTP(Online Transaction Processing) vs OLAP(Online Analytical Processing) baseline → [data-platforms §1](../../data-platforms/includes/01-oltp-vs-olap.md)
 > - PostgreSQL's own limits → [postgresql-performance](../../postgresql-performance/README.md)
 > - Event log as workflow baseline → [event-sourcing-and-cqrs §7](../../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
 > - Capstone → [05-decision-guide.md](05-decision-guide.md)

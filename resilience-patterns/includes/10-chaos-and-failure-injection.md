@@ -85,7 +85,7 @@ Track findings as tickets; promote systemic gaps to ADRs — [architecture §5](
 | Chaos without metrics/abort | Instrument first |
 | Only killing random pods | Target dependency contracts |
 | No product degrade validation | Check UX for T1 skips |
-| Untested restore/failover | Schedule DR drills |
+| Untested restore/failover | Schedule DR(Disaster Recovery) drills |
 | Blaming chaos for finding bugs | That is success |
 
 ## Pros and cons

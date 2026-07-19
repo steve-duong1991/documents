@@ -27,6 +27,19 @@ How to design writes that are safe to retry: HTTP(Hypertext Transfer Protocol) s
 
 **Rule of thumb:** If a client might retry on timeout and a duplicate would charge money, create a row, or send a notification — require `Idempotency-Key`.
 
+```mermaid
+flowchart TD
+    Req[POST with Idempotency-Key] --> Lookup{Key in shared store?}
+    Lookup -->|yes, completed| Replay[Return cached status + body]
+    Lookup -->|yes, processing| Wait[409 or poll cached response]
+    Lookup -->|no| Claim[Claim key — SET NX / INSERT]
+    Claim --> Work[Execute side effects once]
+    Work --> Store[Store response + mark completed]
+    Store --> Respond[Return fresh response]
+    Replay --> Done[Same outcome as first call]
+    Respond --> Done
+```
+
 ---
 
 ## What it is

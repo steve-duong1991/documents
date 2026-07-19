@@ -71,7 +71,7 @@ flowchart TB
 | Mistake | Fix |
 |---------|-----|
 | “Shared DB for performance” | Measure; use read models instead |
-| Reporting queries hitting OLTP of many services | Warehouse / CDC path |
+| Reporting queries hitting OLTP(Online Transaction Processing) of many services | Warehouse / CDC path |
 | Copying tables without lag UX | Document staleness |
 | Owner unclear after reorg | Reaffirm in ADR |
 

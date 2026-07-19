@@ -81,7 +81,7 @@ FROM pg_stat_database
 WHERE datname = current_database();
 ```
 
-Aim for **> 99%** on OLTP workloads. Lower values may indicate working set larger than RAM or missing indexes causing excess reads.
+Aim for **> 99%** on OLTP(Online Transaction Processing) workloads. Lower values may indicate working set larger than RAM or missing indexes causing excess reads.
 
 ## When to use
 

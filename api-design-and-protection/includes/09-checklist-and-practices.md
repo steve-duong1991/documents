@@ -2,6 +2,23 @@
 
 > **Related:** Threat model → [§6 Threat model](06-threat-model.md) · Lifecycle → [§8 Lifecycle](08-lifecycle-and-architecture.md) · Rate limiting → [api-rate-limiting](../../api-rate-limiting/README.md)
 
+```mermaid
+flowchart TD
+    Start[New endpoint or major release] --> Design{Design + OpenAPI pass?}
+    Design -->|no| FixDesign[Fix contract, pagination, idempotency]
+    FixDesign --> Design
+    Design -->|yes| Auth{AuthN + AuthZ + BOLA pass?}
+    Auth -->|no| FixAuth[Object ownership, field whitelist]
+    FixAuth --> Auth
+    Auth -->|yes| Edge{Gateway, rate limits, WAF pass?}
+    Edge -->|no| FixEdge[429 headers, payload caps, secrets vault]
+    FixEdge --> Edge
+    Edge -->|yes| Ops{Observability + runbooks pass?}
+    Ops -->|no| FixOps[Correlation IDs, alerts, key rotation]
+    FixOps --> Ops
+    Ops -->|yes| Launch[Ship]
+```
+
 ## Pre-launch checklist
 
 | Area | Check |
@@ -21,7 +38,7 @@
 | **Load balancer** | Health checks enabled; targets only healthy instances |
 | **Architecture** | App tier stateless — no sticky sessions; durable state in DB/Redis/S3 |
 | **Architecture** | Identity from validated JWT(JSON Web Token)/API key, not server memory or request body alone |
-| **Edge** | HTTPS only; WAF(Web Application Firewall) enabled; DDoS protection on |
+| **Edge** | HTTPS only; WAF(Web Application Firewall) enabled; DDoS(Distributed Denial of Service) protection on |
 | **Protection** | Payload size capped; request timeouts set |
 | **Protection** | Secrets in vault; not in git or logs |
 | **Threats** | OWASP(Open Worldwide Application Security Project) API Top 10 reviewed for new endpoints |

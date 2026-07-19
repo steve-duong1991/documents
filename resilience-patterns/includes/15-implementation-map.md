@@ -20,6 +20,34 @@ Where the patterns in this guide usually show up in real stacks — without turn
 
 **Rule of thumb:** Prefer **one** well-configured client wrapper per dependency over copy-pasted timeouts in every call site.
 
+```mermaid
+flowchart TD
+    subgraph Patterns["Resilience patterns"]
+        T[Timeouts]
+        R[Retries + jitter]
+        CB[Circuit breakers]
+        BH[Bulkheads]
+        SD[Shed / degrade]
+        ID[Idempotency]
+        DR[Drain]
+    end
+    subgraph Libs["Typical libraries / platforms"]
+        Java[Java — Resilience4j]
+        NET[.NET — Polly]
+        Go[Go — context + rate]
+        Node[Node — AbortController]
+        Mesh[Envoy / Istio / Linkerd]
+        GW[API gateway — 429]
+    end
+    T --> Java
+    R --> NET
+    CB --> Mesh
+    BH --> Go
+    SD --> GW
+    ID --> Node
+    DR --> Mesh
+```
+
 ---
 
 ## Library / platform pointers (illustrative)

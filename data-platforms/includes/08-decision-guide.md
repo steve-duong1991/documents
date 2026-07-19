@@ -72,7 +72,7 @@ Complexity tax is real — [finops §5](../../finops-and-cost/includes/05-build-
 |--------------|--------------|-----|
 | Dual-write DB + search | Split brain | CDC/outbox — [HTS §15](../../high-throughput-systems/includes/15-cdc-and-search-indexing.md) |
 | BI on primary | Sev1 latency | [§7](07-analytics-without-harming-oltp.md) |
-| Redis as source of truth | Data loss | OLTP owns state — [§3](03-redis-and-in-memory.md) |
+| Redis as source of truth | Data loss | OLTP(Online Transaction Processing) owns state — [§3](03-redis-and-in-memory.md) |
 | Infinite retained everything | Cost + risk | [§5](05-data-ownership-lineage-retention.md) |
 | Uncoordinated drops | Broken CDC | [§6](06-migration-coordination.md) + [PG §15](../../postgresql-performance/includes/15-schema-migration-checklist.md) |
 | Cache without freshness class | Confusing UX | [§4](04-caching-end-to-end.md) |

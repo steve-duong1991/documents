@@ -20,13 +20,30 @@ Rate limits can be keyed by different dimensions. Layer them from cheapest to mo
 
 **Rule of thumb:** Pick the **coarsest scope that still stops abuse** — per-resource keys only where object-level fairness matters (uploads, shared project quotas).
 
+```mermaid
+flowchart TD
+    Req[Incoming request] --> G[Global limit]
+    G -->|pass| IP[Per-IP limit]
+    IP -->|pass| Key[Per API key limit]
+    Key -->|pass| User[Per user limit]
+    User -->|pass| Tenant[Per tenant limit]
+    Tenant -->|pass| Ep[Per-endpoint class limit]
+    Ep -->|pass| OK[Allow request]
+    G -->|exceeded| R429[429 + Retry-After]
+    IP -->|exceeded| R429
+    Key -->|exceeded| R429
+    User -->|exceeded| R429
+    Tenant -->|exceeded| R429
+    Ep -->|exceeded| R429
+```
+
 ---
 
 ## Comparison
 
 | Type | Key | Pros | Cons | When to use |
 |------|-----|------|------|-------------|
-| **Global** | Single counter for entire API(Application Programming Interface) | Simple DDoS brake | One noisy client affects everyone | Emergency circuit, small APIs |
+| **Global** | Single counter for entire API(Application Programming Interface) | Simple DDoS(Distributed Denial of Service) brake | One noisy client affects everyone | Emergency circuit, small APIs |
 | **Per IP** | Source IP / `X-Forwarded-For` | Easy, no auth needed | Shared NAT, VPN, mobile carriers; spoofable behind bad proxies | Public unauthenticated endpoints |
 | **Per API Key** | `Authorization` header | Ties to billing and plan | Key sharing, leaked keys | B2B(Business-to-Business) APIs, developer portals |
 | **Per User / Account** | User ID from JWT(JSON Web Token)/session | Fair per customer | Requires auth on every request | Logged-in SaaS(Software as a Service) APIs |

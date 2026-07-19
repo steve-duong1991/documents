@@ -172,7 +172,7 @@ flowchart LR
 
 | Mistake | Fix |
 |---------|-----|
-| LSM for read-heavy OLTP with range queries | B+ tree engine (PostgreSQL, InnoDB) |
+| LSM for read-heavy OLTP(Online Transaction Processing) with range queries | B+ tree engine (PostgreSQL, InnoDB) |
 | Ignore compaction stall alerts | Tune threads; rate-limit compaction |
 | Tiny memtable on write-heavy ingest | Increase memtable size; monitor L0 |
 | Deletes expected to free space immediately | Plan compaction + tombstone policy |

@@ -80,7 +80,7 @@ Spiky write latency during checkpoints? Increase `max_wal_size` and tune checkpo
 | High global `work_mem` | OOM under concurrent sorts/hashes | Conservative global; raise per-session for reports |
 | `shared_buffers` at 80% of RAM | Starves OS page cache | ~25% of RAM, cap 8–16 GB |
 | Copy tuning from blog without workload match | Wrong trade-offs | Change one parameter; measure with `EXPLAIN` and metrics |
-| Max parallelism on OLTP | Contention on short queries | Low `max_parallel_workers_per_gather` for OLTP |
+| Max parallelism on OLTP(Online Transaction Processing) | Contention on short queries | Low `max_parallel_workers_per_gather` for OLTP |
 | Ignore temp file spikes | Sorts spilling to disk unnoticed | Monitor temp files; tune `work_mem` for heavy queries |
 
 ## When NOT to tune blindly

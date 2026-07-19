@@ -1,8 +1,8 @@
 # Erasure and DSAR playbook
 
-Classification tells you **what** is sensitive — [§7](07-pii-and-data-classification.md). This section is the **ops runbook** when a user (or customer admin) requests access, export, or erasure under GDPR-style rights (DSAR(Data Subject Access Request)).
+Classification tells you **what** is sensitive — [§7](07-pii-and-data-classification.md). This section is the **ops runbook** when a user (or customer admin) requests access, export, or erasure under GDPR(General Data Protection Regulation)-style rights (DSAR(Data Subject Access Request)).
 
-> **Scope:** End-to-end inventory and fulfillment — OLTP → search → warehouse/lake → Kafka → backups → event store; crypto-shred vs hard delete; legal hold. Classification taxonomy → [§7](07-pii-and-data-classification.md). Retention ownership → [data-platforms §5](../../data-platforms/includes/05-data-ownership-lineage-retention.md). Event-store tension → [ES §3](../../event-sourcing-and-cqrs/includes/03-storage-and-projections.md) · [ES §6](../../event-sourcing-and-cqrs/includes/06-decision-guide.md).
+> **Scope:** End-to-end inventory and fulfillment — OLTP(Online Transaction Processing) → search → warehouse/lake → Kafka → backups → event store; crypto-shred vs hard delete; legal hold. Classification taxonomy → [§7](07-pii-and-data-classification.md). Retention ownership → [data-platforms §5](../../data-platforms/includes/05-data-ownership-lineage-retention.md). Event-store tension → [ES §3](../../event-sourcing-and-cqrs/includes/03-storage-and-projections.md) · [ES §6](../../event-sourcing-and-cqrs/includes/06-decision-guide.md).
 >
 > **Related:** Audit without dumping PII(Personally Identifiable Information) → [§6](06-audit-logging-and-retention.md) · Encryption / key destroy → [§8](08-encryption-policy.md) · Kafka retention/tombstones → [kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) · Multi-tenant restore drills → [arch §10](../../architecture-decisions/includes/10-multi-tenant-system-models.md)
 

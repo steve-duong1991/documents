@@ -2,7 +2,7 @@
 
 Every derived store needs a **named owner**, a **lineage path** back to the system of record, and a **retention policy** that finance, legal, and engineering agree on.
 
-> **Related:** Contracts / Schema Registry day-2 → [§5A](05A-data-contracts-and-registries.md) · OLTP vs warehouse → [§1](01-oltp-vs-olap.md) · Kafka retention → [apache-kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) · Kafka event catalog / freshness SLOs → [apache-kafka §9](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos) · Storage cost → [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md) · Multi-tenant isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md)
+> **Related:** Contracts / Schema Registry day-2 → [§5A](05A-data-contracts-and-registries.md) · OLTP(Online Transaction Processing) vs warehouse → [§1](01-oltp-vs-olap.md) · Kafka retention → [apache-kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) · Kafka event catalog / freshness SLOs → [apache-kafka §9](../../apache-kafka/includes/09-cluster-setup-and-requirements.md#event-catalog-and-ownership-slos) · Storage cost → [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md) · Multi-tenant isolation → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md)
 
 ---
 

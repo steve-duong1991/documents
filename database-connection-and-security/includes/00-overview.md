@@ -45,7 +45,7 @@ IAM(Identity and Access Management) + Proxy detail → [§4](04-aws-iam-rds-prox
 | **Secrets** | No credentials in git or images | [§3 Vault](03-hcv-vault.md), [§5 Secret manager](05-secret-manager-password.md) |
 | **Pooling** | Avoid connection storms | [§4 RDS Proxy](04-aws-iam-rds-proxy.md), [§9 PgBouncer](09-pgbouncer-proxy-password.md) |
 | **Identity** | IAM(Identity and Access Management) / workload identity instead of passwords | [§4](04-aws-iam-rds-proxy.md), [§6](06-direct-rds-iam.md), [§7](07-gcp-cloud-sql-identity.md), [§8](08-azure-database-identity.md) |
-| **Rotation & DR** | Rotate creds; test restores | [§12 Credential rotation and DR](12-credential-rotation-and-dr.md) |
+| **Rotation & DR(Disaster Recovery)** | Rotate creds; test restores | [§12 Credential rotation and DR](12-credential-rotation-and-dr.md) |
 
 ## Connection patterns at a glance
 

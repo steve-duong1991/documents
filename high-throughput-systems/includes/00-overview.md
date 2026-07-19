@@ -125,7 +125,7 @@ flowchart TD
 | Scenario | First 3 actions |
 |----------|-----------------|
 | Public read API hitting limits | Load test list/search paths → cache hot keys → index slow queries |
-| Write spike on OLTP | Short transactions → batch INSERT → queue for non-critical writes |
+| Write spike on OLTP(Online Transaction Processing) | Short transactions → batch INSERT → queue for non-critical writes |
 | Long exports blocking API | Async job pattern → scale workers on queue depth |
 | High event volume | Stream with partitioned topics → consumer groups → monitor lag |
 | Nightly bulk import | Staging table + `COPY` → merge → `ANALYZE` |

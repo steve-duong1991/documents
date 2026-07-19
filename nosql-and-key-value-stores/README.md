@@ -17,6 +17,7 @@ Related: [postgresql-performance](../postgresql-performance/README.md) · [data-
 | 4 | [Cassandra wide-column](includes/04-cassandra-wide-column.md) |
 | 5 | [MongoDB document model](includes/05-mongodb-document.md) |
 | 6 | [Decision guide](includes/06-decision-guide.md) |
+| 7 | [Day-2 operations](includes/07-day-2-operations.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 

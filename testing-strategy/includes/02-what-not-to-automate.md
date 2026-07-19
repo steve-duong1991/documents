@@ -51,7 +51,7 @@ flowchart LR
 | Exploratory testing | Discovers unknown unknowns |
 | Accessibility deep audit | Needs judgment + tooling variety |
 | Partner UAT | External calendar, real credentials |
-| DR restore drill | Infra + people — [sre-and-incidents](../../sre-and-incidents/README.md) |
+| DR(Disaster Recovery) restore drill | Infra + people — [sre-and-incidents](../../sre-and-incidents/README.md) |
 | Load / soak | Expensive; schedule nightly — [§5](05-load-soak-resilience-tests.md) |
 
 ---

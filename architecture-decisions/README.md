@@ -68,7 +68,7 @@ Related: [API Design & Protection](../api-design-and-protection/README.md) · [E
 | [enterprise-security-compliance](../enterprise-security-compliance/README.md) | Isolation and compliance constraints on architecture |
 | [tech-lead-practice](../tech-lead-practice/README.md) | Facilitation, ownership, ADR culture |
 | [testing-strategy](../testing-strategy/README.md) | Contract and integration test strategy per boundary |
-| [data-platforms](../data-platforms/README.md) | Analytics ownership vs OLTP boundaries |
+| [data-platforms](../data-platforms/README.md) | Analytics ownership vs OLTP(Online Transaction Processing) boundaries |
 | [finops-and-cost](../finops-and-cost/README.md) | Cost of distribution and multi-region choices |
 | [distributed-systems-primitives](../distributed-systems-primitives/README.md) | CAP(Consistency, Availability, Partition Tolerance)/PACELC mechanisms, hashing, IDs, consensus under tradeoff choices |
 | [system-design-walkthroughs](../system-design-walkthroughs/README.md) | End-to-end practice problems that apply these decisions |

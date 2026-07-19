@@ -2,6 +2,15 @@
 
 > **Related:** Overview → [Idempotency](13-idempotency.md) · Client and server flow → [13A-idempotency-client-and-server-flow.md](13A-idempotency-client-and-server-flow.md) · Integrations → [13C-idempotency-integrations.md](13C-idempotency-integrations.md)
 
+```mermaid
+flowchart TD
+    Start[Choose idempotency store] --> Domain{Natural domain key<br/>e.g. client_reference_id?}
+    Domain -->|yes| C[Domain table + unique constraint]
+    Domain -->|no| Txn{Write in same DB<br/>transaction as business row?}
+    Txn -->|yes| B[PostgreSQL idempotency_records]
+    Txn -->|no| A[Redis — default for API dedup]
+```
+
 ---
 
 ## Where to store idempotency keys

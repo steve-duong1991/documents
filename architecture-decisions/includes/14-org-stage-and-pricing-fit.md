@@ -31,7 +31,7 @@ Capture ceilings once; reuse in ADRs and design reviews.
 | Availability SLO(Service Level Objective) | e.g. 99.9% monthly | SRE(Site Reliability Engineering) / TL |
 | RPO(Recovery Point Objective) / RTO(Recovery Time Objective) | e.g. 5 min / 1 h | Eng + business |
 | Tenancy / residency | Pool / silo / cells; regions | Security + sales eng |
-| Compliance | PCI / SOC2 / GDPR scope | Security |
+| Compliance | PCI / SOC2 / GDPR(General Data Protection Regulation) scope | Security |
 | Cost ceiling | $/active user or $/1k requests | FinOps(Cloud Financial Operations) + TL |
 | Team ops budget | On-call hours; services per squad | EM / TL |
 

@@ -6,6 +6,16 @@ Format: guide name, brief summary. Update when adding or materially expanding se
 
 ## 2026-07-19
 
+### P0–P2 backlog: articles, 12 spines, diagram debt, topic ownership
+- **VISUAL-INDEX:** 9 → **12** spines — Schema migrate + deploy, Cache coherence, Multi-tenant request
+- **Root README:** Visual-first steps 10–12; **Topic ownership** matrix; layout note updated
+- **P0 articles:** api-design §05A metering/entitlements · PG §19 sharding/resharding · sre §01A critical journeys/SEV · §06A incident communications · §12 DR hub (fixes 12A-only numbering)
+- **P1 articles:** data-platforms §01B lakehouse ops · §05B data quality · api §02A edge abuse/WAF · HTS §06A scheduled jobs · §14B queue fairness · cicd §02A preview envs · deploy §14A PRR · system-design §11 checkout/inventory · payments §03B FX · §04A disputes · nosql §07 day-2 ops · testing §05A migration/async tests · realtime §01A reconnect storms
+- **P2 articles:** api §01A HTTP caching · §07B partner sandbox/keys · §17C GraphQL federation · ESC §07B consent · §08A app encryption/KMS · §09A workload identity · fullstack §08B i18n · §08C offline sync · finops §06A showback · sre §08A toil · tech-lead §02A PRR facilitation · deploy §05A experimentation platform
+- **Diagram debt:** mermaid added to all 15 includes that lacked diagrams (api hubs, rate-limit scope/responses, cursor agents/workflows, auth testing checklist, local DB creds, resilience impl map)
+- **Reading paths:** added/expanded across thick guides (Kafka, HTS, data-platforms, cicd, deploy, sre, testing, finops, tech-lead, api-rate-limiting ops-first, tree, cursor-agents/workflows, …)
+- **GLOSSARY / acronyms:** entitlement, meter, sharding, PRR, lakehouse, reconnect storm, showback, workload identity, ATO, DDoS, DR, FX, GDPR, i18n, OLAP/OLTP, SPIFFE/SPIRE/SVID, RACI, PSP, DEK/CMK, …
+
 ### Visual spines, DR hub, ops depth, diagram debt closed
 - **VISUAL-INDEX:** Expanded 4 → 9 spines (Identity, Data platform, DR/failover, Realtime fan-out, Money movement) + spine picker table
 - **Root README:** New **Visual-first** learning path; Global scale / On-call / Data platform / Specialized / Payments / Ship API / Ship safely / Fullstack paths updated

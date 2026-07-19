@@ -17,6 +17,19 @@ How you respond when a limit is hit is as important as the algorithm itself.
 | **Queue** | `202` or delayed `200` | Async wait | Job ingestion only |
 | **Graduated** | Warn headers → throttle → `429` | Escalating pressure | Enterprise SaaS(Software as a Service) |
 
+```mermaid
+flowchart TD
+    Hit[Limit exceeded] --> Tier{Quota type?}
+    Tier -->|soft / graduated| Warn[X-RateLimit-Warning header]
+    Warn --> Throttle[Throttle or delay response]
+    Throttle --> Retry{Client still over limit?}
+    Tier -->|hard / abuse| Block[429 Too Many Requests]
+    Retry -->|yes| Block
+    Retry -->|no| OK[200 after delay]
+    Block --> RA[Set Retry-After + JSON error body]
+    RA --> Backoff[Client exponential backoff + jitter]
+```
+
 ---
 
 ## Comparison

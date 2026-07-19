@@ -17,7 +17,9 @@ Related: [resilience-patterns](../resilience-patterns/README.md) (idempotency, d
 | 2 | [Idempotency and double-charge prevention](includes/02-idempotency-and-double-charge.md) |
 | 3 | [Ledger and double-entry accounting](includes/03-ledger-and-double-entry.md) |
 | 3A | [Refunds, payouts, and settlement](includes/03A-refunds-payouts-settlement.md) |
+| 3B | [Multi-currency and FX](includes/03B-multi-currency-and-fx.md) |
 | 4 | [Fraud and reconciliation](includes/04-fraud-and-reconciliation.md) |
+| 4A | [Disputes and chargebacks](includes/04A-disputes-and-chargebacks.md) |
 | 5 | [Decision guide](includes/05-decision-guide.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.

@@ -1,6 +1,6 @@
 # Modernization Program (Multi-Quarter)
 
-Run strangler modernization as a **program**: waves, dual-run KPIs, cutover RACI, and exit criteria — not a never-ending rewrite.
+Run strangler modernization as a **program**: waves, dual-run KPIs, cutover RACI(Responsible, Accountable, Consulted, Informed), and exit criteria — not a never-ending rewrite.
 
 > **Scope:** Program management of large modernization. Single-slice strangler tactics → [§4](04-strangler-and-modernization.md). Deploy safety → [deployment-strategies](../../deployment-strategies/README.md). Data ownership during cutover → [§8](08-data-ownership.md). Team capacity / topology → [§1A](01A-team-topologies.md).
 >

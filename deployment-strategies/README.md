@@ -16,6 +16,7 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (st
 | 3 | [Blue-Green deployment](includes/03-blue-green.md) |
 | 4 | [Canary deployment](includes/04-canary.md) |
 | 5 | [A/B testing](includes/05-ab-testing.md) |
+| 5A | [Experimentation platform](includes/05A-experimentation-platform.md) |
 | 6 | [Shadow / mirror / dark launch](includes/06-shadow.md) |
 | 7 | [Feature flags](includes/07-feature-flags.md) |
 | 7A | [Feature flag operations](includes/07A-feature-flag-operations.md) |
@@ -26,8 +27,18 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (st
 | 12 | [Schema migrations and deploy coupling](includes/12-schema-migrations-and-deploy.md) |
 | 13 | [SLO-based rollback triggers](includes/13-slo-rollback-triggers.md) |
 | 14 | [Feature to PROD playbook](includes/14-feature-to-prod-playbook.md) |
+| 14A | [Production readiness review](includes/14A-production-readiness-review.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
+
+## Reading paths
+
+| If you are… | Read in order |
+|-------------|---------------|
+| **First production deploy** | [Quick comparison](includes/00-overview.md) → [§2 Rolling](includes/02-rolling.md) → [§12 Schema migrations](includes/12-schema-migrations-and-deploy.md) → [§14 Feature to PROD](includes/14-feature-to-prod-playbook.md) |
+| **Experimentation / A/B** | [§5 A/B testing](includes/05-ab-testing.md) → [§5A Experimentation platform](includes/05A-experimentation-platform.md) → [§7 Feature flags](includes/07-feature-flags.md) → [§7A Flag ops](includes/07A-feature-flag-operations.md) |
+| **Progressive delivery at scale** | [§4 Canary](includes/04-canary.md) → [§10 Progressive delivery](includes/10-progressive-delivery.md) → [§13 SLO rollback](includes/13-slo-rollback-triggers.md) |
+| **Production readiness review** | [§14A PRR](includes/14A-production-readiness-review.md) → [§14 Feature to PROD](includes/14-feature-to-prod-playbook.md) → [tech-lead §2A](../tech-lead-practice/includes/02A-production-readiness-facilitation.md) |
 
 ## See also
 

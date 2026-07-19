@@ -27,6 +27,7 @@ A practical reference for PostgreSQL performance — measurement, indexing, quer
 | 16 | [Backup, restore, and PITR](includes/16-backup-restore-and-pitr.md) |
 | 17 | [Row-level security for multi-tenant data](includes/17-row-level-security-multi-tenant.md) |
 | 18 | [Schema and database per tenant](includes/18-schema-and-database-per-tenant.md) |
+| 19 | [Sharding and resharding](includes/19-sharding-and-resharding.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
@@ -36,8 +37,8 @@ A practical reference for PostgreSQL performance — measurement, indexing, quer
 |-------------|---------------|
 | **DBA / platform** | Overview → [§1 Measurement](includes/01-measurement.md) → [§2 Indexing](includes/02-indexing.md) → [§5 Statistics](includes/05-statistics-and-planner.md) → [§6 Vacuum](includes/06-vacuum-and-bloat.md) → [§7 Connections](includes/07-connection-management.md) → [§8 Memory](includes/08-memory-and-config.md) → [§16 Backup/PITR](includes/16-backup-restore-and-pitr.md) |
 | **App tech lead** | Overview → §1 → §2 → [§3 Query design](includes/03-query-design.md) → [§4 Schema](includes/04-schema-design.md) → [§15 Migrations](includes/15-schema-migration-checklist.md) → [§13 Decision guide](includes/13-decision-guide-and-common-mistakes.md) |
-| **Multi-tenant SaaS(Software as a Service)** | [§17 RLS](includes/17-row-level-security-multi-tenant.md) → [§18 Schema/DB per tenant](includes/18-schema-and-database-per-tenant.md) → [architecture §10](../architecture-decisions/includes/10-multi-tenant-system-models.md) → [§7](includes/07-connection-management.md) (poolers + `SET LOCAL`) |
-| **Scale-out / time-series** | [§9 Terminology](includes/09-views-functions-and-scale-out-terminology.md) → [§10 Partitioning](includes/10-partitioning.md) → [§11 Read scaling](includes/11-read-scaling-and-caching.md) → [§12 Bulk ops](includes/12-bulk-operations-and-concurrency.md) |
+| **Multi-tenant SaaS(Software as a Service)** | [§17 RLS](includes/17-row-level-security-multi-tenant.md) → [§18 Schema/DB per tenant](includes/18-schema-and-database-per-tenant.md) → [§19 Sharding](includes/19-sharding-and-resharding.md) → [architecture §10](../architecture-decisions/includes/10-multi-tenant-system-models.md) → [§7](includes/07-connection-management.md) (poolers + `SET LOCAL`) |
+| **Scale-out / time-series** | [§9 Terminology](includes/09-views-functions-and-scale-out-terminology.md) → [§10 Partitioning](includes/10-partitioning.md) → [§11 Read scaling](includes/11-read-scaling-and-caching.md) → [§12 Bulk ops](includes/12-bulk-operations-and-concurrency.md) → [§19 Sharding](includes/19-sharding-and-resharding.md) |
 
 ---
 

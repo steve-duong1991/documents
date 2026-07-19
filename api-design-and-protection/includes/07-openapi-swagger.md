@@ -166,7 +166,7 @@ Some gateways auto-create routes from the spec.
 | Capability | Swagger? | Who does it |
 |------------|----------|-------------|
 | Rate limiting | No | API Gateway, Cloudflare |
-| WAF / DDoS | No | Edge provider |
+| WAF / DDoS(Distributed Denial of Service) | No | Edge provider |
 | JWT(JSON Web Token) validation | No | Gateway / middleware |
 | Object-level AuthZ(Authorization) | No | Application |
 | Idempotency enforcement | No | Application |

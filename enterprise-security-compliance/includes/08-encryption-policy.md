@@ -26,7 +26,7 @@ flowchart TB
 
 | Key type | Owner | Rotation |
 |----------|-------|----------|
-| Cloud CMK | Security / platform | Annual or on personnel change; automatic versioning |
+| Cloud CMK(Customer Master Key) | Security / platform | Annual or on personnel change; automatic versioning |
 | DEKs | App via KMS APIs | Frequent; re-encrypt on rotate when required |
 | JWT(JSON Web Token) signing | Identity service | Versioned keys; overlap for verify |
 | Partner HMAC(Hash-based Message Authentication Code) | Integrating team | Dual-secret rotate → [§5](05-secrets-beyond-database.md) |

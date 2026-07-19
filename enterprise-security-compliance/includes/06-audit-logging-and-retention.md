@@ -81,6 +81,6 @@ Document retention in the same pack auditors see → [§10](10-compliance-eviden
 | Debug logs = audit trail | Separate streams and retention |
 | Tokens and PII in “just in case” fields | Schema allowlist + redaction |
 | Everyone on eng can query security archive | Least privilege on log stores |
-| Infinite retention of everything | Cost + GDPR risk; classify |
+| Infinite retention of everything | Cost + GDPR(General Data Protection Regulation) risk; classify |
 | No correlation_id across gateway and app | Propagate from edge |
 | Kafka topic = immutable compliance archive alone | Land to WORM/warehouse; size Kafka retention deliberately — [kafka §5](../../apache-kafka/includes/05-retention-compaction-and-storage.md) |

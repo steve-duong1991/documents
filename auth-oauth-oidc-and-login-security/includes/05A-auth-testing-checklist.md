@@ -4,6 +4,14 @@ What to automate so OAuth(Open Authorization), OIDC(OpenID Connect), cookies, an
 
 > **Scope:** Test cases and gates for auth. Protocols → [§1](01-oauth2-grants-and-flows.md)–[§2](02-oidc-discovery-and-tokens.md). CSRF(Cross-Site Request Forgery)/cookies → [§4](04-cookie-session-and-csrf.md). Guest → [§4b](04B-anonymous-and-guest-sessions.md). Revoke/denylist → [§3b](03B-revoke-logout-denylist.md), [§3c](03C-denylist-redis-patterns.md). Lifetimes → [§3d](03D-lifetimes-and-sliding-sessions.md). Concurrent devices → [§3e](03E-concurrent-sessions-and-devices.md). Signup/magic → [§5b](05B-signup-verify-and-magic-links.md). WebAuthn(Web Authentication) → [§5c](05C-webauthn-and-passkeys.md). Impersonation → [§5d](05D-impersonation-and-support-access.md). SAML(Security Assertion Markup Language) → [§2c](02C-saml-protocol.md). B2B(Business-to-Business) multi-tenant → [§2d](02D-multi-tenant-oidc-and-b2b-sso.md).
 
+```mermaid
+flowchart LR
+    Unit[Unit — claim validators, parsers] --> Contract[Contract — JWKS, OpenAPI security]
+    Contract --> Int[Integration — PKCE vs test IdP]
+    Int --> E2E[E2E — login → API → logout]
+    E2E --> Sec[Security / negative — tamper, CSRF, reuse]
+```
+
 ---
 
 ## Where tests live

@@ -96,4 +96,4 @@ See [Decision guide](06-decision-guide.md) for full flows and trade-offs.
 | Skip CQRS planning on read APIs | Design projections before launch |
 | Treat the message bus as source of truth | Event store is authoritative; bus is a copy |
 | One giant aggregate stream | Small aggregates; one stream per instance |
-| Ignore GDPR/PII(Personally Identifiable Information) on immutable events | Plan tombstones or crypto-shredding early |
+| Ignore GDPR(General Data Protection Regulation)/PII(Personally Identifiable Information) on immutable events | Plan tombstones or crypto-shredding early |

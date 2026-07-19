@@ -15,7 +15,7 @@ Architecture choices set the **cost curve**. Use this section in design reviews 
 | **Async + queue** | Spiky write fan-out | Always-on huge broker idle |
 | **Multi-region active-active** | Need local write/latency | Traffic does not justify 2× |
 | **Microservices** | Clear boundaries + scale | Chatty mesh + duplicate stacks |
-| **Warehouse for BI** | Protects OLTP | Unbounded scans / unused marts |
+| **Warehouse for BI** | Protects OLTP(Online Transaction Processing) | Unbounded scans / unused marts |
 
 **Rule of thumb:** Pick the **simplest architecture that meets SLO(Service Level Objective)** at target volume; revisit cost at each 2× growth.
 
@@ -99,7 +99,7 @@ Cost wins that increase **expected incident cost** are not wins — include risk
 | Mistake | Fix |
 |---------|-----|
 | Optimize $ ignoring SLO | Meet SLO; then reduce waste |
-| Copy FAANG multi-region early | Prove latency/DR need |
+| Copy FAANG multi-region early | Prove latency/DR(Disaster Recovery) need |
 | Microservice split without cost model | Count duplicate platforms |
 | Skip cost in ADR / design doc | Add unit estimate section |
 

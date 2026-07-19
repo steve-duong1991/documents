@@ -118,7 +118,7 @@ Adding a new read model = new projector + replay — **no migration of the write
 
 CQRS only means separate read/write paths:
 
-- Write: normalized OLTP tables
+- Write: normalized OLTP(Online Transaction Processing) tables
 - Read: materialized views or replica
 
 Event Sourcing is optional. Many teams use **CQRS-lite** (read replicas + caches) without an event store.

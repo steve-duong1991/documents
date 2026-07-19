@@ -4,7 +4,7 @@ arch §10 chooses **pool vs silo**. This section covers **where** a tenant’s d
 
 > **Scope:** Cell topology, residency keys, routing, replication limits, cutover, compliance drills. Isolation model choice → [§10](10-multi-tenant-system-models.md). Multi-region **read** routing → [HTS §13](../../high-throughput-systems/includes/13-multi-region-read-routing.md). Consistency costs → [PG §14](../../postgresql-performance/includes/14-consistency-promises-and-costs.md). API(Application Programming Interface) residency table → [api-design §16](../../api-design-and-protection/includes/16-multi-tenant-apis.md). Erasure in-region → [ESC §7A](../../enterprise-security-compliance/includes/07A-erasure-and-dsar.md).
 >
-> **Related:** Failure domains → [§11](11-failure-domains.md) · Capacity → [§13](13-capacity-estimation.md) · Auth tenant resolution → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · Kafka multi-region / DR → [apache-kafka §10](../../apache-kafka/includes/10-operations-dr-security-and-observability.md)
+> **Related:** Failure domains → [§11](11-failure-domains.md) · Capacity → [§13](13-capacity-estimation.md) · Auth tenant resolution → [auth §2d](../../auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · Kafka multi-region / DR(Disaster Recovery) → [apache-kafka §10](../../apache-kafka/includes/10-operations-dr-security-and-observability.md)
 
 ---
 

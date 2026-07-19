@@ -14,6 +14,7 @@ Related: [fullstack-bff-and-clients](../fullstack-bff-and-clients/README.md) (cl
 |---|-------|
 | — | [Overview](includes/00-overview.md) |
 | 1 | [Connection fan-out at scale](includes/01-connection-fanout.md) |
+| 1A | [Reconnect storms and drain](includes/01A-reconnect-storms-and-drain.md) |
 | 2 | [Pub/sub backplanes](includes/02-pubsub-backplanes.md) |
 | 3 | [Presence and typing indicators](includes/03-presence-and-typing.md) |
 | 4 | [CRDT and OT for collaborative editing](includes/04-crdt-and-ot.md) |

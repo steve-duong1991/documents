@@ -15,6 +15,7 @@ A practical reference for building systems that handle high request, event, and 
 | 4 | [Caching layers](includes/04-caching-layers.md) |
 | 5 | [Database throughput](includes/05-database-throughput.md) |
 | 6 | [Async, queues, and workers](includes/06-async-queues-workers.md) |
+| 6A | [Scheduled and recurring jobs](includes/06A-scheduled-and-recurring-jobs.md) |
 | 7 | [Streaming pipelines](includes/07-streaming-pipelines.md) |
 | 8 | [Batch and ETL](includes/08-batch-and-etl.md) |
 | 9 | [Backpressure and limits](includes/09-backpressure-and-limits.md) |
@@ -26,10 +27,20 @@ A practical reference for building systems that handle high request, event, and 
 | 13A | [Multi-region write and failover](includes/13A-multi-region-write-and-failover.md) |
 | 14 | [Message brokers and queues](includes/14-message-brokers-and-queues.md) |
 | 14A | [Queue broker operations](includes/14A-queue-broker-operations.md) |
+| 14B | [Queue fairness and priority](includes/14B-queue-fairness-and-priority.md) |
 | 15 | [CDC and search indexing](includes/15-cdc-and-search-indexing.md) |
 | 16 | [Networking fundamentals](includes/16-networking-fundamentals.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
+
+## Reading paths
+
+| If you are… | Read in order |
+|-------------|---------------|
+| **New to throughput tuning** | Overview → [§1 Measurement](includes/01-measurement-and-slo.md) → [§12 Decision guide](includes/12-decision-guide-and-common-mistakes.md) → [§4 Caching](includes/04-caching-layers.md) → [§6 Async](includes/06-async-queues-workers.md) |
+| **Queue / worker scaling** | [§6 Async](includes/06-async-queues-workers.md) → [§6A Scheduled jobs](includes/06A-scheduled-and-recurring-jobs.md) → [§14 Message brokers](includes/14-message-brokers-and-queues.md) → [§14A Broker ops](includes/14A-queue-broker-operations.md) → [§14B Fairness](includes/14B-queue-fairness-and-priority.md) |
+| **Multi-region / DR(Disaster Recovery)** | [§13 Multi-region read routing](includes/13-multi-region-read-routing.md) → [§13A Write and failover](includes/13A-multi-region-write-and-failover.md) → [§10 Scale and deploy](includes/10-scale-and-deploy.md) |
+| **Overload protection** | [§9 Backpressure](includes/09-backpressure-and-limits.md) → [api-rate-limiting](../api-rate-limiting/README.md) → [resilience-patterns](../resilience-patterns/README.md) |
 
 ## See also
 

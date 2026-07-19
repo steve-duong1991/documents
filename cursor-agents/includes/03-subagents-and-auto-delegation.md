@@ -4,6 +4,23 @@ Cursor can **automatically** delegate work to subagents — but there is no glob
 
 > **Related:** Multi agent patterns → [§2](02-multi-agent.md) · Decision guide → [§4](04-decision-guide.md) · [Cursor subagents docs](https://cursor.com/docs/agent/subagents)
 
+```mermaid
+flowchart TD
+    Task[Parent agent receives task] --> BuiltIn{Built-in trigger?}
+    BuiltIn -->|large search| Explore[Explore subagent]
+    BuiltIn -->|noisy shell| Bash[Bash subagent]
+    BuiltIn -->|browser DOM| Browser[Browser subagent]
+    BuiltIn -->|no| Custom{Custom description match?}
+    Custom -->|yes| Spec[Custom subagent — verifier, debugger, …]
+    Custom -->|no| Rule{Cursor rule says delegate?}
+    Rule -->|yes| Spec
+    Rule -->|no| Self[Parent handles in main context]
+    Explore --> Summary[Summary back to parent]
+    Bash --> Summary
+    Browser --> Summary
+    Spec --> Summary
+```
+
 ---
 
 ## What auto-detects today (no setup)

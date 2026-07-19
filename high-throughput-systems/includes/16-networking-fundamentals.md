@@ -15,7 +15,7 @@ Every request pays a networking tax before your application code runs: DNS(Domai
 | **DNS routing** | Wrong record sends traffic to a dead or distant region | Health-checked, latency/geo-based records; short TTL(Time To Live) for failover |
 | **Protocol version** | HTTP(Hypertext Transfer Protocol)/1.1 head-of-line blocking vs HTTP/2 multiplexing vs HTTP/3 (QUIC(Quick UDP Internet Connections)) on lossy networks | Terminate HTTP/2 or HTTP/3 at the edge; keep origin on HTTP/1.1 or HTTP/2 if simpler |
 | **TLS termination** | Handshake and cipher CPU cost per connection | Terminate near the user (edge); reuse sessions |
-| **Anycast** | Users route to the nearest healthy point of presence automatically | Use a provider with anycast edge (CDN, DNS, DDoS scrubbing) |
+| **Anycast** | Users route to the nearest healthy point of presence automatically | Use a provider with anycast edge (CDN, DNS, DDoS(Distributed Denial of Service) scrubbing) |
 | **Connection draining** | In-flight requests dropped mid-response during deploy/scale-in | Graceful shutdown with drain window before instance termination |
 | **Keep-alive** | New TCP+TLS handshake per request wastes CPU and adds latency | Reuse connections; tune idle timeout vs churn |
 

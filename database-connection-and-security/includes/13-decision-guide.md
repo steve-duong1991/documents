@@ -43,7 +43,7 @@ flowchart TD
 | Compliance / dynamic secrets | [03](03-hcv-vault.md) | Vault database secrets engine |
 | Connection storm | [09](09-pgbouncer-proxy-password.md) + [PG §7](../../postgresql-performance/includes/07-connection-management.md) | PgBouncer |
 | mTLS(Mutual Transport Layer Security) instead of password | [10](10-mtls-client-certs.md) | Client certificates |
-| Regulated rotation + DR | [12](12-credential-rotation-and-dr.md) | Dual-active creds + restore drills |
+| Regulated rotation + DR(Disaster Recovery) | [12](12-credential-rotation-and-dr.md) | Dual-active creds + restore drills |
 
 ---
 

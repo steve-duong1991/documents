@@ -16,12 +16,22 @@ Related: [api-design §15 contract testing](../api-design-and-protection/include
 | 3 | [Contract testing boundaries](includes/03-contract-testing-boundaries.md) |
 | 4 | [Integration and E2E](includes/04-integration-and-e2e.md) |
 | 5 | [Load, soak, and resilience tests](includes/05-load-soak-resilience-tests.md) |
+| 5A | [Migration and async pipeline tests](includes/05A-migration-and-async-pipeline-tests.md) |
 | 6 | [Flaky test management](includes/06-flaky-test-management.md) |
 | 7 | [Quality gates](includes/07-quality-gates.md) |
 | 8 | [Production verification](includes/08-production-verification.md) |
 | 9 | [Decision guide](includes/09-decision-guide.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
+
+## Reading paths
+
+| If you are… | Read in order |
+|-------------|---------------|
+| **Building a test strategy from scratch** | Overview → [§1 Pyramid](includes/01-test-pyramid-and-diamond.md) → [§3 Contract testing](includes/03-contract-testing-boundaries.md) → [§7 Quality gates](includes/07-quality-gates.md) → [§9 Decision guide](includes/09-decision-guide.md) |
+| **Schema / migration safety** | [§5A Migration tests](includes/05A-migration-and-async-pipeline-tests.md) → [PG §15](../postgresql-performance/includes/15-schema-migration-checklist.md) → [deployment §12](../deployment-strategies/includes/12-schema-migrations-and-deploy.md) |
+| **Pre-release load / resilience** | [§5 Load/soak/resilience](includes/05-load-soak-resilience-tests.md) → [sre §3 capacity](../sre-and-incidents/includes/03-capacity-and-load-testing.md) → [§8 Production verification](includes/08-production-verification.md) |
+| **CI(Continuous Integration) pipeline gates** | [§7 Quality gates](includes/07-quality-gates.md) → [cicd §1](../cicd-and-environments/includes/01-ci-pipeline-design.md) → [§6 Flaky tests](includes/06-flaky-test-management.md) |
 
 ## See also
 

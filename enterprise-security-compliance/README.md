@@ -19,8 +19,11 @@ Related: [api-design-and-protection](../api-design-and-protection/README.md) (th
 | 6 | [Audit logging and retention](includes/06-audit-logging-and-retention.md) |
 | 7 | [PII and data classification](includes/07-pii-and-data-classification.md) |
 | 7A | [Erasure and DSAR playbook](includes/07A-erasure-and-dsar.md) |
+| 7B | [Consent and purpose limitation](includes/07B-consent-and-purpose-limitation.md) |
 | 8 | [Encryption policy](includes/08-encryption-policy.md) |
+| 8A | [Application encryption and KMS operations](includes/08A-application-encryption-and-kms.md) |
 | 9 | [Zero trust and least privilege](includes/09-zero-trust-least-privilege.md) |
+| 9A | [Workload identity and mTLS](includes/09A-workload-identity-and-mtls.md) |
 | 10 | [Compliance evidence](includes/10-compliance-evidence.md) |
 | 11 | [Decision guide](includes/11-decision-guide.md) |
 

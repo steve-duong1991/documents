@@ -13,6 +13,7 @@ Related: [deployment-strategies](../deployment-strategies/README.md) (how traffi
 | — | [Overview](includes/00-overview.md) |
 | 1 | [CI pipeline design](includes/01-ci-pipeline-design.md) |
 | 2 | [CD and promotion](includes/02-cd-and-promotion.md) |
+| 2A | [Preview and ephemeral environments](includes/02A-preview-and-ephemeral-environments.md) |
 | 3 | [Config vs secrets](includes/03-config-vs-secrets.md) |
 | 4 | [Feature flags as control](includes/04-feature-flags-as-control.md) |
 | 5 | [Branching and release trains](includes/05-branching-and-release-trains.md) |
@@ -23,6 +24,15 @@ Related: [deployment-strategies](../deployment-strategies/README.md) (how traffi
 | 9 | [Decision guide](includes/09-decision-guide.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
+
+## Reading paths
+
+| If you are… | Read in order |
+|-------------|---------------|
+| **Designing a CI/CD pipeline** | Overview → [§1 CI pipeline](includes/01-ci-pipeline-design.md) → [§2 CD and promotion](includes/02-cd-and-promotion.md) → [§7 Containers and health](includes/07-containers-and-health.md) → [§9 Decision guide](includes/09-decision-guide.md) |
+| **Preview / PR environments** | [§2A Preview environments](includes/02A-preview-and-ephemeral-environments.md) → [§2 CD and promotion](includes/02-cd-and-promotion.md) → [deployment-strategies](../deployment-strategies/README.md) |
+| **Platform team / paved road** | [§8 Platform boundaries](includes/08-platform-boundaries.md) → [§8A Paved-road catalog](includes/08A-paved-road-catalog.md) → [§3 Config vs secrets](includes/03-config-vs-secrets.md) |
+| **Rollback policy** | [§6 Rollback vs forward-fix](includes/06-rollback-vs-forward-fix.md) → [§4 Feature flags](includes/04-feature-flags-as-control.md) → [sre §5 alerting](../sre-and-incidents/includes/05-alerting-and-paging.md) |
 
 ## See also
 

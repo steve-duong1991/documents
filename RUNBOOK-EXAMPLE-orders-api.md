@@ -2,7 +2,7 @@
 
 Filled example for [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md). Copy structure, replace values for your service.
 
-> **Related:** SLO(Service Level Objective) rollback → [deployment-strategies/includes/13-slo-rollback-triggers.md](deployment-strategies/includes/13-slo-rollback-triggers.md) · Observability → [high-throughput-systems/includes/11-observability.md](high-throughput-systems/includes/11-observability.md) · DR restore → [postgresql-performance/includes/16-backup-restore-and-pitr.md](postgresql-performance/includes/16-backup-restore-and-pitr.md)
+> **Related:** SLO(Service Level Objective) rollback → [deployment-strategies/includes/13-slo-rollback-triggers.md](deployment-strategies/includes/13-slo-rollback-triggers.md) · Observability → [high-throughput-systems/includes/11-observability.md](high-throughput-systems/includes/11-observability.md) · DR(Disaster Recovery) restore → [postgresql-performance/includes/16-backup-restore-and-pitr.md](postgresql-performance/includes/16-backup-restore-and-pitr.md)
 
 ---
 

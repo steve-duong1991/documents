@@ -2,6 +2,15 @@
 
 > **Related:** Solution design → [§1](01-solution-design.md) · Architecture → [§2](02-solution-architecture.md) · Overview → [§0](00-overview.md)
 
+```mermaid
+flowchart TD
+    Epic[EPIC — outcome, value, metrics] --> F1[FEATURE — shippable slice]
+    Epic --> F2[FEATURE — shippable slice]
+    F1 --> US1[USER_STORY — As / I want / So that]
+    F1 --> US2[USER_STORY — Given / When / Then AC]
+    F2 --> US3[USER_STORY]
+```
+
 Copy-paste templates for backlog work. Use one layer at a time: **EPIC → FEATURE → USER_STORY**.
 
 ## Layer rules
@@ -187,7 +196,7 @@ Then I see each failed row with error reason
 - Exception queue
 
 **Out of scope / non-goals:**
-- FX conversion engine redesign
+- FX(Foreign Exchange) conversion engine redesign
 
 **Demo / done when:** A batch shows matched pairs plus an exception queue for the rest  
 

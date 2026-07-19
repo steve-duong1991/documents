@@ -14,6 +14,7 @@ Related: [architecture-decisions](../architecture-decisions/README.md) (ADRs, bo
 | 1 | [Technical vision and roadmap](includes/01-technical-vision-and-roadmap.md) |
 | 1A | [Product discovery for Tech Leads](includes/01A-product-discovery.md) |
 | 2 | [Design reviews](includes/02-design-reviews.md) |
+| 2A | [Production readiness facilitation](includes/02A-production-readiness-facilitation.md) |
 | 3 | [Code review standards](includes/03-code-review-standards.md) |
 | 4 | [Mentoring and leveling](includes/04-mentoring-and-leveling.md) |
 | 5 | [Tech debt portfolio](includes/05-tech-debt-portfolio.md) |
@@ -26,6 +27,15 @@ Related: [architecture-decisions](../architecture-decisions/README.md) (ADRs, bo
 | 11 | [Decision guide](includes/11-decision-guide.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
+
+## Reading paths
+
+| If you are… | Read in order |
+|-------------|---------------|
+| **New Tech Lead** | Overview → [§1 Vision and roadmap](includes/01-technical-vision-and-roadmap.md) → [§10 Ownership](includes/10-ownership-and-escalation.md) → [§11 Decision guide](includes/11-decision-guide.md) |
+| **Running design reviews** | [§2 Design reviews](includes/02-design-reviews.md) → [architecture-decisions](../architecture-decisions/README.md) → [§6 Estimation and risk](includes/06-estimation-and-risk.md) |
+| **Production readiness / launch** | [§2A PRR facilitation](includes/02A-production-readiness-facilitation.md) → [deployment §14A](../deployment-strategies/includes/14A-production-readiness-review.md) → [sre §10A hypercare](../sre-and-incidents/includes/10A-hypercare-checklist.md) |
+| **Cross-team API(Application Programming Interface) ownership** | [§8 Cross-team API ownership](includes/08-cross-team-api-ownership.md) → [api-design §14](../api-design-and-protection/includes/14-api-versioning-and-deprecation.md) → [§7 Stakeholder communication](includes/07-stakeholder-communication.md) |
 
 ## See also
 

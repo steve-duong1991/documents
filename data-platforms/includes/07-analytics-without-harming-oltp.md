@@ -2,7 +2,7 @@
 
 Protect the primary OLTP(Online Transaction Processing) database from analytical load — dashboards, exports, and "quick SQL(Structured Query Language)" that become production incidents.
 
-> **Related:** OLTP vs OLAP → [§1](01-oltp-vs-olap.md) · Batch patterns → [HTS §8](../../high-throughput-systems/includes/08-batch-and-etl.md) · PG pooling → [PG §7](../../postgresql-performance/includes/07-connection-management.md) · Measurement → [HTS §1](../../high-throughput-systems/includes/01-measurement-and-slo.md)
+> **Related:** OLTP vs OLAP(Online Analytical Processing) → [§1](01-oltp-vs-olap.md) · Batch patterns → [HTS §8](../../high-throughput-systems/includes/08-batch-and-etl.md) · PG pooling → [PG §7](../../postgresql-performance/includes/07-connection-management.md) · Measurement → [HTS §1](../../high-throughput-systems/includes/01-measurement-and-slo.md)
 
 ---
 

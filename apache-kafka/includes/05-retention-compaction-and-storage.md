@@ -64,7 +64,7 @@ flowchart LR
 | Full event history for replay | **Delete** with long retention |
 | Only latest state per entity | **Compact** |
 | Audit — nothing dropped early | **Delete** + long `retention.ms`; legal hold via mirror |
-| GDPR delete user | Tombstone on compacted topic + consumer handling |
+| GDPR(General Data Protection Regulation) delete user | Tombstone on compacted topic + consumer handling |
 
 Domain event store stays in **PostgreSQL** — Kafka retention is not unlimited archive unless sized and governed.
 
@@ -101,7 +101,7 @@ flowchart LR
 | **Remote fetch SLO(Service Level Objective)** | Alert when remote fetch latency or error rate spikes; lag runbooks must mention cold-tier catch-up |
 | **Broker disk** | Still alert at 80% local — tiering does not remove hot-path disk risk |
 | **Compaction** | Prefer delete-retention topics for long cold history; compacted changelogs stay mostly hot |
-| **DR / MM2(MirrorMaker 2)** | Mirror primary cluster; do not assume remote objects alone are your failover — [§10 DR](10-operations-dr-security-and-observability.md) |
+| **DR(Disaster Recovery) / MM2(MirrorMaker 2)** | Mirror primary cluster; do not assume remote objects alone are your failover — [§10 DR](10-operations-dr-security-and-observability.md) |
 | **Cost** | Object storage + GET fees vs shorter Kafka retention + warehouse land — [finops §4](../../finops-and-cost/includes/04-storage-and-retention-cost.md) |
 
 **Rule of thumb:** Tiered storage is for **keeping Kafka as the replay window** cheaper — not a substitute for a governed warehouse archive or WORM(Write Once Read Many) security audit store ([ESC §6](../../enterprise-security-compliance/includes/06-audit-logging-and-retention.md)).

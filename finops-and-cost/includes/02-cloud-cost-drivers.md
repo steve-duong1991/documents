@@ -98,7 +98,7 @@ Idle **provisioned** capacity is a common leak; serverless can be cheaper at low
 | Mistake | Fix |
 |---------|-----|
 | Optimize CPU while egress dominates | Sort bill first |
-| Cross-region "for DR" without RTO(Recovery Time Objective) need | Match [RPO/RTO](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
+| Cross-region "for DR(Disaster Recovery)" without RTO(Recovery Time Objective) need | Match [RPO/RTO](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
 | Unlimited log retention | Tier and drop |
 | One giant shared account | Tagging / accounts — [§6](06-cost-visibility-and-budgets.md) |
 

@@ -4,6 +4,17 @@
 
 > **Related:** Protection layers → [§2 API protection](02-api-protection.md) · OpenAPI contract → [§7 OpenAPI / Swagger](07-openapi-swagger.md) · Idempotency → [§13 Idempotency](13-idempotency.md) · Versioning → [§14 API versioning](14-api-versioning-and-deprecation.md)
 
+```mermaid
+flowchart LR
+    C[Client] -->|GET /v1/users| Col[/users collection/]
+    C -->|GET /v1/users/123| Res[/users/123 resource/]
+    C -->|POST /v1/orders/123/cancel| Sub[/orders/123/cancel sub-resource command/]
+    Col --> SVC[Service layer]
+    Res --> SVC
+    Sub --> SVC
+    SVC --> DB[(Persistence)]
+```
+
 ## What it is
 
 API design defines **how clients interact with your system**: URLs, HTTP methods, request/response shapes, errors, pagination, and versioning. Good design is **predictable**, **consistent**, and **hard to misuse**.

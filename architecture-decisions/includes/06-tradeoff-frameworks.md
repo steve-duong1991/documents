@@ -31,7 +31,7 @@ flowchart TD
 |--------|----------|-----|
 | **CP** | May refuse requests to avoid split-brain | Ledger, inventory reservation |
 | **AP** | Keep serving; heal later | Social feed, recommendations |
-| **CA** | Only meaningful when partitions are assumed absent | Single-primary LAN OLTP |
+| **CA** | Only meaningful when partitions are assumed absent | Single-primary LAN OLTP(Online Transaction Processing) |
 
 You always “have” partition tolerance as a design concern in distributed systems; CAP forces the **C vs A** priority under partition.
 

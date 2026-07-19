@@ -12,7 +12,7 @@ Org-scale schema and data-platform changes need **expand/contract**, **multi-sys
 
 | Change | Coordinate with |
 |--------|-----------------|
-| Add/rename OLTP column | App dual-write window, CDC connectors, warehouse models |
+| Add/rename OLTP(Online Transaction Processing) column | App dual-write window, CDC connectors, warehouse models |
 | Drop column / table | All readers offline first — contract phase |
 | Change event payload | Schema Registry compatibility + consumers |
 | Search mapping break | Blue/green index before cutover |

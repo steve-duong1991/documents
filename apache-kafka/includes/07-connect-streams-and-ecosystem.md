@@ -2,7 +2,7 @@
 
 Beyond custom producers/consumers, **Kafka Connect** integrates external systems and **Kafka Streams** builds stream processing with embedded state.
 
-> **Related:** LSM(Log-Structured Merge) state stores → [tree §4 LSM](../../tree-and-index-structures/includes/04-lsm-trees.md) · CDC(Change Data Capture) → [§8 integration](08-integration-patterns.md) · Mirror/DR → [§10 DR](10-operations-dr-security-and-observability.md#disaster-recovery) · Active-active → [§10](10-operations-dr-security-and-observability.md#active-active-multi-region)
+> **Related:** LSM(Log-Structured Merge) state stores → [tree §4 LSM](../../tree-and-index-structures/includes/04-lsm-trees.md) · CDC(Change Data Capture) → [§8 integration](08-integration-patterns.md) · Mirror/DR(Disaster Recovery) → [§10 DR](10-operations-dr-security-and-observability.md#disaster-recovery) · Active-active → [§10](10-operations-dr-security-and-observability.md#active-active-multi-region)
 
 ---
 

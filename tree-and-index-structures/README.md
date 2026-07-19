@@ -20,6 +20,14 @@ Related: [postgresql-performance](../postgresql-performance/README.md) (PostgreS
 
 > **On GitHub:** Click a topic in the table above for the full section.
 
+## Reading paths
+
+| If you are… | Read in order |
+|-------------|---------------|
+| **PostgreSQL index theory** | Overview → [§1 B+](includes/01-b-trees-and-b-plus.md) → [PG §2 indexing](../postgresql-performance/includes/02-indexing.md) → [§5 decision](includes/05-decision-guides.md) |
+| **Write-heavy / LSM** | [§4 LSM](includes/04-lsm-trees.md) → [§6 amplification](includes/06-amplification-and-related-topics.md) → [HTS DB throughput](../high-throughput-systems/README.md) → [nosql](../nosql-and-key-value-stores/README.md) |
+| **In-memory / specialized** | [§2 in-memory](includes/02-in-memory-trees.md) → [§3 specialized](includes/03-specialized-trees.md) → [§5](includes/05-decision-guides.md) |
+
 ## See also
 
 | Guide | Topics |

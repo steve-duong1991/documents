@@ -27,6 +27,23 @@ Enterprise identity foundations for APIs: how IAM governs access, how RBAC assig
 
 For **how clients authenticate** (OAuth, API keys, JWT validation), see [Auth model](04-auth-model.md).
 
+```mermaid
+flowchart LR
+    subgraph IdP["Identity source"]
+        AD[AD / IdP — 12A]
+    end
+    subgraph IAM["IAM lifecycle"]
+        AuthN[AuthN — who are you?]
+        AuthZ[AuthZ — allowed? — 12B / 12D]
+        Prov[Provisioning — 12C SCIM / JML]
+    end
+    AD --> AuthN
+    AuthN --> AuthZ
+    AuthN --> Prov
+    Prov --> AuthZ
+    AuthZ --> GW[Gateway + app enforcement]
+```
+
 ---
 
 ## What IAM is

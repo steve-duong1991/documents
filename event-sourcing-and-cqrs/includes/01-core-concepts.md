@@ -120,7 +120,7 @@ Events are **never updated or deleted** in the normal model.
 |------|----------|
 | Bug in past event schema | **Upcast** on read — [§8 Event schema evolution](08-event-schema-evolution.md) |
 | Business mistake | Append **compensating event** (`PaymentRefunded`), not DELETE |
-| GDPR / right to erasure | Tombstone events, crypto-shredding, or legal retention policy — plan early |
+| GDPR(General Data Protection Regulation) / right to erasure | Tombstone events, crypto-shredding, or legal retention policy — plan early |
 
 ---
 

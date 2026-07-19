@@ -62,7 +62,7 @@ flowchart TD
 | **Disable feature flag** | Bad feature, stable binary | _flag name, dashboard_ |
 | **Scale horizontally** | CPU OK, queue/lag high | _HPA / manual replica count_ |
 | **Enable backpressure** | Overload | _rate limit tier, 429, queue pause_ |
-| **Failover DB** | Primary unavailable | _link to DR runbook §12_ |
+| **Failover DB** | Primary unavailable | _link to DR(Disaster Recovery) runbook §12_ |
 
 ---
 

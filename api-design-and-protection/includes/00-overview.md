@@ -170,7 +170,7 @@ See [Load Balancer, API Gateway & Entry Architecture](03-api-gateway.md) for flo
 ## Pros of this layered approach
 
 - Each layer has a single responsibility — easier to reason about and audit
-- Failures are contained (edge absorbs DDoS; gateway absorbs auth/rate abuse)
+- Failures are contained (edge absorbs DDoS(Distributed Denial of Service); gateway absorbs auth/rate abuse)
 - Design contract (OpenAPI) stays separate from runtime enforcement (gateway)
 - Teams can evolve services behind a stable `/v1` surface
 

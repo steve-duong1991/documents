@@ -41,7 +41,7 @@ flowchart LR
 | **Outbox** | Explicit domain events | App must write outbox row |
 | **Batch snapshot** | Simple rebuild | High lag; load spikes |
 
-Do **not** `INSERT` into search inside the same HTTP(Hypertext Transfer Protocol) handler as the OLTP write — partial failure leaves split brain.
+Do **not** `INSERT` into search inside the same HTTP(Hypertext Transfer Protocol) handler as the OLTP(Online Transaction Processing) write — partial failure leaves split brain.
 
 Deep dive: [HTS §15](../../high-throughput-systems/includes/15-cdc-and-search-indexing.md).
 

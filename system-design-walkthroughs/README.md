@@ -22,6 +22,7 @@ Related: [high-throughput-systems](../high-throughput-systems/README.md) (throug
 | 9 | [Video streaming basics](includes/09-video-streaming-basics.md) |
 | 9A | [CDN and media delivery](includes/09A-cdn-and-media-delivery.md) |
 | 10 | [Decision guide](includes/10-decision-guide.md) |
+| 11 | [Checkout and inventory](includes/11-checkout-and-inventory.md) |
 
 > **On GitHub:** Click a topic in the table above for the full section.
 

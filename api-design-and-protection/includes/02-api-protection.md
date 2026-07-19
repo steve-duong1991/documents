@@ -26,7 +26,7 @@ flowchart TB
 
 | Layer | Responsibilities | Typical tools |
 |-------|------------------|---------------|
-| **Edge** | DDoS, WAF(Web Application Firewall), bot management, geo rules | Cloudflare, AWS Shield, Fastly |
+| **Edge** | DDoS(Distributed Denial of Service), WAF(Web Application Firewall), bot management, geo rules | Cloudflare, AWS Shield, Fastly |
 | **Gateway** | TLS(Transport Layer Security), authN, rate limits, routing, size limits | Kong, AWS API Gateway, Azure APIM |
 | **Load balancer** | Health checks, scale replicas | AWS ALB/NLB, NGINX, K8s Service |
 | **Application** | authZ, validation, idempotency, business rules | Your service code |

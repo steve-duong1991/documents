@@ -75,7 +75,7 @@ Types: `dependencies`, `ndistinct`, `mcv` (most common values).
 
 ## Best practices
 
-- Trust autovacuum for steady-state OLTP — manual `ANALYZE` mainly after bulk changes
+- Trust autovacuum for steady-state OLTP(Online Transaction Processing) — manual `ANALYZE` mainly after bulk changes
 - Compare estimated vs actual rows in every `EXPLAIN ANALYZE`
 - Don't raise statistics target globally — per-column is enough
 - On PostgreSQL 14+, consider **`pg_stat_statements`** + auto-explain for plan regression detection

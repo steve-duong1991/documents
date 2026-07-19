@@ -10,7 +10,7 @@ Practical reference docs for building and operating production APIs and data sys
 
 | Guide | What it covers |
 |-------|----------------|
-| [apache-kafka](apache-kafka/README.md) | Distributed commit log: internals, schema formats, setup, producers/consumers, integration, DR, testing |
+| [apache-kafka](apache-kafka/README.md) | Distributed commit log: internals, schema formats, setup, producers/consumers, integration, DR(Disaster Recovery), testing |
 | [api-design-and-protection](api-design-and-protection/README.md) | REST(Representational State Transfer) design, protection, gateway, auth, identity, async, idempotency, object storage uploads, stateless architecture |
 | [api-rate-limiting](api-rate-limiting/README.md) | Limiter algorithms, scope, deployment layers, response strategies |
 | [architecture-decisions](architecture-decisions/README.md) | System shape, Team Topologies, strangler/program modernization, ADRs/ARB(Architecture Review Board), tradeoffs, capacity, multi-tenant, failure domains, org/stage/pricing fit |
@@ -18,7 +18,7 @@ Practical reference docs for building and operating production APIs and data sys
 | [cicd-and-environments](cicd-and-environments/README.md) | CI(Continuous Integration)/CD(Continuous Delivery) pipelines, env promotion, config vs secrets, flags, branching, rollback, container health, platform boundaries |
 | [cursor-agents](cursor-agents/README.md) | Single vs multi agent, parallel Agents Window, subagents, auto-delegation |
 | [cursor-workflows](cursor-workflows/README.md) | Cursor playbook: design → architecture → coding → review → ship → operate (MCP, mocks, stack rules) |
-| [data-platforms](data-platforms/README.md) | Beyond one OLTP DB: warehouse/lake, search, Redis roles, caching coherence, ownership, migrations, analytics isolation |
+| [data-platforms](data-platforms/README.md) | Beyond one OLTP(Online Transaction Processing) DB: warehouse/lake, search, Redis roles, caching coherence, ownership, migrations, analytics isolation |
 | [database-connection-and-security](database-connection-and-security/README.md) | DB credentials, TLS(Transport Layer Security), Vault, cloud IAM(Identity and Access Management), PgBouncer, production connection patterns |
 | [deployment-strategies](deployment-strategies/README.md) | Rolling, blue/green, canary, feature flags, GitOps(Git Operations), progressive delivery, feature→PROD playbook |
 | [distributed-systems-primitives](distributed-systems-primitives/README.md) | CAP(Consistency, Availability, Partition Tolerance)/PACELC mechanisms, consistent hashing, unique IDs, consensus, service discovery, Bloom/HLL, clocks |
@@ -44,7 +44,7 @@ Practical reference docs for building and operating production APIs and data sys
 <a id="how-the-guides-relate"></a>
 ## How the guides relate
 
-End-to-end **request / async / release / incident** pictures → [VISUAL-INDEX.md](VISUAL-INDEX.md). Guide relationships are split below so each view stays readable.
+End-to-end pictures → [VISUAL-INDEX.md](VISUAL-INDEX.md) (12 spines). Guide relationships are split below so each view stays readable. Overlapping topics → [Topic ownership](#topic-ownership).
 
 ### Delivery view
 
@@ -126,12 +126,34 @@ Pictures before prose — walk the [VISUAL-INDEX](VISUAL-INDEX.md) spines, then 
 1. [Request path](VISUAL-INDEX.md#request-path) → [API gateway flows](api-design-and-protection/includes/03A-api-gateway-request-flows.md) · [DB connection overview](database-connection-and-security/includes/00-overview.md)
 2. [Async write](VISUAL-INDEX.md#async-write) → [outbox/inbox](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md)
 3. [Release](VISUAL-INDEX.md#release) → [feature→PROD playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md) · [hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md)
-4. [Incident](VISUAL-INDEX.md#incident) → [incident command](sre-and-incidents/includes/06-incident-command.md)
+4. [Incident](VISUAL-INDEX.md#incident) → [incident command](sre-and-incidents/includes/06-incident-command.md) · [comms](sre-and-incidents/includes/06A-incident-communications.md) · [SEV catalog](sre-and-incidents/includes/01A-critical-journeys-and-sev-catalog.md)
 5. [Identity](VISUAL-INDEX.md#identity) → [OAuth grants](auth-oauth-oidc-and-login-security/includes/01-oauth2-grants-and-flows.md) · [fine AuthZ](api-design-and-protection/includes/12D-fine-grained-authz.md)
 6. [Data platform](VISUAL-INDEX.md#data-platform) → [OLTP vs OLAP](data-platforms/includes/01-oltp-vs-olap.md) · [search ops](data-platforms/includes/02A-search-cluster-operations.md)
-7. [DR / failover](VISUAL-INDEX.md#dr--failover) → [DR playbook](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) · [multi-region write](high-throughput-systems/includes/13A-multi-region-write-and-failover.md)
-8. [Realtime fan-out](VISUAL-INDEX.md#realtime-fan-out) → [connection fan-out](realtime-at-scale/includes/01-connection-fanout.md)
+7. [DR / failover](VISUAL-INDEX.md#dr--failover) → [DR hub](sre-and-incidents/includes/12-disaster-recovery.md) · [playbook](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) · [multi-region write](high-throughput-systems/includes/13A-multi-region-write-and-failover.md)
+8. [Realtime fan-out](VISUAL-INDEX.md#realtime-fan-out) → [connection fan-out](realtime-at-scale/includes/01-connection-fanout.md) · [reconnect storms](realtime-at-scale/includes/01A-reconnect-storms-and-drain.md)
 9. [Money movement](VISUAL-INDEX.md#money-movement) → [ledger](payments-and-fintech/includes/03-ledger-and-double-entry.md) · [refunds](payments-and-fintech/includes/03A-refunds-payouts-settlement.md)
+10. [Schema migrate + deploy](VISUAL-INDEX.md#schema-migrate--deploy) → [deploy §12](deployment-strategies/includes/12-schema-migrations-and-deploy.md) · [PG §15](postgresql-performance/includes/15-schema-migration-checklist.md)
+11. [Cache coherence](VISUAL-INDEX.md#cache-coherence) → [HTS §4](high-throughput-systems/includes/04-caching-layers.md) · [data-platforms §4](data-platforms/includes/04-caching-end-to-end.md) · [api §1A](api-design-and-protection/includes/01A-http-caching-and-conditional-requests.md)
+12. [Multi-tenant request](VISUAL-INDEX.md#multi-tenant-request) → [auth §2d](auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · [api §16](api-design-and-protection/includes/16-multi-tenant-apis.md) · [PG §17](postgresql-performance/includes/17-row-level-security-multi-tenant.md)
+
+<a id="topic-ownership"></a>
+
+### Topic ownership
+
+When the same concern appears in multiple guides, prefer this home (siblings are cross-linked with Scope blocks):
+
+| Concern | Primary home | Sibling lens |
+|---------|--------------|--------------|
+| Rate algorithms / layers | [api-rate-limiting](api-rate-limiting/README.md) | Product tiers → [api-design §5](api-design-and-protection/includes/05-rate-limit-tiers.md) |
+| Idempotency (HTTP) | [api-design §13](api-design-and-protection/includes/13-idempotency.md) | Money → [payments §2](payments-and-fintech/includes/02-idempotency-and-double-charge.md) · Resilience → [resilience §6](resilience-patterns/includes/06-idempotency-systemwide.md) |
+| Caching | [HTS §4](high-throughput-systems/includes/04-caching-layers.md) | Platform coherence → [data-platforms §4](data-platforms/includes/04-caching-end-to-end.md) · HTTP(Hypertext Transfer Protocol)/CDN(Content Delivery Network) → [api §1A](api-design-and-protection/includes/01A-http-caching-and-conditional-requests.md) |
+| Async / jobs | [api-design §10](api-design-and-protection/includes/10-async-patterns.md) | Brokers → [HTS §14](high-throughput-systems/includes/14-message-brokers-and-queues.md) · Outbox → [ES §5A](event-sourcing-and-cqrs/includes/05A-outbox-and-inbox.md) |
+| AuthN(Authentication) / OIDC | [auth-oauth-oidc](auth-oauth-oidc-and-login-security/README.md) | API client matrix → [api-design §4](api-design-and-protection/includes/04-auth-model.md) · BFF UX → [fullstack §7](fullstack-bff-and-clients/includes/07-auth-ux.md) |
+| AuthZ(Authorization) fine-grained | [api-design §12D](api-design-and-protection/includes/12D-fine-grained-authz.md) | Multi-tenant APIs → [§16](api-design-and-protection/includes/16-multi-tenant-apis.md) |
+| Multi-tenant isolation | [architecture §10](architecture-decisions/includes/10-multi-tenant-system-models.md) | PG → [§17/§18](postgresql-performance/README.md) · API → [§16](api-design-and-protection/includes/16-multi-tenant-apis.md) |
+| DR / failover | [sre §12](sre-and-incidents/includes/12-disaster-recovery.md) | Playbook → [§12A](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) · Credentials → [DB §12](database-connection-and-security/includes/12-credential-rotation-and-dr.md) |
+| Metering / entitlements | [api-design §5A](api-design-and-protection/includes/05A-metering-entitlements-and-billable-events.md) | Unit economics → [finops §1](finops-and-cost/includes/01-unit-economics.md) · Pricing fit → [arch §14](architecture-decisions/includes/14-org-stage-and-pricing-fit.md) |
+| Edge abuse / WAF(Web Application Firewall) | [api-design §2A](api-design-and-protection/includes/02A-edge-abuse-waf-and-bots.md) | Limiters → [api-rate-limiting](api-rate-limiting/README.md) · Login → [auth §5](auth-oauth-oidc-and-login-security/includes/05-login-security-playbook.md) |
 
 ### Tech Lead Fullstack (start here)
 
@@ -186,8 +208,10 @@ Optimize in order: measure, reduce work, fix the database hot path, then cache a
    - Spines → [VISUAL-INDEX](VISUAL-INDEX.md)
 2. [postgresql-performance](postgresql-performance/README.md) — indexes, queries, pooling, replicas
    - Read [§9 scale-out terminology](postgresql-performance/includes/09-views-functions-and-scale-out-terminology.md) first if partitioning vs replication vs sharding is unclear
+   - Last-resort write scale → [§19 sharding](postgresql-performance/includes/19-sharding-and-resharding.md)
 3. [tree-and-index-structures](tree-and-index-structures/README.md) — B+ vs LSM when writes dominate
 4. Global users → [HTS §13 multi-region](high-throughput-systems/includes/13-multi-region-read-routing.md) + [PG §14 consistency](postgresql-performance/includes/14-consistency-promises-and-costs.md)
+5. Spine → [VISUAL-INDEX — Cache coherence](VISUAL-INDEX.md#cache-coherence)
 
 ### Global scale and consistency
 
@@ -197,7 +221,7 @@ Multi-region reads, consistency promises, and DR before expanding globally.
 2. [HTS §13A write/failover](high-throughput-systems/includes/13A-multi-region-write-and-failover.md) — sticky primary, cells vs multi-master, promote sequence
 3. [architecture §10A cells/residency](architecture-decisions/includes/10A-regional-cells-and-residency.md) — tenant→cell pins, what not to replicate
 4. [postgresql-performance §14 consistency](postgresql-performance/includes/14-consistency-promises-and-costs.md) — read-your-writes, staleness, costs
-5. [sre §12A DR playbook](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) — orchestrated region/primary failover + RACI
+5. [sre §12A DR playbook](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) — orchestrated region/primary failover + RACI(Responsible, Accountable, Consulted, Informed)
 6. [database-connection-and-security §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md) — RPO(Recovery Point Objective)/RTO(Recovery Time Objective), credential drills
 7. [deployment-strategies](deployment-strategies/README.md) — safe deploy during regional failover
 8. Spine → [VISUAL-INDEX — DR / failover](VISUAL-INDEX.md#dr--failover)
@@ -231,7 +255,7 @@ Deep dive on Apache Kafka — setup, schema choice, semantics, and integration w
 
 Security review, overload protection, and operational safety nets.
 
-1. [api-design-and-protection §2 protection](api-design-and-protection/includes/02-api-protection.md) + [§6 threat model](api-design-and-protection/includes/06-threat-model.md)
+1. [api-design-and-protection §2 protection](api-design-and-protection/includes/02-api-protection.md) + [§2A edge abuse/WAF](api-design-and-protection/includes/02A-edge-abuse-waf-and-bots.md) + [§6 threat model](api-design-and-protection/includes/06-threat-model.md)
 2. [auth-oauth-oidc-and-login-security](auth-oauth-oidc-and-login-security/README.md) + [api-design §12 identity](api-design-and-protection/includes/12-identity-rbac-iam-ad.md) + [§12C SCIM/JML](api-design-and-protection/includes/12C-scim-and-jml-provisioning.md) + [§12D fine AuthZ](api-design-and-protection/includes/12D-fine-grained-authz.md)
 3. [database-connection-and-security](database-connection-and-security/README.md) — network, TLS, secrets, cloud identity
 4. [enterprise-security-compliance](enterprise-security-compliance/README.md) — SDLC gates, supply chain, audit/PII(Personally Identifiable Information), [§7A erasure/DSAR](enterprise-security-compliance/includes/07A-erasure-and-dsar.md), compliance evidence
@@ -302,7 +326,7 @@ Triage saturation-first, rollback, and DR when alerts fire.
 2. [RUNBOOK-TEMPLATE.md](RUNBOOK-TEMPLATE.md) or [example orders-api runbook](RUNBOOK-EXAMPLE-orders-api.md)
 3. [high-throughput-systems §11 observability](high-throughput-systems/includes/11-observability.md) — triage order, RED(Rate, Errors, Duration)/USE(Utilization, Saturation, Errors), tracing · [§11A OTel/cardinality](high-throughput-systems/includes/11A-opentelemetry-and-cardinality.md) · platform product → [sre §4A](sre-and-incidents/includes/04A-observability-platform.md)
 4. Spines → [VISUAL-INDEX — Incident](VISUAL-INDEX.md#incident) · After a ship → [sre §10A hypercare](sre-and-incidents/includes/10A-hypercare-checklist.md) (SLOs + business KPI(Key Performance Indicator) + CX)
-5. Region/primary down → [sre §12A DR playbook](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) · [VISUAL-INDEX — DR](VISUAL-INDEX.md#dr--failover)
+5. Region/primary down → [sre §12 DR](sre-and-incidents/includes/12-disaster-recovery.md) · [§12A playbook](sre-and-incidents/includes/12A-disaster-recovery-playbook.md) · [VISUAL-INDEX — DR](VISUAL-INDEX.md#dr--failover) · Comms → [§06A](sre-and-incidents/includes/06A-incident-communications.md)
 6. [deployment-strategies §13 SLO rollback](deployment-strategies/includes/13-slo-rollback-triggers.md) + [cicd-and-environments §6](cicd-and-environments/includes/06-rollback-vs-forward-fix.md)
 7. [postgresql-performance §16 backup/PITR](postgresql-performance/includes/16-backup-restore-and-pitr.md) + [database-connection §12 DR](database-connection-and-security/includes/12-credential-rotation-and-dr.md)
 
@@ -310,8 +334,8 @@ Triage saturation-first, rollback, and DR when alerts fire.
 
 Build once, promote digests, progressive expose, and undo safely.
 
-1. [deployment-strategies §14 feature to PROD playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md) — ordered gates design → canary → runbook/drill
-2. [cicd-and-environments](cicd-and-environments/README.md) — pipeline, promotion, config/secrets, flags, rollback · paved road → [§8A](cicd-and-environments/includes/08A-paved-road-catalog.md)
+1. [deployment-strategies §14 feature to PROD playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md) — ordered gates design → canary → runbook/drill · PRR(Production Readiness Review) → [§14A](deployment-strategies/includes/14A-production-readiness-review.md)
+2. [cicd-and-environments](cicd-and-environments/README.md) — pipeline, promotion, config/secrets, flags, rollback · paved road → [§8A](cicd-and-environments/includes/08A-paved-road-catalog.md) · preview envs → [§2A](cicd-and-environments/includes/02A-preview-and-ephemeral-environments.md)
 3. [deployment-strategies](deployment-strategies/README.md) — rolling, canary, blue/green, progressive delivery · flag ops → [§7A](deployment-strategies/includes/07A-feature-flag-operations.md)
 4. [testing-strategy](testing-strategy/README.md) — pyramid, gates, production verification
 5. [sre-and-incidents §1–§2](sre-and-incidents/includes/01-sli-slo-sla.md) — SLOs and error-budget gates on release
@@ -372,9 +396,10 @@ Time-series, graph, vector/RAG, feature serving, and durable workflows — only 
 Money movement hardening beyond generic idempotency.
 
 1. [payments-and-fintech](payments-and-fintech/README.md) — [§1 PCI scope](payments-and-fintech/includes/01-pci-scope-reduction.md) → [§2 double-charge](payments-and-fintech/includes/02-idempotency-and-double-charge.md)
-2. [§3 ledger](payments-and-fintech/includes/03-ledger-and-double-entry.md) + [§3A refunds/payouts/settlement](payments-and-fintech/includes/03A-refunds-payouts-settlement.md) + [event-sourcing §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
-3. [§4 fraud/reconciliation](payments-and-fintech/includes/04-fraud-and-reconciliation.md) + [enterprise-security-compliance](enterprise-security-compliance/README.md)
-4. Spine → [VISUAL-INDEX — Money movement](VISUAL-INDEX.md#money-movement)
+2. [§3 ledger](payments-and-fintech/includes/03-ledger-and-double-entry.md) + [§3A refunds/payouts/settlement](payments-and-fintech/includes/03A-refunds-payouts-settlement.md) + [§3B multi-currency/FX](payments-and-fintech/includes/03B-multi-currency-and-fx.md) + [event-sourcing §7 sagas](event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md)
+3. [§4 fraud/reconciliation](payments-and-fintech/includes/04-fraud-and-reconciliation.md) + [§4A disputes/chargebacks](payments-and-fintech/includes/04A-disputes-and-chargebacks.md) + [enterprise-security-compliance](enterprise-security-compliance/README.md)
+4. Practice → [system-design §11 checkout/inventory](system-design-walkthroughs/includes/11-checkout-and-inventory.md)
+5. Spine → [VISUAL-INDEX — Money movement](VISUAL-INDEX.md#money-movement)
 
 ### Media uploads and edge networking
 
@@ -432,6 +457,7 @@ Choose isolation model, then enforce it in PostgreSQL (or Dynamo-style keys) and
 7. [nosql-and-key-value-stores §3](nosql-and-key-value-stores/includes/03-dynamo-style-multi-tenant.md) — when the primary is key-value
 8. [api-design-and-protection §16](api-design-and-protection/includes/16-multi-tenant-apis.md) — claim binding, cache/queue prefixes
 9. Async bus → [apache-kafka §2 multi-tenant](apache-kafka/includes/02-topics-partitions-and-replication.md#multi-tenant-isolation)
+10. Spine → [VISUAL-INDEX — Multi-tenant request](VISUAL-INDEX.md#multi-tenant-request)
 
 ### Cursor agents
 
@@ -483,7 +509,7 @@ documents/
 ├── CHANGELOG.md
 ├── RUNBOOK-TEMPLATE.md
 ├── acronyms.json          ← acronym registry for expand-acronyms.py
-├── VISUAL-INDEX.md        ← nine system spines (request / async / release / incident / identity / data / DR / realtime / money)
+├── VISUAL-INDEX.md        ← twelve system spines (+ migrate/deploy, cache, multi-tenant)
 ├── Makefile
 ├── .cursor/               ← agent rules, hooks, doc-reviewer (see cursor-agents guide)
 ├── scripts/

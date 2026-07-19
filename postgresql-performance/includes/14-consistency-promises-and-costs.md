@@ -12,7 +12,7 @@ What strong consistency guarantees, what it costs in latency and scale, and how 
 |------|---------|-----------------|
 | **ACID (single primary)** | Committed writes are durable; reads see committed data in transaction order | PostgreSQL primary |
 | **Linearizability** | Every operation appears instantaneous; no stale reads after a completed write | Distributed consensus (Raft, Paxos) |
-| **Serializability** | Concurrent transactions behave as if run one at a time | Heavy OLTP under contention |
+| **Serializability** | Concurrent transactions behave as if run one at a time | Heavy OLTP(Online Transaction Processing) under contention |
 | **Read-your-writes** | A client always sees its own recent writes | Post-login, post-checkout flows |
 | **Eventual consistency** | Replicas converge given enough time; reads may lag | Async replicas, caches, projections |
 

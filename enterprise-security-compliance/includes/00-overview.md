@@ -14,7 +14,7 @@ This guide covers how engineering teams **prove and operate** security controls:
 | Trust dependencies and images | [§4 Supply chain](04-supply-chain-security.md) | SBOM(Software Bill of Materials), signing |
 | API keys, signing secrets, cloud keys | [§5 Secrets beyond DB](05-secrets-beyond-database.md) | Vault / cloud secret manager |
 | Prove who did what | [§6 Audit logging](06-audit-logging-and-retention.md) | Retention + access control on logs |
-| GDPR-style minimization | [§7 PII](07-pii-and-data-classification.md) | Classification + retention |
+| GDPR(General Data Protection Regulation)-style minimization | [§7 PII](07-pii-and-data-classification.md) | Classification + retention |
 | Keys, TLS(Transport Layer Security), field crypto | [§8 Encryption](08-encryption-policy.md) | KMS(Key Management Service) ownership |
 | Identity everywhere | [§9 Zero trust](09-zero-trust-least-privilege.md) | IAM(Identity and Access Management) + mTLS(Mutual Transport Layer Security) |
 | Auditor / customer asks | [§10 Compliance evidence](10-compliance-evidence.md) | Map controls → artifacts |

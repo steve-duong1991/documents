@@ -70,6 +70,6 @@ flowchart TB
 |---------|-----|
 | “Shared” API with no owner | Name provider team |
 | Breaking field in place | Version + deprecation clock |
-| Consumers paging provider for client bugs | Clear RACI in runbook |
+| Consumers paging provider for client bugs | Clear RACI(Responsible, Accountable, Consulted, Informed) in runbook |
 | No contract tests across teams | Pact/schema verify — testing §3 + api §15 |
 | Informal Slack-only API changes | Changelog + review |

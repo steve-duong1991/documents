@@ -32,7 +32,7 @@ PostgreSQL performance work follows a predictable order: **measure first**, then
 
 ## Default recommendation
 
-For most OLTP workloads:
+For most OLTP(Online Transaction Processing) workloads:
 
 1. Enable **`pg_stat_statements`** and find the top queries by total time
 2. Run **`EXPLAIN (ANALYZE, BUFFERS)`** on each slow query

@@ -32,7 +32,7 @@ flowchart TD
 |----------|----------------------|
 | New checkout flow, first time accepting cards | Hosted fields/SDK tokenization ([§1](01-pci-scope-reduction.md)); never touch raw PAN(Primary Account Number) server-side |
 | Mobile client with unreliable networks retrying charges | Client `Idempotency-Key` + processor-side key derived from order ID + verify-before-retry — [§2](02-idempotency-and-double-charge.md) |
-| Multi-currency ledger with processor fees | Post fee/FX entries as their own journal lines — [§3](03-ledger-and-double-entry.md) |
+| Multi-currency ledger with processor fees | Post fee/FX(Foreign Exchange) entries as their own journal lines — [§3](03-ledger-and-double-entry.md) |
 | Refund spanning ledger + processor + notification | Saga with ledger-first posting and compensation — [event-sourcing §7](../../event-sourcing-and-cqrs/includes/07-sagas-and-distributed-workflows.md) |
 | Sudden spike in card-testing attempts | Velocity-based fraud scoring; step-up authentication for medium risk — [§4](04-fraud-and-reconciliation.md) |
 | Settlement file shows amounts your ledger doesn't have | Automated daily reconciliation with an exception queue — [§4](04-fraud-and-reconciliation.md) |

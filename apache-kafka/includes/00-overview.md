@@ -70,7 +70,7 @@ Typical architecture: **PostgreSQL = source of truth** → **outbox or CDC** →
 | 7 | Connect and Streams | [07-connect-streams-and-ecosystem.md](07-connect-streams-and-ecosystem.md) |
 | 8 | Integration patterns | [08-integration-patterns.md](08-integration-patterns.md) |
 | 9 | Cluster setup | [09-cluster-setup-and-requirements.md](09-cluster-setup-and-requirements.md) |
-| 10 | Operations, DR, security | [10-operations-dr-security-and-observability.md](10-operations-dr-security-and-observability.md) |
+| 10 | Operations, DR(Disaster Recovery), security | [10-operations-dr-security-and-observability.md](10-operations-dr-security-and-observability.md) |
 | 11 | Decision guide | [11-decision-guide-and-common-mistakes.md](11-decision-guide-and-common-mistakes.md) |
 | 12 | Testing | [12-testing-and-verification.md](12-testing-and-verification.md) |
 | 13 | Failure modes and recovery | [13-failure-modes-troubleshooting-and-recovery.md](13-failure-modes-troubleshooting-and-recovery.md) |

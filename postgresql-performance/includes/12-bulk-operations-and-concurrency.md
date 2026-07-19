@@ -69,7 +69,7 @@ Workers skip rows already locked — no thundering herd.
 
 ## Transaction isolation
 
-Default **`READ COMMITTED`** is right for most OLTP.
+Default **`READ COMMITTED`** is right for most OLTP(Online Transaction Processing).
 
 Use **`REPEATABLE READ`** or **`SERIALIZABLE`** only when you have proven race conditions that application logic can't handle.
 

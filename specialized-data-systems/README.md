@@ -1,8 +1,8 @@
 # Specialized Data Systems Guide
 
-A practical reference for the data systems that live **beyond general-purpose OLTP and the warehouse** — time-series stores, graph databases, vector/RAG(Retrieval-Augmented Generation) infrastructure, and workflow engines — and when each earns its operational cost over PostgreSQL or a hand-rolled alternative.
+A practical reference for the data systems that live **beyond general-purpose OLTP(Online Transaction Processing) and the warehouse** — time-series stores, graph databases, vector/RAG(Retrieval-Augmented Generation) infrastructure, and workflow engines — and when each earns its operational cost over PostgreSQL or a hand-rolled alternative.
 
-Related: [data-platforms](../data-platforms/README.md) (OLTP/OLAP split, search, Redis roles) · [postgresql-performance](../postgresql-performance/README.md) (what PostgreSQL already covers) · [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) (sagas as the hand-rolled workflow baseline)
+Related: [data-platforms](../data-platforms/README.md) (OLTP/OLAP(Online Analytical Processing) split, search, Redis roles) · [postgresql-performance](../postgresql-performance/README.md) (what PostgreSQL already covers) · [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) (sagas as the hand-rolled workflow baseline)
 
 > **Scope:** This guide is **architecture and decision criteria** for adopting a specialized store — not a product tutorial. It answers "does this workload need a dedicated system, and which shape," and links to [sre-and-incidents](../sre-and-incidents/README.md), [postgresql-performance](../postgresql-performance/README.md), and [event-sourcing-and-cqrs](../event-sourcing-and-cqrs/README.md) for the operational depth each already owns.
 

@@ -1,6 +1,6 @@
 # Visual Index
 
-Nine reusable system spines connect the guides in this corpus. They are intentionally simplified: use the linked sections for security, capacity, and failure behavior.
+Twelve reusable system spines connect the guides in this corpus. They are intentionally simplified: use the linked sections for security, capacity, and failure behavior.
 
 Guide-to-guide maps (Delivery / Data / Security) live in the root README under [How the guides relate](./README.md#how-the-guides-relate). Prefer the [Visual-first learning path](./README.md#visual-first) when you want pictures before prose.
 
@@ -15,6 +15,9 @@ Guide-to-guide maps (Delivery / Data / Security) live in the root README under [
 | [DR / failover](#dr--failover) | Region or primary is down |
 | [Realtime fan-out](#realtime-fan-out) | One event → many open connections |
 | [Money movement](#money-movement) | Charge, ledger, processor, reconcile |
+| [Schema migrate + deploy](#schema-migrate--deploy) | Expand/contract schema with rolling app versions |
+| [Cache coherence](#cache-coherence) | Write path, invalidation, CDN purge, stampede |
+| [Multi-tenant request](#multi-tenant-request) | Host/HRD → tenant claim → AuthZ → RLS → prefixes |
 
 ---
 
@@ -172,7 +175,7 @@ flowchart LR
     Edge --> CN[Client N]
 ```
 
-One writer publishes; the connection tier fans out. Drain and reconnect storms are incident classes — [sre](sre-and-incidents/README.md) · [deployment rolling of socket servers](deployment-strategies/README.md).
+One writer publishes; the connection tier fans out. Drain and reconnect storms are incident classes — [realtime §1A](realtime-at-scale/includes/01A-reconnect-storms-and-drain.md) · [resilience §14 drain](resilience-patterns/includes/14-graceful-shutdown-and-drain.md) · [deployment rolling of socket servers](deployment-strategies/README.md).
 
 ---
 
@@ -201,3 +204,67 @@ sequenceDiagram
 ```
 
 Money paths need stronger idempotency than generic CRUD(Create, Read, Update, Delete). Ledger truth first; processor is an adapter; reconciliation closes the loop.
+
+---
+
+## Schema migrate + deploy
+
+> **Related:** [Schema migrations and deploy](deployment-strategies/includes/12-schema-migrations-and-deploy.md) · [PG migration checklist](postgresql-performance/includes/15-schema-migration-checklist.md) · [Migration coordination](data-platforms/includes/06-migration-coordination.md) · [Migration/async tests](testing-strategy/includes/05A-migration-and-async-pipeline-tests.md) · [Feature→PROD playbook](deployment-strategies/includes/14-feature-to-prod-playbook.md)
+
+```mermaid
+flowchart LR
+    Expand[Expand schema] --> Dual[Dual-write / backfill]
+    Dual --> Switch[Switch reads]
+    Switch --> Observe[Observe window]
+    Observe --> Contract[Contract old path]
+    Expand --> AppN[App vN]
+    Dual --> AppN1[App vN+1]
+    Switch --> AppN1
+```
+
+Ship **expand** before code that requires the new shape; run both app versions against a compatible schema; **contract** only after the observation window. Org-scale CDC(Change Data Capture)/search/warehouse sequencing → [data-platforms §6](data-platforms/includes/06-migration-coordination.md).
+
+---
+
+## Cache coherence
+
+> **Related:** [HTS caching layers](high-throughput-systems/includes/04-caching-layers.md) · [Caching end-to-end](data-platforms/includes/04-caching-end-to-end.md) · [CDN and media](system-design-walkthroughs/includes/09A-cdn-and-media-delivery.md) · [HTTP conditional requests](api-design-and-protection/includes/01A-http-caching-and-conditional-requests.md) · [PG read scaling](postgresql-performance/includes/11-read-scaling-and-caching.md)
+
+```mermaid
+flowchart LR
+    Write[Write API] --> DB[(Database)]
+    Write --> Inv[Invalidate / pubsub]
+    Inv --> AppCache[App / Redis cache]
+    Inv --> CDN[CDN purge / revalidate]
+    Read[Read] --> AppCache
+    AppCache -->|miss| DB
+    Read --> CDN
+    CDN -->|miss| Origin[Origin / API]
+```
+
+One writer owns the truth; caches are derived. Prefer explicit invalidation or short TTL(Time To Live) with stampede control over silent dual-write. CDN(Content Delivery Network) contracts and `ETag`/`If-Match` → [api-design §1A](api-design-and-protection/includes/01A-http-caching-and-conditional-requests.md).
+
+---
+
+## Multi-tenant request
+
+> **Related:** [Multi-tenant OIDC](auth-oauth-oidc-and-login-security/includes/02D-multi-tenant-oidc-and-b2b-sso.md) · [Multi-tenant APIs](api-design-and-protection/includes/16-multi-tenant-apis.md) · [Fine-grained AuthZ](api-design-and-protection/includes/12D-fine-grained-authz.md) · [PG RLS](postgresql-performance/includes/17-row-level-security-multi-tenant.md) · [Architecture multi-tenant](architecture-decisions/includes/10-multi-tenant-system-models.md) · [Cells/residency](architecture-decisions/includes/10A-regional-cells-and-residency.md)
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Edge as Edge / gateway
+    participant API as API service
+    participant AuthZ as AuthZ
+    participant DB as PostgreSQL + RLS
+
+    Client->>Edge: Host / path (tenant hint)
+    Edge->>API: Request + tenant claim
+    API->>AuthZ: Subject + tenant + action
+    AuthZ-->>API: Allow / deny
+    API->>DB: SET LOCAL tenant_id + query
+    DB-->>API: Tenant-scoped rows
+    Note over API: Cache / queue keys prefixed by tenant
+```
+
+Resolve tenant early (HRD(Home-Realm Discovery) / subdomain / claim); bind AuthZ(Authorization) to that tenant; enforce isolation in the DB (RLS(Row-Level Security) or silo) and on every cache/queue key. Cells and residency → [architecture §10A](architecture-decisions/includes/10A-regional-cells-and-residency.md).

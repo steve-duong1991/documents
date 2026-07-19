@@ -65,7 +65,7 @@ In **InnoDB**, **SQL(Structured Query Language) Server clustered index**, and si
 |-----------|-----------|
 | **B+ Tree index** | Table is tiny (seq scan wins); equality-only with no sort (hash may win); write-heavy with many redundant indexes |
 | **Hash index** | You need `ORDER BY`, `BETWEEN`, or prefix search |
-| **LSM engine** | Read-heavy OLTP with complex SQL; heavy in-place UPDATE on same keys; you cannot tune compaction |
+| **LSM engine** | Read-heavy OLTP(Online Transaction Processing) with complex SQL; heavy in-place UPDATE on same keys; you cannot tune compaction |
 | **Trie** | Keys are dense random strings (UUIDs) with no prefix locality — use hash or B+ |
 | **Red-Black / AVL in app** | Data is on disk at scale — use the DB’s B+ index instead of loading into memory |
 | **R-Tree alone** | High-dimensional vectors (k > ~10) — consider specialized ANN(Approximate Nearest Neighbor) indexes |

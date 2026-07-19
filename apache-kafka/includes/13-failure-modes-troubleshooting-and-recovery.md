@@ -2,7 +2,7 @@
 
 When Kafka misbehaves in production, symptoms span **brokers**, **clients**, **schemas**, **Connect**, and **application handlers**. This section catalogs common failures, how to detect them, and step-by-step recovery — including poison pills and consumer offset recovery.
 
-> **Related:** Retry/DLQ(Dead Letter Queue) implementation → [§8 retry and DLQ](08-integration-patterns.md#retry-and-dlq-deep-dive) · Lag ops → [§10 operations](10-operations-dr-security-and-observability.md) · Consumer pause/seek → [§4](04-consumers-and-consumer-groups.md) · DR failover → [§10 DR](10-operations-dr-security-and-observability.md#disaster-recovery) · Runbook template → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md)
+> **Related:** Retry/DLQ(Dead Letter Queue) implementation → [§8 retry and DLQ](08-integration-patterns.md#retry-and-dlq-deep-dive) · Lag ops → [§10 operations](10-operations-dr-security-and-observability.md) · Consumer pause/seek → [§4](04-consumers-and-consumer-groups.md) · DR(Disaster Recovery) failover → [§10 DR](10-operations-dr-security-and-observability.md#disaster-recovery) · Runbook template → [RUNBOOK-TEMPLATE.md](../../RUNBOOK-TEMPLATE.md)
 
 ---
 

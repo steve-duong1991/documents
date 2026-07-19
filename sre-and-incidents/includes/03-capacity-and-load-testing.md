@@ -64,7 +64,7 @@ Saturation-first menus → [HTS §11](../../high-throughput-systems/includes/11-
 | **Data shape** | Production-like cardinality and hot keys |
 | **Auth** | Real token paths — do not skip gateway cost |
 | **Think time** | Human vs machine clients differ |
-| **Exclusions** | Do not DDoS shared staging DBs without isolation |
+| **Exclusions** | Do not DDoS(Distributed Denial of Service) shared staging DBs without isolation |
 
 Prefer **pre-prod** or isolated stacks. If you must hit production-like data stores, get explicit approval and rate caps.
 

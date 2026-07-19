@@ -10,7 +10,7 @@
 
 | Layer | Job | Common choices |
 |-------|-----|----------------|
-| **Edge** | DDoS, WAF(Web Application Firewall), coarse rate limits | Cloudflare, AWS CloudFront + WAF, Fastly |
+| **Edge** | DDoS(Distributed Denial of Service), WAF(Web Application Firewall), coarse rate limits | Cloudflare, AWS CloudFront + WAF, Fastly |
 | **API gateway** | Auth, API keys, versioning, routing | Kong, AWS API Gateway, Azure APIM, Cloudflare API Gateway |
 | **Load balancer** | Scale + health-check backends | AWS ALB/NLB, GCP LB, Azure App Gateway, NGINX, HAProxy |
 | **Services** | Business logic | Node, Go, Java microservices, or monolith |

@@ -7,6 +7,13 @@
 > **Environment:** macOS · Homebrew · PostgreSQL 17  
 > **Last updated:** June 2026
 
+```mermaid
+flowchart LR
+    Env[.env / PGHOST PGUSER …] --> App[Application or psql]
+    App -->|localhost:5432 trust auth| PG[(PostgreSQL 17)]
+    Shell[pg-start alias] --> PG
+```
+
 ## Connection details
 
 | Setting | Value |

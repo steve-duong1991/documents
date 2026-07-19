@@ -32,7 +32,7 @@ flowchart LR
 
 | Tier | Access | Typical use |
 |------|--------|-------------|
-| **Hot** | ms–s | OLTP, active search, recent Kafka |
+| **Hot** | ms–s | OLTP(Online Transaction Processing), active search, recent Kafka |
 | **Warm** | seconds–minutes | Last quarter analytics |
 | **Cold** | minutes–hours | Compliance archive |
 | **Delete** | — | Past policy; no hold |
@@ -50,7 +50,7 @@ Match tiers to [data-platforms retention](../../data-platforms/includes/05-data-
 | Cross-region backup | Yes — storage + transfer |
 | PITR(Point-in-Time Recovery) WAL(Write-Ahead Log) window | Medium — tune window to RPO(Recovery Point Objective) |
 
-DR copies must match [RPO/RTO](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) — not "keep everything everywhere."
+DR(Disaster Recovery) copies must match [RPO/RTO](../../database-connection-and-security/includes/12-credential-rotation-and-dr.md) — not "keep everything everywhere."
 
 ---
 

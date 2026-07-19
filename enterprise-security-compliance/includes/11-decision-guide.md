@@ -47,7 +47,7 @@ flowchart TD
 |----------|------|------|
 | **Platform-owned scanners + policies** | Consistent evidence; less reinventing | Can block teams; needs exception UX |
 | **Team-local tools** | Fast iteration | Drift; weak auditor story |
-| **Hybrid** (platform baseline + team threat models) | Best default | Requires clear RACI |
+| **Hybrid** (platform baseline + team threat models) | Best default | Requires clear RACI(Responsible, Accountable, Consulted, Informed) |
 
 ## When to escalate to security engineering
 

@@ -81,7 +81,7 @@ LSM tradeoffs → [tree-and-index-structures/includes/04-lsm-trees.md](../../tre
 |--|--------------------------|--------------|
 | **Writes** | Update pages in place | Append + async merge |
 | **Reads** | Few page lookups | Memtable + possibly many files |
-| **Sweet spot** | OLTP, relational | Write-heavy logs, KV at scale |
+| **Sweet spot** | OLTP(Online Transaction Processing), relational | Write-heavy logs, KV at scale |
 
 ---
 

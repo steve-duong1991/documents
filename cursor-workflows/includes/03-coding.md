@@ -14,6 +14,16 @@
 
 **Rule of thumb:** Store **short, actionable** stack rules in `.cursor/rules/`; store **workflows and templates** in `.cursor/skills/`.
 
+```mermaid
+flowchart TD
+    AC[Confirm ticket AC in prompt] --> Ctx[@ architecture doc + API spec + exemplar]
+    Ctx --> Scope[State in-scope / out-of-scope files]
+    Scope --> Impl[Agent implements minimal diff]
+    Impl --> Test[Targeted tests + linter]
+    Test --> Verify[Verifier subagent or local run]
+    Verify --> PR[Open PR → code review]
+```
+
 ---
 
 ## What to do in Cursor

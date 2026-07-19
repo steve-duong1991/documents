@@ -49,7 +49,7 @@ flowchart TD
 | Team new to distributed patterns | CRUD; add audit table first |
 | Strong immediate read-after-write everywhere | CRUD or sync read model only |
 | Tight deadline, small team | Defer ES until domain stabilizes |
-| Heavy ad-hoc reporting on current state only | OLTP + warehouse ETL(Extract, Transform, Load), not raw event replay |
+| Heavy ad-hoc reporting on current state only | OLTP(Online Transaction Processing) + warehouse ETL(Extract, Transform, Load), not raw event replay |
 
 ---
 
@@ -62,7 +62,7 @@ flowchart TD
 | Complete audit trail by design | Higher complexity than CRUD |
 | Temporal queries ("state at time T") | [Event schema evolution (upcasting)](08-event-schema-evolution.md) |
 | Debug by replaying exact sequence | Storage grows — snapshots + archival |
-| Aligns with domain language | GDPR/PII(Personally Identifiable Information) erasure vs immutability |
+| Aligns with domain language | GDPR(General Data Protection Regulation)/PII(Personally Identifiable Information) erasure vs immutability |
 | Flexible downstream consumers | Steeper learning curve |
 
 ### CQRS

@@ -21,7 +21,7 @@ Practical flows for choosing tree and index structures by workload.
 | Verify file/block without full download | Merkle tree |
 | Filesystem directory metadata | B-Tree variants (ext4, NTFS) |
 | Write-heavy logs, metrics, KV at scale | LSM(Log-Structured Merge) Tree |
-| Read-heavy OLTP with complex queries | B+ Tree |
+| Read-heavy OLTP(Online Transaction Processing) with complex queries | B+ Tree |
 
 ---
 
